@@ -1,0 +1,300 @@
+directive @bind(id: String, class: String, args: String) on OBJECT | ENUM_VALUE | FIELD_DEFINITION
+
+directive @call(func: String, args: String) on ENUM_VALUE | FIELD_DEFINITION
+
+directive @slice(offset: Int, limit: Int) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+
+type Article {
+  title: String
+  content: String @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\ArticleType::content")
+  teaser(show_excerpt: Boolean): String @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\ArticleType::teaser")
+  publish_up: String
+  created: String
+  modified: String
+  metaString(format: String, separator: String, link_style: String, show_publish_date: Boolean, show_author: Boolean, show_taxonomy: String, parent_id: String, date_format: String): String @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\ArticleType::metaString")
+  tagString(parent_id: String, separator: String, show_link: Boolean, link_style: String): String @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\ArticleType::tagString")
+  images: ArticleImages @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\ArticleType::images")
+  link: String @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\ArticleType::link")
+  hits: String
+  urls: ArticleUrls @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\ArticleType::urls")
+  event: ArticleEvent @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\ArticleType::event")
+  category: Category @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\ArticleType::category")
+  author: User @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\ArticleType::author")
+  tags(parent_id: String): [Tag] @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\ArticleType::tags")
+  rating: String
+  rating_count: String
+  relatedArticles(category: String, tags: String, author: String, offset: Int, limit: Int, order: String, order_direction: String, order_alphanum: Boolean): [Article] @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\ArticleType::relatedArticles")
+  field: ArticleFields @call(func: "YOOtheme\\Builder\\Joomla\\Fields\\Type\\FieldsType::field")
+}
+
+type ArticleEvent {
+  afterDisplayTitle: String @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\ArticleEventType::resolve")
+  beforeDisplayContent: String @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\ArticleEventType::resolve")
+  afterDisplayContent: String @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\ArticleEventType::resolve")
+}
+
+type ArticleFields @bind(id: "Article.fields", class: "YOOtheme\\Builder\\Joomla\\Fields\\Type\\FieldsType", args: "{\"$context\":\"com_content.article\"}") {
+  accommodation_teaser_title: String @call(func: "Article.fields@resolve")
+  accommodation_teaser_image_bg: String @call(func: "Article.fields@resolve")
+  related_accommodations: [Article] @call(func: "Article.fields@resolve")
+  accommodation_teaser_image_bg_alt_text: String @call(func: "Article.fields@resolve")
+  accommodation_images: [FieldAccommodationImages] @call(func: "Article.fields@resolve")
+  accommodation_content_images: [FieldAccommodationContentImages] @call(func: "Article.fields@resolve")
+  accommodation_guests: String @call(func: "Article.fields@resolve")
+  accommodation_bedrooms: String @call(func: "Article.fields@resolve")
+  accommodation_bathrooms: String @call(func: "Article.fields@resolve")
+  accommodation_double_beds: String @call(func: "Article.fields@resolve")
+  accommodation_single_beds: String @call(func: "Article.fields@resolve")
+  accommodation_sofa_beds: String @call(func: "Article.fields@resolve")
+  accommodation_floorplan: String @call(func: "Article.fields@resolve")
+  accommodation_website: String @call(func: "Article.fields@resolve")
+  accommodation_e_mail: String @call(func: "Article.fields@resolve")
+  accommodation_location: String @call(func: "Article.fields@resolve")
+  accommodation_address: String @call(func: "Article.fields@resolve")
+  accommodation_directions: String @call(func: "Article.fields@resolve")
+  accommodation_host: Article @call(func: "Article.fields@resolve")
+  accommodation_amenities: [ChoiceField] @call(func: "Article.fields@resolve")
+  accommodation_amenitiesString: ChoiceFieldString @call(func: "Article.fields@resolve")
+  accommodation_characteristics: [FieldAccommodationCharacteristics] @call(func: "Article.fields@resolve")
+  accommodation_architecture: String @call(func: "Article.fields@resolve")
+  accommodation_sustainability: String @call(func: "Article.fields@resolve")
+  accommodation_area: String @call(func: "Article.fields@resolve")
+  accommodation_related_activities: [Article] @call(func: "Article.fields@resolve")
+  accommodation_related_restaurants: [Article] @call(func: "Article.fields@resolve")
+  host_description: String @call(func: "Article.fields@resolve")
+  host_related_accommodations: [Article] @call(func: "Article.fields@resolve")
+  activity_description: String @call(func: "Article.fields@resolve")
+  activity_link: String @call(func: "Article.fields@resolve")
+  activity_location: String @call(func: "Article.fields@resolve")
+  restaurant_description: String @call(func: "Article.fields@resolve")
+  restaurant_link: String @call(func: "Article.fields@resolve")
+  restaurant_location: String @call(func: "Article.fields@resolve")
+}
+
+type ArticleImages {
+  image_intro: String
+  image_intro_alt: String
+  image_intro_caption: String
+  image_fulltext: String
+  image_fulltext_alt: String
+  image_fulltext_caption: String
+}
+
+type ArticleUrls {
+  urla: String @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\ArticleUrlsType::resolve")
+  urlatext: String
+  urlb: String @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\ArticleUrlsType::resolve")
+  urlbtext: String
+  urlc: String @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\ArticleUrlsType::resolve")
+  urlctext: String
+}
+
+type Category {
+  title: String
+  description: String
+  numitems: String
+  params: CategoryParams @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\CategoryType::params")
+  link: String @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\CategoryType::link")
+  tagString(parent_id: String, separator: String, show_link: Boolean, link_style: String): String @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\CategoryType::tagString")
+  parent: Category @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\CategoryType::parent")
+  categories: [Category] @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\CategoryType::categories")
+  tags(parent_id: String): [Tag] @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\CategoryType::tags")
+  field: CategoryFields @call(func: "YOOtheme\\Builder\\Joomla\\Fields\\Type\\FieldsType::field")
+}
+
+type CategoryFields @bind(id: "Category.fields", class: "YOOtheme\\Builder\\Joomla\\Fields\\Type\\FieldsType", args: "{\"$context\":\"com_content.categories\"}") {
+  accommodation_intro_image: String @call(func: "Category.fields@resolve")
+  accommodation_intro_image_alt_text: String @call(func: "Category.fields@resolve")
+  accommodation_intro_image_bg_text_color: ChoiceField @call(func: "Category.fields@resolve")
+  accommodation_related_activities: [Article] @call(func: "Category.fields@resolve")
+}
+
+type CategoryParams {
+  image: String
+  image_alt: String
+}
+
+type ChoiceField {
+  name: String
+  value: String
+}
+
+type ChoiceFieldString {
+  name(separator: String): String @call(func: "YOOtheme\\Builder\\Joomla\\Fields\\Type\\ChoiceFieldStringType::resolve")
+  value(separator: String): String @call(func: "YOOtheme\\Builder\\Joomla\\Fields\\Type\\ChoiceFieldStringType::resolve")
+}
+
+type Contact {
+  name: String
+  image: String
+  email_to: String
+  con_position: String
+  address: String
+  suburb: String
+  state: String
+  postcode: String
+  country: String
+  telephone: String
+  mobile: String
+  fax: String
+  webpage: String
+  text: String
+  hits: String
+  category: Category @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\ContactType::category")
+  user: User @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\ContactType::user")
+  tags: [Tag] @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\ContactType::tags")
+  tagString(separator: String, show_link: Boolean, link_style: String): String @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\ContactType::tagString")
+  created: String
+  modified: String
+  link: String @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\ContactType::link")
+  articles: [Article] @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\ContactType::articles")
+}
+
+type FieldAccommodationCharacteristics {
+  list_item: String
+}
+
+type FieldAccommodationContentImages {
+  image: String
+  image_alt_text: String
+}
+
+type FieldAccommodationImages {
+  image: String
+  image_alt_text: String
+}
+
+type FieldSocials {
+  title: String
+  link: String
+}
+
+type File {
+  name(title_case: Boolean): String @call(func: "YOOtheme\\Builder\\Source\\Filesystem\\Type\\FileType::name")
+  basename: String @call(func: "YOOtheme\\Builder\\Source\\Filesystem\\Type\\FileType::basename")
+  dirname: String @call(func: "YOOtheme\\Builder\\Source\\Filesystem\\Type\\FileType::dirname")
+  url: String @call(func: "YOOtheme\\Builder\\Source\\Filesystem\\Type\\FileType::url")
+  path: String @call(func: "YOOtheme\\Builder\\Source\\Filesystem\\Type\\FileType::path")
+  content: String @call(func: "YOOtheme\\Builder\\Source\\Filesystem\\Type\\FileType::content")
+  size: String @call(func: "YOOtheme\\Builder\\Source\\Filesystem\\Type\\FileType::size")
+  extension: String @call(func: "YOOtheme\\Builder\\Source\\Filesystem\\Type\\FileType::extension")
+  mimetype: String @call(func: "YOOtheme\\Builder\\Source\\Filesystem\\Type\\FileType::mimetype")
+  accessed: String @call(func: "YOOtheme\\Builder\\Source\\Filesystem\\Type\\FileType::accessed")
+  changed: String @call(func: "YOOtheme\\Builder\\Source\\Filesystem\\Type\\FileType::changed")
+  modified: String @call(func: "YOOtheme\\Builder\\Source\\Filesystem\\Type\\FileType::modified")
+}
+
+type Images {
+  image_intro: String
+  image_intro_alt: String
+  image_intro_caption: String
+  image_fulltext: String
+  image_fulltext_alt: String
+  image_fulltext_caption: String
+}
+
+scalar Object
+
+type Query {
+  site: Site @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\SiteQueryType::resolve")
+  article: Article @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\ArticleQueryType::resolve")
+  category: Category @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\CategoryQueryType::resolve")
+  contact: Contact @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\ContactQueryType::resolve")
+  articles(offset: Int, limit: Int): [Article] @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\ArticlesQueryType::resolve")
+  search: Search @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\SearchQueryType::resolve")
+  searchItems(offset: Int, limit: Int): [SearchItem] @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\SearchItemsQueryType::resolve")
+  smartSearch: SmartSearch @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\SmartSearchQueryType::resolve")
+  smartSearchItems(offset: Int, limit: Int): [SmartSearchItem] @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\SmartSearchItemsQueryType::resolve")
+  tags(offset: Int, limit: Int): [Tag] @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\TagsQueryType::resolve")
+  tagItems(offset: Int, limit: Int): [TagItem] @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\TagItemsQueryType::resolve")
+  customArticle(id: String, catid: [String], cat_operator: String, tags: [String], tag_operator: String, users: [String], users_operator: String, featured: Boolean, offset: Int, order: String, order_direction: String, order_alphanum: Boolean): Article @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\CustomArticleQueryType::resolve")
+  customArticles(catid: [String], cat_operator: String, tags: [String], tag_operator: String, users: [String], users_operator: String, featured: Boolean, offset: Int, limit: Int, order: String, order_direction: String, order_alphanum: Boolean): [Article] @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\CustomArticlesQueryType::resolve")
+  customCategory(id: String): Category @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\CustomCategoryQueryType::resolve")
+  customCategories(catid: String, offset: Int, limit: Int, order: String, order_direction: String): [Category] @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\CustomCategoriesQueryType::resolve")
+  customTag(id: String): Tag @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\CustomTagQueryType::resolve")
+  customTags(parent_id: String, offset: Int, limit: Int, order: String, order_direction: String): [Tag] @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\CustomTagsQueryType::resolve")
+  customUser(id: String): User @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\CustomUserQueryType::resolve")
+  customUsers(groups: [String], offset: Int, limit: Int, order: String, order_direction: String): [User] @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\CustomUsersQueryType::resolve")
+  file(pattern: String, offset: Int, order: String, order_direction: String): File @call(func: "YOOtheme\\Builder\\Source\\Filesystem\\Type\\FileQueryType::resolve")
+  files(pattern: String, offset: Int, limit: Int, order: String, order_direction: String): [File] @call(func: "YOOtheme\\Builder\\Source\\Filesystem\\Type\\FilesQueryType::resolve")
+}
+
+type Search {
+  searchword: String
+  total: Int
+  error: String
+}
+
+type SearchItem {
+  title: String
+  text: String
+  created: String
+  category: Category @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\SearchItemType::category")
+  href: String
+}
+
+type Site {
+  title: String
+  page_title: String
+  user: User
+  is_guest: Int
+}
+
+type SmartSearch {
+  searchword: String
+  total: Int
+}
+
+type SmartSearchItem {
+  title: String
+  description: String
+  publish_start_date: String
+  metaString(format: String, separator: String, link_style: String, show_publish_date: Boolean, show_author: Boolean, show_taxonomy: String, parent_id: String, date_format: String): String @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\SmartSearchItemType::metaString")
+  images: ArticleImages @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\SmartSearchItemType::images")
+  category: Category @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\SmartSearchItemType::category")
+  author: User @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\SmartSearchItemType::author")
+  route: String
+}
+
+type Tag {
+  title: String
+  description: String
+  images: Images @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\TagType::images")
+  hits: String
+  link: String @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\TagType::link")
+  tags: [Tag] @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\TagType::tags")
+}
+
+type TagItem {
+  core_title: String
+  content: String @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\TagItemType::content")
+  teaser(show_excerpt: Boolean): String @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\TagItemType::teaser")
+  core_publish_up: String
+  created_time: String
+  modified_time: String
+  metaString(format: String, separator: String, link_style: String, show_publish_date: Boolean, show_author: Boolean, show_taxonomy: String, parent_id: String, date_format: String): String @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\TagItemType::metaString")
+  images: Images @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\TagItemType::images")
+  link: String
+  event: ArticleEvent @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\TagItemType::event")
+  category: Category @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\TagItemType::category")
+  author: User @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\TagItemType::author")
+  content_type_title: String
+  field: ArticleFields @call(func: "YOOtheme\\Builder\\Joomla\\Fields\\Type\\FieldsType::field")
+}
+
+type User {
+  name: String
+  username: String
+  email: String
+  registerDate: String
+  lastvisitDate: String
+  link: String @call(func: "YOOtheme\\Builder\\Joomla\\Source\\Type\\UserType::link")
+  field: UserFields @call(func: "YOOtheme\\Builder\\Joomla\\Fields\\Type\\FieldsType::field")
+}
+
+type UserFields @bind(id: "User.fields", class: "YOOtheme\\Builder\\Joomla\\Fields\\Type\\FieldsType", args: "{\"$context\":\"com_users.user\"}") {
+  image: String @call(func: "User.fields@resolve")
+  image_alt_text: String @call(func: "User.fields@resolve")
+  description: String @call(func: "User.fields@resolve")
+  socials: [FieldSocials] @call(func: "User.fields@resolve")
+}
