@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<extension version="3.9" type="plugin" group="fields" method="upgrade">
+	<name>PLG_FIELDS_ARTICLES</name>
+	<description>PLG_FIELDS_ARTICLES_DESC</description>
+	<version>3.5.3</version>
+	<creationDate>February 2021</creationDate>
+	<author>Regular Labs (Peter van Westen)</author>
+	<authorEmail>info@regularlabs.com</authorEmail>
+	<authorUrl>https://www.regularlabs.com</authorUrl>
+	<copyright>Copyright © 2018 Regular Labs - All Rights Reserved</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+
+	<scriptfile>script.install.php</scriptfile>
+
+	<updateservers>
+		<server type="extension" priority="1" name="Regular Labs - Articles">
+			https://download.regularlabs.com/updates.xml?e=XXX&amp;type=.xml
+		</server>
+	</updateservers>
+
+	<files>
+		<filename plugin="articles">articles.php</filename>
+		<filename>helper.php</filename>
+		<filename>filters.php</filename>
+		<filename>script.install.helper.php</filename>
+		<folder>fields</folder>
+		<folder>language</folder>
+		<folder>layouts</folder>
+		<folder>params</folder>
+		<folder>tmpl</folder>
+	</files>
+
+	<config>
+		<fields name="params" addfieldpath="/libraries/regularlabs/fields">
+			<fieldset name="basic">
+				<field name="@loadlanguage_regularlabs" type="rl_loadlanguage" extension="plg_system_regularlabs" />
+				<field name="@loadlanguage" type="rl_loadlanguage" extension="plg_fields_articles" />
+				<field name="@license" type="rl_license" extension="ARTICLESFIELD" />
+				<field name="@version" type="rl_version" extension="ARTICLESFIELD" />
+				<field name="@header" type="rl_header"
+					   label="ARTICLESFIELD"
+					   description="ARTICLESFIELD_DESC"
+					   url="https://www.regularlabs.com/articlesfield" />
+				<field
+						name="multiple"
+						type="radio"
+						class="btn-group btn-group-yesno"
+						default="0"
+						label="RL_FIELD_PARAM_MULTIPLE"
+						description="RL_FIELD_PARAM_MULTIPLE_DESC"
+				>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field name="@notice_select_style" type="rl_onlypro"
+					   label="RL_FIELD_SELECT_STYLE"
+					   description="RL_FIELD_SELECT_STYLE_DESC" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>

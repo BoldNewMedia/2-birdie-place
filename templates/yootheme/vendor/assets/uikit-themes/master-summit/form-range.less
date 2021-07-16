@@ -1,0 +1,55 @@
+//
+// Component: Form Range
+//
+// ========================================================================
+
+
+// Variables
+// ========================================================================
+
+@form-range-thumb-height:                       18px;
+@form-range-thumb-background:                   darken(@global-primary-background, 12%);
+
+@form-range-track-height:                       2px;
+
+//
+// Master
+//
+
+@internal-form-range-thumb-background-image:     "../../../../uikit-themes/master-summit/images/form-range-thumb-background-image.svg";
+
+
+// Component
+// ========================================================================
+
+.hook-form-range() {}
+
+
+// Thumb
+// ========================================================================
+
+.hook-form-range-thumb() {}
+
+.hook-form-range-thumb() when not (@internal-form-range-thumb-background-image = ~'') {
+    background-color: transparent !important;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+.hook-form-range-thumb() when not (@internal-form-range-thumb-background-image = ~'') and not (@form-range-thumb-background = transparent) {
+    .svg-fill(@internal-form-range-thumb-background-image, "#000", @form-range-thumb-background);
+}
+
+
+// Track
+// ========================================================================
+
+.hook-form-range-track() {}
+
+.hook-form-range-track-focus() {}
+
+
+// Miscellaneous
+// ========================================================================
+
+.hook-form-range-misc() {}

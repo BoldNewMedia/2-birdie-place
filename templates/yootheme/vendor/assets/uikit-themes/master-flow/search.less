@@ -1,0 +1,98 @@
+//
+// Component: Search
+//
+// ========================================================================
+
+
+// Variables
+// ========================================================================
+
+@search-color:                                  @global-emphasis-color;
+@search-placeholder-color:                      @global-color;
+
+@search-icon-color:                             @global-color;
+
+@search-default-background:                     @global-background;
+@search-default-focus-background:               @global-muted-background;
+
+@search-toggle-color:                           @global-color;
+@search-toggle-hover-color:                     @global-emphasis-color;
+
+//
+// Master
+//
+
+@search-default-border-mode:                    -bottom;
+
+@search-default-border-width:                   1px;
+@search-default-border:                         darken(@global-border, 6%);
+
+
+// Component
+// ========================================================================
+
+.hook-search-input() {}
+
+
+// Default modifiers
+// ========================================================================
+
+.hook-search-default-input() {}
+
+.hook-search-default-input-focus() {}
+
+
+// Navbar modifiers
+// ========================================================================
+
+.hook-search-navbar-input() {}
+
+
+// Large modifiers
+// ========================================================================
+
+.hook-search-large-input() {}
+
+
+// Toggle
+// ========================================================================
+
+.hook-search-toggle() {}
+
+.hook-search-toggle-hover() {}
+
+
+// Miscellaneous
+// ========================================================================
+
+.hook-search-misc() {}
+
+
+// Inverse
+// ========================================================================
+
+@inverse-search-color:                          @global-inverse-color;
+@inverse-search-placeholder-color:              fade(@global-inverse-color, 60%);
+@inverse-search-icon-color:                     fade(@global-inverse-color, 60%);
+
+@inverse-search-default-background:             rgba(255, 255, 255, 0);
+
+@inverse-search-toggle-color:                   @inverse-global-muted-color;
+@inverse-search-toggle-hover-color:             @global-inverse-color;
+
+//
+// Master
+//
+
+@inverse-search-default-border:                 @inverse-global-border;
+
+
+.hook-inverse-search-default-input() {}
+.hook-inverse-search-default-input-focus() {}
+
+.hook-inverse-search-navbar-input() {}
+
+.hook-inverse-search-large-input() {}
+
+.hook-inverse-search-toggle() {}
+.hook-inverse-search-toggle-hover() {}

@@ -1,0 +1,42 @@
+//
+// Component: Badge
+//
+// ========================================================================
+
+
+// Variables
+// ========================================================================
+
+@badge-background:                              @global-secondary-background;
+
+//
+// Master
+//
+
+@badge-box-shadow:                              1px 3px 15px fade(@badge-background, 20%);
+
+@badge-font-weight:                             @global-secondary-font-weight;
+
+
+// Component
+// ========================================================================
+
+.hook-badge() {}
+
+.hook-badge-hover() {}
+
+
+// Miscellaneous
+// ========================================================================
+
+.hook-badge-misc() {}
+
+
+// Inverse
+// ========================================================================
+
+@inverse-badge-background:                      @global-inverse-color;
+@inverse-badge-color:                           @inverse-global-inverse-color;
+
+.hook-inverse-badge() {}
+.hook-inverse-badge-hover() {}
