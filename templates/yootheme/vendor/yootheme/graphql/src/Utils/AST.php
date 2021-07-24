@@ -3,6 +3,8 @@
 namespace YOOtheme\GraphQL\Utils;
 
 use GraphQL\Type\Definition\FieldDefinition;
+use GraphQL\Type\Definition\InputObjectField;
+use GraphQL\Type\Definition\InputObjectType;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Utils\AST as ASTUtils;
 
@@ -27,6 +29,35 @@ class AST extends ASTUtils
             }
         }
 
+        foreach ($type->getFields() as $field) {
+            $field->astNode = static::field($field);
+        }
+
+        return static::fromArray($node);
+    }
+
+    public static function inputType(InputObjectType $type)
+    {
+        $node = [
+            'kind' => 'InputObjectTypeDefinition',
+            'name' => [
+                'kind' => 'Name',
+                'value' => $type->name,
+            ],
+            'fields' => [],
+            'directives' => [],
+        ];
+
+        if (isset($type->config['directives'])) {
+            foreach ($type->config['directives'] as $config) {
+                $node['directives'][] = static::directive($config);
+            }
+        }
+
+        foreach ($type->getFields() as $field) {
+            $field->astNode = static::inputField($field);
+        }
+
         return static::fromArray($node);
     }
 
@@ -39,6 +70,26 @@ class AST extends ASTUtils
                 'value' => $field->name,
             ],
             'arguments' => [],
+            'directives' => [],
+        ];
+
+        if (isset($field->config['directives'])) {
+            foreach ($field->config['directives'] as $config) {
+                $node['directives'][] = static::directive($config);
+            }
+        }
+
+        return static::fromArray($node);
+    }
+
+    public static function inputField(InputObjectField $field)
+    {
+        $node = [
+            'kind' => 'InputValueDefinition',
+            'name' => [
+                'kind' => 'Name',
+                'value' => $field->name,
+            ],
             'directives' => [],
         ];
 

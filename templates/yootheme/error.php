@@ -37,7 +37,6 @@ $touchicon = isset($params['touchicon'])
     ? "{$this->baseurl}/{$params['touchicon']}"
     : "{$this->baseurl}/templates/yootheme/vendor/yootheme/theme-joomla/assets/images/apple-touch-icon.png";
 
-
 $rtl = $doc->direction == 'ltr' ? '' : '.rtl';
 $style = class_exists(File::class)
     ? Url::to(File::find("~theme/css/theme{.{$template->id},}{$rtl}.css"))

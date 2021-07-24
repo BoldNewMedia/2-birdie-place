@@ -4,7 +4,7 @@
 
 namespace YOOtheme\Autoload;
 
-class ComposerStaticInit834c1d92f6ebedbd46c6b811abbae647
+class ComposerStaticInit8597735f34aa9ea3104c6705b3956b23
 {
     public static $files = array (
         '5462e3904e7f4d92dc7cbfccad39ce60' => __DIR__ . '/..' . '/yootheme/application/functions.php',
@@ -179,9 +179,9 @@ class ComposerStaticInit834c1d92f6ebedbd46c6b811abbae647
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit834c1d92f6ebedbd46c6b811abbae647::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit834c1d92f6ebedbd46c6b811abbae647::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit834c1d92f6ebedbd46c6b811abbae647::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit8597735f34aa9ea3104c6705b3956b23::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit8597735f34aa9ea3104c6705b3956b23::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit8597735f34aa9ea3104c6705b3956b23::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -28,6 +28,12 @@
 @article-meta-color: #bfbabf;
 
 //
+// Badge
+//
+
+@inverse-badge-color: @global-emphasis-color;
+
+//
 // Button
 //
 
@@ -45,6 +51,14 @@
 
 @dropdown-nav-item-color: #b3a7ae;
 @dropdown-nav-sublist-item-color: #b3a7ae;
+
+//
+// Form
+//
+
+@form-disabled-background: desaturate(fade(@global-muted-background, 45%), 20%);
+@form-radio-background: desaturate(@global-muted-background, 20%);
+@form-radio-disabled-background: desaturate(fade(@global-muted-background, 45%), 20%);
 
 //
 // Nav
@@ -78,3 +92,9 @@
 
 @table-striped-row-background: rgba(249, 243, 244, 0.6);
 @table-hover-row-background: @global-muted-background;
+
+//
+// Woocommerce
+//
+
+@woocommerce-rating-background-color: desaturate(darken(@global-muted-background, 5%), 25%);

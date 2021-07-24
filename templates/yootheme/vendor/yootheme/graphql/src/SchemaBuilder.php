@@ -8,7 +8,6 @@ use GraphQL\Executor\Values;
 use GraphQL\Language\AST\NodeList;
 use GraphQL\Language\Parser;
 use GraphQL\Type\Definition\Directive;
-use GraphQL\Type\Definition\FieldDefinition;
 use GraphQL\Type\Definition\InputObjectType;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\ResolveInfo;
@@ -165,7 +164,7 @@ class SchemaBuilder
             return $this->loadType($this->loadedTypes[$name] = $this->types[$name]);
         }
 
-        return null;
+        return;
     }
 
     /**
@@ -195,7 +194,7 @@ class SchemaBuilder
     public function inputType($name, $config = [])
     {
         $type = isset($this->types[$name]) ? $this->types[$name] : new InputObjectType([
-            'name' => $name
+            'name' => $name,
         ]);
 
         return $this->types[$name] = $this->extendType($type, $config);
@@ -217,7 +216,7 @@ class SchemaBuilder
     }
 
     /**
-     * @param Type $type
+     * @param Type           $type
      * @param array|callable $config
      *
      * @return Type
@@ -260,6 +259,8 @@ class SchemaBuilder
 
         if ($type instanceof ObjectType) {
             $type->astNode = AST::objectType($type);
+        } elseif ($type instanceof InputObjectType) {
+            $type->astNode = AST::inputType($type);
         }
 
         return $type;
@@ -367,10 +368,7 @@ class SchemaBuilder
                 $field = $hook($type, $field, $this);
             }
 
-            $fieldDef = FieldDefinition::create($field);
-            $fieldDef->astNode = AST::field($fieldDef);
-
-            $result[$name] = $fieldDef;
+            $result[$name] = $field;
         }
 
         return $result;

@@ -18,7 +18,7 @@
 // Alert
 //
 
-@alert-background: #f5f5f5;
+@alert-background: desaturate(lighten(@global-muted-background, 1%), 15%);
 @alert-primary-background: #fdf4f3;
 @alert-success-background: #e8f0eb;
 @alert-warning-background: #fff7ea;
@@ -47,7 +47,7 @@
 // Comment
 //
 
-@comment-primary-background: #f1f1f1;
+@comment-primary-background: desaturate(lighten(@global-muted-background, 1%), 15%);
 
 //
 // Dropdown
@@ -59,8 +59,9 @@
 // Form
 //
 
-@form-disabled-background: lighten(@alert-background, 1%);
-@form-radio-disabled-background: lighten(@alert-background, 1%);
+@form-disabled-background: desaturate(fade(@global-muted-background, 45%), 15%);
+@form-radio-background: desaturate(darken(@global-muted-background, 1%), 15%);
+@form-radio-disabled-background: desaturate(fade(@global-muted-background, 45%), 15%);
 
 //
 // Icon
@@ -124,3 +125,9 @@
 //
 
 @totop-color: #899ba9;
+
+//
+// Woocommerce
+//
+
+@woocommerce-rating-background-color: desaturate(darken(@global-muted-background, 8%), 15%);

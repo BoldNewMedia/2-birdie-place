@@ -53,7 +53,7 @@ class ThemeListener
     public static function afterDispatch(Config $config, Document $document, Input $input, Language $language, CMSApplication $cms)
     {
         // is template active?
-        if (!$config('~theme') || $config('app.isAdmin') || $input->getCmd('p') === 'customizer' || $input->getCmd('tmpl') === 'component') {
+        if (!$config('~theme') || $config('app.isAdmin') || $input->getCmd('option') === 'com_ajax' || $input->getCmd('tmpl') === 'component') {
             return;
         }
 

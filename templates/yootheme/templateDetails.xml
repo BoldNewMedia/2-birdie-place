@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <extension version="3.1" type="template" client="site" method="upgrade">
     <name>yootheme</name>
-    <version>2.5.7</version>
+    <version>2.5.8</version>
     <creationDate>July yyyy</creationDate>
     <copyright>Copyright (C) YOOtheme GmbH</copyright>
     <license>GNU General Public License</license>

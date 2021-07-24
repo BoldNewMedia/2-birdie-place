@@ -1,8 +1,15 @@
 # Changelog
 
+## 2.5.8 (July 21, 2021)
+
+### Fixed
+
+- Fix product description gets replaced with short description on WooCommerce variable product (WordPress)
+- Disable block-based Widgets Editor (WordPress)
+
 ## 2.5.7 (July 15, 2021)
 
-## Fixed
+### Fixed
 
 - Fix duplicating product short description (WordPress)
 - Fix product short description source does not collapse (WordPress)
