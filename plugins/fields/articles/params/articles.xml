@@ -2,16 +2,6 @@
 <form>
 	<fields name="fieldparams" addfieldpath="/libraries/regularlabs/fields">
 		<fieldset name="fieldparams">
-			<field name="field_type"
-				   type="list"
-				   label="FLDA_FIELD_TYPE"
-				   description="FLDA_FIELD_TYPE_DESC"
-				   default="articles"
-			>
-				<option value="articles">FLDA_LINK_ARTICLES</option>
-				<option value="" disabled="true">FLDA_LINKED_ARTICLES</option>
-				<option value="" disabled="true">RL_ONLY_AVAILABLE_IN_PRO_LIST_OPTION</option>
-			</field>
 
 			<field name="multiple"
 				   type="list"
@@ -24,6 +14,17 @@
 				<option value="0">JNO</option>
 			</field>
 
+			<field name="select_style"
+				   type="list"
+				   label="RL_FIELD_MULTI_SELECT_STYLE"
+				   description="RL_FIELD_MULTI_SELECT_STYLE_DESC"
+				   default=""
+				   showon="multiple!:0"
+			>
+				<option value="">COM_FIELDS_FIELD_USE_GLOBAL</option>
+				<option value="dropdown">RL_FIELD_DROPDOWN</option>
+				<option value="checkboxes">RL_FIELD_CHECKBOXES</option>
+			</field>
 
 			<field name="@description_link_articles" type="note" description="FLDA_LINK_ARTICLES_DESC" />
 
@@ -54,25 +55,83 @@
 			</field>
 			<field name="@block_filters_categories_b" type="rl_block" end="1" />
 			<field name="@block_filters_tags_a" type="rl_block" start="1" label="RL_TAGS" />
-			<field name="@notice_filters_tags" type="rl_onlypro"
+			<field name="filter_tags" type="radio" class="btn-group btn-group-yesno" default="0"
 				   label="FLDA_FILTER_BY_TAGS"
-				   description="FLDA_FILTER_BY_TAGS_DESC" />
+				   description="FLDA_FILTER_BY_TAGS_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			<field name="tags"
+				   type="rl_tags"
+				   label="RL_TAGS"
+				   description="FLDA_TAGS_DESC"
+				   multiple="1"
+				   simple="1"
+				   showon="filter_tags:1"
+			/>
+			<field name="tags_inc_children" type="radio" class="btn-group btn-group-yesno" default="0"
+				   label="RL_INCLUDE_CHILD_ITEMS"
+				   description="RL_INCLUDE_CHILD_ITEMS_DESC"
+				   showon="filter_tags:1">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+				<option value="2">RL_ONLY</option>
+			</field>
 			<field name="@block_filters_tags_b" type="rl_block" end="1" />
 			<field name="@block_filters_language_a" type="rl_block" start="1" label="RL_LANGUAGE" />
-			<field name="@notice_filters_language" type="rl_onlypro"
+			<field name="filter_language" type="radio" class="btn-group btn-group-yesno" default="0"
 				   label="FLDA_FILTER_BY_LANGUAGE"
-				   description="FLDA_FILTER_BY_LANGUAGE_DESC" />
+				   description="FLDA_FILTER_BY_LANGUAGE_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+				<option value="current">RL_CURRENT</option>
+			</field>
+			<field name="language"
+				   type="rl_languages"
+				   label="RL_LANGUAGE"
+				   description="FLDA_LANGUAGE_DESC"
+				   showon="filter_language:1" />
 			<field name="@block_filters_languages_b" type="rl_block" end="1" />
 			<field name="@block_filters_users_a" type="rl_block" start="1" label="JAUTHOR" />
-			<field name="@notice_filters_users" type="rl_onlypro"
+			<field name="filter_users" type="radio" class="btn-group btn-group-yesno" default="0"
 				   label="FLDA_FILTER_BY_AUTHORS"
-				   description="FLDA_FILTER_BY_AUTHORS_DESC" />
+				   description="FLDA_FILTER_BY_AUTHORS_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			<field name="users"
+				   type="rl_users"
+				   label="RL_USERS"
+				   description="FLDA_USERS_DESC"
+				   show_current="true"
+				   multiple="1"
+				   showon="filter_users:1"
+			/>
 			<field name="@block_filters_users_b" type="rl_block" end="1" />
 
 			<field name="@block_filters_custom_fields_a" type="rl_block" start="1" label="RL_CUSTOM_FIELDS" />
-			<field name="@notice_filter_customfields" type="rl_onlypro"
+			<field name="filter_customfields" type="radio" class="btn-group btn-group-yesno" default="0"
 				   label="FLDA_FILTER_BY_CUSTOM_FIELDS"
-				   description="FLDA_FILTER_BY_CUSTOM_FIELDS_DESC" />
+				   description="FLDA_FILTER_BY_CUSTOM_FIELDS_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+			<field name="@showon_filter_customfields_a" type="rl_showon" value="filter_customfields:1" />
+
+			<field name="customfield1_id" type="customfield" label="RL_CUSTOM_FIELD" description="FLDA_CUSTOM_FIELD_DESC" />
+			<field name="customfield1_value" type="text" default="" hint="RL_FIELD_VALUE" label=""
+				   showon="customfield1_id!:" />
+
+			<field name="customfield2_id" type="customfield" label="RL_CUSTOM_FIELD" description="FLDA_CUSTOM_FIELD_DESC" />
+			<field name="customfield2_value" type="text" default="" hint="RL_FIELD_VALUE" label=""
+				   showon="customfield2_id!:" />
+
+			<field name="customfield3_id" type="customfield" label="RL_CUSTOM_FIELD" description="FLDA_CUSTOM_FIELD_DESC" />
+			<field name="customfield3_value" type="text" default="" hint="RL_FIELD_VALUE" label=""
+				   showon="customfield3_id!:" />
+
+			<field name="@showon_filter_customfields_b" type="rl_showon" />
 			<field name="@block_filters_custom_fields_b" type="rl_block" end="1" />
 
 			<field name="@block_filters_b" type="rl_block" end="1" />
@@ -147,8 +206,7 @@
 			>
 				<option value="title">FLDA_LAYOUT_TITLE</option>
 				<option value="title_custom">FLDA_LAYOUT_TITLE_CUSTOM_FIELD</option>
-				<option value="" disabled="true">FLDA_LAYOUT_CUSTOM_HTML</option>
-				<option value="" disabled="true">RL_ONLY_AVAILABLE_IN_PRO_LIST_OPTION</option>
+				<option value="custom_html">FLDA_LAYOUT_CUSTOM_HTML</option>
 			</field>
 			<field name="custom_field"
 				   type="customfield"
@@ -211,9 +269,6 @@
 				<option value="1">JYES</option>
 			</field>
 
-			<field name="@notice_articles_grouping" type="rl_onlypro"
-				   label="FLDA_ARTICLE_GROUPING"
-				   description="FLDA_ARTICLE_GROUPING_DESC" />
 			<!-- >>> [PRO] >>> -->
 			<field name="articles_grouping"
 				   type="list"

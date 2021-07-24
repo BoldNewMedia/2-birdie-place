@@ -1,10 +1,10 @@
 <?php
 /**
  * @package         Articles Field
- * @version         3.5.3
+ * @version         3.6.0PRO
  * 
  * @author          Peter van Westen <info@regularlabs.com>
- * @link            http://www.regularlabs.com
+ * @link            http://regularlabs.com
  * @copyright       Copyright © 2021 Regular Labs All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
@@ -14,14 +14,15 @@ defined('_JEXEC') or die;
 use Joomla\CMS\HTML\HTMLHelper as JHtml;
 use Joomla\CMS\Language\Text as JText;
 use RegularLabs\Library\ArrayHelper as RL_Array;
-use RegularLabs\Library\Form;
+use RegularLabs\Library\Field as RL_Field;
+use RegularLabs\Library\Form as RL_Form;
 
 if (is_file(JPATH_LIBRARIES . '/regularlabs/autoload.php'))
 {
 	require_once JPATH_LIBRARIES . '/regularlabs/autoload.php';
 }
 
-class JFormFieldCustomField extends \RegularLabs\Library\Field
+class JFormFieldCustomField extends RL_Field
 {
 	public $type = 'CustomField';
 
@@ -36,7 +37,7 @@ class JFormFieldCustomField extends \RegularLabs\Library\Field
 
 		$options = $this->getOptions();
 
-		return Form::selectListSimple(
+		return RL_Form::selectListSimple(
 			$options,
 			$this->name,
 			$this->value,
@@ -47,7 +48,7 @@ class JFormFieldCustomField extends \RegularLabs\Library\Field
 		);
 	}
 
-	function getOptions()
+	protected function getOptions()
 	{
 		$excludes = RL_Array::toArray($this->get('exclude'));
 

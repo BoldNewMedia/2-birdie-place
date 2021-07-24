@@ -1,10 +1,10 @@
 <?php
 /**
  * @package         Articles Field
- * @version         3.5.3
+ * @version         3.6.0PRO
  * 
  * @author          Peter van Westen <info@regularlabs.com>
- * @link            http://www.regularlabs.com
+ * @link            http://regularlabs.com
  * @copyright       Copyright © 2021 Regular Labs All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
@@ -18,8 +18,9 @@ use Joomla\Registry\Registry;
 use RegularLabs\Library\ArrayHelper as RL_Array;
 use RegularLabs\Library\DB as RL_DB;
 use RegularLabs\Library\Document as RL_Document;
-use RegularLabs\Library\Form;
-use RegularLabs\Library\Parameters as RL_Parameters;
+use RegularLabs\Library\Field as RL_Field;
+use RegularLabs\Library\Form as RL_Form;
+use RegularLabs\Library\ParametersNew as RL_Parameters;
 
 if (is_file(JPATH_LIBRARIES . '/regularlabs/autoload.php'))
 {
@@ -29,16 +30,16 @@ if (is_file(JPATH_LIBRARIES . '/regularlabs/autoload.php'))
 require_once JPATH_PLUGINS . '/fields/articles/helper.php';
 require_once JPATH_PLUGINS . '/fields/articles/filters.php';
 
-class JFormFieldArticles extends \RegularLabs\Library\Field
+class JFormFieldArticles extends RL_Field
 {
-	public $type = 'Articles';
 	public $attributes;
+	public $type = 'Articles';
 
 	protected function getInput()
 	{
 		$this->params = $this->element->attributes();
 
-		$plugin_params = RL_Parameters::getInstance()->getPluginParams('articles', 'fields');
+		$plugin_params = RL_Parameters::getPlugin('articles', 'fields');
 
 		if ( ! is_array($this->value))
 		{
@@ -66,7 +67,26 @@ class JFormFieldArticles extends \RegularLabs\Library\Field
 
 		$options = $this->getOptions();
 
-		return Form::selectListSimple(
+		if (
+			$this->attributes->get('multiple')
+			&& $this->get('select_style', $plugin_params->select_style) == 'checkboxes'
+		)
+		{
+			$options = $this->flattenGroups($options);
+
+			return RL_Form::selectList(
+				$options,
+				$this->name,
+				$this->value,
+				$this->id,
+				$this->attributes->get('size'),
+				true,
+				false,
+				! FieldsHelper::canEditFieldValue($this)
+			);
+		}
+
+		return RL_Form::selectListSimple(
 			$options,
 			$this->name,
 			$this->value,
@@ -77,21 +97,7 @@ class JFormFieldArticles extends \RegularLabs\Library\Field
 		);
 	}
 
-	private function getFilters()
-	{
-		$filters = new PlgFieldsArticlesFilters($this, $this->form);
-
-		return $filters->get();
-	}
-
-	private function getCurrentArticleId()
-	{
-		$filters = new PlgFieldsArticlesFilters($this, $this->form);
-
-		return $filters->getCurrentArticleId();
-	}
-
-	public function getOptions()
+	protected function getOptions()
 	{
 		$query = $this->db->getQuery(true)
 			->select('COUNT(*)')
@@ -116,7 +122,7 @@ class JFormFieldArticles extends \RegularLabs\Library\Field
 		$secondary_ordering  = $this->attributes->get('ordering_2', 'created');
 		$secondary_direction = $this->attributes->get('ordering_direction_2', 'DESC');
 
-		$ordering = \PlgFieldsArticlesHelper::getFullOrdering($primary_ordering, $primary_direction, $secondary_ordering, $secondary_direction);
+		$ordering = PlgFieldsArticlesHelper::getFullOrdering($primary_ordering, $primary_direction, $secondary_ordering, $secondary_direction);
 
 		$grouping      = $this->attributes->get('grouping', '');
 		$show_category = $this->attributes->get('show_category', 1) && count($categories) != 1;
@@ -127,6 +133,7 @@ class JFormFieldArticles extends \RegularLabs\Library\Field
 			->join('LEFT', $this->db->quoteName('#__categories', 'c') . ' ON c.id = a.catid');
 
 		if ($show_category
+			|| $grouping == 'category'
 		)
 		{
 			$query->select(['a.catid', 'c.title as cat']);
@@ -142,6 +149,14 @@ class JFormFieldArticles extends \RegularLabs\Library\Field
 			$extras[] = 'id';
 		}
 
+		if ($grouping == 'category')
+		{
+			$ordering = 'c.title ASC, ' . $ordering;
+			if (strpos($ordering, '.ordering'))
+			{
+				$ordering = 'c.lft , ' . $ordering;
+			}
+		}
 
 		$query->where($this->db->quoteName('a.state') . RL_DB::in([0, 1]));
 
@@ -165,6 +180,9 @@ class JFormFieldArticles extends \RegularLabs\Library\Field
 
 		switch ($grouping)
 		{
+			case  'category':
+				$options = $this->getOptionsByListGroupedByCategory($list, $extras);
+				break;
 
 			default:
 				$options = $this->getOptionsByList($list, $extras);
@@ -188,6 +206,19 @@ class JFormFieldArticles extends \RegularLabs\Library\Field
 			return $options;
 		}
 
+		if ($grouping == 'category')
+		{
+			array_unshift($options, [
+				'id'    => '',
+				'text'  => '',
+				'items' => [
+					JHtml::_('select.option', '', '- ' . JText::_('Select Item') . ' -'),
+					JHtml::_('select.option', '-', '&nbsp;', 'value', 'text', true),
+				],
+			]);
+
+			return $options;
+		}
 
 		array_unshift($options, JHtml::_('select.option', '-', '&nbsp;', 'value', 'text', true));
 		array_unshift($options, JHtml::_('select.option', '', '- ' . JText::_('Select Item') . ' -'));
@@ -195,4 +226,78 @@ class JFormFieldArticles extends \RegularLabs\Library\Field
 		return $options;
 	}
 
+	private function flattenGroups($groups, $level = 0)
+	{
+		$groups = RL_Array::toArray($groups);
+
+		$list = [];
+
+		foreach ($groups as $id => $item)
+		{
+			$item = (object) $item;
+
+			$item->level = $level;
+
+			if ( ! isset($item->value))
+			{
+				$item->value       = '';
+				$item->hide_select = true;
+				$item->disable     = true;
+			}
+
+			$list[$id] = $item;
+
+			if (empty($item->items))
+			{
+				continue;
+			}
+
+			$list = array_merge(
+				$list,
+				$this->flattenGroups($item->items, $level + 1)
+			);
+		}
+
+		return $list;
+	}
+
+	private function getCurrentArticleId()
+	{
+		$filters = new PlgFieldsArticlesFilters($this, $this->form);
+
+		return $filters->getCurrentArticleId();
+	}
+
+	private function getFilters()
+	{
+		$filters = new PlgFieldsArticlesFilters($this, $this->form);
+
+		return $filters->get();
+	}
+
+	private function getOptionsByListGroupedByCategory($list, $extras = [])
+	{
+		$groups = [];
+
+		$last_cat = '';
+
+		foreach ($list as $id => $item)
+		{
+			if ($item->catid != $last_cat)
+			{
+				$groups[$item->catid] = [
+					'id'    => $item->catid,
+					'text'  => $item->cat,
+					'level' => 0,
+					'items' => [],
+				];
+
+				$last_cat = $item->catid;
+			}
+
+			$groups[$item->catid]['items'][$id] = $this->getOptionByListItem($item, $extras);
+		}
+
+		return $groups;
+	}
 }

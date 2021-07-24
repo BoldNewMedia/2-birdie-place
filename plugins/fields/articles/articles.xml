@@ -2,27 +2,27 @@
 <extension version="3.9" type="plugin" group="fields" method="upgrade">
 	<name>PLG_FIELDS_ARTICLES</name>
 	<description>PLG_FIELDS_ARTICLES_DESC</description>
-	<version>3.5.3</version>
-	<creationDate>February 2021</creationDate>
+	<version>3.6.0PRO</version>
+	<creationDate>June 2021</creationDate>
 	<author>Regular Labs (Peter van Westen)</author>
 	<authorEmail>info@regularlabs.com</authorEmail>
-	<authorUrl>https://www.regularlabs.com</authorUrl>
-	<copyright>Copyright © 2018 Regular Labs - All Rights Reserved</copyright>
+	<authorUrl>https://regularlabs.com</authorUrl>
+	<copyright>Copyright © 2021 Regular Labs - All Rights Reserved</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 
 	<scriptfile>script.install.php</scriptfile>
 
 	<updateservers>
-		<server type="extension" priority="1" name="Regular Labs - Articles">
-			https://download.regularlabs.com/updates.xml?e=XXX&amp;type=.xml
+		<server type="extension" priority="1" name="Regular Labs - Articles Field [PRO]">
+			https://download.regularlabs.com/updates.xml?e=articlesfield&amp;pro=1&amp;type=.xml
 		</server>
 	</updateservers>
 
 	<files>
-		<filename plugin="articles">articles.php</filename>
-		<filename>helper.php</filename>
-		<filename>filters.php</filename>
-		<filename>script.install.helper.php</filename>
+		<file plugin="articles">articles.php</file>
+		<file>helper.php</file>
+		<file>filters.php</file>
+		<file>script.install.helper.php</file>
 		<folder>fields</folder>
 		<folder>language</folder>
 		<folder>layouts</folder>
@@ -33,14 +33,14 @@
 	<config>
 		<fields name="params" addfieldpath="/libraries/regularlabs/fields">
 			<fieldset name="basic">
-				<field name="@loadlanguage_regularlabs" type="rl_loadlanguage" extension="plg_system_regularlabs" />
-				<field name="@loadlanguage" type="rl_loadlanguage" extension="plg_fields_articles" />
+				<field name="@load_language_regularlabs" type="rl_loadlanguage" extension="plg_system_regularlabs" />
+				<field name="@load_language" type="rl_loadlanguage" extension="plg_fields_articles" />
 				<field name="@license" type="rl_license" extension="ARTICLESFIELD" />
 				<field name="@version" type="rl_version" extension="ARTICLESFIELD" />
 				<field name="@header" type="rl_header"
 					   label="ARTICLESFIELD"
 					   description="ARTICLESFIELD_DESC"
-					   url="https://www.regularlabs.com/articlesfield" />
+					   url="https://regularlabs.com/articlesfield" />
 				<field
 						name="multiple"
 						type="radio"
@@ -52,9 +52,16 @@
 					<option value="1">JYES</option>
 					<option value="0">JNO</option>
 				</field>
-				<field name="@notice_select_style" type="rl_onlypro"
-					   label="RL_FIELD_SELECT_STYLE"
-					   description="RL_FIELD_SELECT_STYLE_DESC" />
+				<field
+						name="select_style"
+						type="list"
+						default="dropdown"
+						label="RL_FIELD_SELECT_STYLE"
+						description="RL_FIELD_SELECT_STYLE_DESC"
+				>
+					<option value="dropdown">RL_FIELD_DROPDOWN</option>
+					<option value="checkboxes">RL_FIELD_CHECKBOXES</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>

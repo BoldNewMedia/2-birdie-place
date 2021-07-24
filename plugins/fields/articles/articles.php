@@ -1,19 +1,19 @@
 <?php
 /**
  * @package         Articles Field
- * @version         3.5.3
+ * @version         3.6.0PRO
  * 
  * @author          Peter van Westen <info@regularlabs.com>
- * @link            http://www.regularlabs.com
+ * @link            http://regularlabs.com
  * @copyright       Copyright © 2021 Regular Labs All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
 use Joomla\CMS\Factory as JFactory;
+use Joomla\CMS\Language\Text as JText;
 use RegularLabs\Library\Document as RL_Document;
 use RegularLabs\Library\Extension as RL_Extension;
 use RegularLabs\Library\Language as RL_Language;
-use Joomla\CMS\Language\Text as JText;
 
 defined('_JEXEC') or die;
 
