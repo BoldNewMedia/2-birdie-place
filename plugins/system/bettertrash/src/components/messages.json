@@ -1,7 +1,0 @@
-{
-	"messages": {
-		"table": "messages",
-		"id": "message_id",
-		"filter": "state"
-	}
-}

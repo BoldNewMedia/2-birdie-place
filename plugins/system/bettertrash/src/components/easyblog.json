@@ -1,9 +1,0 @@
-{
-	"blogs": {
-		"table": "easyblog_post",
-		"state_trashed": 1,
-		"filter": "state",
-		"filter_trashed": "T",
-		"action_delete": 0
-	}
-}
