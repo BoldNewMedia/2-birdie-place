@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.7" type="plugin" group="fields" method="upgrade">
+    <name>Fields - YOOtheme Location</name>
+    <version>2.7.20</version>
+    <description>Fields Location Plugin for YOOtheme Pro.</description>
+    <creationDate>March 2022</creationDate>
+    <copyright>Copyright (C) YOOtheme GmbH</copyright>
+    <license>GNU General Public License</license>
+    <author>YOOtheme</author>
+    <authorEmail>info@yootheme.com</authorEmail>
+    <authorUrl>https://yootheme.com</authorUrl>
+    <scriptfile>script.php</scriptfile>
+    <files>
+        <filename plugin="location">location.php</filename>
+        <folder>app</folder>
+        <folder>fields</folder>
+        <folder>tmpl</folder>
+    </files>
+    <languages folder="language">
+        <language tag="en-GB">en-GB/en-GB.plg_fields_location.ini</language>
+    </languages>
+    <config>
+        <fields name="params" >
+            <fieldset name="basic" addfieldpath="/plugins/fields/location/fields">
+                <field name="location" type="location" label="Location" />
+            </fieldset>
+        </fields>
+    </config>
+    <updateservers>
+        <server type="extension" priority="1" name="YOOtheme">https://yootheme.com/api/update/yootheme_j33.xml</server>
+    </updateservers>
+</extension>
