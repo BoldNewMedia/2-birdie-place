@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Mar 19, 2022 at 01:02 PM
+-- Generation Time: Mar 19, 2022 at 01:21 PM
 -- Server version: 5.7.34
 -- PHP Version: 7.4.21
 
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `q40d7_action_logs` (
   KEY `idx_user_id_logdate` (`user_id`,`log_date`),
   KEY `idx_user_id_extension` (`user_id`,`extension`),
   KEY `idx_extension_item_id` (`extension`,`item_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Truncate table before insert `q40d7_action_logs`
@@ -91,7 +91,12 @@ INSERT INTO `q40d7_action_logs` (`id`, `message_language_key`, `message`, `log_d
 (35, 'PLG_ACTIONLOG_JOOMLA_EXTENSION_INSTALLED', '{\"action\":\"install\",\"type\":\"PLG_ACTIONLOG_JOOMLA_TYPE_MODULE\",\"id\":10013,\"name\":\"MOD_YOOTHEME_BUILDER\",\"extension_name\":\"MOD_YOOTHEME_BUILDER\",\"userid\":\"718\",\"username\":\"@dmin\",\"accountlink\":\"index.php?option=com_users&task=user.edit&id=718\"}', '2022-03-19 02:00:55', 'com_installer', 718, 10013, 'COM_ACTIONLOGS_DISABLED'),
 (36, 'PLG_ACTIONLOG_JOOMLA_EXTENSION_INSTALLED', '{\"action\":\"install\",\"type\":\"PLG_ACTIONLOG_JOOMLA_TYPE_PACKAGE\",\"id\":10014,\"name\":\"YOOtheme\",\"extension_name\":\"YOOtheme\",\"userid\":\"718\",\"username\":\"@dmin\",\"accountlink\":\"index.php?option=com_users&task=user.edit&id=718\"}', '2022-03-19 02:00:55', 'com_installer', 718, 10014, 'COM_ACTIONLOGS_DISABLED'),
 (37, 'PLG_SYSTEM_ACTIONLOGS_CONTENT_UPDATED', '{\"action\":\"update\",\"type\":\"PLG_ACTIONLOG_JOOMLA_TYPE_PLUGIN\",\"id\":10011,\"title\":\"Installer - YOOtheme\",\"extension_name\":\"Installer - YOOtheme\",\"itemlink\":\"index.php?option=com_plugins&task=plugin.edit&extension_id=10011\",\"userid\":\"718\",\"username\":\"@dmin\",\"accountlink\":\"index.php?option=com_users&task=user.edit&id=718\"}', '2022-03-19 02:01:08', 'com_plugins.plugin', 718, 10011, 'COM_ACTIONLOGS_DISABLED'),
-(38, 'PLG_ACTIONLOG_JOOMLA_USER_CHECKIN', '{\"action\":\"checkin\",\"type\":\"PLG_ACTIONLOG_JOOMLA_TYPE_USER\",\"id\":\"718\",\"title\":\"@dmin\",\"itemlink\":\"index.php?option=com_users&task=user.edit&id=718\",\"userid\":\"718\",\"username\":\"@dmin\",\"accountlink\":\"index.php?option=com_users&task=user.edit&id=718\",\"table\":\"#__extensions\"}', '2022-03-19 02:01:08', 'com_checkin', 718, 718, 'COM_ACTIONLOGS_DISABLED');
+(38, 'PLG_ACTIONLOG_JOOMLA_USER_CHECKIN', '{\"action\":\"checkin\",\"type\":\"PLG_ACTIONLOG_JOOMLA_TYPE_USER\",\"id\":\"718\",\"title\":\"@dmin\",\"itemlink\":\"index.php?option=com_users&task=user.edit&id=718\",\"userid\":\"718\",\"username\":\"@dmin\",\"accountlink\":\"index.php?option=com_users&task=user.edit&id=718\",\"table\":\"#__extensions\"}', '2022-03-19 02:01:08', 'com_checkin', 718, 718, 'COM_ACTIONLOGS_DISABLED'),
+(39, 'PLG_SYSTEM_ACTIONLOGS_CONTENT_ADDED', '{\"action\":\"add\",\"type\":\"PLG_ACTIONLOG_JOOMLA_TYPE_ARTICLE\",\"id\":1,\"title\":\"Home\",\"itemlink\":\"index.php?option=com_content&task=article.edit&id=1\",\"userid\":\"718\",\"username\":\"@dmin\",\"accountlink\":\"index.php?option=com_users&task=user.edit&id=718\"}', '2022-03-19 02:05:29', 'com_content.article', 718, 1, 'COM_ACTIONLOGS_DISABLED'),
+(40, 'PLG_SYSTEM_ACTIONLOGS_CONTENT_UPDATED', '{\"action\":\"update\",\"type\":\"PLG_ACTIONLOG_JOOMLA_TYPE_ARTICLE\",\"id\":1,\"title\":\"Home\",\"itemlink\":\"index.php?option=com_content&task=article.edit&id=1\",\"userid\":\"718\",\"username\":\"@dmin\",\"accountlink\":\"index.php?option=com_users&task=user.edit&id=718\"}', '2022-03-19 02:05:42', 'com_content.article', 718, 1, 'COM_ACTIONLOGS_DISABLED'),
+(41, 'PLG_ACTIONLOG_JOOMLA_USER_CHECKIN', '{\"action\":\"checkin\",\"type\":\"PLG_ACTIONLOG_JOOMLA_TYPE_USER\",\"id\":\"718\",\"title\":\"@dmin\",\"itemlink\":\"index.php?option=com_users&task=user.edit&id=718\",\"userid\":\"718\",\"username\":\"@dmin\",\"accountlink\":\"index.php?option=com_users&task=user.edit&id=718\",\"table\":\"#__content\"}', '2022-03-19 02:05:42', 'com_checkin', 718, 718, 'COM_ACTIONLOGS_DISABLED'),
+(42, 'PLG_SYSTEM_ACTIONLOGS_CONTENT_UPDATED', '{\"action\":\"update\",\"type\":\"PLG_ACTIONLOG_JOOMLA_TYPE_MENU_ITEM\",\"id\":101,\"title\":\"Home\",\"itemlink\":\"index.php?option=com_menus&task=item.edit&id=101\",\"userid\":\"718\",\"username\":\"@dmin\",\"accountlink\":\"index.php?option=com_users&task=user.edit&id=718\"}', '2022-03-19 02:05:59', 'com_menus.item', 718, 101, 'COM_ACTIONLOGS_DISABLED'),
+(43, 'PLG_ACTIONLOG_JOOMLA_USER_CHECKIN', '{\"action\":\"checkin\",\"type\":\"PLG_ACTIONLOG_JOOMLA_TYPE_USER\",\"id\":\"718\",\"title\":\"@dmin\",\"itemlink\":\"index.php?option=com_users&task=user.edit&id=718\",\"userid\":\"718\",\"username\":\"@dmin\",\"accountlink\":\"index.php?option=com_users&task=user.edit&id=718\",\"table\":\"#__menu\"}', '2022-03-19 02:05:59', 'com_checkin', 718, 718, 'COM_ACTIONLOGS_DISABLED');
 
 -- --------------------------------------------------------
 
@@ -223,7 +228,7 @@ CREATE TABLE IF NOT EXISTS `q40d7_assets` (
   UNIQUE KEY `idx_asset_name` (`name`),
   KEY `idx_lft_rgt` (`lft`,`rgt`),
   KEY `idx_parent_id` (`parent_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Truncate table before insert `q40d7_assets`
@@ -235,65 +240,66 @@ TRUNCATE TABLE `q40d7_assets`;
 --
 
 INSERT INTO `q40d7_assets` (`id`, `parent_id`, `lft`, `rgt`, `level`, `name`, `title`, `rules`) VALUES
-(1, 0, 0, 117, 0, 'root.1', 'Root Asset', '{\"core.login.site\":{\"6\":1,\"2\":1},\"core.login.admin\":{\"6\":1},\"core.login.offline\":{\"6\":1},\"core.admin\":{\"8\":1},\"core.manage\":{\"7\":1},\"core.create\":{\"6\":1,\"3\":1},\"core.delete\":{\"6\":1},\"core.edit\":{\"6\":1,\"4\":1},\"core.edit.state\":{\"6\":1,\"5\":1},\"core.edit.own\":{\"6\":1,\"3\":1}}'),
+(1, 0, 0, 119, 0, 'root.1', 'Root Asset', '{\"core.login.site\":{\"6\":1,\"2\":1},\"core.login.admin\":{\"6\":1},\"core.login.offline\":{\"6\":1},\"core.admin\":{\"8\":1},\"core.manage\":{\"7\":1},\"core.create\":{\"6\":1,\"3\":1},\"core.delete\":{\"6\":1},\"core.edit\":{\"6\":1,\"4\":1},\"core.edit.state\":{\"6\":1,\"5\":1},\"core.edit.own\":{\"6\":1,\"3\":1}}'),
 (2, 1, 1, 2, 1, 'com_admin', 'com_admin', '{}'),
 (3, 1, 3, 6, 1, 'com_banners', 'com_banners', '{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1}}'),
 (4, 1, 7, 8, 1, 'com_cache', 'com_cache', '{\"core.admin\":{\"7\":1},\"core.manage\":{\"7\":1}}'),
 (5, 1, 9, 10, 1, 'com_checkin', 'com_checkin', '{\"core.admin\":{\"7\":1},\"core.manage\":{\"7\":1}}'),
 (6, 1, 11, 12, 1, 'com_config', 'com_config', '{}'),
 (7, 1, 13, 16, 1, 'com_contact', 'com_contact', '{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1}}'),
-(8, 1, 17, 20, 1, 'com_content', 'com_content', '{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1},\"core.create\":{\"3\":1},\"core.edit\":{\"4\":1},\"core.edit.state\":{\"5\":1}}'),
-(9, 1, 21, 22, 1, 'com_cpanel', 'com_cpanel', '{}'),
-(10, 1, 23, 24, 1, 'com_installer', 'com_installer', '{\"core.manage\":{\"7\":0},\"core.delete\":{\"7\":0},\"core.edit.state\":{\"7\":0}}'),
-(11, 1, 25, 26, 1, 'com_languages', 'com_languages', '{\"core.admin\":{\"7\":1}}'),
-(12, 1, 27, 28, 1, 'com_login', 'com_login', '{}'),
-(13, 1, 29, 30, 1, 'com_mailto', 'com_mailto', '{}'),
-(14, 1, 31, 32, 1, 'com_massmail', 'com_massmail', '{}'),
-(15, 1, 33, 34, 1, 'com_media', 'com_media', '{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1},\"core.create\":{\"3\":1},\"core.delete\":{\"5\":1}}'),
-(16, 1, 35, 38, 1, 'com_menus', 'com_menus', '{\"core.admin\":{\"7\":1}}'),
-(17, 1, 39, 40, 1, 'com_messages', 'com_messages', '{\"core.admin\":{\"7\":1},\"core.manage\":{\"7\":1}}'),
-(18, 1, 41, 80, 1, 'com_modules', 'com_modules', '{\"core.admin\":{\"7\":1}}'),
-(19, 1, 81, 84, 1, 'com_newsfeeds', 'com_newsfeeds', '{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1}}'),
-(20, 1, 85, 86, 1, 'com_plugins', 'com_plugins', '{\"core.admin\":{\"7\":1}}'),
-(21, 1, 87, 88, 1, 'com_redirect', 'com_redirect', '{\"core.admin\":{\"7\":1}}'),
-(22, 1, 89, 90, 1, 'com_search', 'com_search', '{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1}}'),
-(23, 1, 91, 92, 1, 'com_templates', 'com_templates', '{\"core.admin\":{\"7\":1}}'),
-(24, 1, 93, 96, 1, 'com_users', 'com_users', '{\"core.admin\":{\"7\":1}}'),
-(26, 1, 97, 98, 1, 'com_wrapper', 'com_wrapper', '{}'),
-(27, 8, 18, 19, 2, 'com_content.category.2', 'Uncategorised', '{}'),
+(8, 1, 17, 22, 1, 'com_content', 'com_content', '{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1},\"core.create\":{\"3\":1},\"core.edit\":{\"4\":1},\"core.edit.state\":{\"5\":1}}'),
+(9, 1, 23, 24, 1, 'com_cpanel', 'com_cpanel', '{}'),
+(10, 1, 25, 26, 1, 'com_installer', 'com_installer', '{\"core.manage\":{\"7\":0},\"core.delete\":{\"7\":0},\"core.edit.state\":{\"7\":0}}'),
+(11, 1, 27, 28, 1, 'com_languages', 'com_languages', '{\"core.admin\":{\"7\":1}}'),
+(12, 1, 29, 30, 1, 'com_login', 'com_login', '{}'),
+(13, 1, 31, 32, 1, 'com_mailto', 'com_mailto', '{}'),
+(14, 1, 33, 34, 1, 'com_massmail', 'com_massmail', '{}'),
+(15, 1, 35, 36, 1, 'com_media', 'com_media', '{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1},\"core.create\":{\"3\":1},\"core.delete\":{\"5\":1}}'),
+(16, 1, 37, 40, 1, 'com_menus', 'com_menus', '{\"core.admin\":{\"7\":1}}'),
+(17, 1, 41, 42, 1, 'com_messages', 'com_messages', '{\"core.admin\":{\"7\":1},\"core.manage\":{\"7\":1}}'),
+(18, 1, 43, 82, 1, 'com_modules', 'com_modules', '{\"core.admin\":{\"7\":1}}'),
+(19, 1, 83, 86, 1, 'com_newsfeeds', 'com_newsfeeds', '{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1}}'),
+(20, 1, 87, 88, 1, 'com_plugins', 'com_plugins', '{\"core.admin\":{\"7\":1}}'),
+(21, 1, 89, 90, 1, 'com_redirect', 'com_redirect', '{\"core.admin\":{\"7\":1}}'),
+(22, 1, 91, 92, 1, 'com_search', 'com_search', '{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1}}'),
+(23, 1, 93, 94, 1, 'com_templates', 'com_templates', '{\"core.admin\":{\"7\":1}}'),
+(24, 1, 95, 98, 1, 'com_users', 'com_users', '{\"core.admin\":{\"7\":1}}'),
+(26, 1, 99, 100, 1, 'com_wrapper', 'com_wrapper', '{}'),
+(27, 8, 18, 21, 2, 'com_content.category.2', 'Uncategorised', '{}'),
 (28, 3, 4, 5, 2, 'com_banners.category.3', 'Uncategorised', '{}'),
 (29, 7, 14, 15, 2, 'com_contact.category.4', 'Uncategorised', '{}'),
-(30, 19, 82, 83, 2, 'com_newsfeeds.category.5', 'Uncategorised', '{}'),
-(32, 24, 94, 95, 2, 'com_users.category.7', 'Uncategorised', '{}'),
-(33, 1, 99, 100, 1, 'com_finder', 'com_finder', '{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1}}'),
-(34, 1, 101, 102, 1, 'com_joomlaupdate', 'com_joomlaupdate', '{}'),
-(35, 1, 103, 104, 1, 'com_tags', 'com_tags', '{}'),
-(36, 1, 105, 106, 1, 'com_contenthistory', 'com_contenthistory', '{}'),
-(37, 1, 107, 108, 1, 'com_ajax', 'com_ajax', '{}'),
-(38, 1, 109, 110, 1, 'com_postinstall', 'com_postinstall', '{}'),
-(39, 18, 42, 43, 2, 'com_modules.module.1', 'Main Menu', '{}'),
-(40, 18, 44, 45, 2, 'com_modules.module.2', 'Login', '{}'),
-(41, 18, 46, 47, 2, 'com_modules.module.3', 'Popular Articles', '{}'),
-(42, 18, 48, 49, 2, 'com_modules.module.4', 'Recently Added Articles', '{}'),
-(43, 18, 50, 51, 2, 'com_modules.module.8', 'Toolbar', '{}'),
-(44, 18, 52, 53, 2, 'com_modules.module.9', 'Quick Icons', '{}'),
-(45, 18, 54, 55, 2, 'com_modules.module.10', 'Logged-in Users', '{}'),
-(46, 18, 56, 57, 2, 'com_modules.module.12', 'Admin Menu', '{}'),
-(47, 18, 58, 59, 2, 'com_modules.module.13', 'Admin Submenu', '{}'),
-(48, 18, 60, 61, 2, 'com_modules.module.14', 'User Status', '{}'),
-(49, 18, 62, 63, 2, 'com_modules.module.15', 'Title', '{}'),
-(50, 18, 64, 65, 2, 'com_modules.module.16', 'Login Form', '{}'),
-(51, 18, 66, 67, 2, 'com_modules.module.17', 'Breadcrumbs', '{}'),
-(52, 18, 68, 69, 2, 'com_modules.module.79', 'Multilanguage status', '{}'),
-(53, 18, 70, 71, 2, 'com_modules.module.86', 'Joomla Version', '{}'),
-(54, 16, 36, 37, 2, 'com_menus.menu.1', 'Main Menu', '{}'),
-(55, 18, 72, 73, 2, 'com_modules.module.87', 'Sample Data', '{}'),
-(56, 1, 111, 112, 1, 'com_privacy', 'com_privacy', '{}'),
-(57, 1, 113, 114, 1, 'com_actionlogs', 'com_actionlogs', '{}'),
-(58, 18, 74, 75, 2, 'com_modules.module.88', 'Latest Actions', '{}'),
-(59, 18, 76, 77, 2, 'com_modules.module.89', 'Privacy Dashboard', '{}'),
-(60, 1, 115, 116, 1, 'com_jce', 'COM_JCE', '{}'),
-(61, 18, 78, 79, 2, 'com_modules.module.90', 'Builder', '{}');
+(30, 19, 84, 85, 2, 'com_newsfeeds.category.5', 'Uncategorised', '{}'),
+(32, 24, 96, 97, 2, 'com_users.category.7', 'Uncategorised', '{}'),
+(33, 1, 101, 102, 1, 'com_finder', 'com_finder', '{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1}}'),
+(34, 1, 103, 104, 1, 'com_joomlaupdate', 'com_joomlaupdate', '{}'),
+(35, 1, 105, 106, 1, 'com_tags', 'com_tags', '{}'),
+(36, 1, 107, 108, 1, 'com_contenthistory', 'com_contenthistory', '{}'),
+(37, 1, 109, 110, 1, 'com_ajax', 'com_ajax', '{}'),
+(38, 1, 111, 112, 1, 'com_postinstall', 'com_postinstall', '{}'),
+(39, 18, 44, 45, 2, 'com_modules.module.1', 'Main Menu', '{}'),
+(40, 18, 46, 47, 2, 'com_modules.module.2', 'Login', '{}'),
+(41, 18, 48, 49, 2, 'com_modules.module.3', 'Popular Articles', '{}'),
+(42, 18, 50, 51, 2, 'com_modules.module.4', 'Recently Added Articles', '{}'),
+(43, 18, 52, 53, 2, 'com_modules.module.8', 'Toolbar', '{}'),
+(44, 18, 54, 55, 2, 'com_modules.module.9', 'Quick Icons', '{}'),
+(45, 18, 56, 57, 2, 'com_modules.module.10', 'Logged-in Users', '{}'),
+(46, 18, 58, 59, 2, 'com_modules.module.12', 'Admin Menu', '{}'),
+(47, 18, 60, 61, 2, 'com_modules.module.13', 'Admin Submenu', '{}'),
+(48, 18, 62, 63, 2, 'com_modules.module.14', 'User Status', '{}'),
+(49, 18, 64, 65, 2, 'com_modules.module.15', 'Title', '{}'),
+(50, 18, 66, 67, 2, 'com_modules.module.16', 'Login Form', '{}'),
+(51, 18, 68, 69, 2, 'com_modules.module.17', 'Breadcrumbs', '{}'),
+(52, 18, 70, 71, 2, 'com_modules.module.79', 'Multilanguage status', '{}'),
+(53, 18, 72, 73, 2, 'com_modules.module.86', 'Joomla Version', '{}'),
+(54, 16, 38, 39, 2, 'com_menus.menu.1', 'Main Menu', '{}'),
+(55, 18, 74, 75, 2, 'com_modules.module.87', 'Sample Data', '{}'),
+(56, 1, 113, 114, 1, 'com_privacy', 'com_privacy', '{}'),
+(57, 1, 115, 116, 1, 'com_actionlogs', 'com_actionlogs', '{}'),
+(58, 18, 76, 77, 2, 'com_modules.module.88', 'Latest Actions', '{}'),
+(59, 18, 78, 79, 2, 'com_modules.module.89', 'Privacy Dashboard', '{}'),
+(60, 1, 117, 118, 1, 'com_jce', 'COM_JCE', '{}'),
+(61, 18, 80, 81, 2, 'com_modules.module.90', 'Builder', '{}'),
+(62, 27, 19, 20, 3, 'com_content.article.1', 'Home', '{}');
 
 -- --------------------------------------------------------
 
@@ -603,13 +609,20 @@ CREATE TABLE IF NOT EXISTS `q40d7_content` (
   KEY `idx_language` (`language`),
   KEY `idx_xreference` (`xreference`),
   KEY `idx_alias` (`alias`(191))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Truncate table before insert `q40d7_content`
 --
 
 TRUNCATE TABLE `q40d7_content`;
+--
+-- Dumping data for table `q40d7_content`
+--
+
+INSERT INTO `q40d7_content` (`id`, `asset_id`, `title`, `alias`, `introtext`, `fulltext`, `state`, `catid`, `created`, `created_by`, `created_by_alias`, `modified`, `modified_by`, `checked_out`, `checked_out_time`, `publish_up`, `publish_down`, `images`, `urls`, `attribs`, `version`, `ordering`, `metakey`, `metadesc`, `access`, `hits`, `metadata`, `featured`, `language`, `xreference`, `note`) VALUES
+(1, 62, 'Home', 'home', '', '<!-- {\"type\":\"layout\",\"children\":[{\"type\":\"section\",\"props\":{\"style\":\"default\",\"width\":\"default\",\"vertical_align\":\"middle\",\"title_position\":\"top-left\",\"title_rotation\":\"left\",\"title_breakpoint\":\"xl\",\"image_position\":\"center-center\"},\"children\":[{\"type\":\"row\",\"children\":[{\"type\":\"column\",\"props\":{\"position_sticky_breakpoint\":\"m\",\"image_position\":\"center-center\",\"media_overlay_gradient\":\"\"},\"children\":[]}]}]}],\"version\":\"2.7.20\"} -->', 1, 2, '2022-03-19 02:05:29', 718, '', '2022-03-19 02:05:42', 718, 0, '0000-00-00 00:00:00', '2022-03-19 02:05:29', '0000-00-00 00:00:00', '{\"image_intro\":\"\",\"float_intro\":\"\",\"image_intro_alt\":\"\",\"image_intro_caption\":\"\",\"image_fulltext\":\"\",\"float_fulltext\":\"\",\"image_fulltext_alt\":\"\",\"image_fulltext_caption\":\"\"}', '{\"urla\":false,\"urlatext\":\"\",\"targeta\":\"\",\"urlb\":false,\"urlbtext\":\"\",\"targetb\":\"\",\"urlc\":false,\"urlctext\":\"\",\"targetc\":\"\"}', '{\"article_layout\":\"\",\"show_title\":\"\",\"link_titles\":\"\",\"show_tags\":\"\",\"show_intro\":\"\",\"info_block_position\":\"\",\"info_block_show_title\":\"\",\"show_category\":\"\",\"link_category\":\"\",\"show_parent_category\":\"\",\"link_parent_category\":\"\",\"show_associations\":\"\",\"show_author\":\"\",\"link_author\":\"\",\"show_create_date\":\"\",\"show_modify_date\":\"\",\"show_publish_date\":\"\",\"show_item_navigation\":\"\",\"show_icons\":\"\",\"show_print_icon\":\"\",\"show_email_icon\":\"\",\"show_vote\":\"\",\"show_hits\":\"\",\"show_noauth\":\"\",\"urls_position\":\"\",\"alternative_readmore\":\"\",\"article_page_title\":\"\",\"show_publishing_options\":\"\",\"show_article_options\":\"\",\"show_urls_images_backend\":\"\",\"show_urls_images_frontend\":\"\"}', 3, 0, '', '', 1, 4, '{\"robots\":\"\",\"author\":\"\",\"rights\":\"\",\"xreference\":\"\"}', 0, '*', '', '');
+
 -- --------------------------------------------------------
 
 --
@@ -972,7 +985,7 @@ INSERT INTO `q40d7_extensions` (`extension_id`, `package_id`, `name`, `type`, `e
 (10007, 10008, 'plg_system_jce', 'plugin', 'jce', 'system', 0, 1, 1, 0, '{\"name\":\"plg_system_jce\",\"type\":\"plugin\",\"creationDate\":\"10-02-2022\",\"author\":\"Ryan Demmer\",\"copyright\":\"Copyright (C) 2006 - 2022 Ryan Demmer. All rights reserved\",\"authorEmail\":\"info@joomlacontenteditor.net\",\"authorUrl\":\"http:\\/\\/www.joomlacontenteditor.net\",\"version\":\"2.9.20\",\"description\":\"PLG_SYSTEM_JCE_XML_DESCRIPTION\",\"group\":\"\",\"filename\":\"jce\"}', '{\"column_styles\":\"1\"}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
 (10008, 0, 'PKG_JCE', 'package', 'pkg_jce', '', 0, 1, 1, 0, '{\"name\":\"PKG_JCE\",\"type\":\"package\",\"creationDate\":\"10-02-2022\",\"author\":\"Ryan Demmer\",\"copyright\":\"\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"2.9.20\",\"description\":\"PKG_JCE_XML_DESCRIPTION\",\"group\":\"\",\"filename\":\"pkg_jce\"}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
 (10009, 10014, 'yootheme', 'template', 'yootheme', '', 0, 1, 1, 0, '{\"name\":\"yootheme\",\"type\":\"template\",\"creationDate\":\"March 2022\",\"author\":\"YOOtheme\",\"copyright\":\"Copyright (C) YOOtheme GmbH\",\"authorEmail\":\"info@yootheme.com\",\"authorUrl\":\"https:\\/\\/yootheme.com\",\"version\":\"2.7.20\",\"description\":\"\\n        \\n            <div id=\\\"tmpl-description\\\">A powerful, flexible and elegant website builder that allows you to create complex pages within minutes and customize every aspect of the theme.<\\/div>\\n            <script src=\\\"..\\/templates\\/yootheme\\/templateDetails.min.js\\\" defer><\\/script>\\n        \\n    \",\"group\":\"\",\"filename\":\"templateDetails\"}', '{\"yootheme\":\"true\",\"uikit3\":\"true\",\"widgetkit\":\"noconflict\"}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
-(10010, 10014, 'System - YOOtheme Framework', 'plugin', 'yootheme', 'system', 0, 1, 1, 0, '{\"name\":\"System - YOOtheme Framework\",\"type\":\"plugin\",\"creationDate\":\"March 2022\",\"author\":\"YOOtheme\",\"copyright\":\"Copyright (C) YOOtheme GmbH\",\"authorEmail\":\"info@yootheme.com\",\"authorUrl\":\"https:\\/\\/yootheme.com\",\"version\":\"2.7.20\",\"description\":\"System Plugin for YOOtheme Pro.\",\"group\":\"\",\"filename\":\"yootheme\"}', '{}', '[]', '', 0, '0000-00-00 00:00:00', 0, 0),
+(10010, 10014, 'System - YOOtheme Framework', 'plugin', 'yootheme', 'system', 0, 1, 1, 0, '{\"name\":\"System - YOOtheme Framework\",\"type\":\"plugin\",\"creationDate\":\"March 2022\",\"author\":\"YOOtheme\",\"copyright\":\"Copyright (C) YOOtheme GmbH\",\"authorEmail\":\"info@yootheme.com\",\"authorUrl\":\"https:\\/\\/yootheme.com\",\"version\":\"2.7.20\",\"description\":\"System Plugin for YOOtheme Pro.\",\"group\":\"\",\"filename\":\"yootheme\"}', '{}', '{\"news\":\"fec3296c\"}', '', 0, '0000-00-00 00:00:00', 0, 0),
 (10011, 10014, 'Installer - YOOtheme', 'plugin', 'yootheme', 'installer', 0, 1, 1, 0, '{\"name\":\"Installer - YOOtheme\",\"type\":\"plugin\",\"creationDate\":\"Oktober 2021\",\"author\":\"YOOtheme\",\"copyright\":\"Copyright (C) YOOtheme GmbH\",\"authorEmail\":\"info@yootheme.com\",\"authorUrl\":\"http:\\/\\/yootheme.com\",\"version\":\"1.0.5\",\"description\":\"PLG_INSTALLER_YOOTHEME_DESCRIPTION\",\"group\":\"\",\"filename\":\"yootheme\"}', '{\"apikey\":\"z7uQJ9vFC61xzOyVR2XcgI6RWpcogh7oa90gdJaU\"}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
 (10012, 10014, 'Fields - YOOtheme Location', 'plugin', 'location', 'fields', 0, 1, 1, 0, '{\"name\":\"Fields - YOOtheme Location\",\"type\":\"plugin\",\"creationDate\":\"March 2022\",\"author\":\"YOOtheme\",\"copyright\":\"Copyright (C) YOOtheme GmbH\",\"authorEmail\":\"info@yootheme.com\",\"authorUrl\":\"https:\\/\\/yootheme.com\",\"version\":\"2.7.20\",\"description\":\"Fields Location Plugin for YOOtheme Pro.\",\"group\":\"\",\"filename\":\"location\"}', '[]', '', '', 0, '0000-00-00 00:00:00', 0, 0),
 (10013, 10014, 'MOD_YOOTHEME_BUILDER', 'module', 'mod_yootheme_builder', '', 0, 1, 0, 0, '{\"name\":\"MOD_YOOTHEME_BUILDER\",\"type\":\"module\",\"creationDate\":\"March 2022\",\"author\":\"YOOtheme\",\"copyright\":\"Copyright (C) YOOtheme GmbH\",\"authorEmail\":\"info@yootheme.com\",\"authorUrl\":\"https:\\/\\/yootheme.com\",\"version\":\"2.7.20\",\"description\":\"MOD_YOOTHEME_BUILDER_XML_DESCRIPTION\",\"group\":\"\",\"filename\":\"mod_yootheme_builder\"}', '[]', '', '', 0, '0000-00-00 00:00:00', 0, 0),
@@ -1912,7 +1925,7 @@ INSERT INTO `q40d7_menu` (`id`, `menutype`, `title`, `alias`, `note`, `path`, `l
 (20, 'main', 'com_tags', 'Tags', '', 'Tags', 'index.php?option=com_tags', 'component', 1, 1, 1, 29, 0, '0000-00-00 00:00:00', 0, 1, 'class:tags', 0, '', 35, 36, 0, '', 1),
 (21, 'main', 'com_postinstall', 'Post-installation messages', '', 'Post-installation messages', 'index.php?option=com_postinstall', 'component', 1, 1, 1, 32, 0, '0000-00-00 00:00:00', 0, 1, 'class:postinstall', 0, '', 37, 38, 0, '*', 1),
 (22, 'main', 'com_associations', 'Multilingual Associations', '', 'Multilingual Associations', 'index.php?option=com_associations', 'component', 1, 1, 1, 34, 0, '0000-00-00 00:00:00', 0, 0, 'class:associations', 0, '', 39, 40, 0, '*', 1),
-(101, 'mainmenu', 'Home', 'home', '', 'home', 'index.php?option=com_content&view=featured', 'component', 1, 1, 1, 22, 0, '0000-00-00 00:00:00', 0, 1, '', 0, '{\"featured_categories\":[\"\"],\"layout_type\":\"blog\",\"num_leading_articles\":\"1\",\"num_intro_articles\":\"3\",\"num_columns\":\"3\",\"num_links\":\"0\",\"multi_column_order\":\"1\",\"orderby_pri\":\"\",\"orderby_sec\":\"front\",\"order_date\":\"\",\"show_pagination\":\"2\",\"show_pagination_results\":\"1\",\"show_title\":\"\",\"link_titles\":\"\",\"show_intro\":\"\",\"info_block_position\":\"\",\"show_category\":\"\",\"link_category\":\"\",\"show_parent_category\":\"\",\"link_parent_category\":\"\",\"show_author\":\"\",\"link_author\":\"\",\"show_create_date\":\"\",\"show_modify_date\":\"\",\"show_publish_date\":\"\",\"show_item_navigation\":\"\",\"show_vote\":\"\",\"show_readmore\":\"\",\"show_readmore_title\":\"\",\"show_icons\":\"\",\"show_print_icon\":\"\",\"show_email_icon\":\"\",\"show_hits\":\"\",\"show_noauth\":\"\",\"show_feed_link\":\"1\",\"feed_summary\":\"\",\"menu-anchor_title\":\"\",\"menu-anchor_css\":\"\",\"menu_image\":\"\",\"menu_text\":1,\"page_title\":\"\",\"show_page_heading\":1,\"page_heading\":\"\",\"pageclass_sfx\":\"\",\"menu-meta_description\":\"\",\"menu-meta_keywords\":\"\",\"robots\":\"\",\"secure\":0}', 41, 42, 1, '*', 0),
+(101, 'mainmenu', 'Home', 'home', '', 'home', 'index.php?option=com_content&view=article&id=1', 'component', 1, 1, 1, 22, 0, '0000-00-00 00:00:00', 0, 1, ' ', 0, '{\"show_title\":\"\",\"link_titles\":\"\",\"show_intro\":\"\",\"info_block_position\":\"\",\"info_block_show_title\":\"\",\"show_category\":\"\",\"link_category\":\"\",\"show_parent_category\":\"\",\"link_parent_category\":\"\",\"show_associations\":\"\",\"show_author\":\"\",\"link_author\":\"\",\"show_create_date\":\"\",\"show_modify_date\":\"\",\"show_publish_date\":\"\",\"show_item_navigation\":\"\",\"show_vote\":\"\",\"show_icons\":\"\",\"show_print_icon\":\"\",\"show_email_icon\":\"\",\"show_hits\":\"\",\"show_tags\":\"\",\"show_noauth\":\"\",\"urls_position\":\"\",\"menu-anchor_title\":\"\",\"menu-anchor_css\":\"\",\"menu_image\":\"\",\"menu_image_css\":\"\",\"menu_text\":1,\"menu_show\":1,\"page_title\":\"\",\"show_page_heading\":\"1\",\"page_heading\":\"\",\"pageclass_sfx\":\"\",\"menu-meta_description\":\"\",\"menu-meta_keywords\":\"\",\"robots\":\"\",\"secure\":0}', 41, 42, 1, '*', 0),
 (102, 'main', 'COM_JCE', 'com-jce', '', 'com-jce', 'index.php?option=com_jce&view=cpanel', 'component', 1, 1, 1, 10000, 0, '0000-00-00 00:00:00', 0, 1, 'media/com_jce/img/logo.svg', 0, '{}', 43, 52, 0, '', 1),
 (103, 'main', 'COM_JCE_MENU_CPANEL', 'com-jce-menu-cpanel', '', 'com-jce/com-jce-menu-cpanel', 'index.php?option=com_jce', 'component', 1, 102, 2, 10000, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '{}', 44, 45, 0, '', 1),
 (104, 'main', 'COM_JCE_MENU_CONFIG', 'com-jce-menu-config', '', 'com-jce/com-jce-menu-config', 'index.php?option=com_jce&view=config', 'component', 1, 102, 2, 10000, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '{}', 46, 47, 0, '', 1),
@@ -2351,8 +2364,8 @@ TRUNCATE TABLE `q40d7_session`;
 --
 
 INSERT INTO `q40d7_session` (`session_id`, `client_id`, `guest`, `time`, `data`, `userid`, `username`) VALUES
-(0x386a3338616235626a6d76706a68326a36726e75623962677572, 1, 0, 1647655306, 'joomla|s:2744:\"TzoyNDoiSm9vbWxhXFJlZ2lzdHJ5XFJlZ2lzdHJ5IjozOntzOjc6IgAqAGRhdGEiO086ODoic3RkQ2xhc3MiOjE6e3M6OToiX19kZWZhdWx0IjtPOjg6InN0ZENsYXNzIjo0OntzOjc6InNlc3Npb24iO086ODoic3RkQ2xhc3MiOjM6e3M6NzoiY291bnRlciI7aTo3MTtzOjU6InRpbWVyIjtPOjg6InN0ZENsYXNzIjozOntzOjU6InN0YXJ0IjtpOjE2NDc2NTQ3NDk7czo0OiJsYXN0IjtpOjE2NDc2NTUzMDM7czozOiJub3ciO2k6MTY0NzY1NTMwNjt9czo1OiJ0b2tlbiI7czozMjoicHVzU1hBUTc5UVVEVWdaSlNDbGYzaVd1dWxUWEd5V00iO31zOjg6InJlZ2lzdHJ5IjtPOjI0OiJKb29tbGFcUmVnaXN0cnlcUmVnaXN0cnkiOjM6e3M6NzoiACoAZGF0YSI7Tzo4OiJzdGRDbGFzcyI6Njp7czoxMzoiY29tX2luc3RhbGxlciI7Tzo4OiJzdGRDbGFzcyI6NDp7czo3OiJtZXNzYWdlIjtzOjA6IiI7czoxNzoiZXh0ZW5zaW9uX21lc3NhZ2UiO3M6MDoiIjtzOjEyOiJyZWRpcmVjdF91cmwiO047czo2OiJtYW5hZ2UiO086ODoic3RkQ2xhc3MiOjM6e3M6NjoiZmlsdGVyIjthOjU6e3M6Njoic2VhcmNoIjtzOjA6IiI7czo2OiJzdGF0dXMiO3M6MDoiIjtzOjk6ImNsaWVudF9pZCI7czowOiIiO3M6NDoidHlwZSI7czo4OiJ0ZW1wbGF0ZSI7czo2OiJmb2xkZXIiO3M6MDoiIjt9czo0OiJsaXN0IjthOjI6e3M6MTI6ImZ1bGxvcmRlcmluZyI7czo4OiJuYW1lIEFTQyI7czo1OiJsaW1pdCI7czoyOiIyMCI7fXM6MTA6ImxpbWl0c3RhcnQiO2k6MDt9fXM6MTU6ImNvbV9wb3N0aW5zdGFsbCI7Tzo4OiJzdGRDbGFzcyI6MTp7czo4OiJtZXNzYWdlcyI7Tzo4OiJzdGRDbGFzcyI6MTp7czozOiJlaWQiO3M6MzoiNzAwIjt9fXM6MTE6ImNvbV9tb2R1bGVzIjtPOjg6InN0ZENsYXNzIjoxOntzOjc6Im1vZHVsZXMiO086ODoic3RkQ2xhc3MiOjQ6e3M6NjoiZmlsdGVyIjthOjU6e3M6Njoic2VhcmNoIjtzOjA6IiI7czo1OiJzdGF0ZSI7czowOiIiO3M6ODoicG9zaXRpb24iO3M6MDoiIjtzOjY6Im1vZHVsZSI7czowOiIiO3M6NjoiYWNjZXNzIjtzOjA6IiI7fXM6OToiY2xpZW50X2lkIjtpOjE7czo0OiJsaXN0IjthOjI6e3M6MTI6ImZ1bGxvcmRlcmluZyI7czoxNDoiYS5wb3NpdGlvbiBBU0MiO3M6NToibGltaXQiO3M6MjoiMjAiO31zOjEwOiJsaW1pdHN0YXJ0IjtpOjA7fX1zOjExOiJjb21fcGx1Z2lucyI7Tzo4OiJzdGRDbGFzcyI6Mjp7czo3OiJwbHVnaW5zIjtPOjg6InN0ZENsYXNzIjozOntzOjY6ImZpbHRlciI7YTo1OntzOjY6InNlYXJjaCI7czozOiJ5b28iO3M6NzoiZW5hYmxlZCI7czowOiIiO3M6NjoiZm9sZGVyIjtzOjA6IiI7czo3OiJlbGVtZW50IjtzOjA6IiI7czo2OiJhY2Nlc3MiO3M6MDoiIjt9czo0OiJsaXN0IjthOjQ6e3M6MTI6ImZ1bGxvcmRlcmluZyI7czoxMDoiZm9sZGVyIEFTQyI7czo1OiJsaW1pdCI7czoyOiIyMCI7czo5OiJzb3J0VGFibGUiO3M6NjoiZm9sZGVyIjtzOjE0OiJkaXJlY3Rpb25UYWJsZSI7czozOiJBU0MiO31zOjEwOiJsaW1pdHN0YXJ0IjtpOjA7fXM6NDoiZWRpdCI7Tzo4OiJzdGRDbGFzcyI6MTp7czo2OiJwbHVnaW4iO086ODoic3RkQ2xhc3MiOjI6e3M6MjoiaWQiO2E6MDp7fXM6NDoiZGF0YSI7Tjt9fX1zOjc6ImNvbV9qY2UiO086ODoic3RkQ2xhc3MiOjE6e3M6NDoiZWRpdCI7Tzo4OiJzdGRDbGFzcyI6MTp7czo2OiJjb25maWciO086ODoic3RkQ2xhc3MiOjE6e3M6NDoiZGF0YSI7Tjt9fX1zOjEwOiJjb21fY29uZmlnIjtPOjg6InN0ZENsYXNzIjoxOntzOjY6ImNvbmZpZyI7Tzo4OiJzdGRDbGFzcyI6MTp7czo2OiJnbG9iYWwiO086ODoic3RkQ2xhc3MiOjE6e3M6NDoiZGF0YSI7Tjt9fX19czoxNDoiACoAaW5pdGlhbGl6ZWQiO2I6MDtzOjk6InNlcGFyYXRvciI7czoxOiIuIjt9czo0OiJ1c2VyIjtPOjIwOiJKb29tbGFcQ01TXFVzZXJcVXNlciI6MTp7czoyOiJpZCI7czozOiI3MTgiO31zOjExOiJhcHBsaWNhdGlvbiI7Tzo4OiJzdGRDbGFzcyI6MTp7czo1OiJxdWV1ZSI7YTowOnt9fX19czoxNDoiACoAaW5pdGlhbGl6ZWQiO2I6MDtzOjk6InNlcGFyYXRvciI7czoxOiIuIjt9\";', 718, '@dmin'),
-(0x697663663734723674393337663566386564733375366f666f30, 0, 1, 1647655312, 'joomla|s:736:\"TzoyNDoiSm9vbWxhXFJlZ2lzdHJ5XFJlZ2lzdHJ5IjozOntzOjc6IgAqAGRhdGEiO086ODoic3RkQ2xhc3MiOjE6e3M6OToiX19kZWZhdWx0IjtPOjg6InN0ZENsYXNzIjozOntzOjc6InNlc3Npb24iO086ODoic3RkQ2xhc3MiOjM6e3M6NzoiY291bnRlciI7aToxO3M6NToidGltZXIiO086ODoic3RkQ2xhc3MiOjM6e3M6NToic3RhcnQiO2k6MTY0NzY1NTMxMTtzOjQ6Imxhc3QiO2k6MTY0NzY1NTMxMTtzOjM6Im5vdyI7aToxNjQ3NjU1MzExO31zOjU6InRva2VuIjtzOjMyOiJXR243S21SME5YRklyRWtkZUVjd2lLZ0hTUDkwaHhyTyI7fXM6ODoicmVnaXN0cnkiO086MjQ6Ikpvb21sYVxSZWdpc3RyeVxSZWdpc3RyeSI6Mzp7czo3OiIAKgBkYXRhIjtPOjg6InN0ZENsYXNzIjowOnt9czoxNDoiACoAaW5pdGlhbGl6ZWQiO2I6MDtzOjk6InNlcGFyYXRvciI7czoxOiIuIjt9czo0OiJ1c2VyIjtPOjIwOiJKb29tbGFcQ01TXFVzZXJcVXNlciI6MTp7czoyOiJpZCI7aTowO319fXM6MTQ6IgAqAGluaXRpYWxpemVkIjtiOjA7czo5OiJzZXBhcmF0b3IiO3M6MToiLiI7fQ==\";', 0, '');
+(0x386a3338616235626a6d76706a68326a36726e75623962677572, 1, 0, 1647656418, 'joomla|s:3396:\"TzoyNDoiSm9vbWxhXFJlZ2lzdHJ5XFJlZ2lzdHJ5IjozOntzOjc6IgAqAGRhdGEiO086ODoic3RkQ2xhc3MiOjE6e3M6OToiX19kZWZhdWx0IjtPOjg6InN0ZENsYXNzIjo0OntzOjc6InNlc3Npb24iO086ODoic3RkQ2xhc3MiOjM6e3M6NzoiY291bnRlciI7aToxMDA7czo1OiJ0aW1lciI7Tzo4OiJzdGRDbGFzcyI6Mzp7czo1OiJzdGFydCI7aToxNjQ3NjU0NzQ5O3M6NDoibGFzdCI7aToxNjQ3NjU1NTc5O3M6Mzoibm93IjtpOjE2NDc2NTY0MTg7fXM6NToidG9rZW4iO3M6MzI6InB1c1NYQVE3OVFVRFVnWkpTQ2xmM2lXdXVsVFhHeVdNIjt9czo4OiJyZWdpc3RyeSI7TzoyNDoiSm9vbWxhXFJlZ2lzdHJ5XFJlZ2lzdHJ5IjozOntzOjc6IgAqAGRhdGEiO086ODoic3RkQ2xhc3MiOjg6e3M6MTM6ImNvbV9pbnN0YWxsZXIiO086ODoic3RkQ2xhc3MiOjQ6e3M6NzoibWVzc2FnZSI7czowOiIiO3M6MTc6ImV4dGVuc2lvbl9tZXNzYWdlIjtzOjA6IiI7czoxMjoicmVkaXJlY3RfdXJsIjtOO3M6NjoibWFuYWdlIjtPOjg6InN0ZENsYXNzIjozOntzOjY6ImZpbHRlciI7YTo1OntzOjY6InNlYXJjaCI7czowOiIiO3M6Njoic3RhdHVzIjtzOjA6IiI7czo5OiJjbGllbnRfaWQiO3M6MDoiIjtzOjQ6InR5cGUiO3M6ODoidGVtcGxhdGUiO3M6NjoiZm9sZGVyIjtzOjA6IiI7fXM6NDoibGlzdCI7YToyOntzOjEyOiJmdWxsb3JkZXJpbmciO3M6ODoibmFtZSBBU0MiO3M6NToibGltaXQiO3M6MjoiMjAiO31zOjEwOiJsaW1pdHN0YXJ0IjtpOjA7fX1zOjE1OiJjb21fcG9zdGluc3RhbGwiO086ODoic3RkQ2xhc3MiOjE6e3M6ODoibWVzc2FnZXMiO086ODoic3RkQ2xhc3MiOjE6e3M6MzoiZWlkIjtzOjM6IjcwMCI7fX1zOjExOiJjb21fbW9kdWxlcyI7Tzo4OiJzdGRDbGFzcyI6MTp7czo3OiJtb2R1bGVzIjtPOjg6InN0ZENsYXNzIjo0OntzOjY6ImZpbHRlciI7YTo1OntzOjY6InNlYXJjaCI7czowOiIiO3M6NToic3RhdGUiO3M6MDoiIjtzOjg6InBvc2l0aW9uIjtzOjA6IiI7czo2OiJtb2R1bGUiO3M6MDoiIjtzOjY6ImFjY2VzcyI7czowOiIiO31zOjk6ImNsaWVudF9pZCI7aToxO3M6NDoibGlzdCI7YToyOntzOjEyOiJmdWxsb3JkZXJpbmciO3M6MTQ6ImEucG9zaXRpb24gQVNDIjtzOjU6ImxpbWl0IjtzOjI6IjIwIjt9czoxMDoibGltaXRzdGFydCI7aTowO319czoxMToiY29tX3BsdWdpbnMiO086ODoic3RkQ2xhc3MiOjI6e3M6NzoicGx1Z2lucyI7Tzo4OiJzdGRDbGFzcyI6Mzp7czo2OiJmaWx0ZXIiO2E6NTp7czo2OiJzZWFyY2giO3M6MzoieW9vIjtzOjc6ImVuYWJsZWQiO3M6MDoiIjtzOjY6ImZvbGRlciI7czowOiIiO3M6NzoiZWxlbWVudCI7czowOiIiO3M6NjoiYWNjZXNzIjtzOjA6IiI7fXM6NDoibGlzdCI7YTo0OntzOjEyOiJmdWxsb3JkZXJpbmciO3M6MTA6ImZvbGRlciBBU0MiO3M6NToibGltaXQiO3M6MjoiMjAiO3M6OToic29ydFRhYmxlIjtzOjY6ImZvbGRlciI7czoxNDoiZGlyZWN0aW9uVGFibGUiO3M6MzoiQVNDIjt9czoxMDoibGltaXRzdGFydCI7aTowO31zOjQ6ImVkaXQiO086ODoic3RkQ2xhc3MiOjE6e3M6NjoicGx1Z2luIjtPOjg6InN0ZENsYXNzIjoyOntzOjI6ImlkIjthOjA6e31zOjQ6ImRhdGEiO047fX19czo3OiJjb21famNlIjtPOjg6InN0ZENsYXNzIjoxOntzOjQ6ImVkaXQiO086ODoic3RkQ2xhc3MiOjE6e3M6NjoiY29uZmlnIjtPOjg6InN0ZENsYXNzIjoxOntzOjQ6ImRhdGEiO047fX19czoxMDoiY29tX2NvbmZpZyI7Tzo4OiJzdGRDbGFzcyI6MTp7czo2OiJjb25maWciO086ODoic3RkQ2xhc3MiOjE6e3M6NjoiZ2xvYmFsIjtPOjg6InN0ZENsYXNzIjoxOntzOjQ6ImRhdGEiO047fX19czoxMToiY29tX2NvbnRlbnQiO086ODoic3RkQ2xhc3MiOjE6e3M6NDoiZWRpdCI7Tzo4OiJzdGRDbGFzcyI6MTp7czo3OiJhcnRpY2xlIjtPOjg6InN0ZENsYXNzIjoyOntzOjQ6ImRhdGEiO047czoyOiJpZCI7YTowOnt9fX19czo5OiJjb21fbWVudXMiO086ODoic3RkQ2xhc3MiOjI6e3M6NToiaXRlbXMiO086ODoic3RkQ2xhc3MiOjQ6e3M6ODoibWVudXR5cGUiO3M6ODoibWFpbm1lbnUiO3M6OToiY2xpZW50X2lkIjtpOjA7czoxMDoibGltaXRzdGFydCI7aTowO3M6NDoibGlzdCI7YTo0OntzOjk6ImRpcmVjdGlvbiI7czozOiJhc2MiO3M6NToibGltaXQiO3M6MjoiMjAiO3M6ODoib3JkZXJpbmciO3M6NToiYS5sZnQiO3M6NToic3RhcnQiO2Q6MDt9fXM6NDoiZWRpdCI7Tzo4OiJzdGRDbGFzcyI6MTp7czo0OiJpdGVtIjtPOjg6InN0ZENsYXNzIjo0OntzOjI6ImlkIjthOjA6e31zOjQ6ImRhdGEiO047czo0OiJ0eXBlIjtOO3M6NDoibGluayI7Tjt9fX19czoxNDoiACoAaW5pdGlhbGl6ZWQiO2I6MDtzOjk6InNlcGFyYXRvciI7czoxOiIuIjt9czo0OiJ1c2VyIjtPOjIwOiJKb29tbGFcQ01TXFVzZXJcVXNlciI6MTp7czoyOiJpZCI7czozOiI3MTgiO31zOjExOiJhcHBsaWNhdGlvbiI7Tzo4OiJzdGRDbGFzcyI6MTp7czo1OiJxdWV1ZSI7YTowOnt9fX19czoxNDoiACoAaW5pdGlhbGl6ZWQiO2I6MDtzOjk6InNlcGFyYXRvciI7czoxOiIuIjt9\";', 718, '@dmin'),
+(0x697663663734723674393337663566386564733375366f666f30, 0, 1, 1647655575, 'joomla|s:5144:\"TzoyNDoiSm9vbWxhXFJlZ2lzdHJ5XFJlZ2lzdHJ5IjozOntzOjc6IgAqAGRhdGEiO086ODoic3RkQ2xhc3MiOjE6e3M6OToiX19kZWZhdWx0IjtPOjg6InN0ZENsYXNzIjo0OntzOjc6InNlc3Npb24iO086ODoic3RkQ2xhc3MiOjM6e3M6NzoiY291bnRlciI7aTo1O3M6NToidGltZXIiO086ODoic3RkQ2xhc3MiOjM6e3M6NToic3RhcnQiO2k6MTY0NzY1NTMxMTtzOjQ6Imxhc3QiO2k6MTY0NzY1NTU2NDtzOjM6Im5vdyI7aToxNjQ3NjU1NTc1O31zOjU6InRva2VuIjtzOjMyOiJXR243S21SME5YRklyRWtkZUVjd2lLZ0hTUDkwaHhyTyI7fXM6ODoicmVnaXN0cnkiO086MjQ6Ikpvb21sYVxSZWdpc3RyeVxSZWdpc3RyeSI6Mzp7czo3OiIAKgBkYXRhIjtPOjg6InN0ZENsYXNzIjowOnt9czoxNDoiACoAaW5pdGlhbGl6ZWQiO2I6MDtzOjk6InNlcGFyYXRvciI7czoxOiIuIjt9czo0OiJ1c2VyIjtPOjIwOiJKb29tbGFcQ01TXFVzZXJcVXNlciI6MTp7czoyOiJpZCI7aTowO31zOjMyOiJmOTIzNDNkMjc3ODkxYzEyZTkyOWVjYzNmNGMzYmMxMCI7YTozOntzOjU6ImFkbWluIjtiOjE7czo2OiJjb25maWciO2E6MjE6e3M6MTU6Inlvb3RoZW1lX2FwaWtleSI7czo0MDoiejd1UUo5dkZDNjF4ek95VlIyWGNnSTZSV3Bjb2doN29hOTBnZEphVSI7czo0OiJtZW51IjthOjI6e3M6NToiaXRlbXMiO2E6MDp7fXM6OToicG9zaXRpb25zIjthOjI6e3M6NjoibmF2YmFyIjtzOjA6IiI7czo2OiJtb2JpbGUiO3M6MDoiIjt9fXM6NDoic2l0ZSI7YTo5OntzOjY6ImxheW91dCI7czo0OiJmdWxsIjtzOjU6ImJveGVkIjthOjE6e3M6OToiYWxpZ25tZW50IjtpOjE7fXM6MTA6ImltYWdlX3NpemUiO3M6NToiY292ZXIiO3M6MTQ6ImltYWdlX3Bvc2l0aW9uIjtzOjEzOiJjZW50ZXItY2VudGVyIjtzOjEyOiJpbWFnZV9lZmZlY3QiO3M6NToiZml4ZWQiO3M6MTM6InRvb2xiYXJfd2lkdGgiO3M6NzoiZGVmYXVsdCI7czoyMToiYnJlYWRjcnVtYnNfc2hvd19ob21lIjtiOjE7czoyNDoiYnJlYWRjcnVtYnNfc2hvd19jdXJyZW50IjtiOjE7czoyMToiYnJlYWRjcnVtYnNfaG9tZV90ZXh0IjtzOjA6IiI7fXM6NjoiaGVhZGVyIjthOjM6e3M6NjoibGF5b3V0IjtzOjE2OiJob3Jpem9udGFsLXJpZ2h0IjtzOjU6IndpZHRoIjtzOjc6ImRlZmF1bHQiO3M6MTA6InNvY2lhbF9nYXAiO3M6NToic21hbGwiO31zOjY6Im5hdmJhciI7YTo0OntzOjY6InN0aWNreSI7aTowO3M6MTQ6ImRyb3Bkb3duX2FsaWduIjtzOjQ6ImxlZnQiO3M6MTc6InRvZ2dsZV9tZW51X3N0eWxlIjtzOjc6ImRlZmF1bHQiO3M6OToib2ZmY2FudmFzIjthOjE6e3M6NDoibW9kZSI7czo1OiJzbGlkZSI7fX1zOjY6Im1vYmlsZSI7YTo5OntzOjEwOiJicmVha3BvaW50IjtzOjE6Im0iO3M6NDoibG9nbyI7czo2OiJjZW50ZXIiO3M6NjoidG9nZ2xlIjtzOjQ6ImxlZnQiO3M6Njoic2VhcmNoIjtzOjU6InJpZ2h0IjtzOjEwOiJtZW51X3N0eWxlIjtzOjc6ImRlZmF1bHQiO3M6OToiYW5pbWF0aW9uIjtzOjk6Im9mZmNhbnZhcyI7czoxMjoiY2xvc2VfYnV0dG9uIjtiOjE7czo5OiJvZmZjYW52YXMiO2E6MTp7czo0OiJtb2RlIjtzOjU6InNsaWRlIjt9czo4OiJkcm9wZG93biI7czo1OiJzbGlkZSI7fXM6MzoidG9wIjthOjQ6e3M6NToic3R5bGUiO3M6NzoiZGVmYXVsdCI7czo1OiJ3aWR0aCI7czo3OiJkZWZhdWx0IjtzOjEwOiJicmVha3BvaW50IjtzOjE6Im0iO3M6MTQ6ImltYWdlX3Bvc2l0aW9uIjtzOjEzOiJjZW50ZXItY2VudGVyIjt9czoxMjoibWFpbl9zaWRlYmFyIjthOjY6e3M6NToid2lkdGgiO3M6MzoiMS00IjtzOjk6Im1pbl93aWR0aCI7czozOiIyMDAiO3M6MTA6ImJyZWFrcG9pbnQiO3M6MToibSI7czo1OiJmaXJzdCI7aTowO3M6NjoiZ3V0dGVyIjtzOjA6IiI7czo3OiJkaXZpZGVyIjtpOjA7fXM6NjoiYm90dG9tIjthOjQ6e3M6NToic3R5bGUiO3M6NzoiZGVmYXVsdCI7czo1OiJ3aWR0aCI7czo3OiJkZWZhdWx0IjtzOjEwOiJicmVha3BvaW50IjtzOjE6Im0iO3M6MTQ6ImltYWdlX3Bvc2l0aW9uIjtzOjEzOiJjZW50ZXItY2VudGVyIjt9czo2OiJmb290ZXIiO2E6MTp7czo3OiJjb250ZW50IjthOjM6e3M6NDoidHlwZSI7czo2OiJsYXlvdXQiO3M6NToicHJvcHMiO2E6MDp7fXM6NzoidmVyc2lvbiI7czo2OiIyLjcuMjAiO319czo2OiJjb29raWUiO2E6OTp7czo0OiJ0eXBlIjtzOjM6ImJhciI7czoxMjoiYmFyX3Bvc2l0aW9uIjtzOjY6ImJvdHRvbSI7czo5OiJiYXJfc3R5bGUiO3M6NToibXV0ZWQiO3M6MjE6Im5vdGlmaWNhdGlvbl9wb3NpdGlvbiI7czoxMzoiYm90dG9tLWNlbnRlciI7czo3OiJtZXNzYWdlIjtzOjkwOiJCeSB1c2luZyB0aGlzIHdlYnNpdGUsIHlvdSBhZ3JlZSB0byB0aGUgdXNlIG9mIGNvb2tpZXMgYXMgZGVzY3JpYmVkIGluIG91ciBQcml2YWN5IFBvbGljeS4iO3M6MjA6ImJ1dHRvbl9jb25zZW50X3N0eWxlIjtzOjQ6Imljb24iO3M6MTk6ImJ1dHRvbl9jb25zZW50X3RleHQiO3M6MjoiT2siO3M6MTk6ImJ1dHRvbl9yZWplY3Rfc3R5bGUiO3M6NzoiZGVmYXVsdCI7czoxODoiYnV0dG9uX3JlamVjdF90ZXh0IjtzOjEwOiJObywgVGhhbmtzIjt9czo4OiJsYXp5bG9hZCI7YjoxO3M6NDoicG9zdCI7YToxMzp7czo1OiJ3aWR0aCI7czo3OiJkZWZhdWx0IjtzOjc6InBhZGRpbmciO3M6MDoiIjtzOjEzOiJjb250ZW50X3dpZHRoIjtzOjA6IiI7czoxMToiaW1hZ2VfYWxpZ24iO3M6MzoidG9wIjtzOjEyOiJpbWFnZV9tYXJnaW4iO3M6NjoibWVkaXVtIjtzOjExOiJpbWFnZV93aWR0aCI7czowOiIiO3M6MTI6ImltYWdlX2hlaWdodCI7czowOiIiO3M6MTI6ImhlYWRlcl9hbGlnbiI7aTowO3M6MTI6InRpdGxlX21hcmdpbiI7czo3OiJkZWZhdWx0IjtzOjExOiJtZXRhX21hcmdpbiI7czo3OiJkZWZhdWx0IjtzOjEwOiJtZXRhX3N0eWxlIjtzOjg6InNlbnRlbmNlIjtzOjE0OiJjb250ZW50X21hcmdpbiI7czo2OiJtZWRpdW0iO3M6MTU6ImNvbnRlbnRfZHJvcGNhcCI7aTowO31zOjQ6ImJsb2ciO2E6MjA6e3M6NToid2lkdGgiO3M6NzoiZGVmYXVsdCI7czo3OiJwYWRkaW5nIjtzOjA6IiI7czoxNToiZ3JpZF9jb2x1bW5fZ2FwIjtzOjA6IiI7czoxMjoiZ3JpZF9yb3dfZ2FwIjtzOjA6IiI7czoxNToiZ3JpZF9icmVha3BvaW50IjtzOjE6Im0iO3M6MTE6ImltYWdlX2FsaWduIjtzOjM6InRvcCI7czoxMjoiaW1hZ2VfbWFyZ2luIjtzOjY6Im1lZGl1bSI7czoxMToiaW1hZ2Vfd2lkdGgiO3M6MDoiIjtzOjEyOiJpbWFnZV9oZWlnaHQiO3M6MDoiIjtzOjEyOiJoZWFkZXJfYWxpZ24iO2k6MDtzOjExOiJ0aXRsZV9zdHlsZSI7czowOiIiO3M6MTI6InRpdGxlX21hcmdpbiI7czo3OiJkZWZhdWx0IjtzOjExOiJtZXRhX21hcmdpbiI7czo3OiJkZWZhdWx0IjtzOjE1OiJjb250ZW50X2V4Y2VycHQiO2k6MDtzOjE0OiJjb250ZW50X2xlbmd0aCI7czowOiIiO3M6MTQ6ImNvbnRlbnRfbWFyZ2luIjtzOjY6Im1lZGl1bSI7czoxMzoiY29udGVudF9hbGlnbiI7aTowO3M6MTI6ImJ1dHRvbl9zdHlsZSI7czo3OiJkZWZhdWx0IjtzOjEzOiJidXR0b25fbWFyZ2luIjtzOjY6Im1lZGl1bSI7czoxMDoibmF2aWdhdGlvbiI7czoxMDoicGFnaW5hdGlvbiI7fXM6MTI6Im1lZGlhX2ZvbGRlciI7czo4OiJ5b290aGVtZSI7czoxMzoic2VhcmNoX21vZHVsZSI7czoxMDoibW9kX3NlYXJjaCI7czo5OiJib290c3RyYXAiO2I6MTtzOjQ6Imxlc3MiO2E6MDp7fXM6MTE6ImN1c3RvbV9sZXNzIjtzOjA6IiI7czo1OiJzdHlsZSI7czo0OiJmdXNlIjtzOjc6InZlcnNpb24iO3M6NjoiMi43LjIwIjt9czo3OiJ1c2VyX2lkIjtzOjM6IjcxOCI7fX19czoxNDoiACoAaW5pdGlhbGl6ZWQiO2I6MDtzOjk6InNlcGFyYXRvciI7czoxOiIuIjt9\";', 0, '');
 
 -- --------------------------------------------------------
 
@@ -2556,13 +2569,21 @@ CREATE TABLE IF NOT EXISTS `q40d7_ucm_history` (
   PRIMARY KEY (`version_id`),
   KEY `idx_ucm_item_id` (`ucm_type_id`,`ucm_item_id`),
   KEY `idx_save_date` (`save_date`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Truncate table before insert `q40d7_ucm_history`
 --
 
 TRUNCATE TABLE `q40d7_ucm_history`;
+--
+-- Dumping data for table `q40d7_ucm_history`
+--
+
+INSERT INTO `q40d7_ucm_history` (`version_id`, `ucm_item_id`, `ucm_type_id`, `version_note`, `save_date`, `editor_user_id`, `character_count`, `sha1_hash`, `version_data`, `keep_forever`) VALUES
+(1, 1, 1, '', '2022-03-19 02:05:29', 718, 1744, '490d5b8b1c239f5cdaae16c6c698a317054b4f03', '{\"id\":1,\"asset_id\":62,\"title\":\"Home\",\"alias\":\"home\",\"introtext\":\"\",\"fulltext\":\"\",\"state\":1,\"catid\":\"2\",\"created\":\"2022-03-19 02:05:29\",\"created_by\":\"718\",\"created_by_alias\":\"\",\"modified\":\"2022-03-19 02:05:29\",\"modified_by\":null,\"checked_out\":null,\"checked_out_time\":null,\"publish_up\":\"2022-03-19 02:05:29\",\"publish_down\":\"0000-00-00 00:00:00\",\"images\":\"{\\\"image_intro\\\":\\\"\\\",\\\"float_intro\\\":\\\"\\\",\\\"image_intro_alt\\\":\\\"\\\",\\\"image_intro_caption\\\":\\\"\\\",\\\"image_fulltext\\\":\\\"\\\",\\\"float_fulltext\\\":\\\"\\\",\\\"image_fulltext_alt\\\":\\\"\\\",\\\"image_fulltext_caption\\\":\\\"\\\"}\",\"urls\":\"{\\\"urla\\\":false,\\\"urlatext\\\":\\\"\\\",\\\"targeta\\\":\\\"\\\",\\\"urlb\\\":false,\\\"urlbtext\\\":\\\"\\\",\\\"targetb\\\":\\\"\\\",\\\"urlc\\\":false,\\\"urlctext\\\":\\\"\\\",\\\"targetc\\\":\\\"\\\"}\",\"attribs\":\"{\\\"article_layout\\\":\\\"\\\",\\\"show_title\\\":\\\"\\\",\\\"link_titles\\\":\\\"\\\",\\\"show_tags\\\":\\\"\\\",\\\"show_intro\\\":\\\"\\\",\\\"info_block_position\\\":\\\"\\\",\\\"info_block_show_title\\\":\\\"\\\",\\\"show_category\\\":\\\"\\\",\\\"link_category\\\":\\\"\\\",\\\"show_parent_category\\\":\\\"\\\",\\\"link_parent_category\\\":\\\"\\\",\\\"show_associations\\\":\\\"\\\",\\\"show_author\\\":\\\"\\\",\\\"link_author\\\":\\\"\\\",\\\"show_create_date\\\":\\\"\\\",\\\"show_modify_date\\\":\\\"\\\",\\\"show_publish_date\\\":\\\"\\\",\\\"show_item_navigation\\\":\\\"\\\",\\\"show_icons\\\":\\\"\\\",\\\"show_print_icon\\\":\\\"\\\",\\\"show_email_icon\\\":\\\"\\\",\\\"show_vote\\\":\\\"\\\",\\\"show_hits\\\":\\\"\\\",\\\"show_noauth\\\":\\\"\\\",\\\"urls_position\\\":\\\"\\\",\\\"alternative_readmore\\\":\\\"\\\",\\\"article_page_title\\\":\\\"\\\",\\\"show_publishing_options\\\":\\\"\\\",\\\"show_article_options\\\":\\\"\\\",\\\"show_urls_images_backend\\\":\\\"\\\",\\\"show_urls_images_frontend\\\":\\\"\\\"}\",\"version\":1,\"ordering\":null,\"metakey\":\"\",\"metadesc\":\"\",\"access\":\"1\",\"hits\":null,\"metadata\":\"{\\\"robots\\\":\\\"\\\",\\\"author\\\":\\\"\\\",\\\"rights\\\":\\\"\\\",\\\"xreference\\\":\\\"\\\"}\",\"featured\":\"0\",\"language\":\"*\",\"xreference\":\"\",\"note\":\"\"}', 0),
+(2, 1, 1, '', '2022-03-19 02:05:38', 718, 2274, '5d538b71fa24b5a87d706ab711e68210a14970e5', '{\"id\":\"1\",\"asset_id\":\"62\",\"title\":\"Home\",\"alias\":\"home\",\"introtext\":\"\",\"fulltext\":\"<!-- {\\\"type\\\":\\\"layout\\\",\\\"children\\\":[{\\\"type\\\":\\\"section\\\",\\\"props\\\":{\\\"style\\\":\\\"default\\\",\\\"width\\\":\\\"default\\\",\\\"vertical_align\\\":\\\"middle\\\",\\\"title_position\\\":\\\"top-left\\\",\\\"title_rotation\\\":\\\"left\\\",\\\"title_breakpoint\\\":\\\"xl\\\",\\\"image_position\\\":\\\"center-center\\\"},\\\"children\\\":[{\\\"type\\\":\\\"row\\\",\\\"children\\\":[{\\\"type\\\":\\\"column\\\",\\\"props\\\":{\\\"position_sticky_breakpoint\\\":\\\"m\\\",\\\"image_position\\\":\\\"center-center\\\",\\\"media_overlay_gradient\\\":\\\"\\\"},\\\"children\\\":[]}]}]}],\\\"version\\\":\\\"2.7.20\\\"} -->\",\"state\":\"1\",\"catid\":\"2\",\"created\":\"2022-03-19 02:05:29\",\"created_by\":\"718\",\"created_by_alias\":\"\",\"modified\":\"2022-03-19 02:05:38\",\"modified_by\":\"718\",\"checked_out\":\"718\",\"checked_out_time\":\"2022-03-19 02:05:29\",\"publish_up\":\"2022-03-19 02:05:29\",\"publish_down\":\"0000-00-00 00:00:00\",\"images\":\"{\\\"image_intro\\\":\\\"\\\",\\\"float_intro\\\":\\\"\\\",\\\"image_intro_alt\\\":\\\"\\\",\\\"image_intro_caption\\\":\\\"\\\",\\\"image_fulltext\\\":\\\"\\\",\\\"float_fulltext\\\":\\\"\\\",\\\"image_fulltext_alt\\\":\\\"\\\",\\\"image_fulltext_caption\\\":\\\"\\\"}\",\"urls\":\"{\\\"urla\\\":false,\\\"urlatext\\\":\\\"\\\",\\\"targeta\\\":\\\"\\\",\\\"urlb\\\":false,\\\"urlbtext\\\":\\\"\\\",\\\"targetb\\\":\\\"\\\",\\\"urlc\\\":false,\\\"urlctext\\\":\\\"\\\",\\\"targetc\\\":\\\"\\\"}\",\"attribs\":\"{\\\"article_layout\\\":\\\"\\\",\\\"show_title\\\":\\\"\\\",\\\"link_titles\\\":\\\"\\\",\\\"show_tags\\\":\\\"\\\",\\\"show_intro\\\":\\\"\\\",\\\"info_block_position\\\":\\\"\\\",\\\"info_block_show_title\\\":\\\"\\\",\\\"show_category\\\":\\\"\\\",\\\"link_category\\\":\\\"\\\",\\\"show_parent_category\\\":\\\"\\\",\\\"link_parent_category\\\":\\\"\\\",\\\"show_associations\\\":\\\"\\\",\\\"show_author\\\":\\\"\\\",\\\"link_author\\\":\\\"\\\",\\\"show_create_date\\\":\\\"\\\",\\\"show_modify_date\\\":\\\"\\\",\\\"show_publish_date\\\":\\\"\\\",\\\"show_item_navigation\\\":\\\"\\\",\\\"show_icons\\\":\\\"\\\",\\\"show_print_icon\\\":\\\"\\\",\\\"show_email_icon\\\":\\\"\\\",\\\"show_vote\\\":\\\"\\\",\\\"show_hits\\\":\\\"\\\",\\\"show_noauth\\\":\\\"\\\",\\\"urls_position\\\":\\\"\\\",\\\"alternative_readmore\\\":\\\"\\\",\\\"article_page_title\\\":\\\"\\\",\\\"show_publishing_options\\\":\\\"\\\",\\\"show_article_options\\\":\\\"\\\",\\\"show_urls_images_backend\\\":\\\"\\\",\\\"show_urls_images_frontend\\\":\\\"\\\"}\",\"version\":2,\"ordering\":\"0\",\"metakey\":\"\",\"metadesc\":\"\",\"access\":\"1\",\"hits\":\"2\",\"metadata\":\"{\\\"robots\\\":\\\"\\\",\\\"author\\\":\\\"\\\",\\\"rights\\\":\\\"\\\",\\\"xreference\\\":\\\"\\\"}\",\"featured\":\"0\",\"language\":\"*\",\"xreference\":\"\",\"note\":\"\"}', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -2708,8 +2729,8 @@ INSERT INTO `q40d7_update_sites` (`update_site_id`, `name`, `type`, `location`, 
 (2, 'Accredited Joomla! Translations', 'collection', 'https://update.joomla.org/language/translationlist_3.xml', 1, 1647654752, ''),
 (3, 'Joomla! Update Component Update Site', 'extension', 'https://update.joomla.org/core/extensions/com_joomlaupdate.xml', 1, 1647654753, ''),
 (4, 'JCE Editor Package', 'extension', 'https://cdn.joomlacontenteditor.net/updates/xml/editor/pkg_jce_pro.xml', 1, 1647655167, 'key=WFB4708865E28887DED2FF676B927FFF40'),
-(5, 'YOOtheme', 'extension', 'https://yootheme.com/api/update/yootheme_j33.xml', 1, 0, ''),
-(6, 'YOOtheme Installer', 'extension', 'https://yootheme.com/api/update/installer_yootheme_j33.xml', 1, 0, '');
+(5, 'YOOtheme', 'extension', 'https://yootheme.com/api/update/yootheme_j33.xml', 1, 1647655574, ''),
+(6, 'YOOtheme Installer', 'extension', 'https://yootheme.com/api/update/installer_yootheme_j33.xml', 1, 1647655575, '');
 
 -- --------------------------------------------------------
 
