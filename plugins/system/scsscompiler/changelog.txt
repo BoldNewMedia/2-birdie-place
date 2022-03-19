@@ -1,0 +1,40 @@
+v2.7 - 20/11/2021
+- Ajout option pour générer un "source map"
+
+v2.6.1 - 04/10/2021 (DO NOT USE)
+- script d'install pour supprimer dossier scssphp
+
+v2.6 - 04/10/2021 (DO NOT USE)
+- update scssphp-v1.8.1
+
+v2.5 - 14/03/2021
+- correction language JYES/JNO
+- update scssphp-v1.4.1
+
+v2.4 - 09/10/2020
+- update scssphp-v1.0.6
+- update for joomla 4b3
+- correction URL dans language (remplacement http:// par //)
+
+v2.02 - 2018-03-02 
+- version v0.8.4 du script scssphp de leafo
+
+v2.02 - 2018-03-02 
+- trim espace nom dossiers avant ajout / final 
+
+v2 - 2017-10-03 
+- Refonte complete avec version v0.6.7 du script scssphp de leafo
+- ajout dossiers hors template
+
+v1.2 - 27/01/17 
+- Possibilité d'indiquer des chemins relatifs à la racine du site
+
+v1.1 - 03/08/16 
+- correction 'Joomla framework deprecated'
+
+v1.02 - 11/12/14 
+- correction warning dans code php
+
+v1.01 - 29/11/14 
+- maj langue
+- SCSS v3.2.12 interprété par scssphp 0.0.12
