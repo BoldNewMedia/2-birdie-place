@@ -45,6 +45,23 @@
 /* @end */
 
 /* @group TYPOGRAPHY */
+.uk-heading-bullet {
+	&#essential {
+		&:before {
+			//border-color: #5a8b5d;
+		}
+	}
+	&#highly-desirable {
+		&:before {
+			border-color: #e77431;
+		}
+	}
+	&#desirable {
+		&:before {
+			border-color: #907350;
+		}
+	}
+}
 /* @end */
 
 /* @group UIKIT */

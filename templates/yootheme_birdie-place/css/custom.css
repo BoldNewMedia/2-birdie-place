@@ -37,6 +37,11 @@
 /* @group TABLES */
 /* @end */
 /* @group TYPOGRAPHY */
+.uk-heading-bullet#highly-desirable:before {
+  border-color: #e77431; }
+.uk-heading-bullet#desirable:before {
+  border-color: #907350; }
+
 /* @end */
 /* @group UIKIT */
 /* @end */
