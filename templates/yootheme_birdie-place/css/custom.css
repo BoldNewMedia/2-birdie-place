@@ -37,12 +37,11 @@
 /* @group TABLES */
 /* @end */
 /* @group TYPOGRAPHY */
-.uk-heading-bullet#essential:before {
-  border-color: #5a8b5d; }
-.uk-heading-bullet#highly-desirable:before {
-  border-color: #e77431; }
-.uk-heading-bullet#desirable:before {
-  border-color: #907350; }
+.uk-heading-bullet.uk-h1 {
+  text-transform: uppercase; }
+
+.bgm-tabs-section h3.uk-h2 {
+  text-transform: uppercase; }
 
 /* @end */
 /* @group UIKIT */

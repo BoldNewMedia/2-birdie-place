@@ -46,20 +46,14 @@
 
 /* @group TYPOGRAPHY */
 .uk-heading-bullet {
-	&#essential {
-		&:before {
-			border-color: #5a8b5d;
-		}
+	&.uk-h1 {
+		text-transform: uppercase;
 	}
-	&#highly-desirable {
-		&:before {
-			border-color: #e77431;
-		}
-	}
-	&#desirable {
-		&:before {
-			border-color: #907350;
-		}
+}
+//BGM TABS
+.bgm-tabs-section {
+	h3.uk-h2 {
+		text-transform: uppercase;
 	}
 }
 /* @end */
