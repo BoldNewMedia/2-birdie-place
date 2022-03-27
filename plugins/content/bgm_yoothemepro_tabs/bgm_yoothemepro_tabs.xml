@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="content" method="upgrade">
+	<name>Content - BGM YooTheme Pro Tabs</name>
+	<author>By George Media</author>
+	<creationDate>08-04-2021</creationDate>
+	<copyright>(C) 2019-2021 By George Media. All rights reserved.</copyright>
+	<authorEmail>support@georgemedia.com.au</authorEmail>
+	<authorUrl>https://georgemedia.com.au</authorUrl>
+	<version>1.0.0</version>
+	<description>Plugin build the Tabs for YooTheme Pro</description>
+        <scriptfile>script.php</scriptfile>
+	<files>
+		<folder>library</folder>
+		<file plugin="bgm_yoothemepro_tabs">bgm_yoothemepro_tabs.php</file>
+		<file>bgm_yoothemepro_tabs-config.png</file>
+		<file>index.html</file>
+	</files>
+        
+	<config> <fields name="params"> </fields>  </config>
+                        	
+	<menuitem>
+	</menuitem>
+
+	
+</extension>

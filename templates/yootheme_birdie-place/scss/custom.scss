@@ -48,7 +48,7 @@
 .uk-heading-bullet {
 	&#essential {
 		&:before {
-			//border-color: #5a8b5d;
+			border-color: #5a8b5d;
 		}
 	}
 	&#highly-desirable {
@@ -71,6 +71,12 @@
 /* @end */
 
 /* @group YT PRO ELEMENTS */
+//GALLERY
+.uk-lightbox-toolbar {
+	&.uk-position-top {
+		display: none;
+	}
+}
 /* @end */
 
 /* @group YT PRO PANELS */

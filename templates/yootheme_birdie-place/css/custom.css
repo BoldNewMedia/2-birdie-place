@@ -37,6 +37,8 @@
 /* @group TABLES */
 /* @end */
 /* @group TYPOGRAPHY */
+.uk-heading-bullet#essential:before {
+  border-color: #5a8b5d; }
 .uk-heading-bullet#highly-desirable:before {
   border-color: #e77431; }
 .uk-heading-bullet#desirable:before {
@@ -48,6 +50,9 @@
 /* @group WIDGETS */
 /* @end */
 /* @group YT PRO ELEMENTS */
+.uk-lightbox-toolbar.uk-position-top {
+  display: none; }
+
 /* @end */
 /* @group YT PRO PANELS */
 /* @end */
