@@ -55,6 +55,7 @@ class PlgContentBgm_Yoothemepro_Tabs extends JPlugin{
 		#include simple_html_dom
 		include_once dirname(__FILE__) . '/library/simple_html_dom.php';
 		$dom_content = str_get_html($content);
+		if(!$dom_content || empty($content)) return false;
 		$tabs = $dom_content->find('.bgm-tab');
 		#BGM check if has format custom tab
 		if(count($tabs) > 0){
