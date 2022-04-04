@@ -28,20 +28,30 @@ class PlgContentBgm_Yoothemepro_Tabs extends JPlugin{
 		parent::__construct($subject, $config);
 
 	}
+	
+	public function getClassTab($class){
+		$remove = ['bgm-tab' ,'uk-section-default', 'uk-section'];
+		return trim(str_replace($remove, ['','',''], $class));
+	}
+	
 	public function BGM_Custom_Tab($items){
         ob_start(); ?>
         <div class="uk-section bgm-tabs-section">
             <div class="uk-container uk-container-expand">
                 <ul class="el-nav uk-subnav uk-subnav-pill uk-flex-center" uk-switcher="animation: uk-animation-fade;">
-                    <?php foreach ($items as $i=>$dom){ ?>
-                        <li><a href="#"><?php echo isset($dom->attr['tabtitle'])?$dom->attr['tabtitle']:'TAB ' + $i; ?></a></li>
+                    <?php foreach ($items as $i=>$dom){ 
+						$tabclass = $this->getClassTab($dom->attr['class']);
+						?>
+                        <li class="<?php echo $tabclass; ?>"><a href="#"><?php echo isset($dom->attr['tabtitle'])?$dom->attr['tabtitle']:'TAB ' + $i; ?></a></li>
                     <?php } ?>
                 </ul>
                 <ul class="uk-switcher uk-margin">
-                    <?php foreach ($items as $i=>$dom){  ?>
-                    <li>
-                        <?php echo str_replace('bgm-tab', 'bgm-tab-replaced',$dom->outertext()); ?>
-                    </li>
+                    <?php foreach ($items as $i=>$dom){  
+						$tabclass = $this->getClassTab($dom->attr['class']);
+						?>
+						<li class="<?php echo $tabclass; ?>-content">
+							<?php echo str_replace('bgm-tab', 'bgm-tab-replaced',$dom->outertext()); ?>
+						</li>
                     <?php } ?>
                 </ul>
             </div>   
