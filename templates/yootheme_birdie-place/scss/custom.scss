@@ -65,6 +65,107 @@
 /* @end */
 
 /* @group YT PRO ELEMENTS */
+//BGM TABS
+.bgm-tabs-section {
+	/*Tabs Nav*/
+	
+	.el-nav {
+		&.uk-subnav-pill {
+			.uk-active {
+				&.essential {
+					a {
+						background-color: $essential;
+					}
+				}
+				
+				&.highly-desirable {
+					a {
+						background-color: $highly-desirable;
+					}
+				}
+				
+				&.desirable {
+					a {
+						background-color: $desirable;
+					}
+				}
+				
+				&.dislikes {
+					a {
+						background-color: $dislikes;
+					}
+				}
+			}
+		}
+	}
+	/*Tabs Content*/
+	
+	.uk-switcher {
+		.essential-content {
+			.uk-section {
+				.uk-container {
+					.uk-grid {
+						.uk-list {
+							.el-item {
+								.uk-icon {
+									color: $essential !important;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		.highly-desirable-content {
+			.uk-section {
+				.uk-container {
+					.uk-grid {
+						.uk-list {
+							.el-item {
+								.uk-icon {
+									color: $highly-desirable !important;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		.desirable-content {
+			.uk-section {
+				.uk-container {
+					.uk-grid {
+						.uk-list {
+							.el-item {
+								.uk-icon {
+									color: $desirable !important;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		.dislikes-content {
+			.uk-section {
+				.uk-container {
+					.uk-grid {
+						.uk-list {
+							.el-item {
+								.uk-icon {
+									color: $dislikes !important;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
 //GALLERY
 .uk-lightbox-toolbar {
 	&.uk-position-top {
