@@ -122,10 +122,10 @@ class CustomArticleQueryType
                                 'enable' => '!id',
                             ],
                             'users' => [
-                                'label' => trans('Filter by Users'),
+                                'label' => trans('Filter by Authors'),
                                 'type' => 'select',
                                 'default' => [],
-                                'options' => [['evaluate' => 'config.users']],
+                                'options' => [['evaluate' => 'config.authors']],
                                 'attrs' => [
                                     'multiple' => true,
                                     'class' => 'uk-height-small',
@@ -134,7 +134,7 @@ class CustomArticleQueryType
                             ],
                             'users_operator' => [
                                 'description' => trans(
-                                    'Filter articles by users. Use the <kbd>shift</kbd> or <kbd>ctrl/cmd</kbd> key to select multiple users. Set the logical operator to match or not match the selected users.'
+                                    'Filter articles by authors. Use the <kbd>shift</kbd> or <kbd>ctrl/cmd</kbd> key to select multiple users. Set the logical operator to match or not match the selected users.'
                                 ),
                                 'type' => 'select',
                                 'default' => 'IN',

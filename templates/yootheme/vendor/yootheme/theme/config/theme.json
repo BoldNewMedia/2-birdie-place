@@ -36,6 +36,7 @@
 
         "mobile": {
             "breakpoint": "m",
+            "sticky": 0,
             "logo": "center",
             "toggle": "left",
             "search": "right",

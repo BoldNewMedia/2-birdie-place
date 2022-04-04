@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="3.1" method="upgrade" client="site">
     <name>MOD_YOOTHEME_BUILDER</name>
-    <version>2.7.20</version>
+    <version>2.7.21</version>
     <description>MOD_YOOTHEME_BUILDER_XML_DESCRIPTION</description>
     <creationDate>March 2022</creationDate>
     <copyright>Copyright (C) YOOtheme GmbH</copyright>

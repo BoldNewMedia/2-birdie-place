@@ -19,7 +19,7 @@ class CustomizerListener
     ) {
         // load builder
         $config->update('~theme.footer.content', function ($footer) use ($builder) {
-            return $builder->load($footer ? json_encode($footer) : '{}');
+            return $footer ? $builder->load(json_encode($footer)) : null;
         });
 
         // add config

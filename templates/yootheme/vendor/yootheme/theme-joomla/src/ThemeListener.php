@@ -49,7 +49,6 @@ class ThemeListener
         }
 
         $view = $event->getArgument('subject');
-        $path = $view->get('_path');
 
         // loader callback for template event
         $loader = function ($path) use ($view) {
@@ -71,9 +70,11 @@ class ThemeListener
         }
 
         // add loader using a stream reference
-        array_unshift($path['template'], 'views://' . StreamWrapper::setObject($loader));
-
-        $view->set('_path', $path);
+        // check if path is available (StackIdeas com_payplan)
+        if ($path = $view->get('_path')) {
+            array_unshift($path['template'], 'views://' . StreamWrapper::setObject($loader));
+            $view->set('_path', $path);
+        }
     }
 
     public static function loadTemplate(Config $config, $event)

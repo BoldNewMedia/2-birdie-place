@@ -35,6 +35,4 @@ if ($element['title_colon']) {
 
 ?>
 
-<?php if ($props['title']) : ?>
 <?= $title($element, $props['title']) ?>
-<?php endif ?>

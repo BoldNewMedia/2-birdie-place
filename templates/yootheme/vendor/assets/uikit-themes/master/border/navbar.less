@@ -284,7 +284,6 @@
 
 .hook-inverse() when not (@navbar-mode = frame) and (@navbar-mode-border-vertical = all) {
 
-
     .uk-navbar-left .uk-navbar-nav,
     .uk-navbar-left .uk-navbar-item,
     .uk-navbar-left .uk-navbar-toggle,
@@ -304,20 +303,19 @@
 
 .hook-inverse() when (@navbar-mode = frame) and (@navbar-mode-border-vertical = all) {
 
+    .tm-header & .uk-navbar-left .uk-navbar-nav,
+    .tm-header & .uk-navbar-left .uk-navbar-item,
+    .tm-header & .uk-navbar-left .uk-navbar-toggle,
+    .tm-header & .uk-navbar-center > :last-child,
+    .tm-header & .uk-navbar-right .uk-navbar-nav > li:nth-last-child(n+2) > a { border-right-color: @inverse-navbar-border; }
 
-    .tm-header .uk-navbar-left .uk-navbar-nav,
-    .tm-header .uk-navbar-left .uk-navbar-item,
-    .tm-header .uk-navbar-left .uk-navbar-toggle,
-    .tm-header .uk-navbar-center > :last-child,
-    .tm-header .uk-navbar-right .uk-navbar-nav > li:nth-last-child(n+2) > a { border-right-color: @inverse-navbar-border; }
-
-    .tm-header .uk-navbar-right .uk-navbar-nav,
-    .tm-header .uk-navbar-right .uk-navbar-item,
-    .tm-header .uk-navbar-right .uk-navbar-toggle,
-    .tm-header .uk-navbar-center .uk-navbar-nav,
-    .tm-header .uk-navbar-center .uk-navbar-item,
-    .tm-header .uk-navbar-center .uk-navbar-toggle,
-    .tm-header .uk-navbar-left .uk-navbar-nav > li:nth-child(n+2) > a,
-    .tm-header .uk-navbar-center .uk-navbar-nav > li:nth-child(n+2) > a { border-left-color: @inverse-navbar-border; }
+    .tm-header & .uk-navbar-right .uk-navbar-nav,
+    .tm-header & .uk-navbar-right .uk-navbar-item,
+    .tm-header & .uk-navbar-right .uk-navbar-toggle,
+    .tm-header & .uk-navbar-center .uk-navbar-nav,
+    .tm-header & .uk-navbar-center .uk-navbar-item,
+    .tm-header & .uk-navbar-center .uk-navbar-toggle,
+    .tm-header & .uk-navbar-left .uk-navbar-nav > li:nth-child(n+2) > a,
+    .tm-header & .uk-navbar-center .uk-navbar-nav > li:nth-child(n+2) > a { border-left-color: @inverse-navbar-border; }
 
 }

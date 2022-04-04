@@ -1,5 +1,4 @@
 {
-    "CSS/Less": "CSS/Less",
     "-": "-",
     "- Select -": "- Velg -",
     "- Select Module -": "- Velg modul -",
@@ -48,7 +47,6 @@
     "Add a parallax effect.": "Legg til parallakse effekt.",
     "Add bottom margin": "Legg til bunnmarg",
     "Add clipping offset": "Legg til klippe avsats",
-    "Add custom CSS or LESS to your site. All LESS theme variables and mixins are available. The &lt;style&gt; tag is not needed.": "Legg til tilpasset CSS eller LESS til siden. Alle LESS-temavariablene and mixins er tilgjengelig.  &lt;style&gt; tagg er ikke nødvendig.",
     "Add custom JavaScript to your site. The &lt;script&gt; tag is not needed.": "Legg til tilpasset JavaScript til din side. &lt;script&gt; tagg er ikke nødvendig.",
     "Add custom JavaScript which sets cookies. It will be loaded after consent is given. The &lt;script&gt; tag is not needed.": "Legg til egendefinert Javascript som aktiverer informasjonskapsler. Disse vil først lastes etter at samtykket er gitt. &lt;script&gt;-tagg er ikke nødvendig.",
     "Add Element": "Legg til element",
@@ -289,7 +287,7 @@
     "Critical issues detected.": "Kritiske feil funnet.",
     "Cross-Sell Products": "Kryss-salg produkter",
     "CSS": "CSS",
-    "CSS/LESS": "CSS/LESS",
+    "CSS/Less": "CSS/Less",
     "Curated by <a href>%user%</a>": "Kuratert av <a href>%user%</a>",
     "Current Layout": "Nåværende utforming",
     "Current Style": "Nåværende stil",

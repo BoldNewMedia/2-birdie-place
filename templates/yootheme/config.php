@@ -10,7 +10,7 @@ return [
 
             'name' => 'YOOtheme',
 
-            'version' => '2.7.20',
+            'version' => '2.7.21',
 
             'url' => Url::to(__DIR__),
 

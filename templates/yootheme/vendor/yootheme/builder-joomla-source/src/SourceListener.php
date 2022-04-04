@@ -265,10 +265,10 @@ class SourceListener
         );
 
         $config->add(
-            'customizer.users',
+            'customizer.authors',
             array_map(function ($user) {
                 return ['value' => (string) $user->value, 'text' => $user->text];
-            }, HTMLHelper::_('user.userlist'))
+            }, UserHelper::getAuthorList())
         );
 
         $config->add(

@@ -10,7 +10,6 @@
     "Add a leader": "リーダーを追加",
     "Add a parallax effect or fix the background with regard to the viewport while scrolling.": "スクロール中に視差効果を追加するか、ビューポートに関する背景を修正します。",
     "Add a parallax effect.": "視差効果を追加します",
-    "Add custom CSS or LESS to your site. All LESS theme variables and mixins are available. The &lt;style&gt; tag is not needed.": "サイトにカスタムCSSまたはLESSを追加します。すべてのLESSテーマ変数とmixinが利用可能です。 &lt;style&gt;タグは必要ありません。",
     "Add custom JavaScript to your site. The &lt;script&gt; tag is not needed.": "あなたのサイトにカスタムJavaScriptを追加します。 &lt;script&gt;タグは必要ありません。",
     "Add Element": "要素の追加",
     "Add extra margin to the button.": "ボタンに余裕を持たせる。",

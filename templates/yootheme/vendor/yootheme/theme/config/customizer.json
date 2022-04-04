@@ -749,7 +749,6 @@
                     "label": "Navbar",
                     "description": "Let the navbar stick at the top of the viewport while scrolling or only when scrolling up.",
                     "type": "select",
-                    "default": 0,
                     "options": {
                         "Static": 0,
                         "Sticky": 1,

@@ -1,10 +1,23 @@
 # Changelog
 
+## 2.7.21 (March 29, 2022)
+
+### Fixed
+
+- Fix navbar border mode frame for inverse (Makai style)
+- Fix '0' values not rendered in title in description list element
+- Fix custom articles/post source can be filtered by authors only
+- Fix get lat/lon values in Toolset maps field (WordPress)
+- Fix extension template loading (Joomla)
+- Fix Custom module renders empty background image (Joomla)
+- Fix Custom module's `prepare_content` option (Joomla)
+- Fix author source empty on author-archive view for authors without posts (WordPress)
+
 ## 2.7.20 (March 1, 2022)
 
 ### Removed
 
-- Remove edit post links. Use 'Edit Page' link in admin tool bar instead (WordPress)
+- Remove edit post links. Use 'Edit Page' link in admin toolbar instead (WordPress)
 
 ### Change
 
@@ -12,7 +25,7 @@
 
 ### Fixed
 
-- Fix error in toolset repeatable field group (WordPress)
+- Fix error in Toolset repeatable field group (WordPress)
 - Fix builder content gets corrupted with JCE active on article edit view (Joomla)
 - Fix search default form if searchword has less than 3 characters (Joomla)
 - Fix PHP warning when YOOtheme Pro is not selected as frontend template (Joomla)

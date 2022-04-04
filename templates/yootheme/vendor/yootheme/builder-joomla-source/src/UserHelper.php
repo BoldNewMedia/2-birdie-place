@@ -2,8 +2,10 @@
 
 namespace YOOtheme\Builder\Joomla\Source;
 
+use Joomla\CMS\Access\Access;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Helper\UserGroupsHelper;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Router\Route;
@@ -101,5 +103,32 @@ class UserHelper
         }
 
         return $model->getItems();
+    }
+
+    public static function getAuthorList()
+    {
+        /**
+         * @var Database $db
+         */
+        $db = app(Database::class);
+
+        $usergroups = array_filter(
+            array_map(function ($usergroup) {
+                return $usergroup->id;
+            }, UserGroupsHelper::getInstance()->getAll()),
+            function ($id) {
+                return Access::checkGroup($id, 'core.create', 'com_content') ||
+                    Access::checkGroup($id, 'core.admin');
+            }
+        );
+
+        $query = 'SELECT DISTINCT(user_id) as value, u.name as text
+                    FROM #__usergroups as ug1
+                    JOIN #__usergroups AS ug2 ON ug2.lft >= ug1.lft AND ug1.rgt >= ug2.rgt
+                    JOIN #__user_usergroup_map AS m ON ug2.id=m.group_id
+                    JOIN #__users AS u ON u.id=user_id
+                    WHERE ug1.id IN (:groups)';
+
+        return $db->fetchAllObjects($query, ['groups' => $usergroups]);
     }
 }

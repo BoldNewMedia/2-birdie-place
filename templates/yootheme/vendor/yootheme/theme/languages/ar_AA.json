@@ -11,7 +11,6 @@
     "Add a leader": "أضف زعيم",
     "Add a parallax effect or fix the background with regard to the viewport while scrolling.": "إضافة تأثير المنظر أو إصلاح الخلفية فيما يتعلق بإطار العرض أثناء التمرير.",
     "Add a parallax effect.": "إضافة تأثير المنظر.",
-    "Add custom CSS or LESS to your site. All LESS theme variables and mixins are available. The &lt;style&gt; tag is not needed.": "أضف CSS أو LESS خاص لموقعك. كل متغيرات القالب والمزيجات متوفرة. لا داعي لإضافة وسم &lt;style&gt;.",
     "Add custom JavaScript to your site. The &lt;script&gt; tag is not needed.": "أضف JavaScript خاص لموقعك. لا داعي لإضافة وسم &lt;script&gt;.",
     "Add Element": "إضافة عنصر",
     "Add extra margin to the button.": "أضف هامش إضافي إلى الزر.",
@@ -79,6 +78,5 @@
     "Center, left and right alignment may depend on a breakpoint and require a fallback.": "قد تعتمد محاذاة الوسط واليسار واليمين على نقطة توقف وتتطلب الاستعادة.",
     "Changelog": "التغيير",
     "Choose Font": "اختر الخط",
-    "CSS": "CSS",
-    "CSS/LESS": "CSS/LESS"
+    "CSS": "CSS"
 }

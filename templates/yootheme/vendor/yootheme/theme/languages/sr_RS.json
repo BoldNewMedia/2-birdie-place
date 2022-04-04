@@ -26,7 +26,6 @@
     "Add a parallax effect or fix the background with regard to the viewport while scrolling.": "Додај ефекат паралакс или фиксирану позадину на позадину у видном пољу док се скролује страница.",
     "Add a parallax effect.": "Додај ефекат паралакса.",
     "Add bottom margin": "Додај доњу маргину",
-    "Add custom CSS or LESS to your site. All LESS theme variables and mixins are available. The &lt;style&gt; tag is not needed.": "Додај произвољни CSS или LESS на свој сајт. Све LESS варијабле у теми и мексеви су дозвољени. Ознака &lt;style&gt; није потребна.",
     "Add custom JavaScript to your site. The &lt;script&gt; tag is not needed.": "Додај произвољни JavaScript на сајт. Ознака &lt;script&gt; није потребна.",
     "Add Element": "Додај елемент",
     "Add extra margin to the button.": "Додај додатну маргину на дну.",

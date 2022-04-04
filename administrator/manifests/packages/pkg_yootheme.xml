@@ -2,7 +2,7 @@
 <extension version="3.1" type="package" method="upgrade">
     <name>YOOtheme</name>
     <packagename>yootheme</packagename>
-    <version>2.7.20</version>
+    <version>2.7.21</version>
     <description>A powerful, flexible and elegant website builder that allows you to create complex pages within minutes and customize every aspect of the theme.</description>
     <creationDate>March 2022</creationDate>
     <copyright>Copyright (C) YOOtheme GmbH</copyright>
