@@ -13,13 +13,13 @@ class WFMediamanagerPluginConfig
     public static function getConfig(&$settings)
     {
         $wf = WFApplication::getInstance();
-        
+
         require_once __DIR__ . '/mediamanager.php';
 
         $plugin = new WFMediaManagerPlugin();
 
         $config = array(
-            'quickmedia' => array()
+            'quickmedia' => array(),
         );
 
         if ($plugin->getParam('aggregator.youtube.enable', 1) || $plugin->getParam('aggregator.vimeo.enable', 1)) {
@@ -45,13 +45,13 @@ class WFMediamanagerPluginConfig
         $filetypes = array_values($plugin->getFileTypes());
 
         // only allow a limited set that are support by the <video> and <audio> tags
-        $filetypes = array_intersect($filetypes, array('mp3', 'oga', 'm4a', 'mp4', 'm4v', 'ogg', 'webm', 'ogv'));
+        $filetypes_set = array_intersect($filetypes, array('mp3', 'oga', 'm4a', 'mp4', 'm4v', 'ogg', 'webm', 'ogv'));
 
         if ($plugin->getParam('inline_upload', 1) && $plugin->getParam('upload', 1)) {
             $config['upload'] = array(
                 'max_size' => $plugin->getParam('max_size', 1024),
-                'filetypes' => array_values($filetypes),
-                'inline' => true
+                'filetypes' => array_values($filetypes_set),
+                'inline' => true,
             );
         }
 
@@ -64,7 +64,7 @@ class WFMediamanagerPluginConfig
 
             if ($plugin->getParam('basic_dialog_filebrowser', 1) == 1) {
                 $config['basic_dialog_filebrowser'] = true;
-                $config['filetypes'] = array_values($filetypes);
+                $config['filetypes'] = array_values($filetypes_set);
             }
 
             $config['attributes'] = $plugin->getDefaultAttributes();
@@ -75,8 +75,8 @@ class WFMediamanagerPluginConfig
         if (!empty($custom_embed)) {
             $config['custom_embed'] = array();
 
-            foreach($custom_embed as $item) {
-                foreach($item as $key => $values) {
+            foreach ($custom_embed as $item) {
+                foreach ($item as $key => $values) {
                     $config['custom_embed'][$key] = $values;
                 }
             }
@@ -84,9 +84,10 @@ class WFMediamanagerPluginConfig
 
         $settings['mediamanager'] = $config;
 
-        // add the media plugin if needed
+        // ensure the media plugin is added and invalid elements updated
         if (!in_array('media', $settings['plugins'])) {
             $settings['plugins'][] = 'media';
+            $settings['invalid_elements'] = array_diff($settings['invalid_elements'], array('video', 'audio', 'source', 'object', 'embed', 'param'));
         }
     }
 }

@@ -1893,20 +1893,24 @@ class WFMediaManager extends WFMediaManagerBase
 
                 $handle = imagecreatefromjpeg($file);
 
-                if (is_resource($handle)) {
-                    if ($rotate) {
-                        $rotation = imagerotate($handle, -$rotate, 0);
-
-                        if ($rotation) {
-                            $handle = $rotation;
-                        }
-                    }
-
-                    imagejpeg($handle, $file);
-                    @imagedestroy($handle);
-
-                    return true;
+                // extended resource check
+                if (!((is_object($handle) && get_class($handle) == 'GdImage') || (is_resource($handle) && get_resource_type($handle) == 'gd'))) {
+                    return false;
                 }
+
+                if ($rotate) {
+                    $rotation = imagerotate($handle, -$rotate, 0);
+
+                    if ($rotation) {
+                        $handle = $rotation;
+                    }
+                }
+
+                imagejpeg($handle, $file);
+                @imagedestroy($handle);
+
+                return true;
+
             } catch (Exception $e) {
             }
         }
