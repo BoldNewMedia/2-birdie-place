@@ -40,6 +40,11 @@
 .uk-heading-bullet.uk-h1 {
   text-transform: uppercase; }
 
+.uk-lightbox-panel.bgm-active-caption .uk-lightbox-caption {
+  --uk-translate-x: 0 !important;
+  --uk-translate-y: 0 !important; }
+
+/* @end */
 .bgm-tabs-section h3.uk-h2 {
   text-transform: uppercase; }
 
