@@ -50,6 +50,13 @@
 		text-transform: uppercase;
 	}
 }
+
+//BGM Active Lightbox Caption
+.uk-lightbox-panel.bgm-active-caption .uk-lightbox-caption{
+	--uk-translate-x: 0 !important;
+    --uk-translate-y: 0 !important;
+}
+/* @end */
 //BGM TABS
 .bgm-tabs-section {
 	h3.uk-h2 {
