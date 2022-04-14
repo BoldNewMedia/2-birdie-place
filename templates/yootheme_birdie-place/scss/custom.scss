@@ -12,6 +12,16 @@
 /* @end */
 
 /* @group BUTTONS */
+.bgm-button-white {
+	.uk-button-secondary {
+		color: $white;
+		border: 1px solid $white;
+		&:hover {
+			background-color: $white;
+			color: $black;
+		}
+	}
+}
 /* @end */
 
 /* @group COMPONENTS */
@@ -27,6 +37,19 @@
 /* @end */
 
 /* @group MENUS */
+//MAIN MENU
+#module-menu-navbar {
+	.uk-nav-default {
+		text-transform: uppercase;
+		li {
+			.uk-nav-sub {
+				li {
+					text-transform: none;
+				}
+			}
+		}
+	}
+}
 /* @end */
 
 /* @group MODULES*/
@@ -50,7 +73,9 @@
 		text-transform: uppercase;
 	}
 }
-
+.bgm-text-white {
+	color: $white;
+}
 //BGM Active Lightbox Caption
 .uk-lightbox-panel.bgm-active-caption .uk-lightbox-caption{
 	--uk-translate-x: 0 !important;

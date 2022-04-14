@@ -15,6 +15,13 @@
 /* @group VARIABLES */
 /* @end */
 /* @group BUTTONS */
+.bgm-button-white .uk-button-secondary {
+  color: #FFFFFF;
+  border: 1px solid #FFFFFF; }
+  .bgm-button-white .uk-button-secondary:hover {
+    background-color: #FFFFFF;
+    color: #000104; }
+
 /* @end */
 /* @group COMPONENTS */
 /* @end */
@@ -25,6 +32,11 @@
 /* @group LAYOUT */
 /* @end */
 /* @group MENUS */
+#module-menu-navbar .uk-nav-default {
+  text-transform: uppercase; }
+  #module-menu-navbar .uk-nav-default li .uk-nav-sub li {
+    text-transform: none; }
+
 /* @end */
 /* @group MODULES*/
 /* @end */
@@ -39,6 +51,9 @@
 /* @group TYPOGRAPHY */
 .uk-heading-bullet.uk-h1 {
   text-transform: uppercase; }
+
+.bgm-text-white {
+  color: #FFFFFF; }
 
 .uk-lightbox-panel.bgm-active-caption .uk-lightbox-caption {
   --uk-translate-x: 0 !important;
