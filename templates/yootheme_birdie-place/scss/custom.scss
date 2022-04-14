@@ -64,13 +64,16 @@
 
 /* @group PAGES */
 .home {
-	.uk-navbar {
-		.uk-navbar-center {
-			img, svg {
-				opacity: 0.5;
+	.tm-header {
+		.uk-navbar {
+			.uk-navbar-center {
+				img, svg {
+					opacity: 0.5;
+				}
 			}
 		}
 	}
+	
 	h1, h2, h3 {
 		opacity: 0.5;
 	}

@@ -44,7 +44,7 @@
 /* @group MODULES*/
 /* @end */
 /* @group PAGES */
-.home .uk-navbar .uk-navbar-center img, .home .uk-navbar .uk-navbar-center svg {
+.home .tm-header .uk-navbar .uk-navbar-center img, .home .tm-header .uk-navbar .uk-navbar-center svg {
   opacity: 0.5; }
 .home h1, .home h2, .home h3 {
   opacity: 0.5; }
