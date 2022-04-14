@@ -22,6 +22,9 @@
     background-color: #FFFFFF;
     color: #000104; }
 
+.bgm-button-default .el-item .uk-button-default {
+  color: #000104; }
+
 /* @end */
 /* @group COMPONENTS */
 /* @end */
@@ -41,6 +44,11 @@
 /* @group MODULES*/
 /* @end */
 /* @group PAGES */
+.home .uk-navbar .uk-navbar-center img, .home .uk-navbar .uk-navbar-center svg {
+  opacity: 0.5; }
+.home h1, .home h2, .home h3 {
+  opacity: 0.5; }
+
 /* @end */
 /* @group PARTICLES */
 /* @end */
@@ -91,6 +99,9 @@
 
 .uk-lightbox-toolbar.uk-position-top {
   display: none; }
+
+.uk-transition-toggle:hover .uk-transition-fade {
+  opacity: 0.8; }
 
 /* @end */
 /* @group YT PRO PANELS */
