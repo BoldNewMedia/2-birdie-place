@@ -31,12 +31,12 @@ class PlgContentBgm_Yoothemepro_Tabs extends JPlugin{
 	
 	public function getClassTab($class){
 		$remove = ['bgm-tab' ,'uk-section-default', 'uk-section'];
-		return trim(str_replace($remove, ['','',''], $class));
+		return trim(str_replace($remove, ['bgmtab_replaced','','','', ''], $class));
 	}
 	
-	public function BGM_Custom_Tab($items){
+	public function BGM_Custom_Tab($items, $classtab = ''){
         ob_start(); ?>
-        <div class="uk-section bgm-tabs-section">
+        <div class="uk-section bgm-tabs-section other-<?php echo $classtab;?>">
             <div class="uk-container uk-container-expand">
                 <ul class="el-nav uk-subnav uk-subnav-pill uk-flex-center" uk-switcher="animation: uk-animation-fade;">
                     <?php foreach ($items as $i=>$dom){ 
@@ -50,7 +50,7 @@ class PlgContentBgm_Yoothemepro_Tabs extends JPlugin{
 						$tabclass = $this->getClassTab($dom->attr['class']);
 						?>
 						<li class="<?php echo $tabclass; ?>-content">
-							<?php echo str_replace('bgm-tab', 'bgm-tab-replaced',$dom->outertext()); ?>
+							<?php echo str_replace($classtab, 'bgm-tab_replaced',$dom->outertext()); ?>
 						</li>
                     <?php } ?>
                 </ul>
@@ -69,13 +69,41 @@ class PlgContentBgm_Yoothemepro_Tabs extends JPlugin{
 		$tabs = $dom_content->find('.bgm-tab');
 		#BGM check if has format custom tab
 		if(count($tabs) > 0){
-			$tab_content = $this->BGM_Custom_Tab($tabs);
+			$tab_content = $this->BGM_Custom_Tab($tabs, 'bgm-tab');
 			foreach ($dom_content->find('.bgm-tab') as $i=> $tab){
 				if($i == 0) $tab->outertext  = $tab_content;
 				else $tab->remove();
 			}
 			$content = $dom_content;
 		}
+                
+                #add code for other tab
+                $tabsOther = $dom_content->find('[class^=bgm-tab-]');
+                if(count($tabsOther) > 0){
+                    $groups = [];
+                    foreach ($tabsOther as $tItems){
+                        $class = explode(' ', $tItems->attr['class']);
+                        $groups[] = $class[0];
+                    }
+                }
+                
+                if($groups){
+                    foreach ($groups as $classTab){
+                        $dom_content = str_get_html($content);
+                        $tabItem = $dom_content->find('.'.$classTab);
+                        if(count($tabItem) > 0){
+                            $tab_content = $this->BGM_Custom_Tab($tabItem, $classTab);
+                            foreach ($dom_content->find('.'.$classTab) as $i=> $tab){
+                                    if($i == 0) $tab->outertext  = $tab_content;
+                                    else $tab->remove();
+                            }
+                            $content = $dom_content;
+                        }
+                        
+                    }
+                }
+
+                #and other tab
 		$row->text = $content;
 	}
 }
