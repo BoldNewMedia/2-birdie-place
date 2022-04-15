@@ -88,14 +88,30 @@
   background-color: #ffa080; }
 .bgm-tabs-section .el-nav.uk-subnav-pill .uk-active.dislikes a {
   background-color: #B8293D; }
-.bgm-tabs-section .uk-switcher .essential-content .uk-section .uk-container .uk-grid .uk-list .el-item .uk-icon {
-  color: #a5d46a !important; }
-.bgm-tabs-section .uk-switcher .highly-desirable-content .uk-section .uk-container .uk-grid .uk-list .el-item .uk-icon {
-  color: #bec991 !important; }
-.bgm-tabs-section .uk-switcher .desirable-content .uk-section .uk-container .uk-grid .uk-list .el-item .uk-icon {
-  color: #ffa080 !important; }
-.bgm-tabs-section .uk-switcher .dislikes-content .uk-section .uk-container .uk-grid .uk-list .el-item .uk-icon {
-  color: #B8293D !important; }
+.bgm-tabs-section .uk-switcher .essential-content .uk-section .uk-container {
+  /*Bullet Heading*/ }
+  .bgm-tabs-section .uk-switcher .essential-content .uk-section .uk-container .uk-grid .uk-list .el-item .uk-icon {
+    color: #a5d46a !important; }
+.bgm-tabs-section .uk-switcher .essential-content .uk-section .uk-container .uk-heading-bullet:before {
+  border-left-color: #a5d46a; }
+.bgm-tabs-section .uk-switcher .highly-desirable-content .uk-section .uk-container {
+  /*Bullet Heading*/ }
+  .bgm-tabs-section .uk-switcher .highly-desirable-content .uk-section .uk-container .uk-grid .uk-list .el-item .uk-icon {
+    color: #bec991 !important; }
+.bgm-tabs-section .uk-switcher .highly-desirable-content .uk-section .uk-container .uk-heading-bullet:before {
+  border-left-color: #bec991; }
+.bgm-tabs-section .uk-switcher .desirable-content .uk-section .uk-container {
+  /*Bullet Heading*/ }
+  .bgm-tabs-section .uk-switcher .desirable-content .uk-section .uk-container .uk-grid .uk-list .el-item .uk-icon {
+    color: #ffa080 !important; }
+.bgm-tabs-section .uk-switcher .desirable-content .uk-section .uk-container .uk-heading-bullet:before {
+  border-left-color: #ffa080; }
+.bgm-tabs-section .uk-switcher .dislikes-content .uk-section .uk-container {
+  /*Bullet Heading*/ }
+  .bgm-tabs-section .uk-switcher .dislikes-content .uk-section .uk-container .uk-grid .uk-list .el-item .uk-icon {
+    color: #B8293D !important; }
+.bgm-tabs-section .uk-switcher .dislikes-content .uk-section .uk-container .uk-heading-bullet:before {
+  border-left-color: #B8293D; }
 
 .uk-lightbox-toolbar.uk-position-top {
   display: none; }

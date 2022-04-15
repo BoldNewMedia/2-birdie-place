@@ -167,6 +167,13 @@
 							}
 						}
 					}
+					/*Bullet Heading*/
+					
+					.uk-heading-bullet {
+						&:before {
+							border-left-color: $essential;
+						}
+					}
 				}
 			}
 		}
@@ -181,6 +188,13 @@
 									color: $highly-desirable !important;
 								}
 							}
+						}
+					}
+					/*Bullet Heading*/
+					
+					.uk-heading-bullet {
+						&:before {
+							border-left-color: $highly-desirable;
 						}
 					}
 				}
@@ -199,6 +213,13 @@
 							}
 						}
 					}
+					/*Bullet Heading*/
+					
+					.uk-heading-bullet {
+						&:before {
+							border-left-color: $desirable;
+						}
+					}
 				}
 			}
 		}
@@ -213,6 +234,13 @@
 									color: $dislikes !important;
 								}
 							}
+						}
+					}
+					/*Bullet Heading*/
+					
+					.uk-heading-bullet {
+						&:before {
+							border-left-color: $dislikes;
 						}
 					}
 				}
