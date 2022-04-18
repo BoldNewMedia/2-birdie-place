@@ -121,6 +121,9 @@
 .uk-transition-toggle:hover .uk-transition-fade {
   opacity: 0.8; }
 
+.uk-text-left a.el-content.uk-flex-inline.uk-flex-center.uk-flex-middle {
+  padding-top: 3px; }
+
 /* @end */
 /* @group YT PRO PANELS */
 /* @end */
