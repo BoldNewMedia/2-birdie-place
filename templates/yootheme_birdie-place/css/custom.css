@@ -24,6 +24,8 @@
 
 .bgm-button-default .el-item .uk-button-default {
   color: #000104; }
+.bgm-button-default .el-content.uk-button-default {
+  color: #000104; }
 
 /* @end */
 /* @group COMPONENTS */
