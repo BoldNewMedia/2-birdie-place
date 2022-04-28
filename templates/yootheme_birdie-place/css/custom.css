@@ -69,8 +69,10 @@
   --uk-translate-x: 0 !important;
   --uk-translate-y: 0 !important; }
 
-/* @end */
 .bgm-tabs-section h3.uk-h2 {
+  text-transform: uppercase; }
+
+#pagination .uk-container .el-content {
   text-transform: uppercase; }
 
 /* @end */

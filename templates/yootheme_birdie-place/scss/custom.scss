@@ -108,11 +108,18 @@
 	--uk-translate-x: 0 !important;
     --uk-translate-y: 0 !important;
 }
-/* @end */
 //BGM TABS
 .bgm-tabs-section {
 	h3.uk-h2 {
 		text-transform: uppercase;
+	}
+}
+//PAGINATION
+#pagination {
+	.uk-container {
+		.el-content {
+			text-transform: uppercase;
+		}
 	}
 }
 /* @end */
