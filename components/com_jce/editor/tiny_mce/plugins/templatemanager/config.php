@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @copyright     Copyright (c) 2009-2021 Ryan Demmer. All rights reserved
+ * @copyright     Copyright (c) 2009-2022 Ryan Demmer. All rights reserved
  * @license       GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -28,63 +28,9 @@ class WFTemplateManagerPluginConfig
 
         $plugin = new WFTemplateManagerPlugin();
 
-        // associative array of template items
-        $list = array();
+        $config['replace_values'] = $plugin->replaceValuesToArray();
 
-        if ($wf->getParam('templatemanager.template_list', 1)) {
-            $templates = $wf->getParam('templatemanager.templates', array());
-
-            if (is_string($templates)) {
-                $templates = json_decode(htmlspecialchars_decode($templates), true);
-            }
-
-            if (!empty($templates)) {
-                foreach ($templates as $template) {
-                    $value      = "";
-                    $thumbnail  = "";
-
-                    extract($template);
-
-                    if (empty($url) && empty($html)) {
-                        continue;
-                    }
-
-                    if (!empty($url)) {
-                        if (preg_match("#\.(htm|html|txt)$#", $url) && strpos('://', $url) === false) {
-                            $url = trim($url, '/');
-                            
-                            $file = JPATH_SITE . '/' . $url;
-                            
-                            if (is_file($file)) {
-                                $value = JURI::root() . $url;
-
-                                $filename = WFUtility::stripExtension($url);
-
-                                if (!$thumbnail && is_file(JPATH_SITE . '/' . $filename . '.jpg')) {
-                                    $thumbnail = $filename . '.jpg';
-                                }
-                            }
-                        }
-                    } else if (!empty($html)) {
-                        $value = htmlspecialchars_decode($html);
-                    }
-
-                    if ($thumbnail) {
-                        $thumbnail = JURI::root(true) . '/' . $thumbnail;
-                    }
-
-                    $list[$name] = array(
-                        'data'  => $value,
-                        'image' => $thumbnail
-                    );
-                }
-            }
-
-            // a default list of template files
-            if (empty($list)) {
-                $list = $plugin->getTemplateList();
-            }
-        }
+        $config['list'] = $wf->getParam('templatemanager.template_list', 1);
 
         if ($plugin->getParam('inline_upload', 1)) {
             $config['upload'] = array(
@@ -92,10 +38,6 @@ class WFTemplateManagerPluginConfig
                 'filetypes' => $plugin->getFileTypes(),
                 'inline' => true
             );
-        }
-
-        if (!empty($list)) {
-            $config['templates'] = $list;
         }
 
         if ($plugin->getParam('text_editor', 0)) {

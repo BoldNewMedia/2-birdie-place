@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @copyright     Copyright (c) 2009-2021 Ryan Demmer. All rights reserved
+ * @copyright     Copyright (c) 2009-2022 Ryan Demmer. All rights reserved
  * @license       GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -84,7 +84,7 @@ class WFMediaManagerPlugin extends WFMediaManager
         ));
 
         if (!empty($video)) {
-            $video = array_filter($video, function (&$value) {
+            $video = array_filter($video, function ($value) {
                 if (is_numeric($value)) {
                     return (int) $value === 1;
                 }
@@ -96,7 +96,7 @@ class WFMediaManagerPlugin extends WFMediaManager
         }
 
         if (!empty($audio)) {
-            $audio = array_filter($video, function (&$value) {
+            $audio = array_filter($video, function ($value) {
                 if (is_numeric($value)) {
                     return (int) $value === 1;
                 }
@@ -304,6 +304,11 @@ class WFMediaManagerPlugin extends WFMediaManager
 
             $data = $this->getDataFromOEmbed($source);
 
+            // possible error
+            if (is_array($data)) {
+                $data = json_encode($data);
+            }
+
             $data = json_decode($data, true);
 
             if (empty($data)) {
@@ -326,14 +331,18 @@ class WFMediaManagerPlugin extends WFMediaManager
     {
         $http = JHttpFactory::getHttp();
 
+        $headers = array(
+            'User-Agent' => 'WfEditor oEmbed 1.0.0'
+        );
+
         try {
-            $response = $http->get($url);
+            $response = $http->get($url, $headers);
         } catch (\RuntimeException $e) {
             $response = null;
         }
 
         if ($response === null || $response->code !== 200) {
-            return array('error' => JText::_('Unable to get OEmbed Data - Invalid response from ' . $url));
+            return array('error' => JText::_('Unable to get oEmbed Data - Invalid response from ' . $url));
         }
 
         return $response->body;

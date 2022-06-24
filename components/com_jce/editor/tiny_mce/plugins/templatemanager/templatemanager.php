@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @copyright     Copyright (c) 2009-2021 Ryan Demmer. All rights reserved
+ * @copyright     Copyright (c) 2009-2022 Ryan Demmer. All rights reserved
  * @license       GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -25,6 +25,7 @@ final class WFTemplateManagerPlugin extends WFMediaManager
         // add a request to the stack
         $request = WFRequest::getInstance();
         $request->setRequest(array($this, 'loadTemplate'));
+        $request->setRequest(array($this, 'getTemplateList'));
 
         if ($this->getParam('allow_save', 1)) {
             $request->setRequest(array($this, 'createTemplate'));
@@ -116,32 +117,35 @@ final class WFTemplateManagerPlugin extends WFMediaManager
         // Remove any existing template div
         $data = preg_replace('/<div(.*?)class="mceTmpl"([^>]*?)>([\s\S]*?)<\/div>/i', '$3', $data);
 
-        // if the template contains any variables, then treat it as a dynamic template
-        if ($this->isDynamicTemplate($data)) {
-            $data = '<div class="mceTmpl">' . $data . '</div>';
-        }
+        $data = stripslashes($data);
 
-        if (!$browser->getFileSystem()->write($path, stripslashes($data))) {
+        if (!$browser->getFileSystem()->write($path, $data)) {
             $browser->setResult(JText::_('WF_TEMPLATEMANAGER_WRITE_ERROR'), 'error');
         }
 
         return $browser->getResult();
     }
 
-    protected function isDynamicTemplate($content)
-    {
-        return preg_match('/\{\$(.+?)\}/i', $content);
-    }
-
-    protected function replaceValuesToArray()
+    public function replaceValuesToArray()
     {
         $data = array();
         $params = $this->getParam('replace_values');
 
         if ($params) {
-            foreach (explode(',', $params) as $param) {
-                list($key, $value) = preg_split('/[:=]/', $param);
-                $data[$key] = trim($value);
+            if (is_string($params)) {
+                foreach (explode(',', $params) as $param) {
+                    list($key, $value) = preg_split('/[:=]/', $param);
+
+                    $key = trim($key, chr(0x22) . chr(0x27) . chr(0x38));
+                    $value = trim($value, chr(0x22) . chr(0x27) . chr(0x38));
+
+                    $data[$key] = trim($value);
+                }
+            } else {
+                foreach ($params as $item) {
+                    list($key, $value) = array_values($item);
+                    $data[$key] = trim($value);
+                }
             }
         }
 
@@ -175,6 +179,9 @@ final class WFTemplateManagerPlugin extends WFMediaManager
                 if (isset($values[$key])) {
                     return $values[$key];
                 }
+
+                // return raw variable for user replacement
+                return $matches[0];
 
                 break;
         }
@@ -236,28 +243,80 @@ final class WFTemplateManagerPlugin extends WFMediaManager
     {
         $list = array();
 
-        $browser = $this->getFileBrowser();
-        $filesystem = $browser->getFileSystem();
+        $templates = $this->getParam('templates', array());
 
-        // skip for external filesystems
-        if (!$filesystem->get('local')) {
-            return $list;
+        if (is_string($templates)) {
+            $templates = json_decode(htmlspecialchars_decode($templates), true);
         }
 
-        $items = $browser->getItems('', 0);
+        if (!empty($templates)) {
+            foreach ($templates as $template) {
+                $value = "";
+                $thumbnail = "";
 
-        foreach ($items['files'] as $item) {
-            if ($item['name'] === "index.html") {
-                continue;
+                extract($template);
+
+                if (empty($url) && empty($html)) {
+                    continue;
+                }
+
+                if (!empty($url)) {
+                    if (preg_match("#\.(htm|html|txt)$#", $url) && strpos('://', $url) === false) {
+                        $url = trim($url, '/');
+
+                        $file = JPATH_SITE . '/' . $url;
+
+                        if (is_file($file)) {
+                            $value = JURI::root() . $url;
+
+                            $filename = WFUtility::stripExtension($url);
+
+                            if (!$thumbnail && is_file(JPATH_SITE . '/' . $filename . '.jpg')) {
+                                $thumbnail = $filename . '.jpg';
+                            }
+                        }
+                    }
+                } else if (!empty($html)) {
+                    $value = htmlspecialchars_decode($html);
+                }
+
+                if ($thumbnail) {
+                    $thumbnail = JURI::root(true) . '/' . $thumbnail;
+                }
+
+                $list[$name] = array(
+                    'data' => $value,
+                    'image' => $thumbnail,
+                );
+            }
+        }
+
+        // try files list
+        if (empty($list)) {
+            $browser = $this->getFileBrowser();
+            $filesystem = $browser->getFileSystem();
+
+            // skip for external filesystems
+            if (!$filesystem->get('local')) {
+                return $list;
             }
 
-            $name = WFUtility::getFilename($item['name']);
-            $value = $item['properties']['preview'];
+            // get items
+            $items = $browser->getItems('', 0);
 
-            $list[$name] = array(
-                'data' => $value,
-                'image' => '',
-            );
+            foreach ($items['files'] as $item) {
+                if ($item['name'] === "index.html") {
+                    continue;
+                }
+
+                $name = WFUtility::getFilename($item['name']);
+                $value = $item['properties']['preview'];
+
+                $list[$name] = array(
+                    'data' => $value,
+                    'image' => '',
+                );
+            }
         }
 
         return $list;

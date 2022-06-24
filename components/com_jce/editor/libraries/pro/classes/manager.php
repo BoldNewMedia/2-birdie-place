@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @copyright     Copyright (c) 2009-2021 Ryan Demmer. All rights reserved
+ * @copyright     Copyright (c) 2009-2022 Ryan Demmer. All rights reserved
  * @license       GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -901,9 +901,11 @@ class WFMediaManager extends WFMediaManagerBase
         // watermark state
         $watermark = (int) $browser->get('upload_watermark_state');
 
-        // option visible so allow user set value
-        if ((bool) $browser->get('upload_watermark')) {
-            $watermark = $app->input->getInt('upload_watermark_state', 0);
+        if ($app->input->getInt('inline', 0) == 0) {
+            // option visible so allow user set value
+            if ((bool) $browser->get('upload_watermark')) {
+                $watermark = $app->input->getInt('upload_watermark_state', 0);
+            }
         }
 
         // no watermark, return false
@@ -947,15 +949,17 @@ class WFMediaManager extends WFMediaManagerBase
 
         $crop = $browser->get('upload_thumbnail_crop');
 
-        // Thumbnail options visible
-        if ((bool) $browser->get('upload_thumbnail')) {
-            $thumbnail = $app->input->getInt('upload_thumbnail_state', 0);
+        if ($app->input->getInt('inline', 0) == 0) {
+            // Thumbnail options visible
+            if ((bool) $browser->get('upload_thumbnail')) {
+                $thumbnail = $app->input->getInt('upload_thumbnail_state', 0);
 
-            $tw = $app->input->getInt('upload_thumbnail_width');
-            $th = $app->input->getInt('upload_thumbnail_height');
+                $tw = $app->input->getInt('upload_thumbnail_width');
+                $th = $app->input->getInt('upload_thumbnail_height');
 
-            // Crop Thumbnail
-            $crop = $app->input->getInt('upload_thumbnail_crop', 0);
+                // Crop Thumbnail
+                $crop = $app->input->getInt('upload_thumbnail_crop', 0);
+            }
         }
 
         // not activated
