@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.7.22 (May 10, 2022)
+
+### Fixed
+
+- Fix compatibility in customizer (WordPress 6.0 RC1)
+- Fix styling in `tmpl=component` (Joomla 4)
+- Fix display title of single custom source (WordPress)
+
 ## 2.7.21 (March 29, 2022)
 
 ### Fixed

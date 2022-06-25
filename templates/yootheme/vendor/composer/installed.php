@@ -1,7 +1,7 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => '2.7.21',
-        'version' => '2.7.21.0',
+        'pretty_version' => '2.7.22',
+        'version' => '2.7.22.0',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -83,8 +83,8 @@
             'dev_requirement' => false,
         ),
         'yootheme/pro' => array(
-            'pretty_version' => '2.7.21',
-            'version' => '2.7.21.0',
+            'pretty_version' => '2.7.22',
+            'version' => '2.7.22.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

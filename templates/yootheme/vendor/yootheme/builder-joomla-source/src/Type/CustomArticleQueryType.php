@@ -134,7 +134,7 @@ class CustomArticleQueryType
                             ],
                             'users_operator' => [
                                 'description' => trans(
-                                    'Filter articles by authors. Use the <kbd>shift</kbd> or <kbd>ctrl/cmd</kbd> key to select multiple users. Set the logical operator to match or not match the selected users.'
+                                    'Filter articles by authors. Use the <kbd>shift</kbd> or <kbd>ctrl/cmd</kbd> key to select multiple authors. Set the logical operator to match or not match the selected authors.'
                                 ),
                                 'type' => 'select',
                                 'default' => 'IN',

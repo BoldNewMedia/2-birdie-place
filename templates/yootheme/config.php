@@ -10,7 +10,7 @@ return [
 
             'name' => 'YOOtheme',
 
-            'version' => '2.7.21',
+            'version' => '2.7.22',
 
             'url' => Url::to(__DIR__),
 
@@ -48,17 +48,6 @@ return [
                 'imports' => [
                     Path::get('./vendor/assets/uikit/src/images/backgrounds/*.svg'),
                     Path::get('./vendor/assets/uikit-themes/master/images/*.svg'),
-                ],
-
-            ],
-
-            'defaults' => [
-
-                'menu' => [
-                    'positions' => [
-                        'navbar' => '',
-                        'mobile' => '',
-                    ],
                 ],
 
             ],

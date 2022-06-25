@@ -44,7 +44,7 @@ class ThemeListener
 
     public static function beforeDisplay(Config $config, $event)
     {
-        if ($config('app.isAdmin')) {
+        if ($config('app.isAdmin') || !$config('~theme')) {
             return;
         }
 

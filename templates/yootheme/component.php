@@ -9,7 +9,7 @@ if (version_compare(JVERSION, '4.0', '>')) {
     $this->template = 'cassiopeia';
 
     $app = Factory::getApplication();
-    $app->setTemplate($this->template);
+    $app->setTemplate((object) ['template' => $this->template, 'inheritable' => true]);
 
     $wa = $this->getWebAssetManager();
     $wa->getRegistry()->addTemplateRegistryFile($this->template, $app->getClientId());
