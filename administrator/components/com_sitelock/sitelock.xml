@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="3.1" method="upgrade">
+<name>SiteLock</name>
+<author>www.JoomlaShowroom.com</author>
+<authorEmail>info@JoomlaShowroom.com</authorEmail>
+<authorUrl>www.JoomlaShowroom.com</authorUrl>
+<copyright>Copyright © 2010 - All rights reserved.</copyright>
+<license>GNU/GPL</license>
+<creationDate>October 2015</creationDate>
+<!-- The version string is recorded in the components table -->
+<version>3.0.9</version>
+<!-- The description is optional and defaults to the name -->
+<description>Lock your website</description> 
+<!-- Install Database Section -->
+<!-- Runs on install/uninstall/update; New in 1.6 -->
+<scriptfile>install.php</scriptfile>
+
+<!-- Custom Install Script to execute -->
+<!--<installfile>install.sitelock.php</installfile>-->
+    <!-- Custom Uninstall Script to execute -->
+<!--<uninstallfile>uninstall.sitelock.php</uninstallfile>-->
+  
+<!-- Site Main File Copy Section -->
+<administration>
+	<menu  link="option=com_sitelock" img="components/com_sitelock/assets/images/sitelock16.png">SITE_LOCK</menu>
+	<!-- Administration Main File Copy Section -->	
+	<files folder="administrator">
+		<filename>sitelock.php</filename>
+		<filename>controller.php</filename>
+		<filename>helper.php</filename>
+		<filename>sitelock_constant.php</filename>
+		<filename>gpl.txt</filename>
+		<folder>classes</folder>	
+		<folder>views</folder>
+		<folder>assets</folder>
+	</files>
+	<!-- Language backend -->
+	<languages folder="administrator/languages-admin">
+		<language tag="en-GB">en-GB/en-GB.com_sitelock.ini</language>
+		<language tag="en-GB">en-GB/en-GB.com_sitelock.sys.ini</language>
+		<language tag="nl-NL">nl-NL/nl-NL.com_sitelock.ini</language>
+		<language tag="nl-NL">nl-NL/nl-NL.com_sitelock.sys.ini</language>
+	</languages>
+</administration>
+
+ <plugins>
+	   <plugin folder="plugins/system" plugin="sitelock" name="System - Site Lock" group="system" />
+ </plugins>
+ <updateservers>
+		<server type="extension" priority="1" name="site lock">http://www.joomlashowroom.com/updates_xml/site_lock3.xml</server>
+	</updateservers>
+
+</extension>

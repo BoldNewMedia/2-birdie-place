@@ -1,0 +1,15 @@
+.icon-48-sitelock_title { background: url(../images/sitelock48.png) no-repeat left; }
+.icon-48-siteunlock_title { background: url(../images/unlock48.png) no-repeat left; }
+.cloudaccessad {color: #00a1dd; font-size: 8pt;}
+.modal-button[title="Article"]{
+display:none;
+}
+.modal-button[title="Article"]{
+display:none;
+}
+.btn[title="Read More"]{
+display:none;
+}
+.modal-button[title="Page Break"]{
+display:none;
+}

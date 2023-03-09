@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.1" type="plugin" group="system" method="upgrade">
+	<name>System - Site Lock</name>
+	<author>CloudAccess.net</author>
+	<creationDate>October 2009</creationDate>
+	<copyright>Copyright (C) 2009 CloudAccess.net. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>andrew@cloudaccess.net</authorEmail>
+	<authorUrl>cloudaccess.net</authorUrl>
+	<version>v3.0.7</version>
+	<description>htaccess-like site lock</description>
+	<files>
+		<filename plugin="sitelock">sitelock.php</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_system_sitelock.ini</language>
+		<language tag="nl-NL">language/nl-NL/nl-NL.plg_system_sitelock.ini</language>		
+	</languages>
+	<updateservers>
+		<server type="extension" priority="1" name="site lock">http://www.joomlashowroom.com/updates_xml/site_lock_plugin3.xml</server>
+	</updateservers>
+</extension>
