@@ -254,13 +254,37 @@ final class WFTemplateManagerPlugin extends WFMediaManager
                 $value = "";
                 $thumbnail = "";
 
+                // ensure an array
+                $template = (array) $template;
+
+                // must have a name
+                if (!isset($template['name'])) {
+                    continue;
+                }
+                // check for thumbnail (optional)
+                if (!isset($template['thumbnail'])) {
+                    $template['thumbnail'] = '';
+                }
+                // check for url (optional)
+                if (!isset($template['url'])) {
+                    $template['url'] = '';
+                }
+                // check for html (optional)
+                if (!isset($template['html'])) {
+                    $template['html'] = '';
+                }
+
                 extract($template);
 
+                $url = trim($url);
+                $html = trim($html);
+
+                // some values must be set
                 if (empty($url) && empty($html)) {
                     continue;
                 }
 
-                if (!empty($url)) {
+                if (!empty($url)) {                    
                     if (preg_match("#\.(htm|html|txt)$#", $url) && strpos('://', $url) === false) {
                         $url = trim($url, '/');
 

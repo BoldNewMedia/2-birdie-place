@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 <extension version="3.4" type="plugin" group="jce" method="upgrade">
 	<name>WF_SOURCE_TITLE</name>
-	<version>2.9.27</version>
-	<creationDate>23-06-2022</creationDate>
+	<version>2.9.33</version>
+	<creationDate>18-01-2023</creationDate>
 	<author>Ryan Demmer</author>
 	<authorEmail>info@joomlacontenteditor.net</authorEmail>
 	<authorUrl>https://www.joomlacontenteditor.net/</authorUrl>
@@ -42,7 +42,17 @@
 	      <option value="1">JYES</option>
 	      <option value="0">JNO</option>
 	    </param-->
-			<field name="theme" type="filelist" directory="components/com_jce/editor/libraries/pro/vendor/codemirror/css/theme" hide_none="true" hide_default="true" stripext="true" filter="\.css$" default="codemirror" label="WF_SOURCE_THEME" description="WF_SOURCE_THEME_DESC" />
+			<field name="theme" type="list" default="codemirror" label="WF_SOURCE_THEME" description="WF_SOURCE_THEME_DESC">
+				<option value="custom">WF_SOURCE_THEME_CUSTOM</option>
+				<option value="ambiance">Ambiance</option>
+				<option value="blackboard">Blackboard</option>
+				<option value="cobalt">Cobalt</option>
+				<option value="codemirror" selected="selected">Codemirror</option>
+				<option value="eclipse">Eclipse</option>
+				<option value="lesser-dark">Lesser-dark</option>
+				<option value="monokai">Monokai</option>
+				<option value="textmate">Textmate</option>
+			</field>
 			<field name="font_size" type="text" default="" label="WF_SOURCE_FONT_SIZE" description="WF_SOURCE_FONT_SIZE_DESC" placeholder="eg: 16px" />
 		</fieldset>
 	</fields>

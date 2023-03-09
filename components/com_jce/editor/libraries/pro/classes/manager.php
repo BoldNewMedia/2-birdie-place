@@ -330,8 +330,8 @@ class WFMediaManager extends WFMediaManagerBase
 
     protected function cleanExifString($string)
     {
-        $string = (string) filter_var($string, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES | FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_BACKTICK);
-        return htmlspecialchars($string);
+        $string = (string) filter_var($string, FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_BACKTICK);
+        return htmlspecialchars(strip_tags($string));
     }
 
     protected function getImageDescription($image)
@@ -529,9 +529,6 @@ class WFMediaManager extends WFMediaManagerBase
 
         $count = max(count($resize_width), count($resize_height));
 
-        // default resize crop
-        $default_resize_crop = (int) $browser->get('upload_resize_crop');
-
         for ($i = 0; $i < $count; $i++) {
             // need at least one value
             if (!empty($resize_width[$i]) || !empty($resize_height[$i])) {
@@ -565,14 +562,21 @@ class WFMediaManager extends WFMediaManagerBase
                 // remove file extension
                 $name = WFUtility::stripExtension($name);
 
+                // default crop
                 if (!isset($resize_crop[$i])) {
-                    $resize_crop[$i] = $default_resize_crop;
+                    $resize_crop[$i] = 0;
                 }
 
                 $suffix = '';
 
+                // default suffix
                 if (empty($resize_suffix[$i])) {
                     $resize_suffix[$i] = '';
+                }
+
+                // default quality
+                if (empty($resize_quality[$i])) {
+                    $resize_quality[$i] = 100;
                 }
 
                 // create suffix based on width/height values for images after first
@@ -591,13 +595,16 @@ class WFMediaManager extends WFMediaManagerBase
                 // create new destination
                 $destination = WFUtility::makePath($path, $name);
 
+                // trim
+                $destination = trim($destination, '/');
+
                 if ($resize_crop[$i]) {
                     $instance->fit($resize_width[$i], $resize_height[$i]);
                 } else {
                     $instance->resize($resize_width[$i], $resize_height[$i]);
                 }
 
-                $data = $instance->toString($extension, array('quality' => $resize_quality));
+                $data = $instance->toString($extension, array('quality' => $resize_quality[$i]));
 
                 // restore image lab instance
                 $instance->restore();
@@ -631,17 +638,25 @@ class WFMediaManager extends WFMediaManagerBase
         $filesystem = $browser->getFileSystem();
 
         // default resize crop
-        $resize_crop = (int) $browser->get('upload_resize_crop');
+        $resize_crop = $browser->get('upload_resize_crop');
 
         // get parameter values, allow empty but fallback to system default
-        $resize_width = $browser->get('upload_resize_width');
-        $resize_height = $browser->get('upload_resize_height');
+        $resize_width   = $browser->get('upload_resize_width');
+        $resize_height  = $browser->get('upload_resize_height');
+        $resize_suffix  = $browser->get('upload_resize_suffix');
+        $resize_quality = $browser->get('upload_resize_quality');
 
         // both values cannot be empty
         if (empty($resize_width) && empty($resize_height)) {
             $resize_width = 640;
             $resize_height = 480;
         }
+
+        if (!is_array($resize_crop)) {
+            $resize_crop = explode(',', (string) $resize_crop);
+        }
+
+        $resize_crop = array_map('intval', $resize_crop);
 
         if (!is_array($resize_width)) {
             $resize_width = explode(',', (string) $resize_width);
@@ -651,8 +666,15 @@ class WFMediaManager extends WFMediaManagerBase
             $resize_height = explode(',', (string) $resize_height);
         }
 
-        // create array of integer value
-        $resize_crop = array($resize_crop);
+        if (!is_array($resize_suffix)) {
+            $resize_suffix = explode(',', (string) $resize_suffix);
+        }
+
+        if (!is_array($resize_quality)) {
+            $resize_quality = explode(',', (string) $resize_quality);
+        }
+
+        $resize_quality = array_map('intval', $resize_quality);
 
         foreach (array('resize_width', 'resize_height', 'resize_crop') as $var) {
             $$var = $app->input->get($var, array(), 'array');
@@ -664,9 +686,6 @@ class WFMediaManager extends WFMediaManagerBase
 
         // clean suffix
         $resize_suffix = WFUtility::makeSafe($resize_suffix);
-
-        $quality = (int) $browser->get('upload_resize_quality', 100);
-        $resize_quality = (int) $app->input->get('resize_quality', $quality);
 
         $cache = array();
 
@@ -694,7 +713,13 @@ class WFMediaManager extends WFMediaManagerBase
         $resize = (int) $browser->get('upload_resize_state');
 
         // resize crop
-        $upload_resize_crop = (int) $browser->get('upload_resize_crop');
+        $resize_crop = $browser->get('upload_resize_crop');
+
+        // resize quality
+        $resize_quality = $browser->get('upload_resize_quality');
+
+        // resize suffix
+        $resize_suffix  = $browser->get('upload_resize_suffix');
 
         // get parameter values, allow empty but fallback to system default
         $resize_width = $browser->get('upload_resize_width');
@@ -714,12 +739,23 @@ class WFMediaManager extends WFMediaManagerBase
             $resize_height = explode(',', (string) $resize_height);
         }
 
-        // create array of integer value
-        $resize_crop = array($upload_resize_crop);
+        if (!is_array($resize_crop)) {
+            $resize_crop = explode(',', (string) $resize_crop);
+        }
 
-        $resize_quality = (int) $browser->get('upload_resize_quality', 100);
+        // convert to integer
+        $resize_crop = array_map('intval', $resize_crop);
 
-        $resize_suffix = array();
+        if (!is_array($resize_quality)) {
+            $resize_quality = explode(',', (string) $resize_quality);
+        }
+
+         // convert to integer
+         $resize_quality = array_map('intval', $resize_quality);
+
+        if (!is_array($resize_suffix)) {
+            $resize_suffix = explode(',', (string) $resize_suffix);
+        }
 
         // dialog/form upload
         if ($app->input->getInt('inline', 0) === 0) {
@@ -1083,7 +1119,7 @@ class WFMediaManager extends WFMediaManagerBase
         // should the image be resampled?
         $upload_resample = $this->canResampleImage();
 
-        if (empty($cache)) {
+        if (!isset($cache[$file])) {                                    
             // are we resampling or setting upload quality?
             if ($upload_resample || $upload_quality < 100) {
                 // get filesystem reference
@@ -1114,12 +1150,12 @@ class WFMediaManager extends WFMediaManagerBase
                             $filesystem->write($destination, $data);
                         }
                     }
+
+                    $instance->destroy();
                 }
 
             }
-        }
-
-        if (!empty($cache)) {
+        } else {
             $instance = $this->getImageLab($file);
 
             if ($instance) {
@@ -1936,6 +1972,30 @@ class WFMediaManager extends WFMediaManagerBase
             $resize_height = explode(',', (string) $resize_height);
         }
 
+        $resize_suffix = $this->getParam('editor.resize_suffix', '');
+
+        if (!is_array($resize_suffix)) {
+            $resize_suffix = explode(',', (string) $resize_suffix);
+        }
+
+        $resize_crop = $this->getParam('editor.upload_resize_crop', 0);
+
+        if (!is_array($resize_crop)) {
+            $resize_crop = explode(',', (string) $resize_crop);
+        }
+
+        $resize_quality = $this->getParam('editor.resize_quality', 100);
+
+        if (!is_array($resize_quality)) {
+            $resize_quality = explode(',', (string) $resize_quality);
+        }
+
+        $resize_enable = $this->getParam('editor.resize_enable', 1);
+
+        if (!is_array($resize_enable)) {
+            $resize_enable = explode(',', (string) $resize_enable);
+        }
+
         $data = array(
             'view_mode' => $this->getParam('editor.mode', 'list'),
             'can_edit_images' => $this->get('can_edit_images'),
@@ -1947,8 +2007,11 @@ class WFMediaManager extends WFMediaManagerBase
             'upload_resize_width' => $resize_width,
             // value must be cast as string for javascript processing
             'upload_resize_height' => $resize_height,
-            'upload_resize_quality' => $this->getParam('editor.resize_quality', 100),
-            'upload_resize_crop' => $this->getParam('editor.upload_resize_crop', 0),
+            // value must be cast as string for javascript processing
+            'upload_resize_suffix' => $resize_suffix,
+            'upload_resize_crop' => $resize_crop,
+            'upload_resize_enable' => $resize_enable,
+            'upload_resize_quality' => $resize_quality,
             'upload_resize_enlarge' => $this->getParam('editor.upload_resize_enlarge', 0),
             // watermark
             'upload_watermark' => $this->getParam('editor.upload_watermark', 0),

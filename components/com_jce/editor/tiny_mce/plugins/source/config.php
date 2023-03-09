@@ -22,7 +22,7 @@ class WFSourcePluginConfig
         //$settings['source_selection_match'] = $wf->getParam('source.selection_match', 1, 1, 'boolean');
 
         $settings['source_font_size'] = $wf->getParam('source.font_size', '', '');
-        $settings['source_theme'] = $wf->getParam('source.theme', 'codemirror', 'codemirror');
+        $settings['source_theme'] = $wf->getParam('source.theme', 'codemirror');
 
         $settings['source_validate_content'] = $wf->getParam('source.validate_content', 1, 1, 'boolean');
     }

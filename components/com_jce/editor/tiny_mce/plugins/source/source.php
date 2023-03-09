@@ -61,6 +61,11 @@ final class WFSourcePlugin extends WFEditorPlugin
             'libraries/pro/vendor/codemirror/css/theme/' . $theme,
         ), 'jce');
 
+        // add custom codemirror.css theme if exists
+        if (is_file(JPATH_SITE . '/media/jce/css/codemirror.css')) {
+            $document->addStyleSheet(array('media/jce/css/codemirror.css'), 'joomla');
+        }
+
         // keep as ltr for source code
         $document->setDirection('ltr');
     }

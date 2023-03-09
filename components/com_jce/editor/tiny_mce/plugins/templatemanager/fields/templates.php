@@ -2,9 +2,13 @@
 
 defined('JPATH_PLATFORM') or die;
 
-JFormHelper::loadFieldClass('list');
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
-class JFormFieldTemplates extends JFormField
+class JFormFieldTemplates extends FormField
 {
 
     /**
@@ -65,7 +69,7 @@ class JFormFieldTemplates extends JFormField
             );
         }
 
-        $subForm = new JForm($this->name, array('control' => $this->formControl));
+        $subForm = new Form($this->name, array('control' => $this->formControl));
         $children = $this->element->children();
         $subForm->load($children);
         $subForm->setFields($children);
@@ -94,15 +98,15 @@ class JFormFieldTemplates extends JFormField
 
                 $val = is_array($value) && isset($value[$name]) ? $value[$name] : '';
 
-                if ($name === "url") {
+                if ($name == "url") {
                     $val = htmlspecialchars($val, ENT_COMPAT, 'UTF-8');
                 }
 
-                if ($name === "html") {
+                if ($name == "html") {
                     $val = htmlspecialchars_decode($val);
                 }
 
-                if ($name === "thumbnail") {
+                if ($name == "thumbnail") {
                     $val = htmlspecialchars($val, ENT_COMPAT, 'UTF-8');
                 }
  
@@ -125,8 +129,8 @@ class JFormFieldTemplates extends JFormField
             $str[] = '  </div>';
 
             $str[] = '  <div class="form-field-repeatable-item-control">';
-            $str[] = '      <button class="btn btn-link form-field-repeatable-add" aria-label="' . JText::_('JGLOBAL_FIELD_ADD') . '"><i class="icon icon-plus pull-right float-right"></i></button>';
-            $str[] = '      <button class="btn btn-link form-field-repeatable-remove" aria-label="' . JText::_('JGLOBAL_FIELD_REMOVE') . '"><i class="icon icon-trash pull-right float-right"></i></button>';
+            $str[] = '      <button class="btn btn-link form-field-repeatable-add" aria-label="' . Text::_('JGLOBAL_FIELD_ADD') . '"><i class="icon icon-plus pull-right float-right"></i></button>';
+            $str[] = '      <button class="btn btn-link form-field-repeatable-remove" aria-label="' . Text::_('JGLOBAL_FIELD_REMOVE') . '"><i class="icon icon-trash pull-right float-right"></i></button>';
             $str[] = '  </div>';
 
             $str[] = '</div>';
@@ -134,7 +138,7 @@ class JFormFieldTemplates extends JFormField
 
         $str[] = '<input type="hidden" name="' . $this->name . '" value="" />';
 
-        JFactory::getDocument()->addScript(JURI::root(true) . '/components/com_jce/editor/tiny_mce/plugins/templatemanager/js/templates.js');
+        Factory::getDocument()->addScript(Uri::root(true) . '/components/com_jce/editor/tiny_mce/plugins/templatemanager/js/templates.js');
 
         return implode("", $str);
     }
