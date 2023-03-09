@@ -5,7 +5,7 @@ namespace YOOtheme\GraphQL\Utils;
 class Middleware
 {
     /**
-     * @var callable
+     * @var callable|null
      */
     protected $handler;
 

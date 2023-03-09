@@ -47,7 +47,7 @@ class UpdateTransform
             $params['version'] = '1.0.0';
         }
 
-        if ($node->type === 'layout') {
+        if (empty($params['parent'])) {
             $node->version = $this->version;
         } else {
             unset($node->version);

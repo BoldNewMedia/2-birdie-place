@@ -18,7 +18,6 @@ echo $this->el('image', [
     'alt' => $props['image_alt'],
     'width' => $element['image_width'],
     'height' => $element['image_height'],
-    'uk-img' => 'target: !.tm-popover-items',
     'uk-svg' => $element['image_svg_inline'],
     'thumbnail' => true,
 

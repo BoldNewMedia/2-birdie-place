@@ -2,25 +2,34 @@
 
 namespace YOOtheme\Joomla;
 
+use Joomla\Database\DatabaseDriver;
 use YOOtheme\Database\AbstractDatabase;
 
 class Database extends AbstractDatabase
 {
     /**
-     * @var \JDatabaseDriver
+     * @var DatabaseDriver
      */
     protected $db;
 
     /**
      * Constructor.
      *
-     * @param \JDatabaseDriver $db
+     * @param DatabaseDriver $db
      */
     public function __construct($db)
     {
         $this->db = $db;
-        $this->driver = $db->name;
+        $this->driver = $db->getName();
         $this->prefix = $db->getPrefix();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function loadResult($statement, array $params = [])
+    {
+        return $this->db->setQuery($this->prepareQuery($statement, $params))->loadResult();
     }
 
     /**
@@ -54,11 +63,7 @@ class Database extends AbstractDatabase
     {
         $result = $this->db->setQuery($this->prepareQuery($query, $params))->execute();
 
-        if (is_bool($result)) {
-            return $result;
-        }
-
-        return $this->db->getNumRows();
+        return $result !== false ? $this->db->getAffectedRows() : false;
     }
 
     /**
@@ -66,7 +71,7 @@ class Database extends AbstractDatabase
      */
     public function insert($table, $data)
     {
-        $fields = implode(', ', array_keys($data));
+        $fields = implode(', ', $this->db->quoteName(array_keys($data)));
         $values = implode(
             ', ',
             array_map(function ($field) {
@@ -85,13 +90,13 @@ class Database extends AbstractDatabase
         $fields = implode(
             ', ',
             array_map(function ($field) {
-                return "$field = :$field";
+                return "{$this->db->quoteName($field)} = :$field";
             }, array_keys($data))
         );
         $where = implode(
             ' AND ',
             array_map(function ($id) {
-                return "$id = :$id";
+                return "{$this->db->quoteName($id)} = :$id";
             }, array_keys($identifier))
         );
 
@@ -109,7 +114,7 @@ class Database extends AbstractDatabase
         $where = implode(
             ' AND ',
             array_map(function ($id) {
-                return "$id = :$id";
+                return "{$this->db->quoteName($id)} = :$id";
             }, array_keys($identifier))
         );
 

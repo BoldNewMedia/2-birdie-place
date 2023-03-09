@@ -9,7 +9,7 @@ use Joomla\CMS\User\User;
 
 HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers');
 
-list($view, $user) = app(View::class, User::class);
+[$view, $user] = app(View::class, User::class);
 
 // Parameter shortcuts
 $item = $this->item;

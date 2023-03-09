@@ -16,9 +16,10 @@ HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers');
  * @var Config $config
  * @var View   $view
  */
-list($config, $view) = app(Config::class, View::class);
+[$config, $view] = app(Config::class, View::class);
 
-$config->addAlias('~blog', '~theme.blog');
+// Config
+$blog = '~theme.blog';
 
 // Parameter shortcuts
 $params = $this->params;
@@ -86,8 +87,8 @@ $article = $view('~theme/templates/article{-blog,}', function ($item) use ($colu
 
     $attrs_lead = [];
 
-    $column_gap = $config('~blog.grid_column_gap');
-    $row_gap = $config('~blog.grid_row_gap');
+    $column_gap = $config("$blog.grid_column_gap");
+    $row_gap = $config("$blog.grid_row_gap");
 
     $attrs_lead['class'][] = 'uk-grid uk-child-width-1-1';
     $attrs_lead['class'][] = $row_gap ? "uk-grid-{$row_gap}" : '';
@@ -110,13 +111,13 @@ if ($intro) :
     $attrs = [];
     $options = [];
 
-    $options[] = $config('~blog.grid_masonry') ? 'masonry: true' : '';
-    $options[] = $config('~blog.grid_parallax') ? "parallax: {$config('~blog.grid_parallax')}" : '';
+    $options[] = $config("$blog.grid_masonry") ? 'masonry: true' : '';
+    $options[] = $config("$blog.grid_parallax") ? "parallax: {$config("$blog.grid_parallax")}" : '';
     $attrs['uk-grid'] = implode(';', array_filter($options)) ?: true;
 
     // Columns
     $breakpoints = ['s', 'm', 'l', 'xl'];
-    $breakpoint = $config('~blog.grid_breakpoint');
+    $breakpoint = $config("$blog.grid_breakpoint");
     $pos = array_search($breakpoint, $breakpoints);
 
     if ($pos === false || $columns === 1) {
@@ -148,7 +149,7 @@ if ($intro) :
 <?php endif ?>
 
 <?php if (!empty($this->link_items)) : ?>
-<div class="uk-margin-large<?= $config('~blog.header_align') ? ' uk-text-center' : '' ?>">
+<div class="uk-margin-large<?= $config("$blog.header_align") ? ' uk-text-center' : '' ?>">
 
     <h3><?= Text::_('COM_CONTENT_MORE_ARTICLES') ?></h3>
 

@@ -14,22 +14,11 @@ $image = $this->el('image', [
     ],
     'src' => $props['background_image'],
     'alt' => $props['background_image_alt'],
+    'loading' => $props['background_image_loading'] ? false : null,
     'width' => $props['background_image_width'],
     'height' => $props['background_image_height'],
     'uk-svg' => $props['image_svg_inline'],
     'thumbnail' => true,
-]);
-
-// Swicher
-$switcher = $this->el('ul', [
-    'id' => "js-{$this->uid()}",
-    'class' => 'uk-switcher',
-]);
-
-// Switcher nav
-$switcher_nav = $this->el('ul', [
-    'class' => 'uk-dotnav uk-flex-center uk-margin',
-    'uk-switcher' => "connect: #{$switcher->attrs['id']}; animation: uk-animation-fade;",
 ]);
 
 ?>
@@ -39,26 +28,10 @@ $switcher_nav = $this->el('ul', [
 
         <?= $props['background_image'] ? $image($props) : '' ?>
 
-        <div class="tm-popover-items uk-visible@s">
-            <?php foreach ($children as $child) : ?>
-            <?= $this->render("{$__dir}/template-marker", ['child' => $child, 'props' => $child->props, 'element' => $props]) ?>
-            <?php endforeach ?>
-        </div>
+        <?php foreach ($children as $child) : ?>
+        <?= $this->render("{$__dir}/template-marker", ['child' => $child, 'props' => $child->props, 'element' => $props]) ?>
+        <?php endforeach ?>
 
-    </div>
-    <div class="tm-popover-items uk-margin uk-hidden@s">
+     </div>
 
-        <?= $switcher() ?>
-            <?php foreach ($children as $child) : ?>
-            <li><?= $builder->render($child, ['element' => $props]) ?></li>
-            <?php endforeach ?>
-        </ul>
-
-        <?= $switcher_nav() ?>
-            <?php foreach ($children as $child) : ?>
-            <li><a href="#"></a></li>
-            <?php endforeach ?>
-        </ul>
-
-    </div>
 </div>

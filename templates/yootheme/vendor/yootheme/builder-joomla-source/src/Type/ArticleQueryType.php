@@ -22,7 +22,7 @@ class ArticleQueryType
                     'metadata' => [
                         'label' => trans('Article'),
                         'view' => ['com_content.article'],
-                        'group' => 'Page',
+                        'group' => trans('Page'),
                     ],
                     'extensions' => [
                         'call' => __CLASS__ . '::resolve',
@@ -33,7 +33,7 @@ class ArticleQueryType
                     'metadata' => [
                         'label' => trans('Previous Article'),
                         'view' => ['com_content.article'],
-                        'group' => 'Page',
+                        'group' => trans('Page'),
                     ],
                     'extensions' => [
                         'call' => __CLASS__ . '::resolvePreviousArticle',
@@ -44,7 +44,7 @@ class ArticleQueryType
                     'metadata' => [
                         'label' => trans('Next Article'),
                         'view' => ['com_content.article'],
-                        'group' => 'Page',
+                        'group' => trans('Page'),
                     ],
                     'extensions' => [
                         'call' => __CLASS__ . '::resolveNextArticle',
@@ -100,9 +100,9 @@ class ArticleQueryType
         if (version_compare(JVERSION, '4.0', '<')) {
             $uri = new Uri(Route::_($url));
             $vars = Router::getInstance('site')->parse($uri);
-            $id = isset($vars['id']) ? $vars['id'] : 0;
+            $id = $vars['id'] ?? 0;
         } else {
-            $id = (new Uri($url))->getVar('id', 0);
+            $id = (new Uri($url))->getVar('id', '0');
         }
 
         if (!$id) {

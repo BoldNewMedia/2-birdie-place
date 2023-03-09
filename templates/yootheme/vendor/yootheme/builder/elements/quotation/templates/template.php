@@ -3,7 +3,7 @@
 $el = $this->el('blockquote', [
 
     'class' => [
-        'uk-margin-remove {position: absolute}',
+        'uk-margin-remove {@position: absolute}',
     ],
 
 ]);

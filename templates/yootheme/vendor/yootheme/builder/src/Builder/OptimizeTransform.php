@@ -49,10 +49,8 @@ class OptimizeTransform
                 'image_height',
                 'image_hover_box_shadow',
                 'image_margin',
-                'image_parallax_bgx_end',
-                'image_parallax_bgx_start',
-                'image_parallax_bgy_end',
-                'image_parallax_bgy_start',
+                'image_parallax_bgx',
+                'image_parallax_bgy',
                 'image_parallax_breakpoint',
                 'image_parallax_easing',
                 'image_size',
@@ -91,17 +89,14 @@ class OptimizeTransform
                 'panel_style',
                 'parallax_breakpoint',
                 'parallax_easing',
-                'parallax_opacity_end',
-                'parallax_opacity_start',
-                'parallax_rotate_end',
-                'parallax_rotate_start',
-                'parallax_scale_end',
-                'parallax_scale_start',
-                'parallax_viewport',
-                'parallax_x_end',
-                'parallax_x_start',
-                'parallax_y_end',
-                'parallax_y_start',
+                'parallax_end',
+                'parallax_opacity',
+                'parallax_rotate',
+                'parallax_scale',
+                'parallax_start',
+                'parallax_target',
+                'parallax_x',
+                'parallax_y',
                 'position_bottom',
                 'position_left',
                 'position_right',
@@ -153,20 +148,28 @@ class OptimizeTransform
      */
     public function __invoke($node, array $params)
     {
-        /**
-         * @var $type
-         */
-        extract($params);
+        $type = $params['type'];
+        $defaults = $type->defaults ?? [];
 
-        $defaults = isset($type->defaults) ? $type->defaults : [];
-        $properties = array_diff_key($node->props, $defaults);
+        foreach (array_intersect_key($node->props, $this->props) as $name => $value) {
+            // skip default values
+            if (isset($defaults[$name])) {
+                continue;
+            }
 
-        foreach (array_intersect_key($properties, $this->props) as $name => $value) {
-            // remove empty prop
+            // remove empty string
             if ($value === '') {
                 unset($node->props[$name]);
             }
         }
+
+        // remove null props
+        $node->props = array_filter($node->props, function ($value) {
+            return !is_null($value);
+        });
+
+        // sort props
+        ksort($node->props);
 
         // remove empty props
         if (empty($node->props)) {

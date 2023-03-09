@@ -55,7 +55,7 @@ class EventLoader
      * @param string    $event
      * @param string    $class
      * @param string    $method
-     * @param array     $params
+     * @param mixed     $params
      */
     public function addListener(Container $container, $event, $class, $method, ...$params)
     {

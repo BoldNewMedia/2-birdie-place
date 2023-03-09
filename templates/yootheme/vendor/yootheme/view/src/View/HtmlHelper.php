@@ -7,7 +7,7 @@ use YOOtheme\View;
 class HtmlHelper
 {
     /**
-     * @var callable[]
+     * @var callable[][]
      */
     public $transforms = [];
 

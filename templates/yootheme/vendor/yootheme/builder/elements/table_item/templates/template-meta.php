@@ -9,8 +9,7 @@ $el = $this->el('div', [
 
     'class' => [
         'el-meta',
-        'uk-text-{meta_style: meta|lead}',
-        'uk-{meta_style: h1|h2|h3|h4|h5|h6} uk-margin-remove',
+        'uk-{meta_style} [uk-margin-remove {@meta_style: h1|h2|h3|h4|h5|h6}]',
         'uk-text-{meta_color}',
     ],
 

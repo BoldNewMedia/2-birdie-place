@@ -53,7 +53,9 @@
 
 .hook-breadcrumb-item-hover() {}
 
-.hook-breadcrumb-item-disabled() { color: @breadcrumb-item-disabled-color; }
+.hook-breadcrumb-item-disabled() when not (@breadcrumb-item-disabled-color = @breadcrumb-item-color) {
+    color: @breadcrumb-item-disabled-color;
+}
 
 .hook-breadcrumb-item-active() {}
 
@@ -73,7 +75,9 @@
 
 .hook-inverse-breadcrumb-item() {}
 .hook-inverse-breadcrumb-item-hover() {}
-.hook-inverse-breadcrumb-item-disabled() { color: @inverse-breadcrumb-item-disabled-color; }
+.hook-inverse-breadcrumb-item-disabled() when not (@inverse-breadcrumb-item-disabled-color = @inverse-breadcrumb-item-color) {
+    color: @inverse-breadcrumb-item-disabled-color;
+}
 .hook-inverse-breadcrumb-item-active() {}
 
 .hook-inverse-breadcrumb-divider() {}

@@ -28,13 +28,40 @@ class ImageController
      */
     public function get(Request $request, Response $response, ImageProvider $provider)
     {
-        $request->abortIf(
-            $request('hash') !== $provider->getHash($request('src')),
-            400,
-            'Invalid image hash'
-        );
+        $src = $request->getQueryParam('src');
+        $hash = $request->getQueryParam('hash');
 
-        list($file, $params) = json_decode(base64_decode($request('src')));
+        $request->abortIf($hash !== $provider->getHash($src), 400, 'Invalid image hash');
+        $response = $response->withHeader('Cache-Control', 'max-age=600, must-revalidate');
+
+        parse_str($src, $params);
+        $file = $params['file'];
+        unset($params['file']);
+
+        if ($provider->cache && $request->getAttribute('save')) {
+            if (!($image = $provider->create($file, false))) {
+                $request->abort(404, "Image '{$file}' not found");
+            }
+
+            if ($params) {
+                $image = $image->apply($params);
+            }
+
+            $cache = $image->getFilename(
+                Path::join($provider->cache, substr($image->getHash(), 0, 2))
+            );
+
+            if (is_file($cache)) {
+                $type = pathinfo($cache, PATHINFO_EXTENSION);
+                return $response->withFile($cache, "image/{$type}");
+            }
+
+            if (!File::makeDir(dirname($cache))) {
+                $request->abort(500, 'Image cache dir not found');
+            }
+        } else {
+            $cache = fopen('php://temp', 'rw+');
+        }
 
         if (!($image = $provider->create($file))) {
             $request->abort(404, "Image '{$file}' not found");
@@ -44,27 +71,10 @@ class ImageController
             $image = $image->apply($params);
         }
 
-        if ($provider->cache && $request->getAttribute('save')) {
-            if (!File::makeDir($provider->cache)) {
-                $request->abort(500, 'Image cache dir not found');
-            }
-
-            return $response->withFile(
-                $image->save($image->getFilename($provider->cache)),
-                "image/{$image->getType()}"
-            );
+        if (!$image->save($cache)) {
+            $request->abort(500, 'Image cache saving failed');
         }
 
-        $image->save($path = stream_get_meta_data(tmpfile())['uri']);
-
-        return $response
-            ->withFile($path, "image/{$image->getType()}")
-            ->withHeader('Cache-Control', 'max-age=3600')
-            ->withHeader(
-                'Expires',
-                (new \DateTime('+1 hour', new \DateTimeZone('GMT')))->format(
-                    'D, d M Y H:i:s \G\M\T'
-                )
-            );
+        return $response->withFile($cache, "image/{$image->getType()}");
     }
 }

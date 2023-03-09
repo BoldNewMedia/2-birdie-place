@@ -4,9 +4,9 @@ namespace YOOtheme\Encryption;
 
 class McryptLibrary extends Library
 {
-    const MODE = MCRYPT_MODE_CBC;
+    public const MODE = MCRYPT_MODE_CBC;
 
-    const CIPHER = MCRYPT_RIJNDAEL_128;
+    public const CIPHER = MCRYPT_RIJNDAEL_128;
 
     /**
      * @inheritdoc

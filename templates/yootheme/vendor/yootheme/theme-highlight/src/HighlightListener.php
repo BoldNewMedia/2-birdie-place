@@ -2,7 +2,6 @@
 
 namespace YOOtheme\Theme;
 
-use Joomla\CMS\Application\CMSApplication;
 use YOOtheme\Config;
 use YOOtheme\Metadata;
 use YOOtheme\Path;
@@ -27,17 +26,5 @@ class HighlightListener
         }
 
         return $content;
-    }
-
-    public static function beforeRender(
-        Config $config,
-        Metadata $metadata,
-        CMSApplication $application
-    ) {
-        static::checkContent(
-            $config,
-            $metadata,
-            $application->getDocument()->getBuffer('component')
-        );
     }
 }

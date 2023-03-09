@@ -12,22 +12,14 @@ return [
 
     'updates' => [
         '1.20.0-beta.1.1' => function ($node) {
-            if (isset($node->props['maxwidth_align'])) {
-                $node->props['block_align'] = $node->props['maxwidth_align'];
-                unset($node->props['maxwidth_align']);
-            }
+            Arr::updateKeys($node->props, ['maxwidth_align' => 'block_align']);
         },
 
         '1.18.10.1' => function ($node) {
-            if (isset($node->props['image_inline_svg'])) {
-                $node->props['image_svg_inline'] = $node->props['image_inline_svg'];
-                unset($node->props['image_inline_svg']);
-            }
-
-            if (isset($node->props['image_animate_svg'])) {
-                $node->props['image_svg_animate'] = $node->props['image_animate_svg'];
-                unset($node->props['image_animate_svg']);
-            }
+            Arr::updateKeys($node->props, [
+                'image_inline_svg' => 'image_svg_inline',
+                'image_animate_svg' => 'image_svg_animate',
+            ]);
         },
 
         '1.18.0' => function ($node) {

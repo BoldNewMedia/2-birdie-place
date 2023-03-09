@@ -259,6 +259,13 @@
 @dropdown-nav-text-transform: none;
 @dropdown-nav-letter-spacing: 0;
 @dropdown-nav-font-style: normal;
+@dropbar-padding-top: 20px;
+@dropbar-background: @global-secondary-background;
+@dropbar-color-mode: light;
+@dropbar-top-box-shadow: 0 5px 15px -10px rgba(39,44,63,0.06);
+@dropbar-bottom-box-shadow: 0 -5px 15px -10px rgba(39,44,63,0.06);
+@dropbar-left-box-shadow: 5px 0 15px -10px rgba(39,44,63,0.06);
+@dropbar-right-box-shadow: -5px 0 15px -10px rgba(39,44,63,0.06);
 @offcanvas-overlay-background: rgba(39,44,63,0.15);
 @leader-color: @global-primary-background;
 @notification-message-success-background: darken(@global-success-background, 15%);
@@ -273,7 +280,6 @@
 @countdown-label-text-transform: @global-secondary-text-transform;
 @countdown-label-letter-spacing: @global-secondary-letter-spacing;
 @countdown-label-font-style: @global-secondary-font-style;
-@nav-parent-icon-color: @global-primary-background;
 @nav-default-item-color: @global-color;
 @nav-default-item-hover-color: @global-primary-background;
 @nav-default-item-active-color: @nav-default-item-hover-color;
@@ -282,12 +288,20 @@
 @nav-primary-item-color: @global-emphasis-color;
 @nav-primary-item-hover-color: @global-primary-background;
 @nav-primary-item-active-color: @nav-primary-item-hover-color;
+@nav-primary-subtitle-font-size: 14px;
 @nav-primary-sublist-item-color: @global-muted-color;
 @nav-primary-sublist-item-hover-color: @global-primary-background;
 @nav-primary-sublist-item-active-color: @nav-primary-sublist-item-hover-color;
+@nav-secondary-font-size: 17px;
+@nav-secondary-item-hover-color: @global-primary-background;
+@nav-secondary-item-active-color: @global-primary-background;
+@nav-secondary-subtitle-font-size: @global-font-size;
+@nav-secondary-subtitle-hover-color: @global-primary-background;
+@nav-secondary-subtitle-active-color: @global-primary-background;
+@nav-secondary-sublist-font-size: @global-font-size;
+@nav-secondary-sublist-item-hover-color: @global-primary-background;
+@nav-secondary-sublist-item-active-color: @global-primary-background;
 @nav-dividers-margin-top: 10px;
-@internal-nav-parent-close-image: "../../../../uikit-themes/master-union-dental/images/nav-parent-close.svg";
-@internal-nav-parent-open-image: "../../../../uikit-themes/master-union-dental/images/nav-parent-open.svg";
 @nav-header-font-weight: @global-secondary-font-weight;
 @nav-default-font-family: @global-font-family;
 @nav-default-font-weight: inherit;
@@ -299,10 +313,19 @@
 @nav-primary-text-transform: inherit;
 @nav-primary-letter-spacing: inherit;
 @nav-primary-font-style: inherit;
+@nav-secondary-margin-top: 18px;
+@nav-secondary-font-family: @global-primary-font-family;
+@nav-secondary-font-weight: @global-primary-font-weight;
+@nav-secondary-text-transform: @global-primary-text-transform;
+@nav-secondary-letter-spacing: @global-primary-letter-spacing;
+@nav-secondary-font-style: @global-primary-font-style;
+@nav-secondary-subtitle-font-family: @global-font-family;
+@nav-secondary-subtitle-font-weight: normal;
 @inverse-nav-default-item-hover-color: @inverse-global-emphasis-color;
 @inverse-nav-default-sublist-item-hover-color: @inverse-global-emphasis-color;
+@inverse-nav-secondary-subtitle-hover-color: @inverse-global-emphasis-color;
 @navbar-background: @global-background;
-@navbar-nav-item-padding-horizontal: 20px;
+@navbar-nav-item-padding-horizontal: 0;
 @navbar-nav-item-color: @global-emphasis-color;
 @navbar-nav-item-hover-color: @global-primary-background;
 @navbar-nav-item-onclick-color: darken(@global-primary-background, 8%);
@@ -310,10 +333,14 @@
 @navbar-toggle-color: @global-emphasis-color;
 @navbar-toggle-hover-color: @global-primary-background;
 @navbar-subtitle-font-size: 12px;
+@navbar-dropdown-shift-margin: -@navbar-dropdown-padding;
 @navbar-dropdown-width: 260px;
 @navbar-dropdown-padding: 20px;
 @navbar-dropdown-background: @global-secondary-background;
 @navbar-dropdown-color: fade(@global-inverse-color, 80%);
+@navbar-dropdown-color-mode: light;
+@navbar-dropdown-large-shift-margin: -@navbar-dropdown-large-padding;
+@navbar-dropdown-dropbar-padding-top: 40px;
 @navbar-dropdown-nav-item-color: fade(@global-inverse-color, 60%);
 @navbar-dropdown-nav-header-color: @global-inverse-color;
 @navbar-dropdown-nav-item-hover-color: @global-inverse-color;
@@ -322,26 +349,31 @@
 @navbar-dropdown-nav-sublist-item-color: fade(@global-inverse-color, 60%);
 @navbar-dropdown-nav-sublist-item-hover-color: @global-inverse-color;
 @navbar-dropdown-nav-sublist-item-active-color: @global-inverse-color;
-@navbar-nav-item-line-transition-duration: 0.3s;
-@navbar-nav-item-line-mode: true;
-@navbar-nav-item-line-position-mode: top;
-@navbar-nav-item-line-slide-mode: center;
-@navbar-nav-item-line-margin-horizontal: @navbar-nav-item-padding-horizontal;
-@navbar-nav-item-line-height: 2px;
-@navbar-nav-item-line-hover-height: @navbar-nav-item-line-height;
-@navbar-nav-item-line-onclick-height: @navbar-nav-item-line-height;
-@navbar-nav-item-line-active-height: @navbar-nav-item-line-height;
-@navbar-dropdown-nav-item-padding-vertical: 4px;
-@navbar-dropdown-nav-item-padding-horizontal: 6px;
 @navbar-border-width: @global-border-width;
 @navbar-border: @global-border;
 @navbar-box-shadow: @global-medium-box-shadow;
-@navbar-dropdown-box-shadow: @global-medium-box-shadow;
-@navbar-dropbar-box-shadow: @global-medium-box-shadow;
+@navbar-gap-m: 40px;
+@navbar-nav-gap-m: 40px;
 @navbar-nav-item-font-weight: 500;
 @navbar-nav-item-text-transform: inherit;
 @navbar-nav-item-letter-spacing: inherit;
 @navbar-nav-item-font-style: inherit;
+@navbar-nav-item-line-transition-duration: 0.3s;
+@navbar-nav-item-line-mode: true;
+@navbar-nav-item-line-position-mode: top;
+@navbar-nav-item-line-slide-mode: center;
+@navbar-nav-item-line-margin-horizontal: 0;
+@navbar-nav-item-line-height: 2px;
+@navbar-nav-item-line-hover-height: @navbar-nav-item-line-height;
+@navbar-nav-item-line-onclick-height: @navbar-nav-item-line-height;
+@navbar-nav-item-line-active-height: @navbar-nav-item-line-height;
+@navbar-primary-gap: 40px;
+@navbar-primary-nav-gap: 40px;
+@navbar-primary-gap-m: 50px;
+@navbar-primary-nav-gap-m: 50px;
+@navbar-primary-nav-item-font-size: @global-medium-font-size;
+@navbar-dropdown-nav-item-padding-vertical: 4px;
+@navbar-dropdown-box-shadow: @global-medium-box-shadow;
 @navbar-dropdown-nav-font-size: 15px;
 @navbar-dropdown-nav-font-family: inherit;
 @navbar-dropdown-nav-font-weight: inherit;
@@ -351,7 +383,7 @@
 .hook-navbar() when not (@navbar-box-shadow = none) and not (@navbar-border-width = 0) {
     .tm-header .tm-headerbar-top + * & { border-top: @navbar-border-width solid @navbar-border; }
     .tm-header .tm-headerbar-top + * .uk-navbar-sticky > * > & { border-top-color: transparent !important; }
-    .tm-header .tm-headerbar-top + * & > :first-child { margin-top: -1 * @navbar-border-width; }
+    .tm-header .tm-headerbar-top + * & > * { margin-top: -1 * @navbar-border-width; }
 }
 @inverse-navbar-nav-item-hover-color: @inverse-global-primary-background;
 @subnav-item-color: @global-color;

@@ -21,20 +21,23 @@ class Storage extends AbstractStorage
     {
         $query =
             'SELECT custom_data FROM @extensions WHERE element = :element AND folder = :folder LIMIT 1';
-        $result = $db->fetchAssoc($query, compact('element', 'folder'));
 
-        if ($result) {
+        if ($result = $db->fetchAssoc($query, ['element' => $element, 'folder' => $folder])) {
             $this->addJson($result['custom_data']);
         }
 
         $app = Factory::getApplication();
-        $app->registerEvent('onAfterRespond', function () use ($db, $result, $element, $folder) {
-            if (($values = json_encode($this)) && $values != $result['custom_data']) {
-                $db->update(
-                    '@extensions',
-                    ['custom_data' => $values],
-                    compact('element', 'folder')
-                );
+        $app->registerEvent('onAfterRespond', function () use ($db, $element, $folder) {
+            if ($this->isModified()) {
+                $data = json_encode($this, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+                if ($data !== false) {
+                    $db->update(
+                        '@extensions',
+                        ['custom_data' => $data],
+                        ['element' => $element, 'folder' => $folder]
+                    );
+                }
             }
         });
     }

@@ -9,8 +9,9 @@ class SettingsController
 {
     public static function import(Request $request, Response $response, Updater $updater)
     {
-        $config = $request('config');
+        $config = $request->getParam('config');
+        $config = $updater->update($config, []);
 
-        return $response->withJson($updater->update($config, []));
+        return $response->withJson($config);
     }
 }

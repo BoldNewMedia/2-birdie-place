@@ -17,7 +17,7 @@ class Service
     public $shared;
 
     /**
-     * @var callable
+     * @var callable|null
      */
     protected $factory;
 

@@ -28,7 +28,7 @@ class SearchItemsQueryType
                     'metadata' => [
                         'label' => trans('Items'),
                         'view' => ['com_search.search'],
-                        'group' => 'Page',
+                        'group' => trans('Page'),
                         'fields' => [
                             '_offset' => [
                                 'description' => trans(

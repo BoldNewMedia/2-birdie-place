@@ -28,9 +28,9 @@ if ($this->isImage($props['link'])) {
 
         // Iframe
         'src' => $iframe ?: $props['link'],
-        'frameborder' => 0,
         'uk-video' => $video || $iframe,
         'allowfullscreen' => true,
+        'allow' => 'autoplay',
         'uk-responsive' => true,
 
     ], '', 'iframe');

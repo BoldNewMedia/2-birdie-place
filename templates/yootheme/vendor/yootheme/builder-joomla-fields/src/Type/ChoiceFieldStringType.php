@@ -2,6 +2,7 @@
 
 namespace YOOtheme\Builder\Joomla\Fields\Type;
 
+use Joomla\CMS\Language\Text;
 use function YOOtheme\trans;
 
 class ChoiceFieldStringType
@@ -27,9 +28,6 @@ class ChoiceFieldStringType
                     ],
                 ],
             ],
-            'extensions' => [
-                'call' => __CLASS__ . '::resolve',
-            ],
         ];
 
         return [
@@ -38,21 +36,38 @@ class ChoiceFieldStringType
                     'metadata' => [
                         'label' => trans('Names'),
                     ],
+                    'extensions' => [
+                        'call' => __CLASS__ . '::resolveNames',
+                    ],
                 ]),
 
                 'value' => array_merge_recursive($field, [
                     'metadata' => [
                         'label' => trans('Values'),
                     ],
+                    'extensions' => [
+                        'call' => __CLASS__ . '::resolveValues',
+                    ],
                 ]),
             ],
         ];
     }
 
-    public static function resolve($item, $args, $context, $info)
+    public static function resolveNames($item, $args)
     {
         $args += ['separator' => ', '];
 
-        return join($args['separator'], array_column($item, $info->fieldName));
+        $result = array_map(function ($item) {
+            return Text::_($item);
+        }, array_column($item, 'name'));
+
+        return join($args['separator'], $result);
+    }
+
+    public static function resolveValues($item, $args)
+    {
+        $args += ['separator' => ', '];
+
+        return join($args['separator'], array_column($item, 'value'));
     }
 }

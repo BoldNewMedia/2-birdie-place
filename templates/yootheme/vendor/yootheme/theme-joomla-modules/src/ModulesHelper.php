@@ -5,8 +5,10 @@ namespace YOOtheme\Theme\Joomla;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Language;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\User\User;
 use YOOtheme\Config;
 use YOOtheme\Database;
+use function YOOtheme\app;
 
 class ModulesHelper
 {
@@ -59,16 +61,25 @@ class ModulesHelper
 
     public function getModules()
     {
+        $user = app(User::class);
+
         $modules = $this->database->fetchAll(
-            'SELECT id, title, module, position, ordering, params FROM @modules WHERE client_id = 0 AND published != -2 ORDER BY position, ordering'
+            'SELECT id, title, module, position, ordering FROM @modules WHERE client_id = 0 AND published != -2 ORDER BY position, ordering'
         );
 
-        return array_map(function ($module) {
-            return array_merge($module, [
-                'id' => (string) $module['id'],
-                'params' => json_decode($module['params']),
-            ]);
-        }, $modules);
+        foreach ($modules as &$module) {
+            $module += [
+                'canEdit' => $user->authorise('core.edit', "com_modules.module.{$module['id']}"),
+                'canDelete' => $user->authorise(
+                    'core.edit.state',
+                    "com_modules.module.{$module['id']}"
+                ),
+            ];
+            // In Joomla 4 `id` is int
+            $module['id'] = (string) $module['id'];
+        }
+
+        return $modules;
     }
 
     public function getPositions()

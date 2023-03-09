@@ -18,37 +18,33 @@ class ViewLoader
 {
     public static function loadArticle($name, array $parameters, callable $next)
     {
-        $defaults = array_fill_keys(
-            [
-                'title',
-                'author',
-                'content',
-                'hits',
-                'created',
-                'modified',
-                'published',
-                'category',
-                'image',
-                'tags',
-                'icons',
-                'readmore',
-                'pagination',
-                'link',
-                'permalink',
-                'event',
-                'single',
-            ],
-            null
+        $parameters = array_replace(
+            array_fill_keys(
+                [
+                    'title',
+                    'author',
+                    'content',
+                    'hits',
+                    'created',
+                    'modified',
+                    'published',
+                    'category',
+                    'image',
+                    'tags',
+                    'icons',
+                    'readmore',
+                    'pagination',
+                    'link',
+                    'permalink',
+                    'event',
+                    'single',
+                ],
+                null
+            ),
+            $parameters
         );
 
-        /**
-         * @var Config          $config
-         * @var stdClass        $article
-         * @var stdClass|string $image
-         * @var bool            $single
-         * @var View            $view
-         */
-        extract(array_replace($defaults, $parameters), EXTR_SKIP);
+        extract($parameters, EXTR_SKIP);
 
         // Params
         if (!isset($params)) {
@@ -58,9 +54,11 @@ class ViewLoader
         }
 
         // Event
+        /** @var stdClass $article */
         if (isset($article->event)) {
             $event = $article->event;
 
+            /** @var bool $single */
             if (!$single && $params['show_intro']) {
                 $event->afterDisplayTitle = '';
             }
@@ -77,7 +75,7 @@ class ViewLoader
 
         // Permalink
         if (!isset($permalink)) {
-            $permalink = Route::_($link, true, 0, 1);
+            $permalink = Route::_($link, true, 0, true);
         }
 
         if ($params['access-view'] === false) {
@@ -128,6 +126,7 @@ class ViewLoader
         }
 
         // Image
+        /** @var stdClass|string $image */
         if (is_string($image)) {
             $images = new Registry($article->images);
             $imageType = $image;
@@ -137,7 +136,8 @@ class ViewLoader
                 $image->link = $params['link_titles'] ? $link : null;
                 $image->caption = $images->get("image_{$imageType}_caption");
                 $image->attrs = [
-                    'src' => $view->cleanImageURL($images->get("image_{$imageType}")),
+                    'src' => HTMLHelper::_('cleanImageURL', $images->get("image_{$imageType}"))
+                        ->url,
                     'alt' => $images->get("image_{$imageType}_alt"),
                     'title' => $image->caption,
                     'class' => [],
@@ -157,6 +157,7 @@ class ViewLoader
             $layout = new FileLayout('joomla.content.tags');
 
             // check for override in child theme
+            /** @var Config $config **/
             if ($childDir = $config('theme.childDir')) {
                 $layout->addIncludePath("{$childDir}/html/layouts");
             }

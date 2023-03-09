@@ -66,6 +66,14 @@
 
 .hook-subnav-pill-item() when (@internal-subnav-pill-item-mode = glow) {
 
+    &:not(.uk-hack) {
+        position: relative;
+        z-index: 0;
+        background: none !important;
+        box-shadow: none !important;
+        border: none !important;
+    }
+
     &::before,
     &::after {
         content: "";
@@ -113,18 +121,6 @@
 .hook-subnav-pill-item-active() when (@internal-subnav-pill-item-mode = glow) and not (@internal-subnav-pill-item-active-glow-opacity = @internal-subnav-pill-item-glow-opacity) {
 
     &::before { opacity: @internal-subnav-pill-item-active-glow-opacity; }
-
-}
-
-.hook-subnav-misc() when (@internal-subnav-pill-item-mode = glow) {
-
-    .uk-subnav-pill > * > :first-child:not(.uk-hack) {
-        position: relative;
-        z-index: 0;
-        background: none !important;
-        box-shadow: none !important;
-        border: none !important;
-    }
 
 }
 

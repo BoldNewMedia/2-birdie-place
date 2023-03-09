@@ -32,6 +32,21 @@ return [
             $params = json_decode($plugin->params);
         }
 
+        // get file path from FileSystem plugin in Joomla 4
+        if (
+            version_compare(JVERSION, '4.0', '>') &&
+            ($filesystem = PluginHelper::getPlugin('filesystem', 'local'))
+        ) {
+            $uploadDir = Arr::get(
+                json_decode($filesystem->params, true),
+                'directories.directories0.directory'
+            );
+        }
+
+        if (empty($uploadDir)) {
+            $uploadDir = ComponentHelper::getParams('com_media')->get('file_path', 'images');
+        }
+
         return [
             'app' => [
                 'platform' => 'joomla',
@@ -42,16 +57,10 @@ return [
                 'tempDir' => strtr($registry->get('tmp_path', JPATH_ROOT . '/tmp'), '\\', '/'),
                 'cacheDir' => strtr($registry->get('cache_path', JPATH_ROOT . '/cache'), '\\', '/'),
                 'adminDir' => strtr(JPATH_ADMINISTRATOR, '\\', '/'),
-                'uploadDir' => strtr(
-                    JPATH_ROOT .
-                        '/' .
-                        ComponentHelper::getParams('com_media')->get('file_path', 'images'),
-                    '\\',
-                    '/'
-                ),
+                'uploadDir' => strtr(JPATH_ROOT . '/' . $uploadDir, '\\', '/'),
                 'isSite' => $application->isClient('site'),
                 'isAdmin' => $application->isClient('administrator'),
-                'apikey' => isset($params->apikey) ? $params->apikey : '',
+                'apikey' => $params->apikey ?? '',
             ],
 
             'req' => [
@@ -104,6 +113,7 @@ return [
     'aliases' => [
         Document::class => HtmlDocument::class,
         CMSApplication::class => SiteApplication::class,
+        Database::class => Joomla\Database::class,
     ],
 
     'services' => [

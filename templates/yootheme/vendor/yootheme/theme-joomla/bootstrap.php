@@ -7,8 +7,9 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Version;
 use YOOtheme\Config;
 use YOOtheme\Path;
-use YOOtheme\Theme\SystemCheck as SysCheck;
+use YOOtheme\Theme\SystemCheck as BaseSystemCheck;
 use YOOtheme\Theme\Updater;
+use YOOtheme\Theme\ViewHelper as BaseViewHelper;
 use YOOtheme\View;
 
 return [
@@ -71,6 +72,10 @@ return [
             ChildThemeListener::class => 'beforeDisplay',
         ],
 
+        'onBeforeRender' => [
+            ThemeListener::class => 'beforeRender',
+        ],
+
         'onLoadTemplate' => [
             ThemeListener::class => 'loadTemplate',
             CacheListener::class => ['loadTemplate', -20],
@@ -91,6 +96,7 @@ return [
         ],
 
         'onAfterCleanModuleList' => [
+            ThemeListener::class => 'loadModules',
             ChildThemeListener::class => ['loadModules', -5],
         ],
     ],
@@ -104,22 +110,24 @@ return [
             $view->addFunction('formatBytes', function ($bytes, $precision = 0) {
                 return HTMLHelper::_('number.bytes', $bytes, 'auto', $precision);
             });
-            $view->addFunction('cleanImageUrl', function ($url) {
-                return version_compare(JVERSION, '4.0', '>')
-                    ? HTMLHelper::cleanImageURL($url)->url
-                    : $url;
-            });
+
+            // cleanImageURL shim for Joomla 3.x
+            if (version_compare(JVERSION, '4.0', '<')) {
+                HTMLHelper::register('cleanImageURL', function ($url) {
+                    return (object) ['url' => $url];
+                });
+            }
         },
 
         Updater::class => function (Updater $updater) {
             $updater->add(Path::get('./updates.php'));
-            return $updater;
         },
     ],
 
     'services' => [
         ThemeLoader::class => '',
-        SysCheck::class => SystemCheck::class,
+        BaseViewHelper::class => ViewHelper::class,
+        BaseSystemCheck::class => SystemCheck::class,
     ],
 
     'loaders' => [

@@ -15,7 +15,7 @@ class Resolver
     protected $cache;
 
     /**
-     * @var string
+     * @var string|false
      */
     protected $key = false;
 

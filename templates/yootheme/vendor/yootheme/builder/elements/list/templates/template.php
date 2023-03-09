@@ -11,7 +11,7 @@ $el = $this->el($props['list_element'], [
         'uk-list-collapse {@list_type: horizontal}',
         'uk-column-{column}[@{column_breakpoint}]',
         'uk-column-divider {@column} {@column_divider}',
-        'uk-margin-remove {position: absolute}',
+        'uk-margin-remove {@position: absolute}',
     ],
 
 ]);
@@ -31,10 +31,9 @@ $item = $this->el('li', [
 <?php foreach ($children as $i => $child) : ?>
 
     <?= $item($props) ?>
-        <?php if ($props['list_type'] == 'vertical') : ?>
         <?= $builder->render($child, ['element' => $props]) ?>
-        <?php else : ?>
-        <?= $builder->render($child, ['element' => $props]) . ($i != (count($children) - 1) ? $props['list_horizontal_separator'] : '') ?>
+        <?php if ($props['list_type'] != 'vertical' && $i !== array_key_last($children)) : ?>
+        <?= $props['list_horizontal_separator'] ?>
         <?php endif ?>
     <?= $item->end() ?>
 

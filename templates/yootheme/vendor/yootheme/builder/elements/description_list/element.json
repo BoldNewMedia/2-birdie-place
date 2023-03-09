@@ -20,7 +20,7 @@
         "title_grid_column_gap": "small",
         "title_grid_row_gap": "small",
         "title_element": "div",
-        "meta_style": "meta",
+        "meta_style": "text-meta",
         "meta_align": "below-content"
     },
     "placeholder": {
@@ -162,16 +162,18 @@
             "type": "select",
             "options": {
                 "None": "",
-                "Bold": "text-bold",
+                "Text Bold": "text-bold",
+                "Text Meta": "text-meta",
+                "Text Lead": "text-lead",
+                "Text Small": "text-small",
+                "Text Large": "text-large",
                 "Heading Small": "heading-small",
-                "H1": "h1",
-                "H2": "h2",
-                "H3": "h3",
-                "H4": "h4",
-                "H5": "h5",
-                "H6": "h6",
-                "Meta": "meta",
-                "Lead": "lead"
+                "Heading H1": "h1",
+                "Heading H2": "h2",
+                "Heading H3": "h3",
+                "Heading H4": "h4",
+                "Heading H5": "h5",
+                "Heading H6": "h6"
             },
             "enable": "show_title"
         },
@@ -287,14 +289,16 @@
             "type": "select",
             "options": {
                 "None": "",
-                "Meta": "meta",
-                "Lead": "lead",
-                "H1": "h1",
-                "H2": "h2",
-                "H3": "h3",
-                "H4": "h4",
-                "H5": "h5",
-                "H6": "h6"
+                "Text Meta": "text-meta",
+                "Text Lead": "text-lead",
+                "Text Small": "text-small",
+                "Text Large": "text-large",
+                "Heading H1": "h1",
+                "Heading H2": "h2",
+                "Heading H3": "h3",
+                "Heading H4": "h4",
+                "Heading H5": "h5",
+                "Heading H6": "h6"
             },
             "enable": "show_meta"
         },
@@ -332,14 +336,16 @@
             "type": "select",
             "options": {
                 "None": "",
-                "Lead": "lead",
-                "Meta": "meta",
-                "H1": "h1",
-                "H2": "h2",
-                "H3": "h3",
-                "H4": "h4",
-                "H5": "h5",
-                "H6": "h6"
+                "Text Meta": "text-meta",
+                "Text Lead": "text-lead",
+                "Text Small": "text-small",
+                "Text Large": "text-large",
+                "Heading H1": "h1",
+                "Heading H2": "h2",
+                "Heading H3": "h3",
+                "Heading H4": "h4",
+                "Heading H5": "h5",
+                "Heading H6": "h6"
             },
             "enable": "show_content"
         },
@@ -387,7 +393,8 @@
             "editor": "code",
             "mode": "css",
             "attrs": {
-                "debounce": 500
+                "debounce": 500,
+                "hints": [".el-element", ".el-item", ".el-title", ".el-meta", ".el-content"]
             }
         }
     },

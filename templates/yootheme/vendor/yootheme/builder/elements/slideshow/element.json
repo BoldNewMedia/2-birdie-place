@@ -31,7 +31,7 @@
         "overlay_position": "center-left",
         "overlay_animation": "parallax",
         "title_element": "h3",
-        "meta_style": "meta",
+        "meta_style": "text-meta",
         "meta_align": "below-title",
         "meta_element": "div",
         "link_text": "Read more",
@@ -542,7 +542,7 @@
                 "X-Large": "xlarge",
                 "2X-Large": "2xlarge"
             },
-            "enable": "!$match(overlay_position, '(^top$|^bottom$)')"
+            "enable": "!$match(overlay_position, '^(top|bottom)$')"
         },
         "overlay_animation": {
             "label": "Animation",
@@ -573,6 +573,12 @@
             "text": "Edit Settings",
             "enable": "overlay_animation == 'parallax'"
         },
+        "image_loading": {
+            "label": "Loading",
+            "description": "By default, images are loaded lazy. Enable eager loading for images in the initial viewport.",
+            "type": "checkbox",
+            "text": "Load image eagerly"
+        },
         "image_width": {
             "attrs": {
                 "placeholder": "auto"
@@ -589,19 +595,21 @@
             "type": "select",
             "options": {
                 "None": "",
-                "2X-Large": "heading-2xlarge",
-                "X-Large": "heading-xlarge",
-                "Large": "heading-large",
-                "Medium": "heading-medium",
-                "Small": "heading-small",
-                "H1": "h1",
-                "H2": "h2",
-                "H3": "h3",
-                "H4": "h4",
-                "H5": "h5",
-                "H6": "h6",
-                "Meta": "meta",
-                "Lead": "lead"
+                "Heading 2X-Large": "heading-2xlarge",
+                "Heading X-Large": "heading-xlarge",
+                "Heading Large": "heading-large",
+                "Heading Medium": "heading-medium",
+                "Heading Small": "heading-small",
+                "Heading H1": "h1",
+                "Heading H2": "h2",
+                "Heading H3": "h3",
+                "Heading H4": "h4",
+                "Heading H5": "h5",
+                "Heading H6": "h6",
+                "Text Meta": "text-meta",
+                "Text Lead": "text-lead",
+                "Text Small": "text-small",
+                "Text Large": "text-large"
             },
             "enable": "show_title"
         },
@@ -690,19 +698,21 @@
             "type": "select",
             "options": {
                 "None": "",
-                "Meta": "meta",
-                "Lead": "lead",
-                "2X-Large": "heading-2xlarge",
-                "X-Large": "heading-xlarge",
-                "Large": "heading-large",
-                "Medium": "heading-medium",
-                "Small": "heading-small",
-                "H1": "h1",
-                "H2": "h2",
-                "H3": "h3",
-                "H4": "h4",
-                "H5": "h5",
-                "H6": "h6"
+                "Text Meta": "text-meta",
+                "Text Lead": "text-lead",
+                "Text Small": "text-small",
+                "Text Large": "text-large",
+                "Heading 2X-Large": "heading-2xlarge",
+                "Heading X-Large": "heading-xlarge",
+                "Heading Large": "heading-large",
+                "Heading Medium": "heading-medium",
+                "Heading Small": "heading-small",
+                "Heading H1": "h1",
+                "Heading H2": "h2",
+                "Heading H3": "h3",
+                "Heading H4": "h4",
+                "Heading H5": "h5",
+                "Heading H6": "h6"
             },
             "enable": "show_meta"
         },
@@ -776,19 +786,21 @@
             "type": "select",
             "options": {
                 "None": "",
-                "Lead": "lead",
-                "Meta": "meta",
-                "2X-Large": "heading-2xlarge",
-                "X-Large": "heading-xlarge",
-                "Large": "heading-large",
-                "Medium": "heading-medium",
-                "Small": "heading-small",
-                "H1": "h1",
-                "H2": "h2",
-                "H3": "h3",
-                "H4": "h4",
-                "H5": "h5",
-                "H6": "h6"
+                "Text Meta": "text-meta",
+                "Text Lead": "text-lead",
+                "Text Small": "text-small",
+                "Text Large": "text-large",
+                "Heading 2X-Large": "heading-2xlarge",
+                "Heading X-Large": "heading-xlarge",
+                "Heading Large": "heading-large",
+                "Heading Medium": "heading-medium",
+                "Heading Small": "heading-small",
+                "Heading H1": "h1",
+                "Heading H2": "h2",
+                "Heading H3": "h3",
+                "Heading H4": "h4",
+                "Heading H5": "h5",
+                "Heading H6": "h6"
             },
             "enable": "show_content"
         },
@@ -849,12 +861,12 @@
                 "Default": "",
                 "Large": "large"
             },
-            "enable": "show_link && link_style && link_style != 'link-muted' && link_style != 'link-text'"
+            "enable": "show_link && link_style && !$match(link_style, 'link-(muted|text)')"
         },
         "link_fullwidth": {
             "type": "checkbox",
             "text": "Full width button",
-            "enable": "show_link && link_style && link_style != 'link-muted' && link_style != 'link-text'"
+            "enable": "show_link && link_style && !$match(link_style, 'link-(muted|text)')"
         },
         "link_margin": {
             "label": "Margin Top",
@@ -911,7 +923,19 @@
             "editor": "code",
             "mode": "css",
             "attrs": {
-                "debounce": 500
+                "debounce": 500,
+                "hints": [
+                    ".el-element",
+                    ".el-item",
+                    ".el-nav",
+                    ".el-slidenav",
+                    ".el-image",
+                    ".el-overlay",
+                    ".el-title",
+                    ".el-meta",
+                    ".el-content",
+                    ".el-link"
+                ]
             }
         }
     },
@@ -1023,6 +1047,7 @@
                             "type": "group",
                             "divider": true,
                             "fields": [
+                                "image_loading",
                                 {
                                     "label": "Width/Height",
                                     "description": "Setting just one value preserves the original proportions. The image will be resized and cropped automatically, and where possible, high resolution images will be auto-generated.",
@@ -1117,90 +1142,45 @@
             "title": "Overlay Parallax",
             "width": 500,
             "fields": {
-                "overlay_parallax_x_start": {
-                    "label": "Horizontal Start",
-                    "type": "range",
+                "overlay_parallax_x": {
+                    "text": "Translate X",
+                    "type": "parallax-stops",
                     "attrs": {
                         "min": -600,
                         "max": 600,
                         "step": 10
                     }
                 },
-                "overlay_parallax_x_end": {
-                    "label": "Horizontal End",
-                    "type": "range",
+                "overlay_parallax_y": {
+                    "text": "Translate Y",
+                    "type": "parallax-stops",
                     "attrs": {
                         "min": -600,
                         "max": 600,
                         "step": 10
                     }
                 },
-                "overlay_parallax_y_start": {
-                    "label": "Vertical Start",
-                    "type": "range",
-                    "attrs": {
-                        "min": -600,
-                        "max": 600,
-                        "step": 10
-                    }
-                },
-                "overlay_parallax_y_end": {
-                    "label": "Vertical End",
-                    "type": "range",
-                    "attrs": {
-                        "min": -600,
-                        "max": 600,
-                        "step": 10
-                    }
-                },
-                "overlay_parallax_scale_start": {
-                    "label": "Scale Start",
-                    "type": "range",
+                "overlay_parallax_scale": {
+                    "text": "Scale",
+                    "type": "parallax-stops",
                     "attrs": {
                         "min": 0.3,
                         "max": 4,
                         "step": 0.1
                     }
                 },
-                "overlay_parallax_scale_end": {
-                    "label": "Scale End",
-                    "type": "range",
-                    "attrs": {
-                        "min": 0.3,
-                        "max": 4,
-                        "step": 0.1
-                    }
-                },
-                "overlay_parallax_rotate_start": {
-                    "label": "Rotate Start",
-                    "type": "range",
+                "overlay_parallax_rotate": {
+                    "text": "Rotate",
+                    "type": "parallax-stops",
                     "attrs": {
                         "min": 0,
                         "max": 360,
                         "step": 10
                     }
                 },
-                "overlay_parallax_rotate_end": {
-                    "label": "Rotate End",
-                    "type": "range",
-                    "attrs": {
-                        "min": 0,
-                        "max": 360,
-                        "step": 10
-                    }
-                },
-                "overlay_parallax_opacity_start": {
-                    "label": "Opacity Start",
-                    "type": "range",
-                    "attrs": {
-                        "min": 0,
-                        "max": 1,
-                        "step": 0.1
-                    }
-                },
-                "overlay_parallax_opacity_end": {
-                    "label": "Opacity End",
-                    "type": "range",
+                "overlay_parallax_opacity": {
+                    "text": "Opacity",
+                    "type": "parallax-stops",
                     "attrs": {
                         "min": 0,
                         "max": 1,
@@ -1211,42 +1191,11 @@
             "fieldset": {
                 "default": {
                     "fields": [
-                        {
-                            "name": "_overlay_parallax_x",
-                            "type": "grid",
-                            "width": "1-2",
-                            "fields": ["overlay_parallax_x_start", "overlay_parallax_x_end"]
-                        },
-                        {
-                            "name": "_overlay_parallax_y",
-                            "type": "grid",
-                            "width": "1-2",
-                            "fields": ["overlay_parallax_y_start", "overlay_parallax_y_end"]
-                        },
-                        {
-                            "name": "_overlay_parallax_scale",
-                            "type": "grid",
-                            "width": "1-2",
-                            "fields": ["overlay_parallax_scale_start", "overlay_parallax_scale_end"]
-                        },
-                        {
-                            "name": "_overlay_parallax_rotate",
-                            "type": "grid",
-                            "width": "1-2",
-                            "fields": [
-                                "overlay_parallax_rotate_start",
-                                "overlay_parallax_rotate_end"
-                            ]
-                        },
-                        {
-                            "name": "_overlay_parallax_opacity",
-                            "type": "grid",
-                            "width": "1-2",
-                            "fields": [
-                                "overlay_parallax_opacity_start",
-                                "overlay_parallax_opacity_end"
-                            ]
-                        }
+                        "overlay_parallax_x",
+                        "overlay_parallax_y",
+                        "overlay_parallax_scale",
+                        "overlay_parallax_rotate",
+                        "overlay_parallax_opacity"
                     ]
                 }
             }
@@ -1255,90 +1204,45 @@
             "title": "Title Parallax",
             "width": 500,
             "fields": {
-                "title_parallax_x_start": {
-                    "label": "Horizontal Start",
-                    "type": "range",
+                "title_parallax_x": {
+                    "text": "Translate X",
+                    "type": "parallax-stops",
                     "attrs": {
                         "min": -600,
                         "max": 600,
                         "step": 10
                     }
                 },
-                "title_parallax_x_end": {
-                    "label": "Horizontal End",
-                    "type": "range",
+                "title_parallax_y": {
+                    "text": "Translate Y",
+                    "type": "parallax-stops",
                     "attrs": {
                         "min": -600,
                         "max": 600,
                         "step": 10
                     }
                 },
-                "title_parallax_y_start": {
-                    "label": "Vertical Start",
-                    "type": "range",
-                    "attrs": {
-                        "min": -600,
-                        "max": 600,
-                        "step": 10
-                    }
-                },
-                "title_parallax_y_end": {
-                    "label": "Vertical End",
-                    "type": "range",
-                    "attrs": {
-                        "min": -600,
-                        "max": 600,
-                        "step": 10
-                    }
-                },
-                "title_parallax_scale_start": {
-                    "label": "Scale Start",
-                    "type": "range",
+                "title_parallax_scale": {
+                    "text": "Scale",
+                    "type": "parallax-stops",
                     "attrs": {
                         "min": 0.3,
                         "max": 4,
                         "step": 0.1
                     }
                 },
-                "title_parallax_scale_end": {
-                    "label": "Scale End",
-                    "type": "range",
-                    "attrs": {
-                        "min": 0.3,
-                        "max": 4,
-                        "step": 0.1
-                    }
-                },
-                "title_parallax_rotate_start": {
-                    "label": "Rotate Start",
-                    "type": "range",
+                "title_parallax_rotate": {
+                    "text": "Rotate",
+                    "type": "parallax-stops",
                     "attrs": {
                         "min": 0,
                         "max": 360,
                         "step": 10
                     }
                 },
-                "title_parallax_rotate_end": {
-                    "label": "Rotate End",
-                    "type": "range",
-                    "attrs": {
-                        "min": 0,
-                        "max": 360,
-                        "step": 10
-                    }
-                },
-                "title_parallax_opacity_start": {
-                    "label": "Opacity Start",
-                    "type": "range",
-                    "attrs": {
-                        "min": 0,
-                        "max": 1,
-                        "step": 0.1
-                    }
-                },
-                "title_parallax_opacity_end": {
-                    "label": "Opacity End",
-                    "type": "range",
+                "title_parallax_opacity": {
+                    "text": "Opacity",
+                    "type": "parallax-stops",
                     "attrs": {
                         "min": 0,
                         "max": 1,
@@ -1349,36 +1253,11 @@
             "fieldset": {
                 "default": {
                     "fields": [
-                        {
-                            "name": "_title_parallax_x",
-                            "type": "grid",
-                            "width": "1-2",
-                            "fields": ["title_parallax_x_start", "title_parallax_x_end"]
-                        },
-                        {
-                            "name": "_title_parallax_y",
-                            "type": "grid",
-                            "width": "1-2",
-                            "fields": ["title_parallax_y_start", "title_parallax_y_end"]
-                        },
-                        {
-                            "name": "_title_parallax_scale",
-                            "type": "grid",
-                            "width": "1-2",
-                            "fields": ["title_parallax_scale_start", "title_parallax_scale_end"]
-                        },
-                        {
-                            "name": "_title_parallax_rotate",
-                            "type": "grid",
-                            "width": "1-2",
-                            "fields": ["title_parallax_rotate_start", "title_parallax_rotate_end"]
-                        },
-                        {
-                            "name": "_title_parallax_opacity",
-                            "type": "grid",
-                            "width": "1-2",
-                            "fields": ["title_parallax_opacity_start", "title_parallax_opacity_end"]
-                        }
+                        "title_parallax_x",
+                        "title_parallax_y",
+                        "title_parallax_scale",
+                        "title_parallax_rotate",
+                        "title_parallax_opacity"
                     ]
                 }
             }
@@ -1387,90 +1266,45 @@
             "title": "Meta Parallax",
             "width": 500,
             "fields": {
-                "meta_parallax_x_start": {
-                    "label": "Horizontal Start",
-                    "type": "range",
+                "meta_parallax_x": {
+                    "text": "Translate X",
+                    "type": "parallax-stops",
                     "attrs": {
                         "min": -600,
                         "max": 600,
                         "step": 10
                     }
                 },
-                "meta_parallax_x_end": {
-                    "label": "Horizontal End",
-                    "type": "range",
+                "meta_parallax_y": {
+                    "text": "Translate Y",
+                    "type": "parallax-stops",
                     "attrs": {
                         "min": -600,
                         "max": 600,
                         "step": 10
                     }
                 },
-                "meta_parallax_y_start": {
-                    "label": "Vertical Start",
-                    "type": "range",
-                    "attrs": {
-                        "min": -600,
-                        "max": 600,
-                        "step": 10
-                    }
-                },
-                "meta_parallax_y_end": {
-                    "label": "Vertical End",
-                    "type": "range",
-                    "attrs": {
-                        "min": -600,
-                        "max": 600,
-                        "step": 10
-                    }
-                },
-                "meta_parallax_scale_start": {
-                    "label": "Scale Start",
-                    "type": "range",
+                "meta_parallax_scale": {
+                    "text": "Scale",
+                    "type": "parallax-stops",
                     "attrs": {
                         "min": 0.3,
                         "max": 4,
                         "step": 0.1
                     }
                 },
-                "meta_parallax_scale_end": {
-                    "label": "Scale End",
-                    "type": "range",
-                    "attrs": {
-                        "min": 0.3,
-                        "max": 4,
-                        "step": 0.1
-                    }
-                },
-                "meta_parallax_rotate_start": {
-                    "label": "Rotate Start",
-                    "type": "range",
+                "meta_parallax_rotate": {
+                    "text": "Rotate",
+                    "type": "parallax-stops",
                     "attrs": {
                         "min": 0,
                         "max": 360,
                         "step": 10
                     }
                 },
-                "meta_parallax_rotate_end": {
-                    "label": "Rotate End",
-                    "type": "range",
-                    "attrs": {
-                        "min": 0,
-                        "max": 360,
-                        "step": 10
-                    }
-                },
-                "meta_parallax_opacity_start": {
-                    "label": "Opacity Start",
-                    "type": "range",
-                    "attrs": {
-                        "min": 0,
-                        "max": 1,
-                        "step": 0.1
-                    }
-                },
-                "meta_parallax_opacity_end": {
-                    "label": "Opacity End",
-                    "type": "range",
+                "meta_parallax_opacity": {
+                    "text": "Opacity",
+                    "type": "parallax-stops",
                     "attrs": {
                         "min": 0,
                         "max": 1,
@@ -1481,36 +1315,11 @@
             "fieldset": {
                 "default": {
                     "fields": [
-                        {
-                            "name": "_meta_parallax_x",
-                            "type": "grid",
-                            "width": "1-2",
-                            "fields": ["meta_parallax_x_start", "meta_parallax_x_end"]
-                        },
-                        {
-                            "name": "_meta_parallax_y",
-                            "type": "grid",
-                            "width": "1-2",
-                            "fields": ["meta_parallax_y_start", "meta_parallax_y_end"]
-                        },
-                        {
-                            "name": "_meta_parallax_scale",
-                            "type": "grid",
-                            "width": "1-2",
-                            "fields": ["meta_parallax_scale_start", "meta_parallax_scale_end"]
-                        },
-                        {
-                            "name": "_meta_parallax_rotate",
-                            "type": "grid",
-                            "width": "1-2",
-                            "fields": ["meta_parallax_rotate_start", "meta_parallax_rotate_end"]
-                        },
-                        {
-                            "name": "_meta_parallax_opacity",
-                            "type": "grid",
-                            "width": "1-2",
-                            "fields": ["meta_parallax_opacity_start", "meta_parallax_opacity_end"]
-                        }
+                        "meta_parallax_x",
+                        "meta_parallax_y",
+                        "meta_parallax_scale",
+                        "meta_parallax_rotate",
+                        "meta_parallax_opacity"
                     ]
                 }
             }
@@ -1519,90 +1328,45 @@
             "title": "Content Parallax",
             "width": 500,
             "fields": {
-                "content_parallax_x_start": {
-                    "label": "Horizontal Start",
-                    "type": "range",
+                "content_parallax_x": {
+                    "text": "Translate X",
+                    "type": "parallax-stops",
                     "attrs": {
                         "min": -600,
                         "max": 600,
                         "step": 10
                     }
                 },
-                "content_parallax_x_end": {
-                    "label": "Horizontal End",
-                    "type": "range",
+                "content_parallax_y": {
+                    "text": "Translate Y",
+                    "type": "parallax-stops",
                     "attrs": {
                         "min": -600,
                         "max": 600,
                         "step": 10
                     }
                 },
-                "content_parallax_y_start": {
-                    "label": "Vertical Start",
-                    "type": "range",
-                    "attrs": {
-                        "min": -600,
-                        "max": 600,
-                        "step": 10
-                    }
-                },
-                "content_parallax_y_end": {
-                    "label": "Vertical End",
-                    "type": "range",
-                    "attrs": {
-                        "min": -600,
-                        "max": 600,
-                        "step": 10
-                    }
-                },
-                "content_parallax_scale_start": {
-                    "label": "Scale Start",
-                    "type": "range",
+                "content_parallax_scale": {
+                    "text": "Scale",
+                    "type": "parallax-stops",
                     "attrs": {
                         "min": 0.3,
                         "max": 4,
                         "step": 0.1
                     }
                 },
-                "content_parallax_scale_end": {
-                    "label": "Scale End",
-                    "type": "range",
-                    "attrs": {
-                        "min": 0.3,
-                        "max": 4,
-                        "step": 0.1
-                    }
-                },
-                "content_parallax_rotate_start": {
-                    "label": "Rotate Start",
-                    "type": "range",
+                "content_parallax_rotate": {
+                    "text": "Rotate",
+                    "type": "parallax-stops",
                     "attrs": {
                         "min": 0,
                         "max": 360,
                         "step": 10
                     }
                 },
-                "content_parallax_rotate_end": {
-                    "label": "Rotate End",
-                    "type": "range",
-                    "attrs": {
-                        "min": 0,
-                        "max": 360,
-                        "step": 10
-                    }
-                },
-                "content_parallax_opacity_start": {
-                    "label": "Opacity Start",
-                    "type": "range",
-                    "attrs": {
-                        "min": 0,
-                        "max": 1,
-                        "step": 0.1
-                    }
-                },
-                "content_parallax_opacity_end": {
-                    "label": "Opacity End",
-                    "type": "range",
+                "content_parallax_opacity": {
+                    "text": "Opacity",
+                    "type": "parallax-stops",
                     "attrs": {
                         "min": 0,
                         "max": 1,
@@ -1613,42 +1377,11 @@
             "fieldset": {
                 "default": {
                     "fields": [
-                        {
-                            "name": "_content_parallax_x",
-                            "type": "grid",
-                            "width": "1-2",
-                            "fields": ["content_parallax_x_start", "content_parallax_x_end"]
-                        },
-                        {
-                            "name": "_content_parallax_y",
-                            "type": "grid",
-                            "width": "1-2",
-                            "fields": ["content_parallax_y_start", "content_parallax_y_end"]
-                        },
-                        {
-                            "name": "_content_parallax_scale",
-                            "type": "grid",
-                            "width": "1-2",
-                            "fields": ["content_parallax_scale_start", "content_parallax_scale_end"]
-                        },
-                        {
-                            "name": "_content_parallax_rotate",
-                            "type": "grid",
-                            "width": "1-2",
-                            "fields": [
-                                "content_parallax_rotate_start",
-                                "content_parallax_rotate_end"
-                            ]
-                        },
-                        {
-                            "name": "_content_parallax_opacity",
-                            "type": "grid",
-                            "width": "1-2",
-                            "fields": [
-                                "content_parallax_opacity_start",
-                                "content_parallax_opacity_end"
-                            ]
-                        }
+                        "content_parallax_x",
+                        "content_parallax_y",
+                        "content_parallax_scale",
+                        "content_parallax_rotate",
+                        "content_parallax_opacity"
                     ]
                 }
             }
@@ -1657,90 +1390,45 @@
             "title": "Link Parallax",
             "width": 500,
             "fields": {
-                "link_parallax_x_start": {
-                    "label": "Horizontal Start",
-                    "type": "range",
+                "link_parallax_x": {
+                    "text": "Translate X",
+                    "type": "parallax-stops",
                     "attrs": {
                         "min": -600,
                         "max": 600,
                         "step": 10
                     }
                 },
-                "link_parallax_x_end": {
-                    "label": "Horizontal End",
-                    "type": "range",
+                "link_parallax_y": {
+                    "text": "Translate Y",
+                    "type": "parallax-stops",
                     "attrs": {
                         "min": -600,
                         "max": 600,
                         "step": 10
                     }
                 },
-                "link_parallax_y_start": {
-                    "label": "Vertical Start",
-                    "type": "range",
-                    "attrs": {
-                        "min": -600,
-                        "max": 600,
-                        "step": 10
-                    }
-                },
-                "link_parallax_y_end": {
-                    "label": "Vertical End",
-                    "type": "range",
-                    "attrs": {
-                        "min": -600,
-                        "max": 600,
-                        "step": 10
-                    }
-                },
-                "link_parallax_scale_start": {
-                    "label": "Scale Start",
-                    "type": "range",
+                "link_parallax_scale": {
+                    "text": "Scale",
+                    "type": "parallax-stops",
                     "attrs": {
                         "min": 0.3,
                         "max": 4,
                         "step": 0.1
                     }
                 },
-                "link_parallax_scale_end": {
-                    "label": "Scale End",
-                    "type": "range",
-                    "attrs": {
-                        "min": 0.3,
-                        "max": 4,
-                        "step": 0.1
-                    }
-                },
-                "link_parallax_rotate_start": {
-                    "label": "Rotate Start",
-                    "type": "range",
+                "link_parallax_rotate": {
+                    "text": "Rotate",
+                    "type": "parallax-stops",
                     "attrs": {
                         "min": 0,
                         "max": 360,
                         "step": 10
                     }
                 },
-                "link_parallax_rotate_end": {
-                    "label": "Rotate End",
-                    "type": "range",
-                    "attrs": {
-                        "min": 0,
-                        "max": 360,
-                        "step": 10
-                    }
-                },
-                "link_parallax_opacity_start": {
-                    "label": "Opacity Start",
-                    "type": "range",
-                    "attrs": {
-                        "min": 0,
-                        "max": 1,
-                        "step": 0.1
-                    }
-                },
-                "link_parallax_opacity_end": {
-                    "label": "Opacity End",
-                    "type": "range",
+                "link_parallax_opacity": {
+                    "text": "Opacity",
+                    "type": "parallax-stops",
                     "attrs": {
                         "min": 0,
                         "max": 1,
@@ -1751,36 +1439,11 @@
             "fieldset": {
                 "default": {
                     "fields": [
-                        {
-                            "name": "_link_parallax_x",
-                            "type": "grid",
-                            "width": "1-2",
-                            "fields": ["link_parallax_x_start", "link_parallax_x_end"]
-                        },
-                        {
-                            "name": "_link_parallax_y",
-                            "type": "grid",
-                            "width": "1-2",
-                            "fields": ["link_parallax_y_start", "link_parallax_y_end"]
-                        },
-                        {
-                            "name": "_link_parallax_scale",
-                            "type": "grid",
-                            "width": "1-2",
-                            "fields": ["link_parallax_scale_start", "link_parallax_scale_end"]
-                        },
-                        {
-                            "name": "_link_parallax_rotate",
-                            "type": "grid",
-                            "width": "1-2",
-                            "fields": ["link_parallax_rotate_start", "link_parallax_rotate_end"]
-                        },
-                        {
-                            "name": "_link_parallax_opacity",
-                            "type": "grid",
-                            "width": "1-2",
-                            "fields": ["link_parallax_opacity_start", "link_parallax_opacity_end"]
-                        }
+                        "link_parallax_x",
+                        "link_parallax_y",
+                        "link_parallax_scale",
+                        "link_parallax_rotate",
+                        "link_parallax_opacity"
                     ]
                 }
             }

@@ -10,14 +10,15 @@ class TagsModel extends BaseModel
     protected function getListQuery()
     {
         $query = parent::getListQuery();
-        $this->setState('list.start', $this->state->params->get('list.start'));
+        $params = $this->state->get('params');
+        $this->setState('list.start', $params->get('list.start'));
 
-        if ($this->state->params->get('all_tags_orderby', 'title') == 'rand') {
+        if ($params->get('all_tags_orderby', 'title') == 'rand') {
             $query->clear('order');
             $query->order(
                 Factory::getDbo()
                     ->getQuery(true)
-                    ->Rand()
+                    ->rand()
             );
         }
 

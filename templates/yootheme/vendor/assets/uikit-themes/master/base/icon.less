@@ -73,6 +73,14 @@
 
 .hook-icon-button() when (@internal-icon-button-mode = glow) {
 
+    &:not(.uk-hack) {
+        position: relative;
+        z-index: 0;
+        background: none !important;
+        box-shadow: none !important;
+        border: none !important;
+    }
+
     &::before,
     &::after {
         content: "";
@@ -101,18 +109,6 @@
 .hook-icon-button-hover() when (@internal-icon-button-mode = glow) and not (@internal-icon-button-hover-glow-filter = ~'') {
 
     &::before { filter: @internal-icon-button-hover-glow-filter; }
-
-}
-
-.hook-button-misc() when (@internal-icon-button-mode = glow) {
-
-    .uk-icon-button:not(.uk-hack) {
-        position: relative;
-        z-index: 0;
-        background: none !important;
-        box-shadow: none !important;
-        border: none !important;
-    }
 
 }
 

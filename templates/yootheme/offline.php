@@ -14,14 +14,12 @@ require_once JPATH_ADMINISTRATOR . '/components/com_users/helpers/users.php';
 
 $app = Factory::getApplication();
 $twofactor = \UsersHelper::getTwoFactorMethods();
-$view = app(View::class);
 
 ?>
 <!DOCTYPE HTML>
 <html lang="<?= $this->language ?>" dir="<?= $this->direction ?>">
     <head>
         <meta charset="<?= $this->getCharset() ?>">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <jdoc:include type="head" />
     </head>

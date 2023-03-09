@@ -7,7 +7,7 @@ $fields = ['image', 'title', 'meta', 'content', 'link'];
 // Find empty fields
 $filtered = array_values(Arr::filter($fields, function ($field) use ($props, $children) {
     return Arr::some($children, function ($child) use ($field) {
-        return $child->props[$field];
+        return $child->props[$field] != '';
     });
 }));
 
@@ -19,7 +19,7 @@ $filtered = array_values(Arr::filter($fields, function ($field) use ($props, $ch
     <thead>
         <tr>
 
-            <?php foreach ($filtered as $i => $field) : ?>
+            <?php foreach ($filtered as $field) : ?>
             <th><?= $props["table_head_{$field}"] ?></th>
             <?php endforeach ?>
 
@@ -28,7 +28,7 @@ $filtered = array_values(Arr::filter($fields, function ($field) use ($props, $ch
     <?php endif ?>
 
     <tbody>
-        <?php foreach ($children as $i => $child) : ?>
+        <?php foreach ($children as $child) : ?>
         <tr><?= $builder->render($child, ['element' => $props, 'filtered' => $filtered]) ?></tr>
         <?php endforeach ?>
     </tbody>

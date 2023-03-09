@@ -4,6 +4,7 @@ namespace YOOtheme\Builder\Joomla\Source\Type;
 
 use Joomla\CMS\Categories\CategoryNode;
 use Joomla\CMS\Helper\TagsHelper;
+use Joomla\CMS\Tree\NodeInterface;
 use Joomla\Component\Content\Site\Helper\RouteHelper;
 use function YOOtheme\app;
 use YOOtheme\Builder\Joomla\Source\TagHelper;
@@ -90,7 +91,7 @@ class CategoryType
                                 'type' => 'select',
                                 'default' => '0',
                                 'options' => [
-                                    ['value' => '0', 'text' => 'Root'],
+                                    ['value' => '0', 'text' => trans('Root')],
                                     ['evaluate' => 'config.tags'],
                                 ],
                             ],
@@ -168,7 +169,7 @@ class CategoryType
                                 'type' => 'select',
                                 'default' => '0',
                                 'options' => [
-                                    ['value' => '0', 'text' => 'Root'],
+                                    ['value' => '0', 'text' => trans('Root')],
                                     ['evaluate' => 'config.tags'],
                                 ],
                             ],
@@ -200,7 +201,7 @@ class CategoryType
     /**
      * @param CategoryNode $category
      *
-     * @return CategoryNode
+     * @return NodeInterface|null
      */
     public static function parent($category)
     {

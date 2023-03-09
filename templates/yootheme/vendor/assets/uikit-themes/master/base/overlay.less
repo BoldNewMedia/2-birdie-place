@@ -11,16 +11,14 @@
 // New
 //
 
-@overlay-backdrop-filter:                       ~'';
+@overlay-default-backdrop-filter:               ~'';
+@overlay-primary-backdrop-filter:               ~'';
 
 
 // Component
 // ========================================================================
 
-.hook-overlay() when not (@overlay-backdrop-filter = ~'') {
-    backdrop-filter: @overlay-backdrop-filter;
-    -webkit-backdrop-filter: @overlay-backdrop-filter;
-}
+.hook-overlay() {}
 
 
 // Icon
@@ -32,9 +30,15 @@
 // Style modifiers
 // ========================================================================
 
-.hook-overlay-default() {}
+.hook-overlay-default() when not (@overlay-default-backdrop-filter = ~'') {
+    backdrop-filter: @overlay-default-backdrop-filter;
+    -webkit-backdrop-filter: @overlay-default-backdrop-filter;
+}
 
-.hook-overlay-primary() {}
+.hook-overlay-primary() when not (@overlay-primary-backdrop-filter = ~'') {
+    backdrop-filter: @overlay-primary-backdrop-filter;
+    -webkit-backdrop-filter: @overlay-primary-backdrop-filter;
+}
 
 
 // Miscellaneous

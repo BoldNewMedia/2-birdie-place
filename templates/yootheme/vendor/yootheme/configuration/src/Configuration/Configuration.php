@@ -32,9 +32,9 @@ use YOOtheme\Path;
  */
 class Configuration extends Repository implements Config
 {
-    const REGEX_PATH = '/^(\.\.?)\/.*/S';
+    public const REGEX_PATH = '/^(\.\.?)\/.*/S';
 
-    const REGEX_STRING = '/\${((?:\w+:)+)?\s*([^}]+)}/S';
+    public const REGEX_STRING = '/\${((?:\w+:)+)?\s*([^}]+)}/S';
 
     /**
      * @var Filter
@@ -156,7 +156,7 @@ class Configuration extends Repository implements Config
         $replace = $arguments = [];
 
         foreach ($matches as $match) {
-            list($search, $filter, $val) = $match;
+            [$search, $filter, $val] = $match;
 
             $replace[$search] = '%s';
             $arguments[] = $filter
@@ -233,7 +233,7 @@ class Configuration extends Repository implements Config
      */
     protected function resolveExtend(array $config)
     {
-        $extends = isset($config['@extend']) ? $config['@extend'] : [];
+        $extends = $config['@extend'] ?? [];
 
         foreach ((array) $extends as $extend) {
             $config = array_replace_recursive($this->loadFile($extend), $config);
@@ -255,7 +255,7 @@ class Configuration extends Repository implements Config
      */
     protected function resolveImport(array $config)
     {
-        $imports = isset($config['@import']) ? $config['@import'] : [];
+        $imports = $config['@import'] ?? [];
 
         foreach ((array) $imports as $import) {
             $config = array_replace_recursive($config, $this->loadFile($import));

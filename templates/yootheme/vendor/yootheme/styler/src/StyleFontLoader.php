@@ -8,7 +8,7 @@ use YOOtheme\Path;
 
 class StyleFontLoader
 {
-    const PREFIX = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 ';
+    public const PREFIX = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 ';
 
     /**
      * @var string
@@ -37,10 +37,7 @@ class StyleFontLoader
             mkdir($cache, 0777, true);
         }
 
-        $formats = [
-            'woff2' => self::PREFIX . 'Edge/16.246',
-            'woff' => self::PREFIX . 'Edge/12.246',
-        ];
+        $formats = ['woff2' => self::PREFIX . 'Edge/16.246'];
 
         $this->cache = $cache;
         $this->client = $client;
@@ -62,8 +59,8 @@ class StyleFontLoader
         $file = "{$this->cache}/font-{$hash}.css";
 
         // is already cached?
-        if (file_exists($file)) {
-            return file_get_contents($file);
+        if (is_file($file) && is_string($data = file_get_contents($file))) {
+            return preg_replace('/^\/\*.+?\*\/\s*/', '', $data);
         }
 
         // load font url
@@ -78,11 +75,11 @@ class StyleFontLoader
         }
 
         // generate fonts css
-        $data = "/* {$url} generated on {$date} */\n";
-        $data .= join(array_map([$this, 'cssFontFace'], $fonts));
+        $info = "/* {$url} generated on {$date} */\n";
+        $data = join(array_map([$this, 'cssFontFace'], $fonts));
 
         // save file in cache
-        if ($fonts && @file_put_contents($file, $data)) {
+        if ($fonts && @file_put_contents($file, $info . $data)) {
             return $data;
         }
     }

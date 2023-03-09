@@ -96,18 +96,16 @@ if (version_compare(JVERSION, '4.0', '<')) {
 
     spl_autoload_register(function ($class_name) use ($classes) {
         if (empty($classes[$class_name])) {
-            return false;
+            return;
         }
 
         if (is_array($class = $classes[$class_name])) {
-            list($class, $path) = $class;
+            [$class, $path] = $class;
             if (!class_exists($class, false)) {
                 require_once $path;
             }
         }
 
         class_alias($class, $class_name);
-
-        return true;
     });
 }

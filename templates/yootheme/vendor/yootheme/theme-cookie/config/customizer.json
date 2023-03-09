@@ -30,9 +30,9 @@
                     "type": "select",
                     "options": {
                         "Top": "top",
-                        "Bottom ": "bottom"
+                        "Bottom": "bottom"
                     },
-                    "show": "cookie.type == \"bar\"",
+                    "show": "cookie.type == 'bar'",
                     "enable": "cookie.mode"
                 },
                 "cookie.bar_style": {
@@ -40,11 +40,11 @@
                     "type": "select",
                     "options": {
                         "Default": "default",
-                        "Muted ": "muted",
+                        "Muted": "muted",
                         "Primary": "primary",
-                        "Secondary ": "secondary"
+                        "Secondary": "secondary"
                     },
-                    "show": "cookie.type == \"bar\"",
+                    "show": "cookie.type == 'bar'",
                     "enable": "cookie.mode"
                 },
                 "cookie.notification_position": {
@@ -55,7 +55,7 @@
                         "Bottom Center": "bottom-center",
                         "Bottom Right": "bottom-right"
                     },
-                    "show": "cookie.type == \"notification\"",
+                    "show": "cookie.type == 'notification'",
                     "enable": "cookie.mode"
                 },
                 "cookie.notification_style": {
@@ -64,10 +64,10 @@
                     "options": {
                         "Default": "",
                         "Primary": "primary",
-                        "Warning ": "warning",
-                        "Danger ": "danger"
+                        "Warning": "warning",
+                        "Danger": "danger"
                     },
-                    "show": "cookie.type == \"notification\"",
+                    "show": "cookie.type == 'notification'",
                     "enable": "cookie.mode"
                 },
                 "cookie.message": {
@@ -92,7 +92,7 @@
                 "cookie.button_consent_text": {
                     "label": "Consent Button Text",
                     "description": "Enter the text for the button.",
-                    "enable": "cookie.mode && cookie.button_consent_style != \"icon\""
+                    "enable": "cookie.mode && cookie.button_consent_style != 'icon'"
                 },
                 "cookie.button_reject_style": {
                     "label": "Reject Button Style",
@@ -103,12 +103,12 @@
                         "Button Secondary": "secondary",
                         "Button Text": "text"
                     },
-                    "enable": "cookie.mode && cookie.mode == \"consent\""
+                    "enable": "cookie.mode == 'consent'"
                 },
                 "cookie.button_reject_text": {
                     "label": "Reject Button Text",
                     "description": "Enter the text for the button.",
-                    "enable": "cookie.mode && cookie.mode == \"consent\""
+                    "enable": "cookie.mode == 'consent'"
                 },
                 "cookie.custom_js": {
                     "label": "Cookie Scripts",
@@ -116,7 +116,7 @@
                     "type": "editor",
                     "editor": "code",
                     "mode": "javascript",
-                    "enable": "cookie.mode && cookie.mode == \"consent\""
+                    "enable": "cookie.mode == 'consent'"
                 }
             }
         }

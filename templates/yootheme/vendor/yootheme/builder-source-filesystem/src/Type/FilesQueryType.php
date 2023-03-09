@@ -42,7 +42,7 @@ class FilesQueryType
 
                     'metadata' => [
                         'label' => trans('Files'),
-                        'group' => 'External',
+                        'group' => trans('External'),
                         'fields' => [
                             'pattern' => [
                                 'label' => trans('Path Pattern'),
@@ -57,7 +57,7 @@ class FilesQueryType
                                 'width' => '1-2',
                                 'fields' => [
                                     'offset' => [
-                                        'label' => 'Start',
+                                        'label' => trans('Start'),
                                         'type' => 'number',
                                         'default' => 0,
                                         'modifier' => 1,

@@ -33,6 +33,12 @@
 .hook-search-input() {}
 
 
+// Icon
+// ========================================================================
+
+.hook-search-icon() {}
+
+
 // Default modifiers
 // ========================================================================
 
@@ -98,21 +104,21 @@
 .hook-inverse-search-default-input() when not (@search-default-border-width = 0) {
     border@{search-default-border-mode}-color: @inverse-search-default-border;
 }
-.hook-inverse-search-default-input-focus() when not (@search-default-border-width = 0) {
+.hook-inverse-search-default-input-focus() when not (@search-default-border-width = 0) and not (@inverse-search-default-focus-border =  @inverse-search-default-border) {
     border@{search-default-border-mode}-color: @inverse-search-default-focus-border;
 }
 
 .hook-inverse-search-navbar-input() when not (@search-navbar-border-width = 0) {
     border@{search-navbar-border-mode}-color: @inverse-search-navbar-border;
 }
-.hook-inverse-search-navbar-input-focus() when not (@search-navbar-border-width = 0) {
+.hook-inverse-search-navbar-input-focus() when not (@search-navbar-border-width = 0) and not (@inverse-search-navbar-focus-border =  @inverse-search-navbar-border) {
     border@{search-navbar-border-mode}-color: @inverse-search-navbar-focus-border;
 }
 
 .hook-inverse-search-large-input() when not (@search-large-border-width = 0) {
     border@{search-large-border-mode}-color: @inverse-search-large-border;
 }
-.hook-inverse-search-large-input-focus() when not (@search-large-border-width = 0) {
+.hook-inverse-search-large-input-focus() when not (@search-large-border-width = 0) and not (@inverse-search-large-focus-border =  @inverse-search-large-border) {
     border@{search-large-border-mode}-color: @inverse-search-large-focus-border;
 }
 

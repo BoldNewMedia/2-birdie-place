@@ -47,8 +47,8 @@ if (Path::get(__FILE__) !== $file = Path::get('~theme/html/plg_content_pagebreak
                     : !empty($item->active);
 			?>
 			<li<?= $active ? ' class="uk-active"' : '' ?>>
-				<?php if($index == $page + 1) : ?>
-					<span><?= ($index == count($this->list)) ? $item->title : $index ?></span>
+				<?php if ($index == $page + 1) : ?>
+					<span><?= ($index == array_key_last($this->list)) ? $item->title : $index ?></span>
 				<?php else : ?>
 					<a href="<?= $item->link ?>"><?= (Text::sprintf('PLG_CONTENT_PAGEBREAK_ALL_PAGES') == $item->title) ? $item->title : $index ?></a>
 				<?php endif ?>

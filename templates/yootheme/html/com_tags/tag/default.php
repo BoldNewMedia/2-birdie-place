@@ -12,7 +12,7 @@ use Joomla\Component\Tags\Site\Helper\RouteHelper;
 
 HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers');
 
-list($view, $language) = app(View::class, Language::class);
+[$view, $language] = app(View::class, Language::class);
 
 // Load language
 $language->load('com_content');

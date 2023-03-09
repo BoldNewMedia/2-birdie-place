@@ -22,17 +22,17 @@ class HtmlElement
     public $contents;
 
     /**
-     * @var callable
+     * @var callable|null
      */
     protected $transform;
 
     /**
      * Constructor.
      *
-     * @param string   $name
-     * @param array    $attrs
-     * @param mixed    $contents
-     * @param callable $transform
+     * @param string $name
+     * @param array $attrs
+     * @param mixed $contents
+     * @param callable|null $transform
      */
     public function __construct(
         $name,
@@ -155,9 +155,9 @@ class HtmlElement
      * Renders element tag.
      *
      * @param string $name
-     * @param array  $attrs
-     * @param string $contents
-     * @param array  $params
+     * @param array $attrs
+     * @param false|string|string[] $contents
+     * @param array $params
      *
      * @return string
      */
@@ -337,14 +337,16 @@ class HtmlElement
             return trim($expression);
         }
 
-        list($output, $parameters, $optionals) = self::parseExpression($expression);
+        [$output, $parameters, $optionals] = self::parseExpression($expression);
 
         foreach ($parameters as $match) {
-            list($parameter, $empty, $negate, $name) = $match;
+            [$parameter, $empty, $negate, $name] = $match;
 
             $regex = isset($match[4]) ? "/^({$match[4]})$/" : '';
-            $value = isset($params[$name]) ? $params[$name] : '';
-            $result = (!$regex && $value) || ($regex && preg_match($regex, $value));
+            $value = $params[$name] ?? '';
+            $result =
+                (!$regex && ((is_string($value) && $value != '') || $value)) ||
+                ($regex && preg_match($regex, $value));
 
             if (($result && !$negate) || (!$result && $negate)) {
                 $output = str_replace($parameter, $empty ? '' : $value, $output);

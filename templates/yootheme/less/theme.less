@@ -51,6 +51,8 @@
 @theme-headerbar-bottom-padding-top:            20px;
 @theme-headerbar-bottom-padding-bottom:         20px;
 @theme-headerbar-bottom-background:             @navbar-background;
+@theme-headerbar-bottom-border-width:           0;
+@theme-headerbar-bottom-border:                 transparent;
 
 @theme-headerbar-stacked-margin-top:            20px;
 
@@ -67,16 +69,23 @@
  ========================================================================== */
 
 /*
- * Force vertical scrollbar
- * 1. `overflow-x` has to be on the `body` element for Safari to prevent horizontal scrolling on touch
-      This causes a random bug showing a vertical scrollbar in combination with some fonts like `Poppins`
-      This is why `overflow-y` must also be set to `hidden`
+ * Force vertical scrollbar (has to be on `html`)
  */
 
 html { overflow-y: scroll; }
 
-/* 1 */
-body { overflow: hidden; }
+/*
+ * Clip content positioned outside (right or bottom) of the `body`
+ * Has to be set on the `body` element. Otherwise touch gestures can still scroll horizontally.
+ * 1. Use `clip` to forbid all scrolling, including programmatic scrolling.
+ *    `hidden` fallback can be removed with Safari 15.5.
+ */
+
+body {
+    overflow: hidden;
+    /* 1 */
+    overflow: clip;
+}
 
 
 /* Page
@@ -84,10 +93,14 @@ body { overflow: hidden; }
 
 /*
  * Page
- * Position context needed for `tm-header-overlay`.
+ * 1. Position context needed for `tm-header-overlay`.
+ * 2. Stacking context needed for section sticky cover and reveal effects
  */
 
-.tm-page { position: relative; }
+.tm-page {
+    position: relative;
+    z-index: 0;
+}
 
 /*
  * Border
@@ -216,6 +229,7 @@ body { overflow: hidden; }
 .tm-headerbar-top.tm-headerbar-default { background: @theme-headerbar-top-background; }
 .tm-headerbar-top.tm-headerbar-default when not (@theme-headerbar-top-border-width = 0) { border-bottom: @theme-headerbar-top-border-width solid @theme-headerbar-top-border; }
 .tm-headerbar-bottom.tm-headerbar-default { background: @theme-headerbar-bottom-background; }
+.tm-headerbar-bottom.tm-headerbar-default when not (@theme-headerbar-bottom-border-width = 0) { border-bottom: @theme-headerbar-bottom-border-width solid @theme-headerbar-bottom-border; }
 
 .tm-headerbar-default:extend(.uk-light all) when (@theme-headerbar-color-mode = light) {}
 .tm-headerbar-default:extend(.uk-dark all) when (@theme-headerbar-color-mode = dark) {}
@@ -274,6 +288,11 @@ body { overflow: hidden; }
     min-width: 0 !important;
     max-width: none !important;
 }
+
+/* Dropbar Center Layout
+ ========================================================================== */
+
+.tm-height-min-1-1 { min-height: 100%; }
 
 
 /* Error
@@ -674,6 +693,43 @@ body { overflow: hidden; }
 
 .hook-inverse-box-decoration-secondary() when not (@theme-box-decoration-secondary-border-width = 0) {
     &::before { border-color: @inverse-theme-box-decoration-secondary-border; }
+}
+
+
+/* Transition Border
+ ========================================================================== */
+
+@theme-transition-border-transition-duration:                    0.1s;
+@theme-transition-border-border-width:                           0;
+@theme-transition-border-border:                                 @global-primary-background;
+@theme-transition-border-hover-border-width:                     10px;
+@theme-transition-border-hover-border:                           @global-primary-background;
+
+.tm-transition-border {
+    display: block;
+    position: relative;
+}
+
+.tm-transition-border::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        pointer-events: none;
+        transition: @theme-transition-border-transition-duration ease-in-out;
+        transition-property: border-color, border-width;
+        border: @theme-transition-border-border-width solid @theme-transition-border-border;
+}
+
+/* Show */
+.uk-transition-toggle:hover .tm-transition-border::after,
+.uk-transition-toggle:focus .tm-transition-border::after,
+.uk-transition-toggle:hover.tm-transition-border::after,
+.uk-transition-toggle:focus.tm-transition-border::after {
+    border-width: @theme-transition-border-hover-border-width;
+    border-color: @theme-transition-border-hover-border;
 }
 
 

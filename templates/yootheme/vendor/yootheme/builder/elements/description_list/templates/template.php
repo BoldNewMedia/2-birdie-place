@@ -10,7 +10,7 @@ $el = $this->el($props['list_element'], [
         'uk-list-{list_size}',
         'uk-column-{column}[@{column_breakpoint}]',
         'uk-column-divider {@column} {@column_divider}',
-        'uk-margin-remove {position: absolute}',
+        'uk-margin-remove {@position: absolute}',
     ],
 
 ]);

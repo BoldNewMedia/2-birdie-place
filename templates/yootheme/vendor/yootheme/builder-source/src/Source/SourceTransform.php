@@ -101,10 +101,7 @@ class SourceTransform
         // execute query without validation rules
         $query = (new SourceQuery())->create($node);
         $result = app(Source::class)->query(
-            [
-                'kind' => 'Document',
-                'definitions' => [$query],
-            ],
+            $query->toAST(),
             $params,
             new \ArrayObject(),
             null,
@@ -130,9 +127,9 @@ class SourceTransform
      */
     public function mapSource($node, array $params)
     {
-        foreach (isset($node->source->props) ? $node->source->props : [] as $name => $prop) {
+        foreach ($node->source->props ?? [] as $name => $prop) {
             $value = trim($this->toString(Arr::get($params, "data.{$prop->name}")));
-            $filters = isset($prop->filters) ? (array) $prop->filters : [];
+            $filters = (array) ($prop->filters ?? []);
 
             // apply value filters
             foreach (array_intersect_key($this->filters, $filters) as $key => $filter) {
@@ -194,7 +191,7 @@ class SourceTransform
      */
     public function applyBefore($value, $before)
     {
-        return Str::length($value) ? $before . $value : $value;
+        return $value != '' ? $before . $value : $value;
     }
 
     /**
@@ -207,7 +204,7 @@ class SourceTransform
      */
     public function applyAfter($value, $after)
     {
-        return Str::length($value) ? $value . $after : $value;
+        return $value != '' ? $value . $after : $value;
     }
 
     /**
@@ -255,7 +252,7 @@ class SourceTransform
      */
     public function applySearch($value, $search, array $filters)
     {
-        $replace = isset($filters['replace']) ? $filters['replace'] : '';
+        $replace = $filters['replace'] ?? '';
 
         if ($search && $search[0] === '/') {
             return @preg_replace($search, $replace, $value);
@@ -271,11 +268,11 @@ class SourceTransform
      * @param mixed $operator
      * @param array $filters
      *
-     * @return false|string
+     * @return bool
      */
     public function applyCondition($value, $operator, array $filters)
     {
-        $val = isset($filters['condition_value']) ? $filters['condition_value'] : '';
+        $val = $filters['condition_value'] ?? '';
 
         if ($operator === '!') {
             return empty($value);
@@ -325,7 +322,7 @@ class SourceTransform
             return !str_ends_with($value, $val);
         }
 
-        return $value;
+        return !!$value;
     }
 
     protected function toString($str)

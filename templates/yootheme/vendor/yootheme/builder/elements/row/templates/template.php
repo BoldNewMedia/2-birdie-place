@@ -30,7 +30,7 @@ $margin = $this->el('div', [
 
         'uk-container {@width}',
         'uk-container-{width}{@width: xsmall|small|large|xlarge|expand}',
-        'uk-padding-remove-horizontal {@padding_remove_horizontal} {@width} {@!width:expand}',
+        'uk-padding-remove-horizontal' => ($props['padding_remove_horizontal'] && $props['width'] && $props['width'] != 'expand') || $props['parent'] == 'layout',
         'uk-container-expand-{width_expand} {@width} {@!width:expand}',
     ],
 ]);

@@ -6,6 +6,7 @@ if ($props['image']) {
     $icon = $this->el('image', [
         'src' => $props['image'],
         'alt' => true,
+        'loading' => $element['image_loading'] ? false : null,
         'width' => $element['icon_width'] ?: 20,
         'height' => $element['icon_width'] ?: 20,
         'uk-svg' => true,

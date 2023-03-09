@@ -22,7 +22,7 @@ class Application extends Container
     protected $config;
 
     /**
-     * @var static
+     * @var static|null
      */
     protected static $instance;
 

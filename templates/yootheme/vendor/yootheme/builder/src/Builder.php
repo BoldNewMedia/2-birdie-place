@@ -146,7 +146,7 @@ class Builder
             }
 
             if ($prop) {
-                return isset($node->props[$prop]) ? $node->props[$prop] : null;
+                return $node->props[$prop] ?? null;
             }
 
             return $node;

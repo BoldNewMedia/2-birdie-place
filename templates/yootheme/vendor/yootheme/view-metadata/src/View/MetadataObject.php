@@ -2,6 +2,12 @@
 
 namespace YOOtheme\View;
 
+/**
+ * @property string $href
+ * @property string $src
+ * @property string $defer
+ * @property string $version
+ */
 class MetadataObject
 {
     /**
@@ -50,7 +56,7 @@ class MetadataObject
      */
     public function __get($name)
     {
-        return isset($this->attributes[$name]) ? $this->attributes[$name] : null;
+        return $this->attributes[$name] ?? null;
     }
 
     /**
@@ -176,7 +182,7 @@ class MetadataObject
      */
     public function getAttribute($name, $default = null)
     {
-        return isset($this->$name) ? $this->$name : $default;
+        return $this->$name ?? $default;
     }
 
     /**

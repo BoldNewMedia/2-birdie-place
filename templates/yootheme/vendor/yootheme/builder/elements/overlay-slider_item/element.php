@@ -5,6 +5,11 @@ namespace YOOtheme;
 return [
     'transforms' => [
         'render' => function ($node, $params) {
+            // Link Aria Label
+            $node->props['link_aria_label'] =
+                $node->props['link_text'] ?:
+                $params['parent']->props['link_text'] ?:
+                app(View::class)->striptags($node->props['title']);
 
             // Display
             foreach (['title', 'meta', 'content', 'link', 'hover_image'] as $key) {

@@ -7,10 +7,10 @@ use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\User\User;
 use YOOtheme\Config;
-use YOOtheme\Database;
 use YOOtheme\Event;
 use YOOtheme\Http\Request;
 use YOOtheme\Http\Response;
+use YOOtheme\Joomla\Database;
 use YOOtheme\Metadata;
 use YOOtheme\Path;
 use YOOtheme\Url;
@@ -33,7 +33,7 @@ class CustomizerController
         // init config
         $config->add('customizer', [
             'config' => $config('~theme'),
-            'return' => $request('return') ?: Url::to('administrator/index.php'),
+            'return' => $request->getQueryParam('return') ?: Url::to('administrator/index.php'),
         ]);
 
         // apikey editable?
@@ -52,7 +52,11 @@ class CustomizerController
         // set document title/icon
         $document->setTitle("Website Builder - {$config('joomla.config.sitename')}");
         $document->addFavicon(Url::to(Path::get('../assets/images/favicon.png')));
-        $document->setBuffer('<div id="customizer"></div>', 'component');
+        $document->setBuffer('<div id="customizer"></div>', [
+            'type' => 'component',
+            'name' => null,
+            'title' => null,
+        ]);
     }
 
     public static function save(
@@ -84,15 +88,15 @@ class CustomizerController
         }
 
         // get config values
-        $values = Event::emit('config.save|filter', $request('config', []));
+        $values = Event::emit('config.save|filter', $request->getParam('config', []));
 
         // fetch current style params
-        $templ = $db->fetchObject('SELECT params FROM #__template_styles WHERE id=:id', [
+        $params = $db->loadResult('SELECT params FROM #__template_styles WHERE id=:id', [
             'id' => $config('theme.id'),
         ]);
 
         // prepare style params
-        $params = ['config' => json_encode($values)] + json_decode($templ->params, true) ?: [];
+        $params = ['config' => json_encode($values)] + (json_decode($params, true) ?: []);
 
         // update style params
         $db->update(

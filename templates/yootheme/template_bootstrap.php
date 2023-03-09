@@ -7,13 +7,14 @@ use Joomla\CMS\Language\Text;
 use Joomla\Event\Event;
 use Joomla\Registry\Registry;
 
+/** @var \plgSystemYOOtheme $this */
 $option = $this->app->input->getCmd('option');
 $options = ['com_ajax', 'com_content', 'com_templates', 'com_modules', 'com_advancedmodules'];
 
 if ($this->app->isClient('site') || in_array($option, $options, true))  {
 
     // bootstrap application
-    $app = require 'bootstrap.php';
+    $app = require __DIR__ . '/bootstrap.php';
     $app->load(__DIR__ . '/{vendor/yootheme/{platform-joomla,theme{,-analytics,-cookie,-highlight,-settings,-joomla*},styler,builder{,-source*,-templates,-newsletter,-joomla*}}/bootstrap.php,config.php}');
 
 } else {

@@ -59,7 +59,7 @@ abstract class Path
         $path = rtrim(static::resolveAlias($path), '/');
         $alias = rtrim(strtr($alias, '\\', '/'), '/');
 
-        list($name) = explode('/', $alias, 2);
+        [$name] = explode('/', $alias, 2);
 
         static::$aliases[$name]["$alias/"] = "$path/";
     }
@@ -82,7 +82,7 @@ abstract class Path
         $path = strtr($path, '\\', '/');
         $trim = substr($path, -1) !== '/';
 
-        list($name) = explode('/', $path, 2);
+        [$name] = explode('/', $path, 2);
 
         if (substr($name, 0, 1) !== '~') {
             return $path;
@@ -100,7 +100,7 @@ abstract class Path
     /**
      * Resolves a sequence of paths or path segments into an absolute path. All path segments are processed from right to left.
      *
-     * @param string[] $paths
+     * @param string $paths
      *
      * @return string
      *
@@ -284,7 +284,7 @@ abstract class Path
     /**
      * Joins all given path segments together.
      *
-     * @param array $parts
+     * @param string $parts
      *
      * @return string
      *

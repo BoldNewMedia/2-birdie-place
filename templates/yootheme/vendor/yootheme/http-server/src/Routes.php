@@ -140,11 +140,11 @@ class Routes implements \IteratorAggregate
      * @param string   $prefix
      * @param callable $group
      *
-     * @return Routes
+     * @return self
      */
     public function group($prefix, callable $group)
     {
-        $routes = new static();
+        $routes = new self();
 
         $group($routes);
 
@@ -181,7 +181,7 @@ class Routes implements \IteratorAggregate
     {
         $index = $this->getIndex();
 
-        return isset($index[$name]) ? $index[$name] : null;
+        return $index[$name] ?? null;
     }
 
     /**

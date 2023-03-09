@@ -4,7 +4,6 @@ namespace YOOtheme\GraphQL\Directive;
 
 use YOOtheme\Container;
 use YOOtheme\GraphQL\Type\Definition\Directive;
-use YOOtheme\GraphQL\Type\Definition\FieldArgument;
 use YOOtheme\GraphQL\Type\Definition\Type;
 
 class BindDirective extends Directive
@@ -24,18 +23,18 @@ class BindDirective extends Directive
         parent::__construct([
             'name' => 'bind',
             'args' => [
-                new FieldArgument([
+                [
                     'name' => 'id',
                     'type' => Type::string(),
-                ]),
-                new FieldArgument([
+                ],
+                [
                     'name' => 'class',
                     'type' => Type::string(),
-                ]),
-                new FieldArgument([
+                ],
+                [
                     'name' => 'args',
                     'type' => Type::string(),
-                ]),
+                ],
             ],
             'locations' => ['OBJECT', 'ENUM_VALUE', 'FIELD_DEFINITION'],
         ]);

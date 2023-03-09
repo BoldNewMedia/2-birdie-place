@@ -10,7 +10,7 @@ if (Path::get(__FILE__) !== $file = Path::get('~theme/html/plg_content_pagebreak
 
 ?>
 
-<?php if(!$showall) :
+<?php if (!$showall) :
 
 	$title = Text::sprintf('JLIB_HTML_PAGE_CURRENT_OF_TOTAL', $page + 1, count($list) - 1);
 

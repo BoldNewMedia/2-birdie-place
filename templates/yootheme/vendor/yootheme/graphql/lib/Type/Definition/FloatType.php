@@ -1,80 +1,89 @@
 <?php
+
+declare(strict_types=1);
+
 namespace YOOtheme\GraphQL\Type\Definition;
 
+use Exception;
 use YOOtheme\GraphQL\Error\Error;
 use YOOtheme\GraphQL\Language\AST\FloatValueNode;
 use YOOtheme\GraphQL\Language\AST\IntValueNode;
+use YOOtheme\GraphQL\Language\AST\Node;
 use YOOtheme\GraphQL\Utils\Utils;
+use function floatval;
+use function is_bool;
+use function is_finite;
+use function is_float;
+use function is_int;
+use function is_numeric;
 
-/**
- * Class FloatType
- * @package GraphQL\Type\Definition
- */
 class FloatType extends ScalarType
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     public $name = Type::FLOAT;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     public $description =
-'The `Float` scalar type represents signed double-precision fractional
+        'The `Float` scalar type represents signed double-precision fractional
 values as specified by
 [IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point). ';
 
     /**
      * @param mixed $value
-     * @return float|null
+     *
      * @throws Error
      */
-    public function serialize($value)
+    public function serialize($value) : float
     {
-        return $this->coerceFloat($value);
-    }
+        $float = is_numeric($value) || is_bool($value)
+            ? (float) $value
+            : null;
 
-    /**
-     * @param mixed $value
-     * @return float|null
-     * @throws Error
-     */
-    public function parseValue($value)
-    {
-        return $this->coerceFloat($value);
-    }
-
-    /**
-     * @param $valueNode
-     * @param array|null $variables
-     * @return float|null
-     * @throws \Exception
-     */
-    public function parseLiteral($valueNode, array $variables = null)
-    {
-        if ($valueNode instanceof FloatValueNode || $valueNode instanceof IntValueNode) {
-            return (float) $valueNode->value;
-        }
-
-        // Intentionally without message, as all information already in wrapped Exception
-        throw new \Exception();
-    }
-
-    private function coerceFloat($value) {
-        if ($value === '') {
-            throw new Error(
-                'Float cannot represent non numeric value: (empty string)'
-            );
-        }
-
-        if (!is_numeric($value) && $value !== true && $value !== false) {
+        if ($float === null || ! is_finite($float)) {
             throw new Error(
                 'Float cannot represent non numeric value: ' .
                 Utils::printSafe($value)
             );
         }
 
-        return (float) $value;
+        return $float;
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @throws Error
+     */
+    public function parseValue($value) : float
+    {
+        $float = is_float($value) || is_int($value)
+            ? (float) $value
+            : null;
+
+        if ($float === null || ! is_finite($float)) {
+            throw new Error(
+                'Float cannot represent non numeric value: ' .
+                Utils::printSafe($value)
+            );
+        }
+
+        return $float;
+    }
+
+    /**
+     * @param mixed[]|null $variables
+     *
+     * @return float
+     *
+     * @throws Exception
+     */
+    public function parseLiteral(Node $valueNode, ?array $variables = null)
+    {
+        if ($valueNode instanceof FloatValueNode || $valueNode instanceof IntValueNode) {
+            return (float) $valueNode->value;
+        }
+
+        // Intentionally without message, as all information already in wrapped Exception
+        throw new Error();
     }
 }

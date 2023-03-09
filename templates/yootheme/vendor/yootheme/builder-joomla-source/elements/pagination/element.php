@@ -11,11 +11,7 @@ return [
         'render' => function ($node, $params) {
             // Single Article
             if (!isset($params['pagination'])) {
-                $article = isset($params['item'])
-                    ? $params['item']
-                    : (isset($params['article'])
-                        ? $params['article']
-                        : false);
+                $article = $params['item'] ?? ($params['article'] ?? false);
 
                 if (!$article || !ArticleHelper::applyPageNavigation($article)) {
                     return false;

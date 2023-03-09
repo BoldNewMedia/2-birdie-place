@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <extension version="3.1" type="template" client="site" method="upgrade">
-    <name>yootheme</name>
-    <version>2.7.22</version>
-    <creationDate>May 2022</creationDate>
+    <name>YOOtheme</name>
+    <element>yootheme</element>
+    <version>3.0.25</version>
+    <creationDate>February 2023</creationDate>
     <copyright>Copyright (C) YOOtheme GmbH</copyright>
     <license>GNU General Public License</license>
     <author>YOOtheme</author>
@@ -42,13 +43,16 @@
         <position>toolbar-left</position>
         <position>toolbar-right</position>
         <position>logo</position>
-        <position>logo-mobile</position>
         <position>navbar</position>
         <position>header</position>
+        <position>dialog</position>
+        <position>logo-mobile</position>
+        <position>navbar-mobile</position>
+        <position>header-mobile</position>
+        <position>dialog-mobile</position>
         <position>top</position>
         <position>sidebar</position>
         <position>bottom</position>
-        <position>mobile</position>
         <position>builder-1</position>
         <position>builder-2</position>
         <position>builder-3</position>
@@ -75,7 +79,7 @@
         <language tag="lb-LU">lb-LU/lb-LU.tpl_yootheme.ini</language>
         <language tag="nb-NO">nb-NO/nb-NO.tpl_yootheme.ini</language>
         <language tag="nl-NL">nl-NL/nl-NL.tpl_yootheme.ini</language>
-        <language tag="nn-NO">no-NO/no-NO.tpl_yootheme.ini</language>
+        <language tag="nn-NO">nn-NO/nn-NO.tpl_yootheme.ini</language>
         <language tag="pl-PL">pl-PL/pl-PL.tpl_yootheme.ini</language>
         <language tag="pt-BR">pt-BR/pt-BR.tpl_yootheme.ini</language>
         <language tag="pt-PT">pt-PT/pt-PT.tpl_yootheme.ini</language>
@@ -100,6 +104,10 @@
     </config>
     <scriptfile>script.php</scriptfile>
     <updateservers>
-        <server type="extension" priority="1" name="YOOtheme">https://yootheme.com/api/update/yootheme_j33.xml</server>
+        <server
+            type="extension"
+            priority="1"
+            name="YOOtheme"
+        >https://yootheme.com/api/update/yootheme_j33.xml</server>
     </updateservers>
 </extension>

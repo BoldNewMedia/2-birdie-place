@@ -17,10 +17,10 @@ if (Path::get(__FILE__) !== $file = Path::get('~theme/html/layouts/joomla/conten
 <?php if (!empty($displayData)) : ?>
 	<?php foreach ($displayData as $i => $tag) : ?>
 		<?php if (in_array($tag->access, Access::getAuthorisedViewLevels(Factory::getUser()->get('id')))) : ?>
-            <?php $seperator = $i++ < count($displayData) - 1 ? ',' : '' ?>
+            <?php $seperator = $i !== array_key_last($displayData) ? ',' : '' ?>
 			<?php $tagParams = new Registry($tag->params) ?>
 			<?php $tagClass = trim(str_replace(['label-info', 'label'], '', $tagParams->get('tag_link_class', ''))) ?>
-			<a href="<?= Route::_(RouteHelper::getTagRoute($tag->tag_id . '-' . $tag->alias)) ?>" class="<?= $tagClass ?>" property="keywords"><?= $this->escape($tag->title) ?></a><?= $seperator ?>
+			<a href="<?= Route::_(RouteHelper::getTagRoute($tag->tag_id . '-' . $tag->alias)) ?>" class="<?= $tagClass ?>" property="keywords" vocab="https://schema.org/"><?= $this->escape($tag->title) ?></a><?= $seperator ?>
 		<?php endif ?>
 	<?php endforeach ?>
 <?php endif ?>

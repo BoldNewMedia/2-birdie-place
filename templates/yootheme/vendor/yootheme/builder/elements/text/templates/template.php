@@ -5,7 +5,6 @@ $el = $this->el('div', [
     'class' => [
         'uk-panel',
         'uk-text-{text_style}',
-        'uk-text-{text_size} {@!text_style}',
         'uk-text-{text_color}',
         'uk-dropcap {@dropcap}',
         'uk-column-{column}[@{column_breakpoint}]',
@@ -19,7 +18,7 @@ $breakpoints = ['xl', 'l', 'm', 's', ''];
 
 if ($props['column'] && false !== $index = array_search($props['column_breakpoint'], $breakpoints)) {
 
-    list(, $columns) = explode('-', $props['column']);
+    [, $columns] = explode('-', $props['column']);
 
     foreach (array_splice($breakpoints, $index + 1, 4) as $breakpoint) {
 

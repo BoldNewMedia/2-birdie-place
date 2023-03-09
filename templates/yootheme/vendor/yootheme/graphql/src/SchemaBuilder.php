@@ -5,6 +5,7 @@ namespace YOOtheme\GraphQL;
 use YOOtheme\GraphQL\Error\InvariantViolation;
 use YOOtheme\GraphQL\Executor\Executor;
 use YOOtheme\GraphQL\Executor\Values;
+use YOOtheme\GraphQL\Language\AST\DirectiveNode;
 use YOOtheme\GraphQL\Language\AST\NodeList;
 use YOOtheme\GraphQL\Language\Parser;
 use YOOtheme\GraphQL\Type\Definition\Directive;
@@ -137,7 +138,7 @@ class SchemaBuilder
      */
     public function getDirective($name)
     {
-        return isset($this->directives[$name]) ? $this->directives[$name] : null;
+        return $this->directives[$name] ?? null;
     }
 
     /**
@@ -156,7 +157,7 @@ class SchemaBuilder
     public function getType($name)
     {
         if (empty($this->loadedTypes)) {
-            $this->loadedTypes = Type::getInternalTypes();
+            $this->loadedTypes = Type::getStandardTypes();
         }
 
         if (isset($this->loadedTypes[$name])) {
@@ -190,13 +191,13 @@ class SchemaBuilder
      * @param string         $name
      * @param array|callable $config
      *
-     * @return InputObjectType
+     * @return Type
      */
     public function inputType($name, $config = [])
     {
-        $type = isset($this->types[$name])
-            ? $this->types[$name]
-            : new InputObjectType([
+        $type =
+            $this->types[$name] ??
+            new InputObjectType([
                 'name' => $name,
             ]);
 
@@ -207,13 +208,13 @@ class SchemaBuilder
      * @param string         $name
      * @param array|callable $config
      *
-     * @return ObjectType
+     * @return Type
      */
     public function objectType($name, $config = [])
     {
-        $type = isset($this->types[$name])
-            ? $this->types[$name]
-            : new ObjectType([
+        $type =
+            $this->types[$name] ??
+            new ObjectType([
                 'name' => $name,
                 'resolveField' => [$this, 'resolveField'],
             ]);
@@ -256,6 +257,7 @@ class SchemaBuilder
         }
 
         if (isset($type->config['resolveField'])) {
+            /** @var ObjectType $type */
             $type->resolveFieldFn = $type->config['resolveField'];
         }
 
@@ -309,7 +311,7 @@ class SchemaBuilder
     /**
      * @param ResolveInfo $info
      *
-     * @return NodeList
+     * @return NodeList<DirectiveNode>
      */
     public function resolveDirectives(ResolveInfo $info)
     {
@@ -329,7 +331,7 @@ class SchemaBuilder
         // query field directives
         foreach ($info->fieldNodes as $node) {
             if ($info->fieldName === $node->name->value) {
-                return $nodes->merge($node->directives ?: []);
+                return $nodes->merge($node->directives);
             }
         }
 
@@ -410,7 +412,7 @@ class SchemaBuilder
                 $nonNull = $this->loadModifiers($type['nonNull']);
             }
 
-            $type = Type::nonNull(isset($nonNull) ? $nonNull : Type::string());
+            $type = Type::nonNull($nonNull ?? Type::string());
         } elseif (isset($type['listOf'])) {
             if (is_string($type['listOf'])) {
                 $listOf = $this->getType($type['listOf']);
@@ -418,7 +420,7 @@ class SchemaBuilder
                 $listOf = $this->loadModifiers($type['listOf']);
             }
 
-            $type = Type::listOf(isset($listOf) ? $listOf : Type::string());
+            $type = Type::listOf($listOf ?? Type::string());
         }
 
         return $type;

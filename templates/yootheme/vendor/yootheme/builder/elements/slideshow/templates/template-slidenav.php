@@ -1,5 +1,7 @@
 <?php
 
+use function YOOtheme\trans;
+
 $slidenav = $this->el('a', [
 
     'class' => [
@@ -24,6 +26,8 @@ $attrs_slidenav_next = [
         'cls: uk-position-center-right-out uk-position-center-right; mode: media; media: @{slidenav_outside_breakpoint} {@slidenav: outside}',
     ],
 
+    'aria-label' => trans('Next slide')
+
 ];
 
 $attrs_slidenav_previous = [
@@ -38,6 +42,8 @@ $attrs_slidenav_previous = [
     'uk-toggle' => [
         'cls: uk-position-center-left-out uk-position-center-left; mode: media; media: @{slidenav_outside_breakpoint} {@slidenav: outside}',
     ],
+
+    'aria-label' => trans('Previous slide')
 
 ];
 
@@ -64,14 +70,20 @@ $el = $this->el('div', [
 if ($props['slidenav'] == 'outside' && $props['text_color'] != $props['slidenav_outside_color']) {
 
     if (!$props['text_color']) {
-        $el->attr('uk-toggle', ['cls: js-color-state uk-{slidenav_outside_color}; mode: media; media: @{slidenav_outside_breakpoint}']);
-        $el->attr('class', ['js-color-state uk-{slidenav_outside_color}']);
+        $el->attr([
+            'class' => ['js-color-state uk-{slidenav_outside_color}'],
+            'uk-toggle' => 'cls: js-color-state uk-{slidenav_outside_color}; mode: media; media: @{slidenav_outside_breakpoint}',
+        ]);
     } elseif (!$props['slidenav_outside_color']) {
-        $el->attr('uk-toggle', ['cls: js-color-state uk-{text_color}; mode: media; media: @{slidenav_outside_breakpoint}']);
-        $el->attr('class', ['js-color-state']);
+        $el->attr([
+            'class' => ['js-color-state'],
+            'uk-toggle' => 'cls: js-color-state uk-{text_color}; mode: media; media: @{slidenav_outside_breakpoint}',
+        ]);
     } else {
-        $el->attr('uk-toggle', ['cls: uk-{slidenav_outside_color} uk-{text_color}; mode: media; media: @{slidenav_outside_breakpoint}']);
-        $el->attr('class', ['uk-{slidenav_outside_color}']);
+        $el->attr([
+            'class' => ['uk-{slidenav_outside_color}'],
+            'uk-toggle' => 'cls: uk-{slidenav_outside_color} uk-{text_color}; mode: media; media: @{slidenav_outside_breakpoint}',
+        ]);
     }
 
 } else {

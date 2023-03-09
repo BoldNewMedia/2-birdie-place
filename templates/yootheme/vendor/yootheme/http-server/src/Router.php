@@ -47,18 +47,17 @@ class Router
                 }
 
                 foreach ($route->getAttributes() as $name => $value) {
-                    $request->setAttribute($name, $value);
+                    $request = $request->withAttribute($name, $value);
                 }
 
-                $request->setAttribute('route', $route);
-                $request->setAttribute('routeParams', $params);
-                $request->setAttribute('routeStatus', 1);
-
-                return $request;
+                return $request
+                    ->withAttribute('route', $route)
+                    ->withAttribute('routeParams', $params)
+                    ->withAttribute('routeStatus', 1);
             }
         }
 
-        return $request->setAttribute('routeStatus', 0);
+        return $request->withAttribute('routeStatus', 0);
     }
 
     /**

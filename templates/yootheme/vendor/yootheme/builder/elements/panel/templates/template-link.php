@@ -3,7 +3,7 @@
 $link = $props['link'] ? $this->el('a', [
     'href' => ['{link}'],
     'target' => ['_blank {@link_target}'],
-    'uk-scroll' => str_starts_with((string) $props['link'], '#'),
+    'uk-scroll' => str_contains((string) $props['link'], '#'),
 ]) : null;
 
 if ($link && $props['panel_link']) {
@@ -15,6 +15,8 @@ if ($link && $props['panel_link']) {
             // Only if `uk-flex` is not already set in `template.php` to let images cover the card height if the cards have different heights
             'uk-display-block' => !($props['panel_style'] && $props['has_panel_image_no_padding'] && in_array($props['image_align'], ['left', 'right'])),
         ],
+
+        'aria-label' => $props['link_text'] ?: $this->striptags($props['title']),
 
     ]);
 
@@ -45,11 +47,12 @@ if ($link && $props['title'] && $props['title_link']) {
 
 if ($link && $props['image'] && $props['image_link']) {
 
-    $props['image'] = $link($props, ['class' => [
-
-        'uk-display-block' => $props['panel_style'] && $props['has_panel_image_no_padding'] && in_array($props['image_align'], ['left', 'right']),
-
-    ]], $props['image']);
+    $props['image'] = $link($props, [
+        'class' => [
+            'uk-display-block' => $props['panel_style'] && $props['has_panel_image_no_padding'] && in_array($props['image_align'], ['left', 'right']),
+        ],
+        'aria-label' => $props['link_text'] ?: $this->striptags($props['title']),
+    ], $props['image']);
 
 }
 
@@ -59,17 +62,13 @@ if ($link && $props['link_text']) {
         $link = $this->el('div');
     }
 
-    $link->attr([
-
-        'class' => [
-            'el-link',
-            'uk-{link_style: link-(muted|text)}',
-            'uk-button uk-button-{!link_style: |link-muted|link-text} [uk-button-{link_size}] [uk-width-1-1 {@link_fullwidth}]',
-            // Keep link style if panel link
-            'uk-link {@link_style:} {@panel_link}',
-            'uk-text-muted {@link_style: link-muted} {@panel_link}',
-        ],
-
+    $link->attr('class', [
+        'el-link',
+        'uk-{link_style: link-(muted|text)}',
+        'uk-button uk-button-{!link_style: |link-muted|link-text} [uk-button-{link_size}] [uk-width-1-1 {@link_fullwidth}]',
+        // Keep link style if panel link
+        'uk-link {@link_style:} {@panel_link}',
+        'uk-text-muted {@link_style: link-muted} {@panel_link}',
     ]);
 
 }

@@ -84,7 +84,10 @@ abstract class Str
     public static function startsWith($haystack, $needles)
     {
         foreach ((array) $needles as $needle) {
-            if ($needle !== '' && (string) $needle === substr($haystack, 0, strlen($needle))) {
+            if (
+                $needle !== '' &&
+                (string) $needle === substr((string) $haystack, 0, strlen($needle))
+            ) {
                 return true;
             }
         }
@@ -107,7 +110,7 @@ abstract class Str
     public static function endsWith($haystack, $needles)
     {
         foreach ((array) $needles as $needle) {
-            if ((string) $needle === substr($haystack, -strlen($needle))) {
+            if ((string) $needle === substr((string) $haystack, -strlen($needle))) {
                 return true;
             }
         }
@@ -347,20 +350,9 @@ abstract class Str
     {
         $string = '';
 
-        if (is_callable('random_bytes')) {
-            while (($len = strlen($string)) < $length) {
-                $bytes = random_bytes($size = $length - $len);
-                $string .= substr(
-                    str_replace(['/', '+', '='], '', base64_encode($bytes)),
-                    0,
-                    $size
-                );
-            }
-        } else {
-            // @codeCoverageIgnoreStart
-            $chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-            $string = substr(str_shuffle(str_repeat($chars, $length)), 0, $length);
-            // @codeCoverageIgnoreEnd
+        while (($len = strlen($string)) < $length) {
+            $bytes = random_bytes($size = $length - $len);
+            $string .= substr(str_replace(['/', '+', '='], '', base64_encode($bytes)), 0, $size);
         }
 
         return $string;
@@ -391,10 +383,10 @@ abstract class Str
         if (
             preg_match($regex = '/{((?:[^{}]+|(?R))*)}/', $pattern, $matches, PREG_OFFSET_CAPTURE)
         ) {
-            list($matches, $replaces) = $matches;
+            [$matches, [$replaces]] = $matches;
 
             foreach (
-                explode(',', preg_replace_callback($regex, $callback, $replaces[0]))
+                explode(',', preg_replace_callback($regex, $callback, $replaces))
                 as $replace
             ) {
                 $expand = substr_replace(
@@ -424,7 +416,7 @@ abstract class Str
     public static function convertBraces($pattern)
     {
         if (preg_match_all('/{((?:[^{}]+|(?R))*)}/', $pattern, $matches, PREG_OFFSET_CAPTURE)) {
-            list($matches, $replaces) = $matches;
+            [$matches, $replaces] = $matches;
 
             foreach ($matches as $i => $m) {
                 $replace = str_replace(',', '|', static::convertBraces($replaces[$i][0]));

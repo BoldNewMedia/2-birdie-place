@@ -54,7 +54,7 @@ class MetadataManager implements Metadata, \IteratorAggregate
      */
     public function get($name)
     {
-        return isset($this->metadata[$name]) ? $this->metadata[$name] : null;
+        return $this->metadata[$name] ?? null;
     }
 
     /**
@@ -63,7 +63,7 @@ class MetadataManager implements Metadata, \IteratorAggregate
     public function set($name, $value, array $attributes = [])
     {
         if (is_array($value) && !is_callable($value)) {
-            list($value, $attributes) = [null, array_merge($value, $attributes)];
+            [$value, $attributes] = [null, array_merge($value, $attributes)];
         }
 
         $metadata = new MetadataObject($name, $value, $attributes);

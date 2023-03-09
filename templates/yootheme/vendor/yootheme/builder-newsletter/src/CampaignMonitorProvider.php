@@ -11,27 +11,27 @@ class CampaignMonitorProvider extends AbstractProvider
      */
     public function lists($provider)
     {
-        $lists = [];
-        if (($result = $this->get('clients.json')) && $result['success']) {
-            $clients = array_map(function ($client) {
-                return ['value' => $client['ClientID'], 'text' => $client['Name']];
-            }, $result['data']);
-
-            if ($client_id = $provider['client_id'] ?: $clients[0]['value']) {
-                if (
-                    ($result = $this->get("/clients/$client_id/lists.json")) &&
-                    $result['success']
-                ) {
-                    $lists = array_map(function ($client) {
-                        return ['value' => $client['ListID'], 'text' => $client['Name']];
-                    }, $result['data']);
-                }
-            }
-        } else {
+        if (!($result = $this->get('clients.json')) || !$result['success']) {
             throw new \Exception($result['data']);
         }
 
-        return compact('lists', 'clients');
+        $clients = array_map(function ($client) {
+            return ['value' => $client['ClientID'], 'text' => $client['Name']];
+        }, $result['data']);
+
+        if (!($clientId = $provider['client_id'] ?: $clients[0]['value'])) {
+            throw new \Exception('Invalid client id.');
+        }
+
+        if (!($result = $this->get("/clients/{$clientId}/lists.json")) || !$result['success']) {
+            throw new \Exception($result['data']);
+        }
+
+        $lists = array_map(function ($list) {
+            return ['value' => $list['ListID'], 'text' => $list['Name']];
+        }, $result['data']);
+
+        return compact('clients', 'lists');
     }
 
     /**
@@ -39,24 +39,23 @@ class CampaignMonitorProvider extends AbstractProvider
      */
     public function subscribe($email, $data, $provider)
     {
-        if (!empty($provider['list_id'])) {
-            $name =
-                (!empty($data['first_name']) ? $data['first_name'] . ' ' : '') . $data['last_name'];
-            $result = $this->post("subscribers/{$provider['list_id']}.json", [
-                'EmailAddress' => $email,
-                'Name' => $name,
-                'Resubscribe' => true,
-                'RestartSubscriptionBasedAutoresponders' => true,
-            ]);
-
-            if (!$result['success']) {
-                throw new \Exception($result['data']);
-            }
-
-            return true;
+        if (empty($provider['list_id'])) {
+            throw new \Exception('No list selected.');
         }
 
-        throw new \Exception('No list selected.');
+        $name = (!empty($data['first_name']) ? $data['first_name'] . ' ' : '') . $data['last_name'];
+        $result = $this->post("subscribers/{$provider['list_id']}.json", [
+            'EmailAddress' => $email,
+            'Name' => $name,
+            'Resubscribe' => true,
+            'RestartSubscriptionBasedAutoresponders' => true,
+        ]);
+
+        if (!$result['success']) {
+            throw new \Exception($result['data']);
+        }
+
+        return true;
     }
 
     /**

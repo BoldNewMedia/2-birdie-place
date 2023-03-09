@@ -4,6 +4,7 @@ namespace YOOtheme;
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 
 $view = app(View::class);
@@ -12,9 +13,9 @@ $title_element = $params->get('item_heading', 'h4');
 
 if ($params->get('img_intro_full') !== 'none' && !empty($item->imageSrc)) {
     if ($view->isImage($item->imageSrc) == 'svg') {
-        $img = $view->image($item->imageSrc, ['uk-img' => true, 'alt' => $item->imageAlt]);
+        $img = $view->image($item->imageSrc, ['loading' => 'lazy', 'alt' => $item->imageAlt]);
     } else {
-        $img = $view->image([$item->imageSrc, 'thumbnail' => ['auto', 'auto'], 'srcset' => true], ['uk-img' => true, 'alt' => $item->imageAlt]);
+        $img = $view->image([$item->imageSrc, 'thumbnail' => ['auto', 'auto'], 'srcset' => true], ['loading' => 'lazy', 'alt' => $item->imageAlt]);
     }
 }
 
@@ -31,8 +32,8 @@ if ($params->get('img_intro_full') !== 'none' && !empty($item->imageSrc)) {
 <?php endif ?>
 
 <?php if ($params->get('img_intro_full') !== 'none' && !empty($item->imageSrc)) : ?>
-<div property="image" typeof="ImageObject">
-    <meta property="url" content="<?= Uri::base() . $view->cleanImageUrl($item->imageSrc) ?>">
+<div property="image" typeof="ImageObject" vocab="https://schema.org/">
+    <meta property="url" content="<?= Uri::base() . HTMLHelper::_('cleanImageURL', $item->imageSrc)->url ?>">
     <?= $img ?>
 </div>
 <?php endif ?>

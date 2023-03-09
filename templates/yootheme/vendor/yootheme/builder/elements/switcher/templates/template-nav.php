@@ -56,6 +56,7 @@ $nav_switcher = in_array($props['nav_position'], ['top', 'bottom'])
             ],
             'src' => $child->props['thumbnail'] ?: $child->props['image'],
             'alt' => $child->props['label'] ?: $child->props['title'],
+            'loading' => $props['image_loading'] ? false : null,
             'width' => $props['thumbnav_width'],
             'height' => $props['thumbnav_height'],
             'uk-svg' => (bool) $props['thumbnav_svg_inline'],

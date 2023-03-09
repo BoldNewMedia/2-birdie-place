@@ -14,7 +14,6 @@ if ($iframe = $this->iframeVideo($props['video'])) {
         ],
 
         'src' => $iframe,
-        'frameborder' => '0',
 
     ]);
 

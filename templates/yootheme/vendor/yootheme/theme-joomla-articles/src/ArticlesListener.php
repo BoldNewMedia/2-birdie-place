@@ -16,7 +16,7 @@ class ArticlesListener
 {
     public static function prepareData(Config $config, Metadata $metadata, $event)
     {
-        list($context, $article) = $event->getArguments();
+        [$context, $article] = $event->getArguments();
 
         if ($context !== 'com_content.article') {
             return;
@@ -50,14 +50,16 @@ class ArticlesListener
 
     public static function beforeSave(Config $config, $event)
     {
-        list($context, $article) = $event->getArguments();
+        [$context, $article] = $event->getArguments();
 
         if (!in_array($context, ['com_content.form', 'com_content.article'], true)) {
             return;
         }
 
         // use "jform.articletext" from request to keep builder data, when JText filters are active
-        if (preg_match('/<!--\s{.*}\s-->\s*$/', $config('req.body.jform.articletext'), $matches)) {
+        if (
+            preg_match('/<!--\s{.*}\s-->\s*$/', $config('req.body.jform.articletext', ''), $matches)
+        ) {
             $article->fulltext = $matches[0];
         }
     }

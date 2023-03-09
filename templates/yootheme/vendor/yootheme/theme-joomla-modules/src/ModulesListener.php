@@ -3,6 +3,8 @@
 namespace YOOtheme\Theme\Joomla;
 
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Document\Document;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\User\User;
@@ -32,8 +34,6 @@ class ModulesListener
                 'types' => $helper->getTypes(),
                 'modules' => $helper->getModules(),
                 'positions' => $helper->getPositions(),
-                'canEdit' => $user->authorise('core.edit', 'com_modules'),
-                'canDelete' => $user->authorise('core.edit.state', 'com_modules'),
                 'canCreate' => $user->authorise('core.create', 'com_modules'),
             ],
         ]);
@@ -51,18 +51,21 @@ class ModulesListener
         }
     }
 
-    public static function loadModules(Config $config, View $view, $event)
+    public static function loadModules(Config $config, Document $document, View $view, $event)
     {
-        list($modules) = $event->getArguments();
+        [$modules] = $event->getArguments();
 
-        if ($config('app.isAdmin') || !$config('~theme')) {
+        if (
+            $config('app.isAdmin') ||
+            !$config('theme.active') ||
+            !$document instanceof HtmlDocument
+        ) {
             return;
         }
 
         $view['sections']->add('breadcrumbs', function () use ($config) {
             return ModuleHelper::renderModule(
                 static::createModule([
-                    'name' => 'yoo_breadcrumbs',
                     'module' => 'mod_breadcrumbs',
                     'params' => [
                         'showLast' => $config('~theme.site.breadcrumbs_show_current'),
@@ -73,74 +76,154 @@ class ModulesListener
             );
         });
 
-        if ($position = $config('~theme.header.search')) {
-            $params = [];
-
-            if ($config('~theme.search_module') === 'mod_finder') {
-                $params['show_autosuggest'] = ComponentHelper::getParams('com_finder')->get(
-                    'show_autosuggest',
-                    1
-                );
-            }
-
-            array_push(
-                $modules,
-                static::createModule([
-                    'name' => 'yoo_search',
-                    'module' => $config('~theme.search_module'),
+        // Logo Module
+        foreach (['logo', 'logo-mobile', 'dialog', 'dialog-mobile'] as $position) {
+            if ($content = trim($view('~theme/templates/header-logo', ['position' => $position]))) {
+                $module = static::createModule([
+                    'module' => 'mod_custom',
                     'position' => $position,
-                    'params' => $params,
-                ]),
-                static::createModule([
-                    'name' => 'yoo_search',
+                    'content' => $content,
+                    'type' => 'logo',
+                    'params' => ['layout' => 'blank'],
+                ]);
+                array_unshift($modules, $module);
+            }
+        }
+
+        // Search Module
+        foreach (['~theme.header.search', '~theme.mobile.header.search'] as $key) {
+            if ($position = $config($key)) {
+                $position = explode(':', $position, 2);
+
+                $params = [];
+                if ($config('~theme.search_module') === 'mod_finder') {
+                    $params['show_autosuggest'] = ComponentHelper::getParams('com_finder')->get(
+                        'show_autosuggest',
+                        1
+                    );
+                }
+
+                $module = static::createModule([
                     'module' => $config('~theme.search_module'),
-                    'position' => 'mobile',
+                    'position' => $position[0],
                     'params' => $params,
-                ])
-            );
+                ]);
+
+                $position[1] == 'start'
+                    ? array_unshift($modules, $module)
+                    : array_push($modules, $module);
+            }
         }
 
-        if (
-            ($position = $config('~theme.header.social')) &&
-            ($content = trim($view('~theme/templates/socials')))
-        ) {
-            $social = static::createModule([
-                'name' => 'yoo_socials',
-                'module' => 'mod_custom',
-                'position' => $position,
-                'content' => $content,
-            ]);
+        // Social Module
+        foreach (['~theme.header.social', '~theme.mobile.header.social'] as $key) {
+            if (
+                $config($key) &&
+                ($content = trim(
+                    $view('~theme/templates/socials', [
+                        'position' => ($position = explode(':', $config($key), 2))[0],
+                    ])
+                ))
+            ) {
+                $module = static::createModule([
+                    'module' => 'mod_custom',
+                    'position' => $position[0],
+                    'content' => $content,
+                    'params' => ['layout' => 'blank'],
+                ]);
 
-            strpos($position, 'left')
-                ? array_unshift($modules, $social)
-                : array_push($modules, $social);
-
-            $modules[] = static::createModule([
-                'name' => 'yoo_socials',
-                'module' => 'mod_custom',
-                'position' => 'mobile',
-                'content' => $content,
-            ]);
+                $position[1] == 'start'
+                    ? array_unshift($modules, $module)
+                    : array_push($modules, $module);
+            }
         }
 
-        $temp = $config('req.customizer.module');
+        // Dialog Toggle Module
+        foreach (['~theme.dialog.toggle', '~theme.mobile.dialog.toggle'] as $key) {
+            if (
+                $config($key) &&
+                ($content = trim(
+                    $view('~theme/templates/header-dialog', [
+                        'position' => ($position = explode(':', $config($key), 2))[0],
+                    ])
+                ))
+            ) {
+                $module = static::createModule([
+                    'module' => 'mod_custom',
+                    'position' => $position[0],
+                    'content' => $content,
+                    'type' => 'dialog-toggle',
+                    'params' => ['layout' => 'blank'],
+                ]);
 
+                $position[1] == 'start'
+                    ? array_unshift($modules, $module)
+                    : array_push($modules, $module);
+            }
+        }
+
+        // Split Header Position
         if ($config('~theme.header.layout') === 'stacked-center-c') {
-            $headerModules = self::filterHeaderModules($modules);
-            foreach (array_slice($headerModules, ceil(count($headerModules) / 2)) as $module) {
+            $headerModules = self::filterModules($modules, 'header');
+
+            // Split Auto
+            $index = $config('~theme.header.split_index') ?: ceil(count($headerModules) / 2);
+
+            foreach (array_slice($headerModules, $index) as $module) {
                 $module->position .= '-split';
             }
         }
 
+        // Push Navbar Position
+        if (
+            $config('~theme.header.layout') === 'stacked-left' &&
+            ($index = $config('~theme.header.push_index'))
+        ) {
+            $navbarModules = self::filterModules($modules, 'navbar');
+
+            foreach (array_slice($navbarModules, $index) as $module) {
+                $module->position .= '-push';
+            }
+        }
+
+        // Push Dialog Positions
+        foreach (
+            [
+                'dialog' => '~theme.dialog.push_index',
+                'dialog-mobile' => '~theme.mobile.dialog.push_index',
+            ]
+            as $key => $value
+        ) {
+            if ($index = $config->get($value)) {
+                $dialogModules = self::filterModules($modules, $key);
+
+                foreach (array_slice($dialogModules, $index) as $module) {
+                    $module->position .= '-push';
+                }
+            }
+        }
+
+        $temp = $config('req.customizer.module');
+
+        // Module field defaults (Template Tab in Module edit view)
+        $defaults = array_map(function ($field) {
+            return $field['default'] ?? '';
+        }, $config->loadFile(Path::get('../config/modules.json'))['fields']);
+
         foreach ($modules as $module) {
-            $module->type = str_replace('mod_', '', $module->module);
+            if (!isset($module->type)) {
+                $module->type = str_replace('mod_', '', $module->module);
+            }
             $module->attrs = ['id' => "module-{$module->id}", 'class' => []];
 
             if ($temp && $temp['id'] == $module->id) {
                 $module->content = $temp['content'];
             }
 
-            $config->update("~theme.modules.{$module->id}", function ($values) use ($module) {
+            $config->update("~theme.modules.{$module->id}", function ($values) use (
+                $module,
+                $defaults
+            ) {
                 $params = json_decode($module->params);
 
                 if (isset($params->yoo_config)) {
@@ -151,11 +234,11 @@ class ModulesListener
                     $config = '{}';
                 }
 
-                return array_merge($values ?: [], json_decode($config, true), [
+                return [
                     'showtitle' => $module->showtitle,
-                    'class' => [isset($params->moduleclass_sfx) ? $params->moduleclass_sfx : ''],
-                    'title_tag' => isset($params->header_tag) ? $params->header_tag : 'h3',
-                    'title_class' => isset($params->header_class) ? $params->header_class : '',
+                    'class' => [$params->moduleclass_sfx ?? ''],
+                    'title_tag' => $params->header_tag ?? 'h3',
+                    'title_class' => $params->header_class ?? '',
                     'is_list' => in_array($module->type, [
                         'articles_archive',
                         'articles_categories',
@@ -165,7 +248,10 @@ class ModulesListener
                         'tags_popular',
                         'tags_similar',
                     ]),
-                ]);
+                ] +
+                    json_decode($config, true) +
+                    $defaults +
+                    ($values ?: []);
             });
         }
 
@@ -178,7 +264,7 @@ class ModulesListener
         Translator $translator,
         $event
     ) {
-        list($form, $data) = $event->getArguments();
+        [$form, $data] = $event->getArguments();
 
         if (
             !in_array($form->getName(), [
@@ -220,6 +306,7 @@ class ModulesListener
         $module = (object) array_merge(
             [
                 'id' => 'tm-' . ++$id,
+                'name' => 'tm-' . $id, // Joomla\CMS\Helper\ModuleHelper::getModule() requires 'name'
                 'title' => '',
                 'showtitle' => 0,
                 'position' => '',
@@ -235,10 +322,10 @@ class ModulesListener
         return $module;
     }
 
-    protected static function filterHeaderModules($modules)
+    protected static function filterModules($modules, $position)
     {
-        return array_filter($modules, function ($module) {
-            return $module->position === 'header';
+        return array_filter($modules, function ($module) use ($position) {
+            return $module->position === $position;
         });
     }
 }

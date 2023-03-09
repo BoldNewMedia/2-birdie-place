@@ -52,7 +52,8 @@
                 "Small": "small",
                 "Medium": "medium",
                 "Default": "",
-                "Large": "large"
+                "Large": "large",
+                "None": "collapse"
             }
         },
         "grid_row_gap": {
@@ -63,7 +64,8 @@
                 "Small": "small",
                 "Medium": "medium",
                 "Default": "",
-                "Large": "large"
+                "Large": "large",
+                "None": "collapse"
             }
         },
         "position": "${builder.position}",
@@ -98,7 +100,8 @@
             "editor": "code",
             "mode": "css",
             "attrs": {
-                "debounce": 500
+                "debounce": 500,
+                "hints": [".el-element", ".el-item", ".el-content"]
             }
         }
     },

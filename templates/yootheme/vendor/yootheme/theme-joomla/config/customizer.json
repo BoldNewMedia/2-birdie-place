@@ -57,10 +57,10 @@
                     },
                     {
                         "title": "Assigning Templates to Pages",
-                        "src": "https://www.youtube-nocookie.com/watch?v=VMNaA2JE-i8&list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                        "duration": "4:13",
+                        "src": "https://www.youtube-nocookie.com/watch?v=d2WX0hGXsDE&list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "duration": "4:38",
                         "documentation": "support/yootheme-pro/joomla/templates#page-assignment",
-                        "support": "support/search?tags=125&q=template%20page"
+                        "support": "support/search?tags=125&q=template%20page%20assigment"
                     },
                     {
                         "title": "Setting the Template Loading Priority",
@@ -118,31 +118,38 @@
                 "Site": [
                     {
                         "title": "Adding the Logo",
-                        "src": "https://www.youtube-nocookie.com/watch?v=DX6IimH2_Z0&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                        "duration": "1:32",
+                        "src": "https://www.youtube-nocookie.com/watch?v=UItCS_pSAXA&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "duration": "2:25",
                         "documentation": "support/yootheme-pro/joomla/site-and-logo#logo",
                         "support": "support/search?tags=125&q=logo"
                     },
                     {
                         "title": "Setting the Page Layout",
-                        "src": "https://www.youtube-nocookie.com/watch?v=XQOn28sUy3A&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                        "duration": "0:52",
+                        "src": "https://www.youtube-nocookie.com/watch?v=ScYJ-bVJ94s&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "duration": "1:35",
                         "documentation": "support/yootheme-pro/joomla/site-and-logo#layout",
                         "support": "support/search?tags=125&q=site%20layout"
                     },
                     {
                         "title": "Using the Toolbar",
-                        "src": "https://www.youtube-nocookie.com/watch?v=E8vWOWbxB-I&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                        "duration": "0:40",
+                        "src": "https://www.youtube-nocookie.com/watch?v=uigKZP3xu-4&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "duration": "0:58",
                         "documentation": "support/yootheme-pro/joomla/site-and-logo#toolbar",
                         "support": "support/search?tags=125&q=toolbar"
                     },
                     {
                         "title": "Displaying the Breadcrumbs",
-                        "src": "https://www.youtube-nocookie.com/watch?v=8ExEAIneVqg&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                        "duration": "1:06",
+                        "src": "https://www.youtube-nocookie.com/watch?v=Eiw_1rf3hHE&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "duration": "1:04",
                         "documentation": "support/yootheme-pro/joomla/site-and-logo#breadcrumbs",
                         "support": "support/search?tags=125&q=breadcrumbs"
+                    },
+                    {
+                        "title": "Setting the Main Section Height",
+                        "src": "https://www.youtube-nocookie.com/watch?v=CDeYl5TIfZQ&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "duration": "0:46",
+                        "documentation": "support/yootheme-pro/joomla/site-and-logo#main-section",
+                        "support": "support/search?tags=125&q=main%20section"
                     }
                 ],
                 "Image Field": [
@@ -174,15 +181,15 @@
             "help": [
                 {
                     "title": "Setting the Header Layout",
-                    "src": "https://www.youtube-nocookie.com/watch?v=aaNPXqxZdGk&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                    "duration": "4:17",
+                    "src": "https://www.youtube-nocookie.com/watch?v=5KazxjAM_TA&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                    "duration": "3:51",
                     "documentation": "support/yootheme-pro/joomla/header-and-navbar#header-layout",
                     "support": "support/search?tags=125&q=header%20layout"
                 },
                 {
                     "title": "Setting the Navbar",
-                    "src": "https://www.youtube-nocookie.com/watch?v=TuCHE3XM73I&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                    "duration": "0:56",
+                    "src": "https://www.youtube-nocookie.com/watch?v=oQ1ja29Tl1Y&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                    "duration": "1:09",
                     "documentation": "support/yootheme-pro/joomla/header-and-navbar#navbar",
                     "support": "support/search?tags=125&q=navbar"
                 },
@@ -195,36 +202,29 @@
                 },
                 {
                     "title": "Using the Dropdown Menu",
-                    "src": "https://www.youtube-nocookie.com/watch?v=AHRP3SIfgJw&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                    "duration": "1:43",
-                    "documentation": "support/yootheme-pro/joomla/header-and-navbar#dropdown-layout",
-                    "support": "support/search?tags=125&q=navbar%20dropdown%20layout"
+                    "src": "https://www.youtube-nocookie.com/watch?v=98MdMe3CVFM&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                    "duration": "1:12",
+                    "documentation": "support/yootheme-pro/joomla/header-and-navbar#dropdown",
+                    "support": "support/search?tags=125&q=navbar%20dropdown"
                 },
                 {
-                    "title": "Using the Offcanvas Menu",
-                    "src": "https://www.youtube-nocookie.com/watch?v=vJEBCmUpcCU&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                    "duration": "1:02",
-                    "documentation": "support/yootheme-pro/joomla/header-and-navbar#offcanvas-layout",
-                    "support": "support/search?tags=125&q=navbar%20offcanvas%20layout"
-                },
-                {
-                    "title": "Using the Modal Menu",
-                    "src": "https://www.youtube-nocookie.com/watch?v=lPUWxdoruwU&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                    "duration": "0:26",
-                    "documentation": "support/yootheme-pro/joomla/header-and-navbar#modal-layout",
-                    "support": "support/search?tags=125&q=navbar%20modal%20layout"
+                    "title": "Setting the Dialog Layout",
+                    "src": "https://www.youtube-nocookie.com/watch?v=UFx8UeiZv04&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                    "duration": "5:07",
+                    "documentation": "support/yootheme-pro/joomla/header-and-navbar#dialog-layouts",
+                    "support": "support/search?tags=125&q=dialog%20layout"
                 },
                 {
                     "title": "Adding the Search",
-                    "src": "https://www.youtube-nocookie.com/watch?v=2dX9guAFnj8&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                    "duration": "0:32",
+                    "src": "https://www.youtube-nocookie.com/watch?v=rxmuuMeWWoo&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                    "duration": "1:12",
                     "documentation": "support/yootheme-pro/joomla/header-and-navbar#search",
                     "support": "support/search?tags=125&q=header%20search"
                 },
                 {
                     "title": "Adding the Social Icons",
-                    "src": "https://www.youtube-nocookie.com/watch?v=Q6SXUrNlltA&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                    "duration": "1:12",
+                    "src": "https://www.youtube-nocookie.com/watch?v=dlZA9cGlsOg&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                    "duration": "1:55",
                     "documentation": "support/yootheme-pro/joomla/header-and-navbar#social-icons",
                     "support": "support/search?tags=125&q=header%20social"
                 }
@@ -234,52 +234,45 @@
             "help": [
                 {
                     "title": "Displaying the Mobile Header",
-                    "src": "https://www.youtube-nocookie.com/watch?v=DDay7Cw6yAE&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                    "duration": "0:37",
-                    "documentation": "support/yootheme-pro/joomla/mobile-header#breakpoint",
-                    "support": "support/search?tags=125&q=mobile%20header%20breakpoint"
+                    "src": "https://www.youtube-nocookie.com/watch?v=CDmPjGek9gU&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                    "duration": "0:59",
+                    "documentation": "support/yootheme-pro/joomla/mobile-header#visibility",
+                    "support": "support/search?tags=125&q=mobile%20header%20visibility"
                 },
                 {
-                    "title": "Setting the Navbar",
-                    "src": "https://www.youtube-nocookie.com/watch?v=JUesh19x644&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                    "duration": "0:41",
+                    "title": "Setting the Mobile Header Layout",
+                    "src": "https://www.youtube-nocookie.com/watch?v=M7lmXtclWaI&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                    "duration": "1:43",
+                    "documentation": "support/yootheme-pro/joomla/mobile-header#header-layout",
+                    "support": "support/search?tags=125&q=mobile%20header%20layout"
+                },
+                {
+                    "title": "Setting the Mobile Navbar",
+                    "src": "https://www.youtube-nocookie.com/watch?v=LfmHQnco4_s&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                    "duration": "0:58",
                     "documentation": "support/yootheme-pro/joomla/mobile-header#navbar",
                     "support": "support/search?tags=125&q=mobile%20header%20navbar"
                 },
                 {
-                    "title": "Displaying the Logo and Menu Toggle",
-                    "src": "https://www.youtube-nocookie.com/watch?v=MaGkhx4-b2U&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                    "duration": "0:46",
-                    "documentation": "support/yootheme-pro/joomla/mobile-header#logo-and-menu-toggle",
-                    "support": "support/search?tags=125&q=mobile%20header%20logo"
+                    "title": "Setting the Mobile Dialog Layout",
+                    "src": "https://www.youtube-nocookie.com/watch?v=dkbYQgttefg&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                    "duration": "4:23",
+                    "documentation": "support/yootheme-pro/joomla/mobile-header#dialog-layout",
+                    "support": "support/search?tags=125&q=mobile%20dialog%20layouts"
                 },
                 {
-                    "title": "Setting the Menu Style",
-                    "src": "https://www.youtube-nocookie.com/watch?v=xPp3L8ekHQw&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                    "duration": "0:27",
-                    "documentation": "support/yootheme-pro/joomla/mobile-header#menu-style",
-                    "support": "support/search?tags=125&q=mobile%20header%20menu%20style"
+                    "title": "Setting the Mobile Search",
+                    "src": "https://www.youtube-nocookie.com/watch?v=KDbITztgtTE&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                    "duration": "0:59",
+                    "documentation": "support/yootheme-pro/joomla/mobile-header#search",
+                    "support": "support/search?tags=125&q=mobile%20search"
                 },
                 {
-                    "title": "Using the Offcanvas Menu Animation",
-                    "src": "https://www.youtube-nocookie.com/watch?v=Lc86BIbjn9E&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                    "duration": "1:04",
-                    "documentation": "support/yootheme-pro/joomla/mobile-header#offcanvas",
-                    "support": "support/search?tags=125&q=mobile%20header%20offcanvas"
-                },
-                {
-                    "title": "Using the Modal Menu Animation",
-                    "src": "https://www.youtube-nocookie.com/watch?v=q3-Wquo2VLs&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                    "duration": "0:25",
-                    "documentation": "support/yootheme-pro/joomla/mobile-header#modal",
-                    "support": "support/search?tags=125&q=mobile%20header%20modal"
-                },
-                {
-                    "title": "Using the Dropdown Menu Animation",
-                    "src": "https://www.youtube-nocookie.com/watch?v=JqVOASAD4gk&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                    "duration": "0:25",
-                    "documentation": "support/yootheme-pro/joomla/mobile-header#dropdown",
-                    "support": "support/search?tags=125&q=mobile%20header%20dropdown"
+                    "title": "Adding the Social Icons",
+                    "src": "https://www.youtube-nocookie.com/watch?v=uVSjfP4kNqM&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                    "duration": "1:29",
+                    "documentation": "support/yootheme-pro/joomla/mobile-header#social-icons",
+                    "support": "support/search?tags=125&q=mobile%20social%20icons"
                 }
             ]
         },
@@ -430,15 +423,15 @@
                 "Builder Module": [
                     {
                         "title": "Using the Builder Module",
-                        "src": "https://www.youtube-nocookie.com/watch?v=CbRtIuzkgP8&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                        "duration": "1:49",
+                        "src": "https://www.youtube-nocookie.com/watch?v=msRBkqxnZ18&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "duration": "1:58",
                         "documentation": "support/yootheme-pro/joomla/widgets-and-modules#builder-module",
                         "support": "support/search?tags=125&q=builder%20module"
                     },
                     {
                         "title": "Creating Advanced Module Layouts",
-                        "src": "https://www.youtube-nocookie.com/watch?v=s199sw_mjEQ&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                        "duration": "4:20",
+                        "src": "https://www.youtube-nocookie.com/watch?v=jr09mnXDbIA&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "duration": "4:16",
                         "documentation": "support/yootheme-pro/joomla/widgets-and-modules#advanced-layouts",
                         "support": "support/search?tags=125&q=builder%20module"
                     }
@@ -513,8 +506,8 @@
             "help": [
                 {
                     "title": "Opening the Changelog",
-                    "src": "https://www.youtube-nocookie.com/watch?v=uNiwQXUS9OY&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                    "duration": "0:34",
+                    "src": "https://www.youtube-nocookie.com/watch?v=qK4D2RsfBY4&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                    "duration": "1:05",
                     "documentation": "support/yootheme-pro/joomla/updating#changelog",
                     "support": "support/search?tags=125&q=changelog"
                 }
@@ -529,11 +522,11 @@
                     "description": "Set the post width. The image and content can't expand beyond this width.",
                     "type": "select",
                     "options": {
-                        "XSmall": "xsmall",
+                        "X-Small": "xsmall",
                         "Small": "small",
                         "Default": "default",
                         "Large": "large",
-                        "XLarge": "xlarge",
+                        "X-Large": "xlarge",
                         "Expand": "expand",
                         "None": ""
                     }
@@ -544,10 +537,10 @@
                     "type": "select",
                     "options": {
                         "Default": "",
-                        "XSmall": "xsmall",
+                        "X-Small": "xsmall",
                         "Small": "small",
                         "Large": "large",
-                        "XLarge": "xlarge"
+                        "X-Large": "xlarge"
                     }
                 },
                 "post.padding_remove": {
@@ -560,7 +553,7 @@
                     "type": "select",
                     "options": {
                         "Auto": "",
-                        "XSmall": "xsmall",
+                        "X-Small": "xsmall",
                         "Small": "small"
                     },
                     "enable": "post.width != 'xsmall'"
@@ -590,7 +583,7 @@
                 },
                 "post.image_dimension": {
                     "type": "grid",
-                    "description": "Setting just one value preserves the original proportions. The image will be resized and cropped automatically and where possible, high resolution images will be auto-generated.",
+                    "description": "Setting just one value preserves the original proportions. The image will be resized and cropped automatically, and where possible, high resolution images will be auto-generated.",
                     "fields": {
                         "post.image_width": {
                             "label": "Image Width",
@@ -718,7 +711,7 @@
                         "Default": "default",
                         "Small": "small",
                         "Large": "large",
-                        "XLarge": "xlarge",
+                        "X-Large": "xlarge",
                         "Expand": "expand"
                     }
                 },
@@ -728,10 +721,10 @@
                     "type": "select",
                     "options": {
                         "Default": "",
-                        "XSmall": "xsmall",
+                        "X-Small": "xsmall",
                         "Small": "small",
                         "Large": "large",
-                        "XLarge": "xlarge"
+                        "X-Large": "xlarge"
                     }
                 },
                 "blog.grid_column_gap": {
@@ -810,7 +803,7 @@
                 },
                 "blog.image_dimension": {
                     "type": "grid",
-                    "description": "Setting just one value preserves the original proportions. The image will be resized and cropped automatically and where possible, high resolution images will be auto-generated.",
+                    "description": "Setting just one value preserves the original proportions. The image will be resized and cropped automatically, and where possible, high resolution images will be auto-generated.",
                     "fields": {
                         "blog.image_width": {
                             "label": "Image Width",

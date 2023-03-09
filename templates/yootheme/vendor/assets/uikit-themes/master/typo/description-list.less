@@ -33,7 +33,9 @@
 // Term
 //
 
-.hook-description-list-term() { font-size: @description-list-term-font-size; }
+.hook-description-list-term() when not (@description-list-term-font-size = @base-body-font-size) {
+    font-size: @description-list-term-font-size;
+}
 
 .hook-description-list-term() when not (@description-list-term-font-family = inherit) {
     font-family: @description-list-term-font-family;
@@ -59,7 +61,9 @@
 // Description
 //
 
-.hook-description-list-description() { font-size: @description-list-description-font-size; }
+.hook-description-list-description() when not (@description-list-description-font-size = @base-body-font-size) {
+    font-size: @description-list-description-font-size;
+}
 
 .hook-description-list-description() when not (@description-list-description-font-family = inherit) {
     font-family: @description-list-description-font-family;

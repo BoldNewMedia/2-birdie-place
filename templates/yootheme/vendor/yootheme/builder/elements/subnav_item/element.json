@@ -22,7 +22,8 @@
         "active": {
             "label": "Active",
             "type": "checkbox",
-            "text": "Active item"
+            "text": "Active item",
+            "source": true
         },
         "status": "${builder.statusItem}",
         "source": "${builder.source}"

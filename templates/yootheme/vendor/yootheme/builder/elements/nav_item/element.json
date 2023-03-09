@@ -17,12 +17,60 @@
             "label": "Content",
             "source": true
         },
-        "link": "${builder.link}",
-        "link_target": "${builder.link_target}",
+        "meta": {
+            "label": "Subtitle",
+            "source": true
+        },
+        "image": {
+            "label": "Image",
+            "type": "image",
+            "source": true,
+            "enable": "!icon",
+            "altRef": "%name%_alt"
+        },
+        "image_alt": {
+            "label": "Image Alt",
+            "source": true,
+            "enable": "image"
+        },
+        "icon": {
+            "label": "Icon",
+            "description": "Instead of using a custom image, you can click on the pencil to pick an icon from the icon library.",
+            "type": "icon",
+            "source": true,
+            "enable": "!image"
+        },
+        "link": {
+            "label": "Link",
+            "type": "link",
+            "description": "Enter or pick a link, an image or a video file.",
+            "attrs": {
+                "placeholder": "http://"
+            },
+            "source": true
+        },
+        "link_target": {
+            "type": "checkbox",
+            "text": "Open the link in a new window"
+        },
+        "type": {
+            "label": "Type",
+            "description": "Select the item type.",
+            "type": "select",
+            "options": {
+                "Item": "",
+                "Heading": "heading",
+                "Divider": "divider"
+            },
+            "source": true
+        },
         "active": {
             "label": "Active",
+            "description": "Highlight the item as the active item.",
             "type": "checkbox",
-            "text": "Active item"
+            "text": "Enable active state",
+            "source": true,
+            "enable": "!$match(type, 'divider|header')"
         },
         "status": "${builder.statusItem}",
         "source": "${builder.source}"
@@ -33,7 +81,25 @@
             "fields": [
                 {
                     "title": "Content",
-                    "fields": ["content", "link", "link_target", "active"]
+                    "fields": [
+                        "content",
+                        "meta",
+                        "image",
+                        "image_alt",
+                        "icon",
+                        "link",
+                        "link_target"
+                    ]
+                },
+                {
+                    "title": "Settings",
+                    "fields": [
+                        {
+                            "label": "Item",
+                            "type": "group",
+                            "fields": ["type", "active"]
+                        }
+                    ]
                 },
                 "${builder.advancedItem}"
             ]

@@ -18,7 +18,7 @@ class SmartSearchQueryType
                     'metadata' => [
                         'label' => trans('Search'),
                         'view' => ['com_finder.search'],
-                        'group' => 'Page',
+                        'group' => trans('Page'),
                     ],
                     'extensions' => [
                         'call' => __CLASS__ . '::resolve',

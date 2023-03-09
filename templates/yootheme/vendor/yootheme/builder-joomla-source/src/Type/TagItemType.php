@@ -45,7 +45,7 @@ class TagItemType
                         ],
                     ],
                     'metadata' => [
-                        'label' => 'Teaser',
+                        'label' => trans('Teaser'),
                         'arguments' => [
                             'show_excerpt' => [
                                 'label' => trans('Excerpt'),
@@ -180,7 +180,7 @@ class TagItemType
                                 'default' => '0',
                                 'show' => 'arguments.show_taxonomy === "tag"',
                                 'options' => [
-                                    ['value' => '0', 'text' => 'Root'],
+                                    ['value' => '0', 'text' => trans('Root')],
                                     ['evaluate' => 'config.tags'],
                                 ],
                             ],
@@ -231,7 +231,7 @@ class TagItemType
                 'event' => [
                     'type' => 'ArticleEvent',
                     'metadata' => [
-                        'label' => 'Events',
+                        'label' => trans('Events'),
                     ],
                     'extensions' => [
                         'call' => __CLASS__ . '::event',
@@ -344,7 +344,7 @@ class TagItemType
     {
         $user = Factory::getUser($item->core_created_user_id);
 
-        if ($item->core_created_by_alias && $user) {
+        if ($item->core_created_by_alias) {
             $user = clone $user;
             $user->name = $item->core_created_by_alias;
         }

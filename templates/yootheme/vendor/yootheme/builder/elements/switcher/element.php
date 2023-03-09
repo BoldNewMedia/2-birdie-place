@@ -4,111 +4,56 @@ namespace YOOtheme;
 
 return [
     'updates' => [
+        '2.8.0-beta.0.13' => function ($node) {
+            foreach (['title_style', 'meta_style', 'content_style'] as $prop) {
+                if (in_array(Arr::get($node->props, $prop), ['meta', 'lead'])) {
+                    $node->props[$prop] = 'text-' . Arr::get($node->props, $prop);
+                }
+            }
+        },
+
         '2.7.0-beta.0.6' => function ($node) {
             if (empty($node->props['nav'])) {
                 $node->props['nav'] = 'tab';
             }
 
-            unset($node->props['slidenav']);
-            unset($node->props['slidenav_hover']);
-            unset($node->props['slidenav_large']);
-            unset($node->props['slidenav_margin']);
-            unset($node->props['slidenav_breakpoint']);
-            unset($node->props['slidenav_color']);
-            unset($node->props['slidenav_outside_breakpoint']);
-            unset($node->props['slidenav_outside_color']);
-            unset($node->props['slidenav_outside_color']);
-            unset($node->props['slidenav_outside_color']);
-            unset($node->props['slidenav_outside_color']);
+            unset(
+                $node->props['slidenav'],
+                $node->props['slidenav_hover'],
+                $node->props['slidenav_large'],
+                $node->props['slidenav_margin'],
+                $node->props['slidenav_breakpoint'],
+                $node->props['slidenav_color'],
+                $node->props['slidenav_outside_breakpoint'],
+                $node->props['slidenav_outside_color'],
+                $node->props['slidenav_outside_color'],
+                $node->props['slidenav_outside_color'],
+                $node->props['slidenav_outside_color']
+            );
         },
 
         '2.7.0-beta.0.3' => function ($node) {
-            if (isset($node->props['switcher_thumbnail_height'])) {
-                $node->props['thumbnav_height'] = $node->props['switcher_thumbnail_height'];
-                unset($node->props['switcher_thumbnail_height']);
-            }
+            Arr::updateKeys($node->props, ['switcher_thumbnail_height' => 'thumbnav_height']);
         },
 
         '2.7.0-beta.0.2' => function ($node) {
-            if (isset($node->props['switcher_style'])) {
-                $node->props['nav'] = $node->props['switcher_style'];
-                unset($node->props['switcher_style']);
-            }
-
-            if (isset($node->props['switcher_thumbnail_nowrap'])) {
-                $node->props['thumbnav_nowrap'] = $node->props['switcher_thumbnail_nowrap'];
-                unset($node->props['switcher_thumbnail_nowrap']);
-            }
-
-            if (isset($node->props['switcher_thumbnail_width'])) {
-                $node->props['thumbnav_width'] = $node->props['switcher_thumbnail_width'];
-                unset($node->props['switcher_thumbnail_width']);
-            }
-
-            if (isset($node->props['switcher_thumbnail_height'])) {
-                $node->props['thumbnav_height'] = $node->props['switcher_thumbnail_height'];
-                unset($node->props['switcher_thumbnail_height']);
-            }
-
-            if (isset($node->props['switcher_thumbnail_svg_inline'])) {
-                $node->props['thumbnav_svg_inline'] = $node->props['switcher_thumbnail_svg_inline'];
-                unset($node->props['switcher_thumbnail_svg_inline']);
-            }
-
-            if (isset($node->props['switcher_thumbnail_svg_color'])) {
-                $node->props['thumbnav_svg_color'] = $node->props['switcher_thumbnail_svg_color'];
-                unset($node->props['switcher_thumbnail_svg_color']);
-            }
-
-            if (isset($node->props['switcher_position'])) {
-                $node->props['nav_position'] = $node->props['switcher_position'];
-                unset($node->props['switcher_position']);
-            }
-
-            if (isset($node->props['nav_primary'])) {
-                $node->props['nav_style_primary'] = $node->props['nav_primary'];
-                unset($node->props['nav_primary']);
-            }
-
-            if (isset($node->props['switcher_align'])) {
-                $node->props['nav_align'] = $node->props['switcher_align'];
-                unset($node->props['switcher_align']);
-            }
-
-            if (isset($node->props['switcher_margin'])) {
-                $node->props['nav_margin'] = $node->props['switcher_margin'];
-                unset($node->props['switcher_margin']);
-            }
-
-            if (isset($node->props['switcher_grid_width'])) {
-                $node->props['nav_grid_width'] = $node->props['switcher_grid_width'];
-                unset($node->props['switcher_grid_width']);
-            }
-
-            if (isset($node->props['switcher_grid_column_gap'])) {
-                $node->props['nav_grid_column_gap'] = $node->props['switcher_grid_column_gap'];
-                unset($node->props['switcher_grid_column_gap']);
-            }
-
-            if (isset($node->props['switcher_grid_row_gap'])) {
-                $node->props['nav_grid_row_gap'] = $node->props['switcher_grid_row_gap'];
-                unset($node->props['switcher_grid_row_gap']);
-            }
-
-            if (isset($node->props['switcher_grid_breakpoint'])) {
-                $node->props['nav_grid_breakpoint'] = $node->props['switcher_grid_breakpoint'];
-                unset($node->props['switcher_grid_breakpoint']);
-            }
-
-            if (isset($node->props['switcher_grid_breakpoint'])) {
-                $node->props['nav_grid_breakpoint'] = $node->props['switcher_grid_breakpoint'];
-                unset($node->props['switcher_grid_breakpoint']);
-            }
-
-            if (isset($node->props['switcher_vertical_align'])) {
-                $node->props['nav_vertical_align'] = $node->props['switcher_vertical_align'];
-                unset($node->props['switcher_vertical_align']);
-            }
+            Arr::updateKeys($node->props, [
+                'switcher_style' => 'nav',
+                'switcher_thumbnail_nowrap' => 'thumbnav_nowrap',
+                'switcher_thumbnail_width' => 'thumbnav_width',
+                'switcher_thumbnail_height' => 'thumbnav_height',
+                'switcher_thumbnail_svg_inline' => 'thumbnav_svg_inline',
+                'switcher_thumbnail_svg_color' => 'thumbnav_svg_color',
+                'switcher_position' => 'nav_position',
+                'nav_primary' => 'nav_style_primary',
+                'switcher_align' => 'nav_align',
+                'switcher_margin' => 'nav_margin',
+                'switcher_grid_width' => 'nav_grid_width',
+                'switcher_grid_column_gap' => 'nav_grid_column_gap',
+                'switcher_grid_row_gap' => 'nav_grid_row_gap',
+                'switcher_grid_breakpoint' => 'nav_grid_breakpoint',
+                'switcher_vertical_align' => 'nav_vertical_align',
+            ]);
         },
 
         '2.1.0-beta.0.1' => function ($node) {
@@ -122,54 +67,34 @@ return [
         },
 
         '1.22.0-beta.0.1' => function ($node) {
-            if (isset($node->props['switcher_gutter'])) {
-                $node->props['switcher_grid_column_gap'] = $node->props['switcher_gutter'];
-                $node->props['switcher_grid_row_gap'] = $node->props['switcher_gutter'];
-                unset($node->props['switcher_gutter']);
-            }
-
-            if (isset($node->props['switcher_breakpoint'])) {
-                $node->props['switcher_grid_breakpoint'] = $node->props['switcher_breakpoint'];
-                unset($node->props['switcher_breakpoint']);
-            }
-
-            if (isset($node->props['title_gutter'])) {
-                $node->props['title_grid_column_gap'] = $node->props['title_gutter'];
-                $node->props['title_grid_row_gap'] = $node->props['title_gutter'];
-                unset($node->props['title_gutter']);
-            }
-
-            if (isset($node->props['title_breakpoint'])) {
-                $node->props['title_grid_breakpoint'] = $node->props['title_breakpoint'];
-                unset($node->props['title_breakpoint']);
-            }
-
-            if (isset($node->props['image_gutter'])) {
-                $node->props['image_grid_column_gap'] = $node->props['image_gutter'];
-                $node->props['image_grid_row_gap'] = $node->props['image_gutter'];
-                unset($node->props['image_gutter']);
-            }
-
-            if (isset($node->props['image_breakpoint'])) {
-                $node->props['image_grid_breakpoint'] = $node->props['image_breakpoint'];
-                unset($node->props['image_breakpoint']);
-            }
+            Arr::updateKeys($node->props, [
+                'switcher_breakpoint' => 'switcher_grid_breakpoint',
+                'title_breakpoint' => 'title_grid_breakpoint',
+                'image_breakpoint' => 'image_grid_breakpoint',
+                'switcher_gutter' => function ($value) {
+                    return [
+                        'switcher_grid_column_gap' => $value,
+                        'switcher_grid_row_gap' => $value,
+                    ];
+                },
+                'title_gutter' => function ($value) {
+                    return ['title_grid_column_gap' => $value, 'title_grid_row_gap' => $value];
+                },
+                'image_gutter' => function ($value) {
+                    return ['image_grid_column_gap' => $value, 'image_grid_row_gap' => $value];
+                },
+            ]);
         },
 
         '1.20.0-beta.1.1' => function ($node) {
-            if (isset($node->props['maxwidth_align'])) {
-                $node->props['block_align'] = $node->props['maxwidth_align'];
-                unset($node->props['maxwidth_align']);
-            }
+            Arr::updateKeys($node->props, ['maxwidth_align' => 'block_align']);
         },
 
         '1.20.0-beta.0.1' => function ($node) {
-            /**
-             * @var Config $config
-             */
+            /** @var Config $config */
             $config = app(Config::class);
 
-            list($style) = explode(':', $config('~theme.style'));
+            [$style] = explode(':', $config('~theme.style'));
 
             if (Arr::get($node->props, 'title_style') === 'heading-primary') {
                 $node->props['title_style'] = 'heading-medium';
@@ -259,21 +184,11 @@ return [
         },
 
         '1.18.10.1' => function ($node) {
-            if (isset($node->props['image_inline_svg'])) {
-                $node->props['image_svg_inline'] = $node->props['image_inline_svg'];
-                unset($node->props['image_inline_svg']);
-            }
-
-            if (isset($node->props['image_animate_svg'])) {
-                $node->props['image_svg_animate'] = $node->props['image_animate_svg'];
-                unset($node->props['image_animate_svg']);
-            }
-
-            if (isset($node->props['switcher_thumbnail_inline_svg'])) {
-                $node->props['switcher_thumbnail_svg_inline'] =
-                    $node->props['switcher_thumbnail_inline_svg'];
-                unset($node->props['switcher_thumbnail_inline_svg']);
-            }
+            Arr::updateKeys($node->props, [
+                'image_inline_svg' => 'image_svg_inline',
+                'image_animate_svg' => 'image_svg_animate',
+                'switcher_thumbnail_inline_svg' => 'switcher_thumbnail_svg_inline',
+            ]);
         },
 
         '1.18.0' => function ($node) {

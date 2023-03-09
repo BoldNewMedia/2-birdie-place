@@ -9,9 +9,12 @@ use YOOtheme\GraphQL\Type\Definition\ScalarType;
 class ObjectScalarType extends ScalarType
 {
     /**
-     * @var string
+     * @param array $config
      */
-    public $name = 'Object';
+    public function __construct(array $config = [])
+    {
+        parent::__construct($config + ['name' => 'Object']);
+    }
 
     /**
      * @param mixed $value

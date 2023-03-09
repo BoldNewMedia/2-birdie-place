@@ -50,7 +50,7 @@ class SourceListener
             $config->add(
                 'customizer.sources.articleOrderOptions',
                 array_merge($config('customizer.sources.articleOrderOptions'), [
-                    ['label' => 'Custom Fields', 'options' => $fields],
+                    ['label' => trans('Custom Fields'), 'options' => $fields],
                 ])
             );
         }

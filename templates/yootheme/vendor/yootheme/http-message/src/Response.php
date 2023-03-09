@@ -1,140 +1,300 @@
 <?php
 
-namespace YOOtheme\Http\Message;
+namespace YOOtheme\Http;
 
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\StreamInterface;
+use YOOtheme\Http\Message\Response as BaseResponse;
+use YOOtheme\Http\Message\Stream;
 
-class Response extends Message implements ResponseInterface
+class Response extends BaseResponse
 {
-    /**
-     * @var int
-     */
-    protected $status = 200;
-
-    /**
-     * @var string
-     */
-    protected $reasonPhrase = '';
+    use MessageTrait;
 
     /**
      * @var array
      */
-    protected static $reasonPhrases = [
-        100 => 'Continue',
-        101 => 'Switching Protocols',
-        102 => 'Processing',
-        200 => 'OK',
-        201 => 'Created',
-        202 => 'Accepted',
-        203 => 'Non-Authoritative Information',
-        204 => 'No Content',
-        205 => 'Reset Content',
-        206 => 'Partial Content',
-        207 => 'Multi-status',
-        208 => 'Already Reported',
-        300 => 'Multiple Choices',
-        301 => 'Moved Permanently',
-        302 => 'Found',
-        303 => 'See Other',
-        304 => 'Not Modified',
-        305 => 'Use Proxy',
-        306 => 'Switch Proxy',
-        307 => 'Temporary Redirect',
-        400 => 'Bad Request',
-        401 => 'Unauthorized',
-        402 => 'Payment Required',
-        403 => 'Forbidden',
-        404 => 'Not Found',
-        405 => 'Method Not Allowed',
-        406 => 'Not Acceptable',
-        407 => 'Proxy Authentication Required',
-        408 => 'Request Time-out',
-        409 => 'Conflict',
-        410 => 'Gone',
-        411 => 'Length Required',
-        412 => 'Precondition Failed',
-        413 => 'Request Entity Too Large',
-        414 => 'Request-URI Too Large',
-        415 => 'Unsupported Media Type',
-        416 => 'Requested range not satisfiable',
-        417 => 'Expectation Failed',
-        418 => 'I\'m a teapot',
-        422 => 'Unprocessable Entity',
-        423 => 'Locked',
-        424 => 'Failed Dependency',
-        425 => 'Unordered Collection',
-        426 => 'Upgrade Required',
-        428 => 'Precondition Required',
-        429 => 'Too Many Requests',
-        431 => 'Request Header Fields Too Large',
-        451 => 'Unavailable For Legal Reasons',
-        500 => 'Internal Server Error',
-        501 => 'Not Implemented',
-        502 => 'Bad Gateway',
-        503 => 'Service Unavailable',
-        504 => 'Gateway Time-out',
-        505 => 'HTTP Version not supported',
-        506 => 'Variant Also Negotiates',
-        507 => 'Insufficient Storage',
-        508 => 'Loop Detected',
-        511 => 'Network Authentication Required',
-    ];
+    protected $cookies = [];
 
     /**
-     * Constructor.
+     * Writes data to the body.
      *
-     * @param int             $status
-     * @param array           $headers
-     * @param StreamInterface $body
+     * @param string $data
+     *
+     * @return static
      */
-    public function __construct($status = 200, array $headers = [], StreamInterface $body = null)
+    public function write($data)
     {
-        $this->status = (int) $status;
-        $this->body = $body ?: new Stream('php://temp', 'r+');
-        $this->setHeaders($headers ?: ['Content-Type' => 'text/html; charset=utf-8']);
+        $body = $this->getBody();
+        $body->write($data);
+
+        return $this;
     }
 
     /**
-     * @inheritdoc
+     * Writes a file to body.
+     *
+     * @param string|resource $file
+     * @param string          $mimetype
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return static
      */
-    public function getReasonPhrase()
+    public function withFile($file, $mimetype = null)
     {
-        if ($this->reasonPhrase) {
-            return $this->reasonPhrase;
+        $body = Stream::create(is_string($file) ? fopen($file, 'r') : $file);
+
+        if (!$mimetype && is_string($file) && is_callable('finfo_file')) {
+            $mimetype = finfo_file(finfo_open(FILEINFO_MIME_TYPE), $file);
         }
 
-        return isset(static::$reasonPhrases[$this->status])
-            ? static::$reasonPhrases[$this->status]
-            : '';
+        if (!$mimetype) {
+            $mimetype = mime_content_type($file);
+        }
+
+        if (!$mimetype) {
+            throw new \InvalidArgumentException('Unknown file MIME type.');
+        }
+
+        return $this->withBody($body)
+            ->withHeader('Content-Type', $mimetype)
+            ->withHeader('Content-Length', $body->getSize());
     }
 
     /**
-     * @inheritdoc
+     * Writes JSON to the body.
+     *
+     * @param mixed $data
+     * @param int   $status
+     * @param int   $options
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return static
      */
-    public function getStatusCode()
-    {
-        return $this->status;
+    public function withJson(
+        $data,
+        $status = null,
+        $options = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+    ) {
+        if (!is_string($json = @json_encode($data, $options))) {
+            throw new \InvalidArgumentException(json_last_error_msg(), json_last_error());
+        }
+
+        $body = Stream::create($json);
+        $response = $this->withBody($body)
+            // Disable Content-Length header (Essentials YOOtheme Pro 1.7.3 echos white-space, causing the response to be cut)
+            // ->withHeader('Content-Length', $body->getSize())
+            ->withHeader('Content-Type', 'application/json; charset=utf-8');
+
+        return is_null($status) ? $response : $response->withStatus($status);
     }
 
     /**
-     * @inheritdoc
+     * Redirect response.
+     *
+     * @param string $url
+     * @param int    $status
+     *
+     * @return static
      */
-    public function withStatus($code, $reasonPhrase = '')
+    public function withRedirect($url, $status = 302)
     {
+        return $this->withStatus($status)->withHeader('Location', (string) $url);
+    }
+
+    /**
+     * Sets a response cookie.
+     *
+     * @param string $name
+     * @param string $value
+     * @param array  $options
+     *
+     * @return static
+     */
+    public function withCookie($name, $value = '', array $options = [])
+    {
+        $defaults = [
+            'expire' => 0,
+            'path' => '/',
+            'domain' => '',
+            'secure' => false,
+            'httponly' => false,
+        ];
+
+        $cookie = array_replace($defaults, $options);
+        $cookie['value'] = strval($value);
+        $cookie['expire'] = is_string($cookie['expire'])
+            ? strtotime($cookie['expire'])
+            : intval($cookie['expire']);
+
         $clone = clone $this;
-        $clone->status = (int) $code;
-
-        if (!$reasonPhrase && isset(static::$reasonPhrases[$code])) {
-            $reasonPhrase = static::$reasonPhrases[$code];
-        }
-
-        if ($reasonPhrase === '') {
-            throw new \InvalidArgumentException('Reason phrase must be supplied for this code');
-        }
-
-        $clone->reasonPhrase = $reasonPhrase;
+        $clone->cookies[$name] = $cookie;
 
         return $clone;
+    }
+
+    /**
+     * Sends the response.
+     *
+     * @return static
+     */
+    public function send()
+    {
+        if (!headers_sent()) {
+            $this->sendHeaders();
+        }
+
+        echo $this->getBody();
+
+        flush();
+
+        return $this;
+    }
+
+    /**
+     * Sends the response headers.
+     *
+     * @return static
+     */
+    public function sendHeaders()
+    {
+        header(
+            sprintf(
+                'HTTP/%s %s %s',
+                $this->getProtocolVersion(),
+                $this->getStatusCode(),
+                $this->getReasonPhrase()
+            )
+        );
+
+        foreach ($this->getHeaders() as $name => $values) {
+            header(sprintf('%s: %s', $name, implode(',', $values)));
+        }
+
+        foreach ($this->cookies as $name => $cookie) {
+            setcookie(
+                $name,
+                $cookie['value'],
+                $cookie['expire'],
+                $cookie['path'],
+                $cookie['domain'],
+                $cookie['secure'],
+                $cookie['httponly']
+            );
+        }
+
+        flush();
+
+        return $this;
+    }
+
+    /**
+     * Is this response informational?
+     *
+     * @return bool
+     */
+    public function isInformational()
+    {
+        return $this->getStatusCode() >= 100 && $this->getStatusCode() < 200;
+    }
+
+    /**
+     * Is this response OK?
+     *
+     * @return bool
+     */
+    public function isOk()
+    {
+        return $this->getStatusCode() == 200;
+    }
+
+    /**
+     * Is this response empty?
+     *
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return in_array($this->getStatusCode(), [204, 205, 304]);
+    }
+
+    /**
+     * Is this response successful?
+     *
+     * @return bool
+     */
+    public function isSuccessful()
+    {
+        return $this->getStatusCode() >= 200 && $this->getStatusCode() < 300;
+    }
+
+    /**
+     * Is this response a redirect?
+     *
+     * @return bool
+     */
+    public function isRedirect()
+    {
+        return in_array($this->getStatusCode(), [301, 302, 303, 307]);
+    }
+
+    /**
+     * Is this response a redirection?
+     *
+     * @return bool
+     */
+    public function isRedirection()
+    {
+        return $this->getStatusCode() >= 300 && $this->getStatusCode() < 400;
+    }
+
+    /**
+     * Is this response forbidden?
+     *
+     * @return bool
+     */
+    public function isForbidden()
+    {
+        return $this->getStatusCode() == 403;
+    }
+
+    /**
+     * Is this response not Found?
+     *
+     * @return bool
+     */
+    public function isNotFound()
+    {
+        return $this->getStatusCode() == 404;
+    }
+
+    /**
+     * Is this response a client error?
+     *
+     * @return bool
+     */
+    public function isClientError()
+    {
+        return $this->getStatusCode() >= 400 && $this->getStatusCode() < 500;
+    }
+
+    /**
+     * Is this response a server error?
+     *
+     * @return bool
+     */
+    public function isServerError()
+    {
+        return $this->getStatusCode() >= 500 && $this->getStatusCode() < 600;
+    }
+
+    /**
+     * Returns the body as a string.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->getBody();
     }
 }

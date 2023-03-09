@@ -12,7 +12,7 @@ $hover_image = $this->el('image', [
     'alt' => true,
     'width' => $props['image_width'],
     'height' => $props['image_height'],
-    'thumbnail' => [$props['image_width'], $props['image_height']],
+    'thumbnail' => true,
     'uk-cover' => true,
 
 ]);

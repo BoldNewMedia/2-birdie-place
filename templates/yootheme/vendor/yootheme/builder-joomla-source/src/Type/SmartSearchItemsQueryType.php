@@ -28,7 +28,7 @@ class SmartSearchItemsQueryType
                     'metadata' => [
                         'label' => trans('Items'),
                         'view' => ['com_finder.search'],
-                        'group' => 'Page',
+                        'group' => trans('Page'),
                         'fields' => [
                             '_offset' => [
                                 'description' => trans(

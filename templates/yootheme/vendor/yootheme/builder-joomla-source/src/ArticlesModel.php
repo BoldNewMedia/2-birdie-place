@@ -9,7 +9,7 @@ class ArticlesModel extends BaseModel
     protected function getListQuery()
     {
         $fieldId = false;
-        $ordering = $this->getState('list.ordering');
+        $ordering = $this->getState('list.ordering', '');
 
         if (str_starts_with($ordering, 'a.field:')) {
             $fieldId = (int) substr($ordering, 8);

@@ -45,7 +45,7 @@ class Translator implements TranslatorInterface
             $locale = $this->getLocale();
         }
 
-        return isset($this->resources[$locale]) ? $this->resources[$locale] : [];
+        return $this->resources[$locale] ?? [];
     }
 
     /**

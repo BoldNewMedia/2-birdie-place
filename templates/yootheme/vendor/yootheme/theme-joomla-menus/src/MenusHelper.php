@@ -24,9 +24,10 @@ class MenusHelper
                 return [
                     'id' => (string) $item->id,
                     'title' => $item->title,
-                    'level' => $item->level > 1 ? 1 : 0,
+                    'level' => $item->level - 1,
                     'menu' => $item->menutype,
                     'parent' => (string) $item->parent_id,
+                    'type' => $item->type == 'separator' ? 'heading' : $item->type,
                 ];
             }, AbstractMenu::getInstance('site')->getMenu())
         );

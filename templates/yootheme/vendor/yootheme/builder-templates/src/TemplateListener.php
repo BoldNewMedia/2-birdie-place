@@ -2,26 +2,10 @@
 
 namespace YOOtheme\Builder\Templates;
 
-use YOOtheme\Builder;
 use YOOtheme\Config;
 
 class TemplateListener
 {
-    public static function loadTemplates(TemplateHelper $helper, Builder $builder, array $data)
-    {
-        $templates = array_filter(
-            array_map(function ($template) use ($builder) {
-                if (isset($template['layout'])) {
-                    $template['layout'] = $builder->load(json_encode($template['layout']));
-                }
-
-                return $template;
-            }, $helper->templates)
-        );
-
-        return $data + compact('templates');
-    }
-
     public static function initCustomizer(Config $config)
     {
         $options = [];

@@ -228,11 +228,11 @@ class Container implements ContainerInterface
     {
         if (is_string($callback)) {
             if (strpos($callback, '::')) {
-                list($service, $method) = explode('::', $callback, 2);
+                [$service, $method] = explode('::', $callback, 2);
 
                 $callback = [$this->getAlias($service), $method];
             } elseif (strpos($callback, '@')) {
-                list($service, $method) = explode('@', $callback, 2);
+                [$service, $method] = explode('@', $callback, 2);
 
                 $callback = [$this->get($service), $method];
             } elseif ($this->has($callback) || class_exists($callback)) {
@@ -318,13 +318,12 @@ class Container implements ContainerInterface
 
         $this->resolving[$id] = true;
 
-        $service = isset($this->services[$id]) ? $this->services[$id] : new Service($id);
-        $extenders = isset($this->extenders[$id]) ? $this->extenders[$id] : [];
+        $service = $this->services[$id] ?? new Service($id);
         $instance = $service->resolveInstance($this);
 
         $this->resolving[$id] = $this->isShared($id) ? $instance : null;
 
-        foreach ($extenders as $extender) {
+        foreach ($this->extenders[$id] ?? [] as $extender) {
             $instance = $extender($instance, $this) ?: $instance;
         }
 
@@ -418,7 +417,7 @@ class Container implements ContainerInterface
      *
      * @param \ReflectionParameter $parameter
      *
-     * @return string
+     * @return string|null
      */
     public function resolveClassname(\ReflectionParameter $parameter)
     {

@@ -7,35 +7,45 @@ defined('_JEXEC') or die;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
-use Joomla\Component\Finder\Site\Helper\RouteHelper;
+use Joomla\CMS\Uri\Uri;
 
 $view = app(View::class);
+
+$fields = [[
+    'tag' => 'input',
+    'name' => 'q',
+    'class' => $params->get('show_autosuggest', 1) ? ['js-finder-search-query'] : [],
+    'value' => $app->input->getCmd('option') === 'com_finder' ? urldecode($app->input->getString('q', '')) : false,
+    'placeholder' => Text::_('TPL_YOOTHEME_SEARCH'),
+    'required' => true,
+]];
+
+$uri = Uri::getInstance(Route::_($route));
+$uri->delVar('q');
+
+// Create hidden input elements for each part of the URI.
+foreach ($uri->getQuery(true) as $name => $value) {
+    $fields[] = ['tag' => 'input', 'type' => 'hidden', 'name' => $name, 'value' => $value];
+}
 
 echo $view('~theme/templates/search', [
 
     'position' => $module->position,
 
+    'tag' => $module->attrs,
+
     'attrs' => [
         'id' => "search-{$module->id}",
-        'action' => Route::_(RouteHelper::getSearchRoute($params->get('searchfilter', null))),
+        'action' => Route::_($route),
         'method' => 'get',
         'role' => 'search',
-        'class' => ['js-finder-searchform', $params->get('moduleclass_sfx', '')],
+        'class' => ['js-finder-searchform']
     ],
 
-    'fields' => [
+    'fields' => $fields,
 
-        [
-            'tag' => 'input',
-            'name' => 'q',
-            'class' => $params->get('show_autosuggest', 1) ? ['js-finder-search-query'] : [],
-            'value' => $app->input->getCmd('option') === 'com_finder' ? urldecode($app->input->getString('q', '')) : false,
-            'placeholder' => Text::_('TPL_YOOTHEME_SEARCH'),
-            'required' => true,
-        ],
-        ['tag' => 'input', 'type' => 'hidden', 'name' => 'option', 'value' => 'com_finder'],
-        ['tag' => 'input', 'type' => 'hidden', 'name' => 'Itemid', 'value' => $params->get('set_itemid', 0) ?: $app->input->getInt('Itemid')],
-
+    'iconClass' => [
+        'uk-position-z-index' => $params->get('show_autosuggest', 1), // Needed because of `awesomplete` HTML class has a `z-index`
     ],
 
 ]);

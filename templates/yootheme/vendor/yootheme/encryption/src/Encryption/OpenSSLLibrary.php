@@ -4,7 +4,7 @@ namespace YOOtheme\Encryption;
 
 class OpenSSLLibrary extends Library
 {
-    const CIPHER = 'AES-128-CBC';
+    public const CIPHER = 'AES-128-CBC';
 
     /**
      * @inheritdoc

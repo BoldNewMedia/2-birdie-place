@@ -5,7 +5,7 @@ namespace YOOtheme;
 use Joomla\CMS\Component\ComponentHelper;
 
 return [
-    '2.7.0-beta.0.1' => function ($config, array $params) {
+    '2.7.0-beta.0.1' => function ($config) {
         $contentParams = ComponentHelper::getParams('com_content');
 
         if (!Arr::has($config, 'blog.image_align')) {

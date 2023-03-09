@@ -2,29 +2,36 @@
 
 namespace YOOtheme\Image;
 
-class GDResource extends Resource
+class GDResource extends BaseResource
 {
     /**
      * @inheritdoc
      */
     public static function create($file, $type)
     {
-        $image = false;
+        switch ($type) {
+            case 'png':
+                $image = imagecreatefrompng($file);
+                break;
 
-        if ($type == 'png') {
-            $image = imagecreatefrompng($file);
-        }
+            case 'gif':
+                $image = imagecreatefromgif($file);
+                break;
 
-        if ($type == 'gif') {
-            $image = imagecreatefromgif($file);
-        }
+            case 'jpeg':
+                $image = imagecreatefromjpeg($file);
+                break;
 
-        if ($type == 'jpeg') {
-            $image = imagecreatefromjpeg($file);
-        }
+            case 'webp':
+                $image = imagecreatefromwebp($file);
+                break;
 
-        if ($type == 'webp') {
-            $image = imagecreatefromwebp($file);
+            case 'avif':
+                $image = imagecreatefromavif($file);
+                break;
+
+            default:
+                $image = false;
         }
 
         return $image ? static::normalizeImage($image) : false;
@@ -36,11 +43,12 @@ class GDResource extends Resource
     public static function save($image, $file, $type, $quality, $info = [])
     {
         if ($type == 'jpeg') {
-            if (!imagejpeg($image, $file, round($quality))) {
+            if (!imagejpeg($image, $file, (int) round($quality))) {
                 return false;
             }
 
             if (
+                is_string($file) &&
                 !empty($info['APP13']) &&
                 ($iptc = iptcparse($info['APP13'])) &&
                 ($data = static::embedIptc($iptc, $file)) &&
@@ -64,8 +72,14 @@ class GDResource extends Resource
         }
 
         if ($type == 'webp') {
-            return imagewebp($image, $file, round($quality)) ? $file : false;
+            return imagewebp($image, $file, intval($quality)) ? $file : false;
         }
+
+        if ($type == 'avif') {
+            return imageavif($image, $file, intval($quality)) ? $file : false;
+        }
+
+        return false;
     }
 
     /**
@@ -163,7 +177,7 @@ class GDResource extends Resource
      * @param int   $height
      * @param mixed $color
      *
-     * @return resource
+     * @return false|resource
      */
     protected static function createImage($width, $height, $color = 'transparent')
     {
@@ -184,7 +198,7 @@ class GDResource extends Resource
      *
      * @param resource $image
      *
-     * @return resource
+     * @return false|resource
      */
     protected static function normalizeImage($image)
     {
@@ -218,7 +232,7 @@ class GDResource extends Resource
             $tag = explode('#', $tag, 2);
             $value = join(' ', (array) $value);
             $length = strlen($value);
-            $iptcdata .= chr(0x1c) . chr($tag[0]) . chr($tag[1]);
+            $iptcdata .= chr(0x1c) . chr((int) $tag[0]) . chr((int) $tag[1]);
 
             if ($length < 0x8000) {
                 $iptcdata .= chr($length >> 8) . chr($length & 0xff);

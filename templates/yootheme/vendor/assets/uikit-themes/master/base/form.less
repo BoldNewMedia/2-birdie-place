@@ -36,7 +36,7 @@
 
 .hook-form-single-line() {}
 
-.hook-form-multi-line() {
+.hook-form-multi-line() when not (@form-multi-line-padding-horizontal = @form-padding-horizontal) {
     padding-left: @form-multi-line-padding-horizontal;
     padding-right: @form-multi-line-padding-horizontal;
 }
@@ -95,6 +95,14 @@
 .hook-form-horizontal-label() {}
 
 
+// Icon
+// ========================================================================
+
+.hook-form-icon() when not (@form-backdrop-filter = ~'') {
+    z-index: 1;
+}
+
+
 // Miscellaneous
 // ========================================================================
 
@@ -140,3 +148,5 @@
 .hook-inverse-form-radio-checked-focus() {}
 
 .hook-inverse-form-label() {}
+
+.hook-inverse-form-icon() {}

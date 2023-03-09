@@ -8,41 +8,36 @@ use YOOtheme\Image;
 class ImageLoader
 {
     /**
-     * @var Config
-     */
-    protected $config;
-
-    /**
      * @var array
      */
     protected $convert = [];
 
     /**
      * Constructor.
-     *
-     * @param Config $config
      */
     public function __construct(Config $config)
     {
-        $this->config = $config;
+        // supports image avif?
+        if ($config('~theme.avif') && is_callable('imageavif') && PHP_VERSION_ID >= 80100) {
+            $this->convert['png']['image/avif'] = 'avif,85';
+            $this->convert['jpeg']['image/avif'] = 'avif,75';
+        }
 
-        // convert jpeg, png images to webp if supported
-        if (is_callable('imagewebp') && str_contains($config('req.accept'), 'image/webp')) {
-            $this->convert = ['png' => 'webp,100', 'jpeg' => 'webp,85'];
+        // supports image webp?
+        if ($config('~theme.webp') && is_callable('imagewebp')) {
+            $this->convert['png']['image/webp'] = 'webp,100';
+            $this->convert['jpeg']['image/webp'] = 'webp,85';
         }
     }
 
     public function __invoke(Image $image)
     {
+        $type = $image->getType();
         $params = $image->getAttribute('params', []);
 
         // convert image type?
-        if ($this->convert && $this->config->get('~theme.webp') && !isset($params['type'])) {
-            $type = $image->getType();
-
-            if (isset($this->convert[$type])) {
-                $params['type'] = $this->convert[$type];
-            }
+        if (isset($this->convert[$type])) {
+            $image->setAttribute('types', $this->convert[$type]);
         }
 
         // image covers

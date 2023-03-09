@@ -61,7 +61,7 @@ class plgSystemYOOtheme extends CMSPlugin
         $row = Table::getInstance('extension');
 
         $row->load($eid);
-        $package = $row->element;
+        $package = $row->get('element');
 
         // uninstalling a yootheme package?
         if (!in_array($package, $elements, true)) {
@@ -75,7 +75,7 @@ class plgSystemYOOtheme extends CMSPlugin
 
         $query->select($db->quoteName(['extension_id']))
             ->from($db->quoteName('#__extensions'))
-            ->where($db->quoteName('element') . ' IN (' . join(', ', $db->quote($elements)) . ')');
+            ->where($db->quoteName('element') . ' IN (' . join(',', $db->quote($elements)) . ')');
 
         $db->setQuery($query);
 

@@ -4,6 +4,40 @@ namespace YOOtheme;
 
 return [
     'updates' => [
+        '3.0.5.1' => function ($node) {
+            if (
+                Arr::get($node->props, 'image_effect') == 'parallax' &&
+                !is_numeric(Arr::get($node->props, 'image_parallax_easing'))
+            ) {
+                Arr::set($node->props, 'image_parallax_easing', '1');
+            }
+        },
+        '2.8.0-beta.0.12' => function ($node) {
+            if (Arr::get($node->props, 'image_position') === '') {
+                $node->props['image_position'] = 'center-center';
+            }
+        },
+        '2.8.0-beta.0.3' => function ($node) {
+            foreach (['bgx', 'bgy'] as $prop) {
+                $key = "image_parallax_{$prop}";
+                $start = Arr::get($node->props, "{$key}_start", '');
+                $end = Arr::get($node->props, "{$key}_end", '');
+                if ($start != '' || $end != '') {
+                    Arr::set(
+                        $node->props,
+                        $key,
+                        implode(',', [$start != '' ? $start : 0, $end != '' ? $end : 0])
+                    );
+                }
+                Arr::del($node->props, "{$key}_start");
+                Arr::del($node->props, "{$key}_end");
+            }
+        },
+        '2.8.0-beta.0.2' => function ($node) {
+            if (isset($node->props['sticky'])) {
+                $node->props['sticky'] = 'cover';
+            }
+        },
         '2.4.12.1' => function ($node) {
             if (Arr::get($node->props, 'animation_delay') === true) {
                 $node->props['animation_delay'] = '200';
@@ -11,19 +45,14 @@ return [
         },
 
         '2.4.0-beta.0.2' => function ($node) {
-            if (isset($node->props['image_visibility'])) {
-                $node->props['media_visibility'] = $node->props['image_visibility'];
-                unset($node->props['image_visibility']);
-            }
+            Arr::updateKeys($node->props, ['image_visibility' => 'media_visibility']);
         },
 
         '2.3.0-beta.1.1' => function ($node) {
-            /**
-             * @var Config $config
-             */
+            /** @var Config $config */
             $config = app(Config::class);
 
-            list($style) = explode(':', $config('~theme.style'));
+            [$style] = explode(':', $config('~theme.style'));
 
             if (in_array($style, ['fjord'])) {
                 if (Arr::get($node->props, 'width') === 'default') {
@@ -39,12 +68,10 @@ return [
         },
 
         '2.0.0-beta.5.1' => function ($node) {
-            /**
-             * @var Config $config
-             */
+            /** @var Config $config */
             $config = app(Config::class);
 
-            list($style) = explode(':', $config('~theme.style'));
+            [$style] = explode(':', $config('~theme.style'));
 
             if (!in_array($style, ['jack-baker', 'morgan-consulting', 'vibe'])) {
                 if (Arr::get($node->props, 'width') === 'large') {

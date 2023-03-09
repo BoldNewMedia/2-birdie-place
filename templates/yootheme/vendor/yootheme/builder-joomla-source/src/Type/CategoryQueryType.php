@@ -18,7 +18,7 @@ class CategoryQueryType
                     'metadata' => [
                         'label' => trans('Category'),
                         'view' => ['com_content.category'],
-                        'group' => 'Page',
+                        'group' => trans('Page'),
                     ],
                     'extensions' => [
                         'call' => __CLASS__ . '::resolve',

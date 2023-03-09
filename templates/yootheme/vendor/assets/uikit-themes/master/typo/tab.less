@@ -28,8 +28,11 @@
 // Items
 // ========================================================================
 
-.hook-tab-item() {
+.hook-tab-item() when not (@tab-item-font-size = @base-body-font-size) {
     font-size: @tab-item-font-size;
+}
+
+.hook-tab-item() when not (@tab-item-line-height = @base-body-line-height) {
     line-height: @tab-item-line-height;
 }
 

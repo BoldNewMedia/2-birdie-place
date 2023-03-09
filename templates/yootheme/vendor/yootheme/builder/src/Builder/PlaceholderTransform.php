@@ -14,10 +14,7 @@ class PlaceholderTransform
      */
     public function __invoke($node, array $params)
     {
-        /**
-         * @var $type
-         */
-        extract($params);
+        $type = $params['type'];
 
         // Placeholder props
         if (isset($type->placeholder['props'])) {

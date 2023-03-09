@@ -1,6 +1,12 @@
 # Changelog
 
-## 1.0.3
+## 1.0.6
+
+### Changed
+
+- fix links in Joomla 4
+
+## 1.0.5
 
 ### Changed
 

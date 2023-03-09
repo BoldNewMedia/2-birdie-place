@@ -1,63 +1,51 @@
 <?php
 
-use Joomla\CMS\Language\Text;
-
 // Config
-$config->addAlias('~logo', '~theme.logo');
-$config->addAlias('~site', '~theme.site');
-$config->addAlias('~header', '~theme.header');
-$config->addAlias('~navbar', '~theme.navbar');
-$config->addAlias('~mobile', '~theme.mobile');
+$site = '~theme.site';
+$header = '~theme.header';
+$navbar = '~theme.navbar';
+$dialog = '~theme.dialog';
+$mobile = '~theme.mobile';
 
 // Options
-$layout = $config('~header.layout');
-$logo = $config('~logo.image') || $config('~logo.text') || $this->countModules('logo');
-$class = array_merge(['tm-header', "uk-visible@{$config('~mobile.breakpoint')}"], isset($class) ? (array) $class : []);
-$attrs = array_merge(['uk-header' => true], isset($attrs) ? (array) $attrs : []);
+$layout = $config("$header.layout");
+$class = ['tm-header', $config("$mobile.breakpoint") ? "uk-visible@{$config("$mobile.breakpoint")}" : ''];
+$attrs = ['uk-header' => true];
 $attrs_sticky = [];
 
 // Navbar Container
 $attrs_navbar_container = [];
 $attrs_navbar_container['class'][] = 'uk-navbar-container';
-$attrs_navbar_container['class'][] = $config('~navbar.style') ? "uk-navbar-{$config('~navbar.style')}" : '';
+$attrs_navbar_container['class'][] = $config("$navbar.style") ? "uk-navbar-{$config("$navbar.style")}" : '';
 
-// Dropdown options
-if (!preg_match('/^(offcanvas|modal)/', $layout)) {
+// Navbar
+$attrs_navbar = [
 
-    $attrs_navbar = [
-        'class' => [
-            'uk-navbar',
-        ],
-        'uk-navbar' => array_filter([
-            'align' => $config('~navbar.dropdown_align'),
-            'boundary' => '.tm-header .uk-navbar-container',
-            'boundary-align' => $config('~navbar.dropdown_boundary'),
-            'container' => '.tm-header',
-            'dropbar' => $config('~navbar.dropbar') ? true : null,
-            'dropbar-anchor' => $config('~navbar.dropbar') ? '!.uk-navbar-container' : null,
-            'dropbar-mode' => $config('~navbar.dropbar'),
-        ]),
-    ];
+    'class' => [
+        'uk-navbar',
+        'uk-navbar-justify' => in_array($layout, ['horizontal-justify', 'stacked-justify']),
+    ],
 
-} else {
+    'uk-navbar' => array_filter([
+        'align' => $config("$navbar.dropdown_align"),
+        'container' => '.tm-header',
+        'boundary' => '.tm-header .uk-navbar-container', // By default, it would be the navbar component's element
+        'target-x' => $config("$navbar.dropdown_target") ? '.tm-header .uk-navbar' : null,
+        'dropbar' => $config("$navbar.dropbar") ? true : null,
+        'target-y' => $config("$navbar.dropbar") ? '.tm-header .uk-navbar-container' : null,
+        'dropbar-anchor' => $config("$navbar.dropbar") ? '.tm-header .uk-navbar-container' : null, // Has to be navbar container because it has the style
+    ]),
 
-    $attrs_navbar = [
-        'class' => [
-            'uk-navbar',
-        ],
-        'uk-navbar' => ['container' => '.tm-header'],
-    ];
-
-}
+];
 
 // Sticky
-if ($sticky = $config('~navbar.sticky')) {
+if ($sticky = $config("$navbar.sticky")) {
 
     $attrs_navbar['uk-navbar']['container'] = '.tm-header > [uk-sticky]';
 
     $attrs_sticky = array_filter([
         'uk-sticky' => true,
-        'media' => "@{$config('~mobile.breakpoint')}",
+        'media' => $config("$mobile.breakpoint") ? "@{$config("$mobile.breakpoint")}" : false,
         'show-on-up' => $sticky == 2,
         'animation' => $sticky == 2 ? 'uk-animation-slide-top' : '',
         'cls-active' => 'uk-navbar-sticky',
@@ -69,22 +57,22 @@ if ($sticky = $config('~navbar.sticky')) {
 $attrs_navbar['uk-navbar'] = json_encode($attrs_navbar['uk-navbar']);
 
 // Outside
-$outside = $config('~site.layout') == 'boxed' && $config('~site.boxed.header_outside');
+$outside = $config("$site.layout") == 'boxed' && $config("$site.boxed.header_outside");
 
-if ($outside && $config('~site.boxed.header_transparent')) {
+if ($outside && $config("$site.boxed.header_transparent")) {
 
     $attrs_headerbar = [
-        'class' => ["uk-{$config('~site.boxed.header_transparent')}"],
+        'class' => ["uk-{$config("$site.boxed.header_transparent")}"],
     ];
 
     if ($sticky) {
-        $attrs_sticky['cls-inactive'] = "uk-navbar-transparent uk-{$config('~site.boxed.header_transparent')}";
+        $attrs_sticky['cls-inactive'] = "uk-navbar-transparent uk-{$config("$site.boxed.header_transparent")}";
         $attrs_sticky['top'] = '300';
         if ($sticky == 1) {
             $attrs_sticky['animation'] = 'uk-animation-slide-top';
         }
     } else {
-        $attrs_navbar_container['class'][] = "uk-navbar-transparent uk-{$config('~site.boxed.header_transparent')}";
+        $attrs_navbar_container['class'][] = "uk-navbar-transparent uk-{$config("$site.boxed.header_transparent")}";
     }
 
 } else {
@@ -100,34 +88,48 @@ $attrs_width_container = [];
 $attrs_width_container['class'][] = 'uk-container';
 
 if ($outside) {
-    $attrs_width_container['class'][] = $config('~header.width') == 'expand' ? 'uk-container-expand' : 'tm-page-width';
+    $attrs_width_container['class'][] = $config("$header.width") == 'expand' ? 'uk-container-expand' : 'tm-page-width';
 } else {
-    $attrs_width_container['class'][] = $config('~header.width') != 'default' ? "uk-container-{$config('~header.width')}" : '';
+    $attrs_width_container['class'][] = $config("$header.width") != 'default' ? "uk-container-{$config("$header.width")}" : '';
 }
+
+$hasPositionWithModule = array_filter([
+    'logo',
+    'header',
+    'header-split',
+    'navbar',
+    'navbar-push',
+    'navbar-split',
+], function ($position) { return $this->countModules($position); });
+
+$toolbar = trim($view('~theme/templates/toolbar'));
 
 ?>
 
-<div class="tm-header-mobile uk-hidden@<?= $config('~mobile.breakpoint') ?>">
+<?php if ($config("$mobile.breakpoint")) : ?>
 <?= $view('~theme/templates/header-mobile') ?>
-</div>
-
-<?php if (!$config('~site.toolbar_transparent') && ($this->countModules('toolbar-left') || $this->countModules('toolbar-right'))) : ?>
-<?= $view('~theme/templates/toolbar') ?>
 <?php endif ?>
+
+<?php if (!$config("$site.toolbar_transparent")) : ?>
+<?= $toolbar ?>
+<?php endif ?>
+
+<?php if ($hasPositionWithModule || $config("$site.toolbar_transparent") && $toolbar) : ?>
 
 <div<?= $this->attrs(['class' => $class], $attrs) ?>>
 
-<?php if ($config('~site.toolbar_transparent') && ($this->countModules('toolbar-left') || $this->countModules('toolbar-right'))) : ?>
-<?= $view('~theme/templates/toolbar') ?>
+<?php if ($config("$site.toolbar_transparent")) : ?>
+<?= $toolbar ?>
 <?php endif ?>
 
 <?php
 
+if ($hasPositionWithModule) :
+
 // Horizontal layouts
+if (str_starts_with($layout, 'horizontal')) :
 
-if (in_array($layout, ['horizontal-left', 'horizontal-center', 'horizontal-right', 'horizontal-center-logo'])) :
-
-    $attrs_width_container['class'][] = $logo && $config('~header.logo_padding_remove') && $config('~header.width') == 'expand' && $layout != 'horizontal-center-logo' ? 'uk-padding-remove-left' : '';
+    $attrs_width_container['class'][] = $this->countModules('logo') && $config("$header.logo_padding_remove") && $config("$header.width") == 'expand' && $layout != 'horizontal-center-logo' ? 'uk-padding-remove-left' : '';
 
     ?>
 
@@ -140,48 +142,55 @@ if (in_array($layout, ['horizontal-left', 'horizontal-center', 'horizontal-right
             <div<?= $this->attrs($attrs_width_container) ?>>
                 <nav<?= $this->attrs($attrs_navbar) ?>>
 
-                    <?php if (($logo && $layout != 'horizontal-center-logo') || (in_array($layout, ['horizontal-left', 'horizontal-center-logo']) && $this->countModules('navbar'))) : ?>
+                    <?php if (($layout != 'horizontal-center-logo' && $this->countModules('logo')) ||
+                        (preg_match('/^horizontal-(left|justify|center-logo)/', $layout) && $this->countModules('navbar')) ||
+                        ($layout == 'horizontal-justify' && $this->countModules('header'))
+                    ) : ?>
                     <div class="uk-navbar-left">
 
-                        <?php if ($logo && $layout != 'horizontal-center-logo') : ?>
-                            <?= $view('~theme/templates/header-logo', ['class' => 'uk-navbar-item']) ?>
-                            <?php if ($this->countModules('logo')) : ?>
-                                <jdoc:include type="modules" name="logo" />
-                            <?php endif ?>
+                        <?php if ($layout != 'horizontal-center-logo') : ?>
+                            <jdoc:include type="modules" name="logo" />
                         <?php endif ?>
 
-                        <?php if (in_array($layout, ['horizontal-left', 'horizontal-center-logo']) && $this->countModules('navbar')) : ?>
+                        <?php if (preg_match('/^horizontal-(left|justify|center-logo)/', $layout)) : ?>
                             <jdoc:include type="modules" name="navbar" />
+                        <?php endif ?>
+
+                        <?php if ($layout == 'horizontal-justify') : ?>
+                            <jdoc:include type="modules" name="header" />
                         <?php endif ?>
 
                     </div>
                     <?php endif ?>
 
-                    <?php if (($logo && $layout == 'horizontal-center-logo') || ($layout == 'horizontal-center' && $this->countModules('navbar'))) : ?>
+                    <?php if (($layout == 'horizontal-center-logo' && $this->countModules('logo')) ||
+                        ($layout == 'horizontal-center' && $this->countModules('navbar'))
+                    ) : ?>
                     <div class="uk-navbar-center">
 
-                        <?php if ($logo && $layout == 'horizontal-center-logo') : ?>
-                            <?= $view('~theme/templates/header-logo', ['class' => 'uk-navbar-item']) ?>
-                            <?php if ($this->countModules('logo')) : ?>
-                                <jdoc:include type="modules" name="logo" />
-                            <?php endif ?>
+                        <?php if ($layout == 'horizontal-center-logo') : ?>
+                            <jdoc:include type="modules" name="logo" />
                         <?php endif ?>
 
-                        <?php if ($layout == 'horizontal-center' && $this->countModules('navbar')) : ?>
+                        <?php if ($layout == 'horizontal-center') : ?>
                             <jdoc:include type="modules" name="navbar" />
                         <?php endif ?>
 
                     </div>
                     <?php endif ?>
 
-                    <?php if ($this->countModules('header') || $layout == 'horizontal-right' && $this->countModules('navbar')) : ?>
+                    <?php if (($layout != 'horizontal-justify' && $this->countModules('header')) ||
+                        ($layout == 'horizontal-right' && $this->countModules('navbar'))
+                    ) : ?>
                     <div class="uk-navbar-right">
 
-                        <?php if ($layout == 'horizontal-right' && $this->countModules('navbar')) : ?>
+                        <?php if ($layout == 'horizontal-right') : ?>
                             <jdoc:include type="modules" name="navbar" />
                         <?php endif ?>
 
-                        <jdoc:include type="modules" name="header" />
+                        <?php if ($layout != 'horizontal-justify') : ?>
+                            <jdoc:include type="modules" name="header" />
+                        <?php endif ?>
 
                     </div>
                     <?php endif ?>
@@ -200,20 +209,14 @@ if (in_array($layout, ['horizontal-left', 'horizontal-center', 'horizontal-right
 <?php
 
 // Stacked Center layouts
+if (preg_match('/^stacked-center-(split-)?[ab]/', $layout)) : ?>
 
-if (in_array($layout, ['stacked-center-a', 'stacked-center-b', 'stacked-center-split'])) : ?>
-
-    <?php if ($logo && $layout != 'stacked-center-split' || $layout == 'stacked-center-a' && $this->countModules('header')) : ?>
+    <?php if ((in_array($layout, ['stacked-center-a', 'stacked-center-b']) && $this->countModules('logo')) || $layout == 'stacked-center-a' && $this->countModules('header')) : ?>
     <div<?= $this->attrs($attrs_headerbar, ['class' => 'tm-headerbar tm-headerbar-top']) ?>>
         <div<?= $this->attrs($attrs_width_container) ?>>
 
-            <?php if ($logo) : ?>
-            <div class="uk-flex uk-flex-center">
-                <?= $view('~theme/templates/header-logo') ?>
-                <?php if ($this->countModules('logo')) : ?>
-                    <jdoc:include type="modules" name="logo" />
-                <?php endif ?>
-            </div>
+            <?php if ($this->countModules('logo')) : ?>
+                <jdoc:include type="modules" name="logo" style="grid-center" />
             <?php endif ?>
 
             <?php if ($layout == 'stacked-center-a' && $this->countModules('header')) : ?>
@@ -226,7 +229,7 @@ if (in_array($layout, ['stacked-center-a', 'stacked-center-b', 'stacked-center-s
     </div>
     <?php endif ?>
 
-    <?php if ($this->countModules('navbar')) : ?>
+    <?php if ($this->countModules('logo') || $this->countModules('navbar') || $this->countModules('navbar-split')) : ?>
 
         <?php if ($sticky) : ?>
         <div<?= $this->attrs($attrs_sticky) ?>>
@@ -237,28 +240,43 @@ if (in_array($layout, ['stacked-center-a', 'stacked-center-b', 'stacked-center-s
                 <div<?= $this->attrs($attrs_width_container) ?>>
                     <nav<?= $this->attrs($attrs_navbar) ?>>
 
+                        <?php if ($layout == 'stacked-center-split-b' && $this->countModules('navbar-split')) : ?>
+                        <div class="uk-navbar-left">
+                            <jdoc:include type="modules" name="navbar-split" />
+                        </div>
+                        <?php endif ?>
+
                         <div class="uk-navbar-center">
 
-                            <?php if ($layout == 'stacked-center-split') : ?>
+                            <?php if ($layout == 'stacked-center-split-a') : ?>
 
-                                <div class="uk-navbar-center-left uk-preserve-width"><div>
+                                <?php if ($this->countModules('navbar-split')) : ?>
+                                <div class="uk-navbar-center-left uk-preserve-width">
                                     <jdoc:include type="modules" name="navbar-split" />
-                                </div></div>
-
-                                <?= $view('~theme/templates/header-logo', ['class' => 'uk-navbar-item']) ?>
-                                <?php if ($this->countModules('logo')) : ?>
-                                    <jdoc:include type="modules" name="logo" />
+                                </div>
                                 <?php endif ?>
 
-                                <div class="uk-navbar-center-right uk-preserve-width"><div>
-                                    <jdoc:include type="modules" name="navbar" />
-                                </div></div>
+                                <jdoc:include type="modules" name="logo" />
 
-                            <?php else: ?>
+                                <?php if ($this->countModules('navbar')) : ?>
+                                <div class="uk-navbar-center-right uk-preserve-width">
+                                    <jdoc:include type="modules" name="navbar" />
+                                </div>
+                                <?php endif ?>
+
+                            <?php elseif ($layout == 'stacked-center-split-b') : ?>
+                                <jdoc:include type="modules" name="logo" />
+                            <?php else : ?>
                                 <jdoc:include type="modules" name="navbar" />
                             <?php endif ?>
 
                         </div>
+
+                        <?php if ($layout == 'stacked-center-split-b' && $this->countModules('navbar')) : ?>
+                        <div class="uk-navbar-right">
+                            <jdoc:include type="modules" name="navbar" />
+                        </div>
+                        <?php endif ?>
 
                     </nav>
                 </div>
@@ -271,12 +289,10 @@ if (in_array($layout, ['stacked-center-a', 'stacked-center-b', 'stacked-center-s
 
     <?php endif ?>
 
-    <?php if (in_array($layout, ['stacked-center-b', 'stacked-center-split']) && $this->countModules('header')) : ?>
+    <?php if (in_array($layout, ['stacked-center-b', 'stacked-center-split-a', 'stacked-center-split-b']) && $this->countModules('header')) : ?>
     <div<?= $this->attrs($attrs_headerbar, ['class' => 'tm-headerbar tm-headerbar-bottom']) ?>>
         <div<?= $this->attrs($attrs_width_container) ?>>
-            <div class="uk-grid-medium uk-child-width-auto uk-flex-center uk-flex-middle" uk-grid>
-                <jdoc:include type="modules" name="header" style="cell" />
-            </div>
+            <jdoc:include type="modules" name="header" style="grid-center" />
         </div>
     </div>
     <?php endif ?>
@@ -286,32 +302,26 @@ if (in_array($layout, ['stacked-center-a', 'stacked-center-b', 'stacked-center-s
 <?php
 
 // Stacked Center C layout
-
 if ($layout == 'stacked-center-c') : ?>
 
-    <?php if ($logo || $this->countModules('header')) : ?>
+    <?php if ($this->countModules('logo') || $this->countModules('header') || $this->countModules('header-split')) : ?>
     <div<?= $this->attrs($attrs_headerbar, ['class' => 'tm-headerbar tm-headerbar-top']) ?>>
         <div<?= $this->attrs($attrs_width_container) ?>>
             <div class="uk-position-relative uk-flex uk-flex-center uk-flex-middle">
 
                 <?php if ($this->countModules('header')) : ?>
                 <div class="uk-position-center-left tm-position-z-index-high">
-                    <div class="uk-grid-medium uk-child-width-auto uk-flex-middle" uk-grid>
-                        <jdoc:include type="modules" name="header" style="cell" />
-                    </div>
+                    <jdoc:include type="modules" name="header" style="grid-middle" />
                 </div>
                 <?php endif ?>
 
-                <?= $logo ? $view('~theme/templates/header-logo') : '' ?>
                 <?php if ($this->countModules('logo')) : ?>
-                    <jdoc:include type="modules" name="logo" />
+                <jdoc:include type="modules" name="logo" style="grid-middle" />
                 <?php endif ?>
 
                 <?php if ($this->countModules('header-split')) : ?>
                 <div class="uk-position-center-right tm-position-z-index-high">
-                    <div class="uk-grid-medium uk-child-width-auto uk-flex-middle" uk-grid>
-                        <jdoc:include type="modules" name="header-split" style="cell" />
-                    </div>
+                    <jdoc:include type="modules" name="header-split" style="grid-middle" />
                 </div>
                 <?php endif ?>
 
@@ -350,29 +360,26 @@ if ($layout == 'stacked-center-c') : ?>
 
 <?php
 
-// Stacked Left layouts
+// Stacked Left layout
 
-if ($layout == 'stacked-left-a' || $layout == 'stacked-left-b') :
+if (preg_match('/^stacked-(left|justify)/', $layout)) :
 
     $attrs_width_container['class'][] = 'uk-flex uk-flex-middle';
     $attrs_navbar['class'][] = 'uk-flex-auto';
 
     ?>
 
-    <?php if ($logo || $this->countModules('header')) : ?>
+    <?php if ($this->countModules('logo') || $this->countModules('header')) : ?>
     <div<?= $this->attrs($attrs_headerbar, ['class' => 'tm-headerbar tm-headerbar-top']) ?>>
         <div<?= $this->attrs($attrs_width_container) ?>>
 
-            <?= $logo ? $view('~theme/templates/header-logo') : '' ?>
             <?php if ($this->countModules('logo')) : ?>
-                <jdoc:include type="modules" name="logo" />
+            <jdoc:include type="modules" name="logo" style="grid-middle" />
             <?php endif ?>
 
             <?php if ($this->countModules('header')) : ?>
             <div class="uk-margin-auto-left">
-                <div class="uk-grid-medium uk-child-width-auto uk-flex-middle" uk-grid>
-                    <jdoc:include type="modules" name="header" style="cell" />
-                </div>
+                <jdoc:include type="modules" name="header" style="grid-middle" />
             </div>
             <?php endif ?>
 
@@ -380,7 +387,7 @@ if ($layout == 'stacked-left-a' || $layout == 'stacked-left-b') :
     </div>
     <?php endif ?>
 
-    <?php if ($this->countModules('navbar')) : ?>
+    <?php if ($this->countModules('navbar') || $this->countModules('navbar-push')) : ?>
 
         <?php if ($sticky) : ?>
         <div<?= $this->attrs($attrs_sticky) ?>>
@@ -391,15 +398,15 @@ if ($layout == 'stacked-left-a' || $layout == 'stacked-left-b') :
                 <div<?= $this->attrs($attrs_width_container) ?>>
                     <nav<?= $this->attrs($attrs_navbar) ?>>
 
-                        <?php if ($layout == 'stacked-left-a') : ?>
+                        <?php if ($this->countModules('navbar')) : ?>
                         <div class="uk-navbar-left">
                             <jdoc:include type="modules" name="navbar" />
                         </div>
                         <?php endif ?>
 
-                        <?php if ($layout == 'stacked-left-b') : ?>
-                        <div class="uk-navbar-left uk-flex-auto">
-                            <jdoc:include type="modules" name="navbar" />
+                        <?php if ($this->countModules('navbar-push')) : ?>
+                        <div class="uk-navbar-right">
+                            <jdoc:include type="modules" name="navbar-push" />
                         </div>
                         <?php endif ?>
 
@@ -418,89 +425,147 @@ if ($layout == 'stacked-left-a' || $layout == 'stacked-left-b') :
 
 <?php
 
-// Toggle layouts
+// Dialog
+$attrs_dialog = [];
+$attrs_dialog_push = [];
 
-if (preg_match('/^(offcanvas|modal)/', $layout)) :
+if (preg_match('/^(offcanvas|modal|dropbar)-center/', $config("$dialog.layout"))) {
+    $attrs_dialog['class'][] = 'uk-margin-auto-vertical';
+} else {
+    $attrs_dialog['class'][] = 'uk-margin-auto-bottom';
+}
+$attrs_dialog_push['class'][] = 'uk-grid-margin';
 
-    $attrs_width_container['class'][] = $logo && $config('~header.logo_padding_remove') && $config('~header.width') == 'expand' && !$config('~header.logo_center') ? 'uk-padding-remove-left' : '';
+$attrs_dialog['class'][] = $config("$dialog.text_center") ? 'uk-text-center' : '';
+$attrs_dialog_push['class'][] = $config("$dialog.text_center") ? 'uk-text-center' : '';
 
-    $attrs_toggle = [];
-    $attrs_toggle['class'][] = str_starts_with($layout, 'modal') ? 'uk-modal-body uk-padding-large uk-margin-auto uk-height-viewport' : 'uk-offcanvas-bar';
-    $attrs_toggle['class'][] = $config('~navbar.toggle_menu_center') ? 'uk-text-center' : '';
-    $attrs_toggle['class'][] = 'uk-flex uk-flex-column';
+// Modal
+$attrs_modal = [];
+$attrs_modal['class'][] = 'uk-modal-body uk-padding-large uk-margin-auto uk-flex uk-flex-column uk-box-sizing-content';
+$attrs_modal['class'][] = $config("$dialog.modal.width") ? 'uk-width-' .  $config("$dialog.modal.width") : 'uk-width-auto@s';
+$attrs_modal['uk-height-viewport'] = true;
 
-    ?>
+// Dropbar
+if (str_starts_with($config("$dialog.layout"), 'dropbar')) {
 
-    <?php if ($sticky) : ?>
-    <div<?= $this->attrs($attrs_sticky) ?>>
+    $attrs_dropbar = [];
+    $attrs_dropbar['class'][] = 'uk-dropbar uk-dropbar-large';
+
+    if (!$config("$dialog.dropbar.animation") || $config("$dialog.dropbar.animation") == 'reveal-top') {
+        $attrs_dropbar['class'][] = 'uk-dropbar-top';
+    } elseif ($config("$dialog.dropbar.animation") == 'slide-left') {
+        $attrs_dropbar['class'][] = 'uk-dropbar-left';
+        $attrs_dropbar['class'][] = $config("$dialog.dropbar.width") ? 'uk-width-' . $config("$dialog.dropbar.width") : '';
+    }
+    elseif ($config("$dialog.dropbar.animation") == 'slide-right') {
+        $attrs_dropbar['class'][] = 'uk-dropbar-right';
+        $attrs_dropbar['class'][] = $config("$dialog.dropbar.width") ? 'uk-width-' . $config("$dialog.dropbar.width") : '';
+    }
+
+    $attrs_dropbar['uk-drop'] = json_encode(array_filter([
+        // Default
+        'clsDrop' => 'uk-dropbar',
+        'flip' => 'false', // Has to be a string
+        'container' => '.tm-header',
+        'target-y' => '.tm-header .uk-navbar-container',
+        // New
+        'mode' => 'click',
+        'target-x' => '.tm-header .uk-navbar-container',
+        'boundary-x' => $config("$site.layout") == 'boxed' && !$config("$site.boxed.header_outside") ? '.tm-header .uk-navbar-container' : null,
+        'stretch' => in_array($config("$dialog.dropbar.animation"), ['slide-left', 'slide-right']) && $config("$dialog.dropbar.width") ? 'y' : true,
+        'pos' => $config("$dialog.dropbar.animation") == 'slide-right' ? 'bottom-right' : null,
+        'bgScroll' => 'false', // Has to be a string
+        'animation' => $config("$dialog.dropbar.animation") ?: null,
+        'animateOut' => true,
+        'duration' => 300,
+        'toggle' => 'false', // Has to be a string
+    ]));
+
+    $attrs_dropbar_content = [];
+    $attrs_dropbar_content['class'][] = 'tm-height-min-1-1 uk-flex uk-flex-column';
+    $attrs_dropbar_content['class'][] = $config("$dialog.dropbar.content_width") ? 'uk-' .  $config("$dialog.dropbar.content_width") . ' uk-margin-auto' : '';
+    $attrs_dropbar_content['class'][] = $config("$dialog.dropbar.content_width") == 'container' ? 'uk-padding-remove-horizontal' : '';
+
+}
+
+?>
+
+<?php if ($this->countModules('dialog') || $this->countModules('dialog-push')) : ?>
+
+    <?php if (str_starts_with($config("$dialog.layout"), 'offcanvas')) : ?>
+    <div id="tm-dialog" uk-offcanvas="container: true"<?= $this->attrs($config("$dialog.offcanvas") ?: []) ?>>
+        <div class="uk-offcanvas-bar uk-flex uk-flex-column">
+
+            <button class="uk-offcanvas-close uk-close-large" type="button" uk-close uk-toggle="cls: uk-close-large; mode: media; media: @s"></button>
+
+            <?php if (($this->countModules('dialog'))) : ?>
+            <div<?= $this->attrs($attrs_dialog) ?>>
+                <jdoc:include type="modules" name="dialog" style="grid-stack" />
+            </div>
+            <?php endif ?>
+
+            <?php if ($this->countModules('dialog-push')) : ?>
+            <div<?= $this->attrs($attrs_dialog_push) ?>>
+                <jdoc:include type="modules" name="dialog-push" style="grid-stack" />
+            </div>
+            <?php endif ?>
+
+        </div>
+    </div>
     <?php endif ?>
 
-        <div<?= $this->attrs($attrs_navbar_container) ?>>
-            <div<?= $this->attrs($attrs_width_container) ?>>
-                <nav<?= $this->attrs($attrs_navbar) ?>>
+    <?php if (str_starts_with($config("$dialog.layout"), 'modal')) : ?>
+    <div id="tm-dialog" class="uk-modal-full" uk-modal>
+        <div class="uk-modal-dialog uk-flex">
 
-                    <?php if ($logo) : ?>
-                    <div class="<?= $config('~header.logo_center') ? 'uk-navbar-center' : 'uk-navbar-left' ?>">
-                        <?= $view('~theme/templates/header-logo', ['class' => 'uk-navbar-item']) ?>
-                        <?php if ($this->countModules('logo')) : ?>
-                            <jdoc:include type="modules" name="logo" />
-                        <?php endif ?>
-                    </div>
-                    <?php endif ?>
+            <button class="uk-modal-close-full uk-close-large" type="button" uk-close uk-toggle="cls: uk-close-large; mode: media; media: @s"></button>
 
-                    <?php if ($this->countModules('header') || $this->countModules('navbar')) : ?>
-                    <div class="uk-navbar-right">
+            <div<?= $this->attrs($attrs_modal) ?>>
 
-                        <jdoc:include type="modules" name="header" />
+                <?php if (($this->countModules('dialog'))) : ?>
+                <div<?= $this->attrs($attrs_dialog) ?>>
+                    <jdoc:include type="modules" name="dialog" style="grid-stack" />
+                </div>
+                <?php endif ?>
 
-                        <?php if ($this->countModules('navbar')) : ?>
+                <?php if ($this->countModules('dialog-push')) : ?>
+                <div<?= $this->attrs($attrs_dialog_push) ?>>
+                    <jdoc:include type="modules" name="dialog-push" style="grid-stack" />
+                </div>
+                <?php endif ?>
 
-                            <a class="uk-navbar-toggle" href="#tm-navbar" uk-toggle>
-                                <?php if ($config('~navbar.toggle_text')) : ?>
-                                <span class="uk-margin-small-right"><?= Text::_('TPL_YOOTHEME_MENU') ?></span>
-                                <?php endif ?>
-                                <div uk-navbar-toggle-icon></div>
-                            </a>
-
-                            <?php if (str_starts_with($layout, 'offcanvas')) : ?>
-                            <div id="tm-navbar" uk-offcanvas="flip: true; container: true"<?= $this->attrs($config('~navbar.offcanvas') ?: []) ?>>
-                                <div<?= $this->attrs($attrs_toggle) ?>>
-
-                                    <button class="uk-offcanvas-close uk-close-large" type="button" uk-close></button>
-
-                                    <jdoc:include type="modules" name="navbar" />
-
-                                </div>
-                            </div>
-                            <?php endif ?>
-
-                            <?php if (str_starts_with($layout, 'modal')) : ?>
-                            <div id="tm-navbar" class="uk-modal-full" uk-modal>
-                                <div class="uk-modal-dialog uk-flex">
-
-                                    <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
-
-                                    <div <?= $this->attrs($attrs_toggle) ?>>
-                                        <jdoc:include type="modules" name="navbar" />
-                                    </div>
-
-                                </div>
-                            </div>
-                            <?php endif ?>
-
-                        <?php endif ?>
-
-                    </div>
-                    <?php endif ?>
-
-                </nav>
             </div>
+
+        </div>
+    </div>
+    <?php endif ?>
+
+    <?php if (str_starts_with($config("$dialog.layout"), 'dropbar')) : ?>
+    <div id="tm-dialog"<?= $this->attrs($attrs_dropbar) ?>>
+
+        <div<?= $this->attrs($attrs_dropbar_content) ?>>
+
+            <?php if (($this->countModules('dialog'))) : ?>
+            <div<?= $this->attrs($attrs_dialog) ?>>
+                <jdoc:include type="modules" name="dialog" style="grid-stack" />
+            </div>
+            <?php endif ?>
+
+            <?php if ($this->countModules('dialog-push')) : ?>
+            <div<?= $this->attrs($attrs_dialog_push) ?>>
+                <jdoc:include type="modules" name="dialog-push" style="grid-stack" />
+            </div>
+            <?php endif ?>
+
         </div>
 
-    <?php if ($sticky) : ?>
     </div>
     <?php endif ?>
 
 <?php endif ?>
 
+<?php endif ?>
+
 </div>
+
+<?php endif ?>

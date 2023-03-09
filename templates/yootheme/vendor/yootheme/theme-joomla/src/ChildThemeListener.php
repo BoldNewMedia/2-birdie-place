@@ -11,7 +11,7 @@ class ChildThemeListener
 {
     public static function initTheme(Config $config)
     {
-        if (empty($child = $config('~theme.child_theme'))) {
+        if (empty(($child = $config('~theme.child_theme')))) {
             return;
         }
 
@@ -42,7 +42,7 @@ class ChildThemeListener
             return;
         }
 
-        list($modules) = $event->getArguments();
+        [$modules] = $event->getArguments();
 
         foreach ($modules as $module) {
             $params = !empty($module->params) ? json_decode($module->params) : new \stdClass();
@@ -60,14 +60,14 @@ class ChildThemeListener
 
     public static function beforeDisplay(Config $config, $event)
     {
-        if ($config('app.isAdmin') || empty($childDir = $config('theme.childDir'))) {
+        if ($config('app.isAdmin') || empty(($childDir = $config('theme.childDir')))) {
             return;
         }
 
         $view = $event->getArgument('subject');
         $paths = $view->get('_path');
 
-        if ($path = isset($paths['template'][0]) ? $paths['template'][0] : false) {
+        if ($path = $paths['template'][0] ?? false) {
             $theme = $config('theme.template');
 
             if (str_contains($path, DIRECTORY_SEPARATOR . $theme . DIRECTORY_SEPARATOR)) {

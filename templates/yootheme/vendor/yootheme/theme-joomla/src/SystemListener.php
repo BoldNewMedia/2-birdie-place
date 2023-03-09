@@ -22,7 +22,8 @@ class SystemListener
             !(
                 $user->authorise('core.edit', 'com_content') ||
                 $user->authorise('core.edit.own', 'com_content') ||
-                $user->authorise('core.edit', 'com_templates')
+                $user->authorise('core.edit', 'com_templates') ||
+                $user->authorise('core.edit', 'com_modules')
             )
         ) {
             // redirect guest user to user login

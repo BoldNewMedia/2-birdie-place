@@ -20,8 +20,6 @@
 
 @navbar-dropdown-box-shadow:                    none;
 
-@navbar-dropbar-box-shadow:                     none;
-
 
 // Component
 // ========================================================================
@@ -113,9 +111,13 @@
     box-shadow: @navbar-dropdown-box-shadow;
 }
 
+.hook-navbar-dropdown-large() {}
+
 .hook-navbar-dropdown-dropbar() when not (@navbar-dropdown-box-shadow = none) {
     box-shadow: none;
 }
+
+.hook-navbar-dropdown-dropbar-large() {}
 
 
 // Dropdown nav
@@ -127,6 +129,8 @@
 
 .hook-navbar-dropdown-nav-item-hover() {}
 
+.hook-navbar-dropdown-nav-subtitle() {}
+
 .hook-navbar-dropdown-nav-header() {}
 
 .hook-navbar-dropdown-nav-divider() {}
@@ -136,10 +140,6 @@
 // ========================================================================
 
 .hook-navbar-dropbar() {}
-
-.hook-navbar-dropbar-slide() when not (@navbar-dropbar-box-shadow = none) {
-    box-shadow: @navbar-dropbar-box-shadow;
-}
 
 
 // Miscellaneous

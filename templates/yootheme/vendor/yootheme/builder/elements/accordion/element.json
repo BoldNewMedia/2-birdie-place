@@ -120,6 +120,13 @@
                 "None": "remove"
             }
         },
+        "image_loading": {
+            "label": "Loading",
+            "description": "By default, images are loaded lazy. Enable eager loading for images in the initial viewport.",
+            "type": "checkbox",
+            "text": "Load image eagerly",
+            "enable": "show_image"
+        },
         "image_width": {
             "attrs": {
                 "placeholder": "auto"
@@ -177,7 +184,7 @@
                 "X-Large": "xlarge",
                 "2X-Large": "2xlarge"
             },
-            "enable": "show_image && (image_align == 'left' || image_align == 'right')"
+            "enable": "show_image && $match(image_align, 'left|right')"
         },
         "image_grid_column_gap": {
             "label": "Grid Column Gap",
@@ -190,7 +197,7 @@
                 "Large": "large",
                 "None": "collapse"
             },
-            "enable": "show_image && (image_align == 'left' || image_align == 'right')"
+            "enable": "show_image && $match(image_align, 'left|right')"
         },
         "image_grid_row_gap": {
             "label": "Grid Row Gap",
@@ -203,7 +210,7 @@
                 "Large": "large",
                 "None": "collapse"
             },
-            "enable": "show_image && (image_align == 'left' || image_align == 'right')"
+            "enable": "show_image && $match(image_align, 'left|right')"
         },
         "image_grid_breakpoint": {
             "label": "Grid Breakpoint",
@@ -215,14 +222,14 @@
                 "Large (Desktop)": "l",
                 "X-Large (Large Screens)": "xl"
             },
-            "enable": "show_image && (image_align == 'left' || image_align == 'right')"
+            "enable": "show_image && $match(image_align, 'left|right')"
         },
         "image_vertical_align": {
             "label": "Vertical Alignment",
             "description": "Vertically center grid items.",
             "type": "checkbox",
             "text": "Center",
-            "enable": "show_image && (image_align == 'left' || image_align == 'right')"
+            "enable": "show_image && $match(image_align, 'left|right')"
         },
         "image_margin": {
             "label": "Margin Top",
@@ -296,12 +303,12 @@
                 "Default": "",
                 "Large": "large"
             },
-            "enable": "show_link && link_style && link_style != 'link-muted' && link_style != 'link-text'"
+            "enable": "show_link && link_style && !$match(link_style, 'link-(muted|text)')"
         },
         "link_fullwidth": {
             "type": "checkbox",
             "text": "Full width button",
-            "enable": "show_link && link_style && link_style != 'link-muted' && link_style != 'link-text'"
+            "enable": "show_link && link_style && !$match(link_style, 'link-(muted|text)')"
         },
         "link_margin": {
             "label": "Margin Top",
@@ -349,7 +356,15 @@
             "editor": "code",
             "mode": "css",
             "attrs": {
-                "debounce": 500
+                "debounce": 500,
+                "hints": [
+                    ".el-element",
+                    ".el-item",
+                    ".el-title",
+                    ".el-content",
+                    ".el-image",
+                    ".el-link"
+                ]
             }
         }
     },
@@ -388,6 +403,7 @@
                             "type": "group",
                             "divider": true,
                             "fields": [
+                                "image_loading",
                                 {
                                     "label": "Width/Height",
                                     "description": "Setting just one value preserves the original proportions. The image will be resized and cropped automatically, and where possible, high resolution images will be auto-generated.",

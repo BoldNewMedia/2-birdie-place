@@ -2,7 +2,7 @@
 
 namespace YOOtheme;
 
-if (!Str::length($props['content'])) {
+if ($props['content'] == '') {
     return;
 }
 
@@ -11,8 +11,7 @@ $content = $this->el('div', [
 
     'class' => [
         'el-content uk-panel',
-        'uk-text-{content_style: meta|lead}',
-        'uk-{content_style: h1|h2|h3|h4|h5|h6} uk-margin-remove',
+        'uk-{content_style} [uk-margin-remove {@content_style: h1|h2|h3|h4|h5|h6}]',
     ],
 
 ]);
@@ -25,7 +24,7 @@ $link = $this->el('a', [
     ],
     'href' => ['{link}'],
     'target' => ['_blank {@link_target}'],
-    'uk-scroll' => str_starts_with((string) $props['link'], '#'),
+    'uk-scroll' => str_contains((string) $props['link'], '#'),
 ]);
 
 echo $content($element, $props['link'] ? $link($props, $props['content']) : $props['content']);

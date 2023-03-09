@@ -130,8 +130,7 @@ abstract class AbstractProvider
      */
     protected function findError($response, $formattedResponse)
     {
-        return isset($formattedResponse['detail'])
-            ? $formattedResponse['detail']
-            : 'Unknown error, call getLastResponse() to find out what happened.';
+        return $formattedResponse['detail'] ??
+            'Unknown error, call getLastResponse() to find out what happened.';
     }
 }

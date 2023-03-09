@@ -137,7 +137,7 @@ class SmartSearchItemType
                                 'default' => '0',
                                 'show' => 'arguments.show_taxonomy === "tag"',
                                 'options' => [
-                                    ['value' => '0', 'text' => 'Root'],
+                                    ['value' => '0', 'text' => trans('Root')],
                                     ['evaluate' => 'config.tags'],
                                 ],
                             ],
@@ -265,7 +265,17 @@ class SmartSearchItemType
      */
     public static function images($item)
     {
-        return json_decode($item->getElement('images'));
+        $images = json_decode($item->getElement('images') ?? '');
+
+        // Fallback for plugins not storing images as json representation (like HikaShop)
+        if (!$images && $item->getElement('imageUrl')) {
+            $images = (object) [
+                'image_intro' => $item->getElement('imageUrl'),
+                'image_intro_alt' => $item->getElement('imageAlt'),
+            ];
+        }
+
+        return $images;
     }
 
     /**
@@ -276,7 +286,9 @@ class SmartSearchItemType
     public static function category($item)
     {
         $id = $item->getElement('catid');
-        return $id ? Categories::getInstance('content', ['countItems' => true])->get($id) : null;
+        return $id && $item->getElement('context') === 'com_content.article'
+            ? Categories::getInstance('content', ['countItems' => true])->get($id)
+            : null;
     }
 
     /**
@@ -288,7 +300,7 @@ class SmartSearchItemType
     {
         $user = Factory::getUser($item->getElement('created_by'));
 
-        if ($user && $item->getElement('created_by_alias')) {
+        if ($item->getElement('created_by_alias')) {
             $user = clone $user;
             $user->name = $item->getElement('created_by_alias');
         }

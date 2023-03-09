@@ -15,7 +15,7 @@ $link = $this->el('a', [
 
     'href' => $props['link'],
     'target' => ['_blank {@link_target}'],
-    'uk-scroll' => str_starts_with((string) $props['link'], '#'),
+    'uk-scroll' => str_contains((string) $props['link'], '#'),
 ]);
 
 $link_container = $this->el('div', [

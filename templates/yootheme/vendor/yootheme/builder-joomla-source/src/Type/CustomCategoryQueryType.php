@@ -25,7 +25,7 @@ class CustomCategoryQueryType
 
                     'metadata' => [
                         'label' => trans('Custom Category'),
-                        'group' => 'Custom',
+                        'group' => trans('Custom'),
                         'fields' => [
                             'id' => [
                                 'label' => trans('Category'),

@@ -39,7 +39,7 @@ class CustomTagsQueryType
 
                     'metadata' => [
                         'label' => trans('Custom Tags'),
-                        'group' => 'Custom',
+                        'group' => trans('Custom'),
                         'fields' => [
                             'parent_id' => [
                                 'label' => trans('Parent Tag'),
@@ -49,7 +49,7 @@ class CustomTagsQueryType
                                 'type' => 'select',
                                 'default' => '0',
                                 'options' => [
-                                    ['value' => '0', 'text' => 'Root'],
+                                    ['value' => '0', 'text' => trans('Root')],
                                     ['evaluate' => 'config.tags'],
                                 ],
                             ],

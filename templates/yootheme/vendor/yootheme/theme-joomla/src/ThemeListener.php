@@ -3,6 +3,7 @@
 namespace YOOtheme\Theme\Joomla;
 
 use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Document\Document;
 use Joomla\CMS\Document\HtmlDocument;
@@ -16,7 +17,9 @@ use Joomla\Input\Input;
 use YOOtheme\Config;
 use YOOtheme\Event;
 use YOOtheme\Metadata;
+use YOOtheme\Theme\HighlightListener;
 use YOOtheme\Url;
+use function YOOtheme\app;
 
 class ThemeListener
 {
@@ -25,6 +28,11 @@ class ThemeListener
         // register views cache array
         if (version_compare(JVERSION, '4.0', '<') && $config('app.isSite')) {
             ViewsObject::register();
+        }
+
+        // Joomla 4 does not distribute com_search
+        if (!ComponentHelper::isEnabled('com_search')) {
+            $config->set('~theme.search_module', 'mod_finder');
         }
     }
 
@@ -44,7 +52,7 @@ class ThemeListener
 
     public static function beforeDisplay(Config $config, $event)
     {
-        if ($config('app.isAdmin') || !$config('~theme')) {
+        if ($config('app.isAdmin') || !$config('theme.active')) {
             return;
         }
 
@@ -79,7 +87,7 @@ class ThemeListener
 
     public static function loadTemplate(Config $config, $event)
     {
-        list($view) = $event->getArguments();
+        [$view] = $event->getArguments();
 
         $context = $view->get('context');
         $layout = $view->getLayout();
@@ -95,38 +103,25 @@ class ThemeListener
                 $config->set('~theme.page_layout', 'post');
             }
         }
-
-        // Joomla 4 does not distribute com_search
-        if (!ComponentHelper::isEnabled('com_search')) {
-            $config->set('~theme.search_module', 'mod_finder');
-        }
     }
 
+    /**
+     * @param SiteApplication $cms
+     */
     public static function afterDispatch(
         Config $config,
         Document $document,
-        Input $input,
         Language $language,
         CMSApplication $cms
     ) {
-        // is template active?
-        if (
-            !$config('~theme') ||
-            $config('app.isAdmin') ||
-            $input->getCmd('option') === 'com_ajax' ||
-            $input->getCmd('tmpl') === 'component'
-        ) {
+        if (!static::isThemeActive()) {
             return;
         }
-
-        $itemId = ($item = $cms->getMenu()->getDefault()) ? $item->id : 0;
-        $siteUrl = Route::_("index.php?Itemid={$itemId}", false, 0, true);
 
         $language->load('tpl_yootheme', $config('theme.rootDir'));
         $document->setBase(htmlspecialchars(Uri::current()));
 
         $config->add('~theme', [
-            'site_url' => $siteUrl,
             'direction' => $document->getDirection(),
             'page_class' => $cms->getParams()->get('pageclass_sfx'),
         ]);
@@ -146,6 +141,27 @@ class ThemeListener
         Event::emit('theme.head');
     }
 
+    public static function loadModules(Config $config, CMSApplication $cms)
+    {
+        if (!static::isThemeActive()) {
+            return;
+        }
+
+        $itemId = ($item = $cms->getMenu()->getDefault()) ? $item->id : 0;
+        $siteUrl = Route::_("index.php?Itemid={$itemId}", false, 0, true);
+        $config->set('~theme.site_url', $siteUrl);
+    }
+
+    public static function beforeRender(
+        Config $config,
+        Metadata $metadata,
+        CMSApplication $application
+    ) {
+        /** @var HtmlDocument $document */
+        $document = $application->getDocument();
+        HighlightListener::checkContent($config, $metadata, $document->getBuffer('component'));
+    }
+
     protected static function fixEmailCloak(Document $document)
     {
         $document->addScriptDeclaration("document.addEventListener('DOMContentLoaded', function() {
@@ -162,5 +178,19 @@ class ThemeListener
         }
 
         $document->addCustomTag($script);
+    }
+
+    protected static function isThemeActive()
+    {
+        /**
+         * @var Config $config
+         * @var Input   $input
+         */
+        [$config, $input] = app(Config::class, Input::class);
+
+        return $config('theme.active') &&
+            !$config('app.isAdmin') &&
+            $input->getCmd('option') !== 'com_ajax' &&
+            $input->getCmd('tmpl') !== 'component';
     }
 }

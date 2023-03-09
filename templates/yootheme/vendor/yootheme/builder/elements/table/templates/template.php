@@ -28,7 +28,7 @@ switch ($props['table_order']) {
 // Find empty fields
 $filtered = array_values(Arr::filter($fields, function ($field) use ($props, $children) {
     return $props["show_{$field}"] && Arr::some($children, function ($child) use ($field) {
-        return $child->props[$field];
+        return $child->props[$field] != '';
     });
 }));
 

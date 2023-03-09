@@ -17,12 +17,13 @@
 
 @internal-button-mode:                          ~''; // strikethrough, ripple
 
-@button-text-mode:                              line; // none, line, arrow, em-dash, border-bottom
+@button-text-mode:                              line; // line, arrow, em-dash, border-bottom
 @button-text-border-width:                      @global-border-width;
 @button-text-border:                            currentColor;
 @button-text-hover-border:                      currentColor;
 
 @internal-button-text-line-bottom:              0;
+@internal-button-text-line-right:               100%;
 
 @internal-button-text-arrow-image:               "../../../../uikit-themes/master/images/button-text-arrow.svg";
 @internal-button-text-arrow-padding:            5px;
@@ -150,6 +151,14 @@
 // Glow
 .hook-button-default() when (@internal-button-default-mode = glow) {
 
+    &:not(.uk-hack) {
+        position: relative;
+        z-index: 0;
+        background: none !important;
+        box-shadow: none !important;
+        border: none !important;
+    }
+
     &::before,
     &::after {
         content: "";
@@ -171,18 +180,6 @@
 .hook-button-default-hover() when (@internal-button-default-mode = glow) and not (@internal-button-default-hover-glow-filter = ~'') {
 
     &::before { filter: @internal-button-default-hover-glow-filter; }
-
-}
-
-.hook-button-misc() when (@internal-button-default-mode = glow) {
-
-    .uk-button-default:not(.uk-hack) {
-        position: relative;
-        z-index: 0;
-        background: none !important;
-        box-shadow: none !important;
-        border: none !important;
-    }
 
 }
 
@@ -210,12 +207,22 @@
 // Glow
 .hook-button-primary() when (@internal-button-primary-mode = glow) {
 
+    &:not(.uk-hack) {
+        position: relative;
+        z-index: 0;
+        background: none !important;
+        box-shadow: none !important;
+        border: none !important;
+    }
+
     &::before,
     &::after {
         content: "";
         position: absolute;
         inset: 0;
         z-index: -1;
+        // Fix Safari flickering
+        will-change: filter;
     }
 
     &::before {
@@ -229,18 +236,6 @@
 .hook-button-primary-hover() when (@internal-button-primary-mode = glow) and not (@internal-button-primary-hover-glow-filter = ~'') {
 
     &::before { filter: @internal-button-primary-hover-glow-filter; }
-
-}
-
-.hook-button-misc() when (@internal-button-primary-mode = glow) {
-
-    .uk-button-primary:not(.uk-hack) {
-        position: relative;
-        z-index: 0;
-        background: none !important;
-        box-shadow: none !important;
-        border: none !important;
-    }
 
 }
 
@@ -268,12 +263,22 @@
 // Glow
 .hook-button-secondary() when (@internal-button-secondary-mode = glow) {
 
+    &:not(.uk-hack) {
+        position: relative;
+        z-index: 0;
+        background: none !important;
+        box-shadow: none !important;
+        border: none !important;
+    }
+
     &::before,
     &::after {
         content: "";
         position: absolute;
         inset: 0;
         z-index: -1;
+        // Fix Safari flickering
+        will-change: filter;
     }
 
     &::before {
@@ -287,18 +292,6 @@
 .hook-button-secondary-hover() when (@internal-button-secondary-mode = glow) and not (@internal-button-secondary-hover-glow-filter = ~'') {
 
     &::before { filter: @internal-button-secondary-hover-glow-filter; }
-
-}
-
-.hook-button-misc() when (@internal-button-secondary-mode = glow) {
-
-    .uk-button-secondary:not(.uk-hack) {
-        position: relative;
-        z-index: 0;
-        background: none !important;
-        box-shadow: none !important;
-        border: none !important;
-    }
 
 }
 
@@ -416,7 +409,7 @@
         position: absolute;
         bottom: @internal-button-text-line-bottom;
         left: 0;
-        right: 100%;
+        right: @internal-button-text-line-right;
         z-index: -1;
         border-bottom: @button-text-border-width solid @button-text-border;
         transition: right 0.3s ease-out;

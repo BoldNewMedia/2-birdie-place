@@ -46,22 +46,22 @@ class PluralizationRules
          * Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
          */
         switch ($locale) {
-            case 'bo':
-            case 'dz':
-            case 'id':
-            case 'ja':
-            case 'jv':
-            case 'ka':
-            case 'km':
-            case 'kn':
-            case 'ko':
-            case 'ms':
-            case 'th':
-            case 'tr':
-            case 'vi':
-            case 'zh':
-                return 0;
-                break;
+            //            case 'bo':
+            //            case 'dz':
+            //            case 'id':
+            //            case 'ja':
+            //            case 'jv':
+            //            case 'ka':
+            //            case 'km':
+            //            case 'kn':
+            //            case 'ko':
+            //            case 'ms':
+            //            case 'th':
+            //            case 'tr':
+            //            case 'vi':
+            //            case 'zh':
+            //                return 0;
+            //                break;
 
             case 'af':
             case 'az':
@@ -216,9 +216,7 @@ class PluralizationRules
                             ? 2
                             : ($number % 100 >= 3 && $number % 100 <= 10
                                 ? 3
-                                : ($number % 100 >= 11 && $number % 100 <= 99
-                                    ? 4
-                                    : 5))));
+                                : 4)));
 
             default:
                 return 0;

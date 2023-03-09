@@ -19,14 +19,23 @@ class StylerController
 
     public static function addStyle(Request $request, Response $response, Storage $storage)
     {
-        $storage->set("styler.library.{$request('id')}", $request('style'));
+        $id = $request->getParam('id');
+        $style = $request->getParam('style');
+
+        if ($id && $style) {
+            $storage->set("styler.library.{$id}", $style);
+        }
 
         return $response->withJson(['message' => 'success']);
     }
 
     public static function removeStyle(Request $request, Response $response, Storage $storage)
     {
-        $storage->del("styler.library.{$request('id')}");
+        $id = $request->getQueryParam('id');
+
+        if ($id) {
+            $storage->del("styler.library.{$id}");
+        }
 
         return $response->withJson(['message' => 'success']);
     }
@@ -37,8 +46,7 @@ class StylerController
         Config $config,
         Styler $styler
     ) {
-        $themeId = explode('::', $request('id', ''))[0];
-
+        $themeId = explode('::', $request->getQueryParam('id', ''))[0];
         $theme = $styler->getTheme($themeId);
 
         if (!$theme) {
@@ -84,7 +92,7 @@ class StylerController
             try {
                 // save fonts for theme style
                 if ($matches = $font->parse($data)) {
-                    list($import, $url) = $matches;
+                    [$import, $url] = $matches;
 
                     if ($fonts = $font->css($url, $dir)) {
                         $data = str_replace($import, $fonts, $data);

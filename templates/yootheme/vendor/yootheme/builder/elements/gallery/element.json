@@ -30,7 +30,7 @@
         "overlay_transition": "fade",
         "title_hover_style": "reset",
         "title_element": "h3",
-        "meta_style": "meta",
+        "meta_style": "text-meta",
         "meta_align": "below-title",
         "meta_element": "div",
         "link_text": "Read more",
@@ -133,11 +133,13 @@
             "label": "Alignment",
             "description": "Center grid columns horizontally and rows vertically.",
             "type": "checkbox",
-            "text": "Center columns"
+            "text": "Center columns",
+            "enable": "!grid_masonry"
         },
         "grid_row_align": {
             "type": "checkbox",
-            "text": "Center rows"
+            "text": "Center rows",
+            "enable": "!grid_masonry"
         },
         "grid_default": {
             "label": "Phone Portrait",
@@ -274,7 +276,7 @@
         "filter_style_primary": {
             "type": "checkbox",
             "text": "Primary navigation",
-            "enable": "filter && (filter_position == 'left' || filter_position == 'right') && $match(filter_style, '(^subnav)')"
+            "enable": "filter && $match(filter_position, 'left|right') && $match(filter_style, '^subnav')"
         },
         "filter_align": {
             "label": "Alignment",
@@ -315,7 +317,7 @@
                 "Medium": "medium",
                 "Large": "large"
             },
-            "enable": "filter && (filter_position == 'left' || filter_position == 'right')"
+            "enable": "filter && $match(filter_position, 'left|right')"
         },
         "filter_grid_column_gap": {
             "label": "Grid Column Gap",
@@ -328,7 +330,7 @@
                 "Large": "large",
                 "None": "collapse"
             },
-            "enable": "filter && (filter_position == 'left' || filter_position == 'right')"
+            "enable": "filter && $match(filter_position, 'left|right')"
         },
         "filter_grid_row_gap": {
             "label": "Grid Row Gap",
@@ -341,7 +343,7 @@
                 "Large": "large",
                 "None": "collapse"
             },
-            "enable": "filter && (filter_position == 'left' || filter_position == 'right')"
+            "enable": "filter && $match(filter_position, 'left|right')"
         },
         "filter_grid_breakpoint": {
             "label": "Grid Breakpoint",
@@ -353,7 +355,7 @@
                 "Large (Desktop)": "l",
                 "X-Large (Large Screens)": "xl"
             },
-            "enable": "filter && (filter_position == 'left' || filter_position == 'right')"
+            "enable": "filter && $match(filter_position, 'left|right')"
         },
         "lightbox": {
             "label": "Lightbox",
@@ -517,7 +519,7 @@
                 "X-Large": "xlarge",
                 "2X-Large": "2xlarge"
             },
-            "enable": "!$match(overlay_position, '(^top$|^bottom$)')"
+            "enable": "!$match(overlay_position, '^(top|bottom)$')"
         },
         "overlay_transition": {
             "label": "Transition",
@@ -549,6 +551,12 @@
             "text": "Link overlay",
             "enable": "show_link"
         },
+        "image_loading": {
+            "label": "Loading",
+            "description": "By default, images are loaded lazy. Enable eager loading for images in the initial viewport.",
+            "type": "checkbox",
+            "text": "Load image eagerly"
+        },
         "image_width": {
             "attrs": {
                 "placeholder": "auto"
@@ -575,6 +583,10 @@
                 "Scale Down": "scale-down"
             }
         },
+        "image_transition_border": {
+            "type": "checkbox",
+            "text": "Border"
+        },
         "image_min_height": {
             "label": "Min Height",
             "description": "Use an optional minimum height to prevent images from becoming smaller than the content on small devices.",
@@ -584,6 +596,18 @@
                 "max": 500,
                 "step": 20
             }
+        },
+        "image_border": {
+            "label": "Border",
+            "description": "Select the image border style.",
+            "type": "select",
+            "options": {
+                "None": "",
+                "Rounded": "rounded",
+                "Circle": "circle",
+                "Pill": "pill"
+            },
+            "enable": "!image_transition_border && !image_box_decoration"
         },
         "image_box_shadow": {
             "label": "Box Shadow",
@@ -657,19 +681,21 @@
             "type": "select",
             "options": {
                 "None": "",
-                "2X-Large": "heading-2xlarge",
-                "X-Large": "heading-xlarge",
-                "Large": "heading-large",
-                "Medium": "heading-medium",
-                "Small": "heading-small",
-                "H1": "h1",
-                "H2": "h2",
-                "H3": "h3",
-                "H4": "h4",
-                "H5": "h5",
-                "H6": "h6",
-                "Meta": "meta",
-                "Lead": "lead"
+                "Heading 2X-Large": "heading-2xlarge",
+                "Heading X-Large": "heading-xlarge",
+                "Heading Large": "heading-large",
+                "Heading Medium": "heading-medium",
+                "Heading Small": "heading-small",
+                "Heading H1": "h1",
+                "Heading H2": "h2",
+                "Heading H3": "h3",
+                "Heading H4": "h4",
+                "Heading H5": "h5",
+                "Heading H6": "h6",
+                "Text Meta": "text-meta",
+                "Text Lead": "text-lead",
+                "Text Small": "text-small",
+                "Text Large": "text-large"
             },
             "enable": "show_title && (title_display != 'lightbox' && lightbox || !lightbox)"
         },
@@ -792,19 +818,21 @@
             "type": "select",
             "options": {
                 "None": "",
-                "Meta": "meta",
-                "Lead": "lead",
-                "2X-Large": "heading-2xlarge",
-                "X-Large": "heading-xlarge",
-                "Large": "heading-large",
-                "Medium": "heading-medium",
-                "Small": "heading-small",
-                "H1": "h1",
-                "H2": "h2",
-                "H3": "h3",
-                "H4": "h4",
-                "H5": "h5",
-                "H6": "h6"
+                "Text Meta": "text-meta",
+                "Text Lead": "text-lead",
+                "Text Small": "text-small",
+                "Text Large": "text-large",
+                "Heading 2X-Large": "heading-2xlarge",
+                "Heading X-Large": "heading-xlarge",
+                "Heading Large": "heading-large",
+                "Heading Medium": "heading-medium",
+                "Heading Small": "heading-small",
+                "Heading H1": "h1",
+                "Heading H2": "h2",
+                "Heading H3": "h3",
+                "Heading H4": "h4",
+                "Heading H5": "h5",
+                "Heading H6": "h6"
             },
             "enable": "show_meta"
         },
@@ -894,19 +922,21 @@
             "type": "select",
             "options": {
                 "None": "",
-                "Lead": "lead",
-                "Meta": "meta",
-                "2X-Large": "heading-2xlarge",
-                "X-Large": "heading-xlarge",
-                "Large": "heading-large",
-                "Medium": "heading-medium",
-                "Small": "heading-small",
-                "H1": "h1",
-                "H2": "h2",
-                "H3": "h3",
-                "H4": "h4",
-                "H5": "h5",
-                "H6": "h6"
+                "Text Meta": "text-meta",
+                "Text Lead": "text-lead",
+                "Text Small": "text-small",
+                "Text Large": "text-large",
+                "Heading 2X-Large": "heading-2xlarge",
+                "Heading X-Large": "heading-xlarge",
+                "Heading Large": "heading-large",
+                "Heading Medium": "heading-medium",
+                "Heading Small": "heading-small",
+                "Heading H1": "h1",
+                "Heading H2": "h2",
+                "Heading H3": "h3",
+                "Heading H4": "h4",
+                "Heading H5": "h5",
+                "Heading H6": "h6"
             },
             "enable": "show_content && (content_display != 'lightbox' && lightbox || !lightbox)"
         },
@@ -984,12 +1014,12 @@
                 "Default": "",
                 "Large": "large"
             },
-            "enable": "show_link && link_style && link_style != 'link-muted' && link_style != 'link-text'"
+            "enable": "show_link && link_style && !$match(link_style, 'link-(muted|text)')"
         },
         "link_fullwidth": {
             "type": "checkbox",
             "text": "Full width button",
-            "enable": "show_link && link_style && link_style != 'link-muted' && link_style != 'link-text'"
+            "enable": "show_link && link_style && !$match(link_style, 'link-(muted|text)')"
         },
         "link_margin": {
             "label": "Margin Top",
@@ -1034,12 +1064,23 @@
         "attributes": "${builder.attrs}",
         "css": {
             "label": "CSS",
-            "description": "Enter your own custom CSS. The following selectors will be prefixed automatically for this element: <code>.el-element</code>, <code>.el-item</code>, <code>.el-image</code>, <code>.el-title</code>, <code>.el-meta</code>, <code>.el-content</code>, <code>.el-hover-image</code>",
+            "description": "Enter your own custom CSS. The following selectors will be prefixed automatically for this element: <code>.el-element</code>, <code>.el-nav</code>, <code>.el-item</code>, <code>.el-image</code>, <code>.el-title</code>, <code>.el-meta</code>, <code>.el-content</code>, <code>.el-link</code>, <code>.el-hover-image</code>",
             "type": "editor",
             "editor": "code",
             "mode": "css",
             "attrs": {
-                "debounce": 500
+                "debounce": 500,
+                "hints": [
+                    ".el-element",
+                    ".el-nav",
+                    ".el-item",
+                    ".el-image",
+                    ".el-title",
+                    ".el-meta",
+                    ".el-content",
+                    ".el-link",
+                    ".el-hover-image"
+                ]
             }
         }
     },
@@ -1156,6 +1197,7 @@
                             "type": "group",
                             "divider": true,
                             "fields": [
+                                "image_loading",
                                 {
                                     "label": "Width/Height",
                                     "description": "Setting just one value preserves the original proportions. The image will be resized and cropped automatically, and where possible, high resolution images will be auto-generated.",
@@ -1165,7 +1207,9 @@
                                 },
                                 "image_orientation",
                                 "image_transition",
+                                "image_transition_border",
                                 "image_min_height",
+                                "image_border",
                                 "image_box_shadow",
                                 "image_hover_box_shadow",
                                 "image_box_decoration",

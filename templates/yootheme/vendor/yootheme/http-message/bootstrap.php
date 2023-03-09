@@ -1,5 +1,12 @@
 <?php
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use YOOtheme\Config;
+use YOOtheme\Http\HttpFactory;
+use YOOtheme\Http\Request;
+use YOOtheme\Http\Response;
+
 return [
     'config' => function () {
         $request = [
@@ -71,4 +78,21 @@ return [
 
         return ['req' => $request];
     },
+
+    'aliases' => [
+        Request::class => ['request', ServerRequestInterface::class],
+        Response::class => ['response', ResponseInterface::class],
+    ],
+
+    'services' => [
+        Request::class => function (Config $config) {
+            return (new HttpFactory())->createServerRequestFromGlobals($config('req.href'));
+        },
+
+        Response::class => function () {
+            return (new Response())
+                ->withHeader('Content-Type', 'text/html; charset=utf-8')
+                ->withHeader('Cache-Control', 'no-cache, must-revalidate, max-age=0');
+        },
+    ],
 ];

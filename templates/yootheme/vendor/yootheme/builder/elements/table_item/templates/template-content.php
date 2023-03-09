@@ -1,8 +1,6 @@
 <?php
 
-namespace YOOtheme;
-
-if (!Str::length($props['content'])) {
+if ($props['content'] == '') {
     return;
 }
 
@@ -11,8 +9,7 @@ $el = $this->el('div', [
 
     'class' => [
         'el-content uk-panel',
-        'uk-text-{content_style: meta|lead}',
-        'uk-{content_style: h1|h2|h3|h4|h5|h6} uk-margin-remove',
+        'uk-{content_style} [uk-margin-remove {@content_style: h1|h2|h3|h4|h5|h6}]',
     ],
 
 ]);

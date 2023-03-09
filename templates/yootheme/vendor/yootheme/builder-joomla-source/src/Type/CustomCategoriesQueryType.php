@@ -39,7 +39,7 @@ class CustomCategoriesQueryType
 
                     'metadata' => [
                         'label' => trans('Custom Categories'),
-                        'group' => 'Custom',
+                        'group' => trans('Custom'),
                         'fields' => [
                             'catid' => [
                                 'label' => trans('Parent Category'),
@@ -49,7 +49,7 @@ class CustomCategoriesQueryType
                                 'type' => 'select',
                                 'default' => '0',
                                 'options' => [
-                                    ['text' => 'Root', 'value' => '0'],
+                                    ['value' => '0', 'text' => trans('Root')],
                                     ['evaluate' => 'config.categories'],
                                 ],
                             ],

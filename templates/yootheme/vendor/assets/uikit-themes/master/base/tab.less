@@ -62,11 +62,15 @@
 
 .hook-tab-left() {}
 
-.hook-tab-left-item() { padding: @tab-vertical-item-padding-vertical @tab-vertical-item-padding-horizontal; }
+.hook-tab-left-item() when not (@tab-vertical-item-padding-vertical = @tab-item-padding-vertical), not (@tab-vertical-item-padding-horizontal = @tab-item-padding-horizontal) {
+    padding: @tab-vertical-item-padding-vertical @tab-vertical-item-padding-horizontal;
+}
 
 .hook-tab-right() {}
 
-.hook-tab-right-item() { padding: @tab-vertical-item-padding-vertical @tab-vertical-item-padding-horizontal; }
+.hook-tab-right-item() when not (@tab-vertical-item-padding-vertical = @tab-item-padding-vertical), not (@tab-vertical-item-padding-horizontal = @tab-item-padding-horizontal) {
+    padding: @tab-vertical-item-padding-vertical @tab-vertical-item-padding-horizontal;
+}
 
 
 // Miscellaneous

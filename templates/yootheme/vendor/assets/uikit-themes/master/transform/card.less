@@ -17,7 +17,14 @@
 // ========================================================================
 
 .hook-card() {}
-
+.hook-card() when not (@card-hover-translate-vertical = 0),
+                  not (@card-default-hover-translate-vertical = 0),
+                  not (@card-primary-hover-translate-vertical = 0),
+                  not (@card-secondary-hover-translate-vertical = 0) {
+    &:not([uk-parallax]) {
+        transition-property: color, background-color, background-size, border-color, box-shadow, transform;
+    }
+}
 
 // Sections
 // ========================================================================

@@ -186,7 +186,7 @@ class StreamWrapper
      */
     protected static function getOutput($path)
     {
-        return isset(static::$outputs[$path]) ? static::$outputs[$path] : null;
+        return static::$outputs[$path] ?? null;
     }
 
     /**

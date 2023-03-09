@@ -17,11 +17,11 @@ $image = $this->el('image', [
 
     'src' => $props['image'],
     'alt' => $props['image_alt'],
+    'loading' => $props['image_loading'] ? false : null,
     'width' => $props['image_width'],
     'height' => $props['image_height'],
     'uk-svg' => $props['image_svg_inline'],
     'thumbnail' => true,
-    'target' => $props['position'] === 'absolute' ? '!*' : '',
 ]);
 
 // Box decoration
@@ -52,7 +52,7 @@ $link = $this->el('a', [
 
     'href' => ['{link}'],
     'target' => ['_blank {@link_target: blank}'],
-    'uk-scroll' => str_starts_with((string) $props['link'], '#'),
+    'uk-scroll' => str_contains((string) $props['link'], '#'),
 
     // Target Modal?
     'uk-toggle' => $props['link_target'] === 'modal',
@@ -86,7 +86,7 @@ if ($props['link'] && $props['link_target'] === 'modal') {
 
             // Iframe
             'src' => $iframe ?: $props['link'],
-            'frameborder' => 0,
+            'allow' => 'autoplay',
             'uk-video' => $video || $iframe,
             'allowfullscreen' => true,
             'uk-responsive' => true,

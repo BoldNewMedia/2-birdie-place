@@ -1,12 +1,5 @@
 <?php
 
-namespace YOOtheme;
-
-/**
- * @var ImageProvider $imageProvider
- */
-$imageProvider = app(ImageProvider::class);
-
 $link = $props['link'] ? $this->el('a', [
     'href' => $props['link'],
 ]) : null;
@@ -15,7 +8,7 @@ if ($link) {
 
     $link->attr([
         'target' => ['_blank {@link_target}'],
-        'uk-scroll' => str_starts_with((string) $props['link'], '#'),
+        'uk-scroll' => str_contains((string) $props['link'], '#'),
     ]);
 
 }
@@ -29,6 +22,8 @@ if ($link && $element['panel_link']) {
             // Only if `uk-flex` is not already set in `template.php` to let images cover the card height if the cards have different heights
             'uk-display-block' => !($element['panel_style'] && $element['has_panel_image_no_padding'] && in_array($element['image_align'], ['left', 'right'])),
         ],
+
+        'aria-label' => $props['link_aria_label'],
 
     ]);
 
@@ -59,11 +54,12 @@ if ($link && $props['title'] && $element['title_link']) {
 
 if ($link && $props['image'] && $element['image_link']) {
 
-    $props['image'] = $link($element, ['class' => [
-
-        'uk-display-block' => $element['panel_style'] && $element['has_panel_image_no_padding'] && in_array($element['image_align'], ['left', 'right']),
-
-    ]], $props['image']);
+    $props['image'] = $link($element, [
+        'class' => [
+            'uk-display-block' => $element['panel_style'] && $element['has_panel_image_no_padding'] && in_array($element['image_align'], ['left', 'right']),
+        ],
+        'aria-label' => $props['link_aria_label'],
+    ], $props['image']);
 
 }
 
@@ -73,17 +69,13 @@ if ($link && ($props['link_text'] || $element['link_text'])) {
         $link = $this->el('div');
     }
 
-    $link->attr([
-
-        'class' => [
-            'el-link',
-            'uk-{link_style: link-(muted|text)}',
-            'uk-button uk-button-{!link_style: |link-muted|link-text} [uk-button-{link_size}] [uk-width-1-1 {@link_fullwidth}]',
-            // Keep link style if panel link
-            'uk-link {@link_style:} {@panel_link}',
-            'uk-text-muted {@link_style: link-muted} {@panel_link}',
-        ],
-
+    $link->attr('class', [
+        'el-link',
+        'uk-{link_style: link-(muted|text)}',
+        'uk-button uk-button-{!link_style: |link-muted|link-text} [uk-button-{link_size}] [uk-width-1-1 {@link_fullwidth}]',
+        // Keep link style if panel link
+        'uk-link {@link_style:} {@panel_link}',
+        'uk-text-muted {@link_style: link-muted} {@panel_link}',
     ]);
 
 }

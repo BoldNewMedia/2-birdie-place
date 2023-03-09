@@ -23,7 +23,7 @@ $class = function ($html, $class) {
                 <div class="uk-width-expand@s">
 
                     <div class="uk-search uk-search-default uk-width-1-1">
-                        <input id="search-searchword" class="uk-search-input" type="text" name="searchword" placeholder="<?= Text::_('COM_SEARCH_SEARCH_KEYWORD') ?>" size="30" maxlength="<?= $limit ?>" value="<?= $this->escape($this->origkeyword) ?>">
+                        <input id="search-searchword" class="uk-search-input" type="text" name="searchword" placeholder="<?= Text::_('COM_SEARCH_SEARCH_KEYWORD') ?>" size="30" maxlength="<?= $limit ?>" value="<?= $this->escape($this->origkeyword) ?>" aria-label="<?= Text::_('COM_SEARCH_SEARCH') ?>">
                     </div>
                     <input type="hidden" name="task" value="search">
 

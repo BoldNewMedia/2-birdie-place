@@ -52,7 +52,9 @@ class EditorListener
                 ),
                 'settings' => static::loadSettings() + [
                     'branding' => false,
-                    'content_css' => "{$root}templates/system/css/editor.css",
+                    'content_css' => version_compare(JVERSION, '4.0', '<')
+                        ? "{$root}templates/system/css/editor.css"
+                        : "{$root}media/system/css/editor.min.css",
                     'directionality' => $config('locale.rtl') ? 'rtl' : 'ltr',
                     'document_base_url' => $root,
                     'entity_encoding' => 'raw',
@@ -101,8 +103,12 @@ class EditorListener
 
         ob_start();
 
-        echo "<form>{$editor->display('content', '', '100%', '100%', '', '30', $exclude)}</form>";
+        echo "<form>{$editor->display('content', '', '100%', '550', '', '30', $exclude)}</form>";
 
-        $document->setBuffer(ob_get_clean(), 'component');
+        $document->setBuffer(ob_get_clean(), [
+            'type' => 'component',
+            'name' => null,
+            'title' => null,
+        ]);
     }
 }

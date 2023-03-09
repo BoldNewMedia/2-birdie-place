@@ -2,12 +2,13 @@
     "defaults": {
         "menu": {
             "positions": {
-                "navbar": "mainmenu",
-                "mobile": "mainmenu"
+                "navbar": {
+                    "menu": "mainmenu"
+                },
+                "dialog-mobile": {
+                    "menu": "mainmenu"
+                }
             }
-        },
-        "mobile": {
-            "toggle": "left"
         },
         "post": {
             "width": "default",

@@ -3,11 +3,11 @@
 $el = $this->el($props['title_element'], [
 
     'class' => [
-        'uk-[text-{@title_style: meta|lead}]{title_style}',
+        'uk-{title_style}',
         'uk-heading-{title_decoration}',
         'uk-font-{title_font_family}',
         'uk-text-{title_color} {@!title_color: background}',
-        'uk-margin-remove {position: absolute}',
+        'uk-margin-remove {@position: absolute}',
     ],
 
 ]);
@@ -22,7 +22,7 @@ $link = $props['link'] ? $this->el('a', [
 
     'href' => ['{link}'],
     'target' => ['_blank {@link_target}'],
-    'uk-scroll' => str_starts_with((string) $props['link'], '#'),
+    'uk-scroll' => str_contains((string) $props['link'], '#'),
 
 ], $props['content']) : null;
 

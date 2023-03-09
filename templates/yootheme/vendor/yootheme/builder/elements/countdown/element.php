@@ -18,11 +18,11 @@ return [
 
     'updates' => [
         '1.22.0-beta.0.1' => function ($node) {
-            if (isset($node->props['gutter'])) {
-                $node->props['grid_column_gap'] = $node->props['gutter'];
-                $node->props['grid_row_gap'] = $node->props['gutter'];
-                unset($node->props['gutter']);
-            }
+            Arr::updateKeys($node->props, [
+                'gutter' => function ($value) {
+                    return ['grid_column_gap' => $value, 'grid_row_gap' => $value];
+                },
+            ]);
         },
     ],
 ];

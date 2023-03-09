@@ -10,7 +10,7 @@ return [
 
             'name' => 'YOOtheme',
 
-            'version' => '2.7.22',
+            'version' => '3.0.25',
 
             'url' => Url::to(__DIR__),
 
@@ -21,20 +21,26 @@ return [
                 'header' => 'Header',
                 'toolbar-left' => 'Toolbar Left',
                 'toolbar-right' => 'Toolbar Right',
-                'mobile' => 'Mobile',
+                'dialog' => 'Dialog',
+                'navbar-mobile' => 'Mobile Navbar',
+                'header-mobile' => 'Mobile Header',
+                'dialog-mobile' => 'Mobile Dialog',
             ],
 
             'positions' => [
                 'toolbar-left' => 'Toolbar Left',
                 'toolbar-right' => 'Toolbar Right',
                 'logo' => 'Logo',
-                'logo-mobile' => 'Logo Mobile',
                 'navbar' => 'Navbar',
                 'header' => 'Header',
+                'dialog' => 'Dialog',
+                'logo-mobile' => 'Mobile Logo',
+                'navbar-mobile' => 'Mobile Navbar',
+                'header-mobile' => 'Mobile Header',
+                'dialog-mobile' => 'Mobile Dialog',
                 'top' => 'Top',
                 'sidebar' => 'Sidebar',
                 'bottom' => 'Bottom',
-                'mobile' => 'Mobile',
                 'builder-1' => 'Builder 1',
                 'builder-2' => 'Builder 2',
                 'builder-3' => 'Builder 3',

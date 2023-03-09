@@ -8,9 +8,11 @@ use YOOtheme\Application;
 use YOOtheme\Arr;
 use YOOtheme\Config;
 use YOOtheme\Container;
+use YOOtheme\Database;
 use YOOtheme\Event;
 use YOOtheme\Path;
 use YOOtheme\Theme\Updater;
+use function YOOtheme\app;
 
 class ThemeLoader
 {
@@ -31,59 +33,60 @@ class ThemeLoader
      * Initialize current theme.
      *
      * @param Application $app
-     * @param Config      $configuration
+     * @param Config      $config
      */
-    public static function initTheme(Application $app, Config $configuration)
+    public static function initTheme(Application $app, Config $config)
     {
         $template = static::getTemplate();
 
         // is template active?
-        if (!$template || !$template->params['yootheme']) {
-            return;
+        if (!empty($template->params['yootheme'])) {
+            static::loadConfiguration($template, $app, $config);
+            Event::emit('theme.init');
         }
+    }
 
-        // get config params
-        $params = $template->params->get('config', '{}');
-        $params = json_decode($params, true) ?: [];
+    public static function loadConfiguration($template, $app, $config)
+    {
+        // get theme config
+        $themeConfig = $template->params->get('config', '');
+        $themeConfig = json_decode($themeConfig, true) ?: [];
 
-        // load childtheme config
-        if (!empty($params['child_theme'])) {
+        // load child theme config
+        if (!empty($themeConfig['child_theme'])) {
             $app->load(
-                Path::get("~/templates/{$template->template}_{$params['child_theme']}/config.php")
+                Path::get(
+                    "~/templates/{$template->template}_{$themeConfig['child_theme']}/config.php"
+                )
             );
         }
 
         // add configurations
-        $configuration->add('theme', [
+        $config->add('theme', [
             'id' => $template->id,
+            'active' => true,
             'default' => !empty($template->home),
             'template' => $template->template,
         ]);
 
-        foreach (static::$configs as $config) {
-            if ($config instanceof \Closure) {
-                $config = $config($configuration, $app);
+        foreach (static::$configs as $conf) {
+            if ($conf instanceof \Closure) {
+                $conf = $conf($config, $app);
             }
 
-            $configuration->add('theme', (array) $config);
+            $config->add('theme', (array) $conf);
         }
 
-        if (empty($params)) {
-            $params['version'] = $configuration('theme.version');
+        // handle empty config
+        if (empty($themeConfig)) {
+            $themeConfig['version'] = $config('theme.version');
         }
-
-        /**
-         * @var Updater $updater
-         */
-        $updater = $app(Updater::class);
 
         // merge defaults with configuration
-        $configuration->set(
+        $config->set(
             '~theme',
-            Arr::merge($configuration('theme.defaults', []), $updater->update($params, []))
+            Arr::merge($config('theme.defaults', []), static::updateConfig($themeConfig, $template))
         );
-
-        Event::emit('theme.init');
     }
 
     /**
@@ -115,5 +118,37 @@ class ThemeLoader
         }
 
         return $template;
+    }
+
+    protected static function updateConfig($themeConfig, $template)
+    {
+        /** @var Updater $updater */
+        $updater = app(Updater::class);
+        $version = $themeConfig['version'] ?? null;
+        $themeConfig = $updater->update($themeConfig, [
+            'app' => app(),
+            'config' => $themeConfig,
+        ]);
+
+        if (empty($version) || $version !== $themeConfig['version']) {
+            /** @var Database $db */
+            $db = app(Database::class);
+            $db->update(
+                '@template_styles',
+                [
+                    'params' => json_encode(
+                        [
+                            'config' => json_encode(
+                                $themeConfig,
+                                JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+                            ),
+                        ] + $template->params->toArray()
+                    ),
+                ],
+                ['id' => $template->id]
+            );
+        }
+
+        return $themeConfig;
     }
 }

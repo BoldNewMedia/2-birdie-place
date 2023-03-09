@@ -317,7 +317,7 @@ abstract class File
      *
      * @param string $path
      *
-     * @return string|void
+     * @return false|string
      *
      * @example
      * File::getMimetype('/path/file.ext');
@@ -331,9 +331,7 @@ abstract class File
             return finfo_file(finfo_open(FILEINFO_MIME_TYPE), $path);
         }
 
-        if (is_callable('mime_content_type')) {
-            return mime_content_type($path);
-        }
+        return mime_content_type($path);
     }
 
     /**

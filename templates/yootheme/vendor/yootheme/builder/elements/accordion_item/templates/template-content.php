@@ -2,7 +2,7 @@
 
 namespace YOOtheme;
 
-if (!Str::length($props['content'])) {
+if ($props['content'] == '') {
     return;
 }
 
@@ -15,7 +15,7 @@ echo $this->el('div', [
         'uk-dropcap {@content_dropcap}',
         'uk-column-{content_column}[@{content_column_breakpoint}]',
         'uk-column-divider {@content_column} {@content_column_divider}',
-        'uk-margin[-{content_margin}]-top {@!content_margin: remove}',
+        'uk-margin[-{content_margin}]-top {@!content_margin: remove} {@image_align: top}' => $props['image'],
     ],
 
 ])->render($element, $props['content']);

@@ -48,6 +48,12 @@
             "label": "Icon Width",
             "description": "Set the icon width."
         },
+        "image_loading": {
+            "label": "Image Loading",
+            "description": "By default, images are loaded lazy. Enable eager loading for images in the initial viewport.",
+            "type": "checkbox",
+            "text": "Load image eagerly"
+        },
         "grid": {
             "label": "Grid",
             "type": "select",
@@ -118,7 +124,8 @@
             "editor": "code",
             "mode": "css",
             "attrs": {
-                "debounce": 500
+                "debounce": 500,
+                "hints": [".el-element", ".el-link"]
             }
         }
     },
@@ -140,6 +147,7 @@
                             "fields": [
                                 "link_style",
                                 "icon_width",
+                                "image_loading",
                                 "grid",
                                 "grid_vertical_breakpoint",
                                 "grid_gap",

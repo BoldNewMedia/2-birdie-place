@@ -28,7 +28,9 @@
 // Items
 // ========================================================================
 
-.hook-pagination-item() { font-size: @pagination-item-font-size; }
+.hook-pagination-item() when not (@pagination-item-font-size = @base-body-font-size) {
+    font-size: @pagination-item-font-size;
+}
 
 .hook-pagination-item() when not (@pagination-item-font-family = inherit) {
     font-family: @pagination-item-font-family;

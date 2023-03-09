@@ -14,7 +14,7 @@ class AnalyticsListener
 
         if ($config("~theme.{$keys[0]}")) {
             foreach ($keys as $key) {
-                $config->set("theme.data.{$key}", trim($config("~theme.{$key}")));
+                $config->set("theme.data.{$key}", trim($config("~theme.{$key}", '')));
             }
 
             $metadata->set('script:analytics', [

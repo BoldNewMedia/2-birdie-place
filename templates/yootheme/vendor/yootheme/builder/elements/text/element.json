@@ -38,20 +38,11 @@
             "type": "select",
             "options": {
                 "None": "",
+                "Meta": "meta",
                 "Lead": "lead",
-                "Meta": "meta"
-            }
-        },
-        "text_size": {
-            "label": "Text Size",
-            "description": "Select the text size.",
-            "type": "select",
-            "options": {
-                "None": "",
                 "Small": "small",
                 "Large": "large"
-            },
-            "show": "!text_style"
+            }
         },
         "text_color": {
             "label": "Text Color",
@@ -133,7 +124,8 @@
             "editor": "code",
             "mode": "css",
             "attrs": {
-                "debounce": 500
+                "debounce": 500,
+                "hints": [".el-element"]
             }
         }
     },
@@ -155,7 +147,6 @@
                             "fields": [
                                 "dropcap",
                                 "text_style",
-                                "text_size",
                                 "text_color",
                                 "column",
                                 "column_divider",

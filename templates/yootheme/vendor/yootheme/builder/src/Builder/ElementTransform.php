@@ -28,7 +28,7 @@ class ElementTransform
     {
         $type = $params['type'];
 
-        if ($node->type === 'layout' || !($type->element || $type->container)) {
+        if (empty($params['parent']) || !($type->element || $type->container)) {
             return;
         }
 
@@ -58,9 +58,7 @@ class ElementTransform
      */
     public function animation($node, array $params)
     {
-        /**
-         * @var Builder $builder
-         */
+        /** @var Builder $builder */
         $builder = $params['builder'];
         $path = $params['path'];
 
@@ -109,12 +107,11 @@ class ElementTransform
         }
 
         $node->attrs['class'][] = 'uk-position-z-index uk-position-relative {@parallax_zindex}';
-        $node->attrs['uk-parallax'] = array_merge($this->view->parallaxOptions($node->props), [
-            'easing: {parallax_easing};',
-            'target: !.uk-section; {@parallax_target}',
-            'media: @{parallax_breakpoint};',
-            'viewport: {parallax_viewport};',
-        ]);
+        $node->attrs['class'][] = 'uk-transform-origin-{parallax_transform_origin}';
+
+        if ($options = $this->view->parallaxOptions($node->props)) {
+            $node->attrs['uk-parallax'] = $options;
+        }
     }
 
     /**
@@ -254,7 +251,7 @@ class ElementTransform
         }
 
         foreach (explode("\n", $node->props['attributes']) as $attribute) {
-            list($name, $value) = array_pad(explode('=', $attribute, 2), 2, '');
+            [$name, $value] = array_pad(explode('=', $attribute, 2), 2, '');
 
             $name = trim($name);
 
@@ -272,23 +269,24 @@ class ElementTransform
      */
     public function customCSS($node, array $params)
     {
+        static $id = 0;
+
         if (empty($node->props['css'])) {
             return;
         }
 
         if (empty($node->attrs['id'])) {
-            $node->attrs['id'] = $node->id;
+            $node->attrs['id'] = $params['prefix'] . '#' . $id++;
         }
 
         // Put all comma separations in one line to prevent faulty prefixing
         $css = static::prefixCSS(
             "{$node->props['css']}\n",
-            '#' . str_replace('#', '\#', $node->attrs['id'])
+            '#' . addcslashes($node->attrs['id'], '#')
         );
 
-        $path = $params['path'];
-        $layout = end($path);
-        $layout->props['css'] = (!empty($layout->props['css']) ? $layout->props['css'] : '') . $css;
+        $root = end($params['path']);
+        $root->props['css'] = ($root->props['css'] ?? '') . $css;
     }
 
     /**
@@ -304,9 +302,7 @@ class ElementTransform
             return;
         }
 
-        /**
-         * @var Builder $builder
-         */
+        /** @var Builder $builder */
         $builder = $params['builder'];
         $path = $params['path'];
         $parent = $params['parent'];
@@ -362,13 +358,13 @@ class ElementTransform
      */
     protected static function prefixCSS($css, $prefix = '')
     {
-        $pattern = '/([@#:.\w[\]][\\\\@#:,>~="\'+\-^$.()\w\s[\]\*]*)({(?:[^{}]+|(?R))*})/s';
+        $pattern = '/([@#:.\w[\]][\\\\@#:,>~="\'+\-^$.()\w\s[\]*]*)({(?:[^{}]+|(?R))*})/';
 
         if (preg_match_all($pattern, $css, $matches, PREG_SET_ORDER)) {
             $keys = [];
 
             foreach ($matches as $match) {
-                list($match, $selector, $content) = $match;
+                [$match, $selector, $content] = $match;
 
                 if (in_array($key = sha1($match), $keys)) {
                     continue;
@@ -376,7 +372,11 @@ class ElementTransform
 
                 if ($selector[0] != '@') {
                     $selector = preg_replace('/(^|,)\s*/', "$0{$prefix} ", $selector);
-                    $selector = preg_replace('/\s\.el-(element|section|column)/', '', $selector);
+                    $selector = preg_replace(
+                        '/\s\.el-(element|section|row|column)/',
+                        '',
+                        $selector
+                    );
                 }
 
                 $css = str_replace($match, $selector . static::prefixCSS($content, $prefix), $css);

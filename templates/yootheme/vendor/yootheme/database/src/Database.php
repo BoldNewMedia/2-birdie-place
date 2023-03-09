@@ -5,6 +5,16 @@ namespace YOOtheme;
 interface Database
 {
     /**
+     * Loads the first field of the first row of the result.
+     *
+     * @param string $statement
+     * @param array  $params
+     *
+     * @return mixed|null
+     */
+    public function loadResult($statement, array $params = []);
+
+    /**
      * Fetches all rows of the result as an associative array.
      *
      * @param string $statement
@@ -42,7 +52,7 @@ interface Database
      * @param string $class
      * @param array  $args
      *
-     * @return object|void
+     * @return object|null
      */
     public function fetchObject($statement, array $params = [], $class = 'stdClass', $args = []);
 

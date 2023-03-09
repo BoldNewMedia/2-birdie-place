@@ -2,6 +2,14 @@
 
 namespace YOOtheme;
 
+/**
+ * @method string builder($node, $params = [])
+ * @method string striptags($str, $allowable_tags = [])
+ * @method string formatBytes($bytes, $precision = 0)
+ * @method string|null cls($expressions, array $params = [])
+ * @method string attrs(array $attrs)
+ * @method array parallaxOptions($params, $prefix = '', $props = [])
+ */
 class View implements \ArrayAccess
 {
     /**
@@ -38,6 +46,11 @@ class View implements \ArrayAccess
      * @var array
      */
     protected $functions = [];
+
+    /**
+     * @var array
+     */
+    private $evalParameters;
 
     /**
      * Constructor.
@@ -274,10 +287,11 @@ class View implements \ArrayAccess
     public function evaluate($template, array $parameters = [])
     {
         $this->template[] = $template;
-        $this->parameters[] = $parameters;
+        $this->parameters[] = $this->evalParameters = $parameters;
 
         unset($template, $parameters);
-        extract(end($this->parameters), EXTR_SKIP);
+        extract($this->evalParameters, EXTR_SKIP);
+        unset($this->evalParameters);
 
         $__file = end($this->template);
         $__dir = dirname($__file);
@@ -292,7 +306,7 @@ class View implements \ArrayAccess
         array_pop($this->template);
         array_pop($this->parameters);
 
-        return isset($result) ? $result : false;
+        return $result ?? false;
     }
 
     /**

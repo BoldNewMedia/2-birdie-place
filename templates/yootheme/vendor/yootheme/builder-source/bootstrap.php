@@ -35,6 +35,10 @@ return [
         Builder::class => function (Builder $builder, $app) {
             $builder->addTransform('prerender', $app(SourceTransform::class), 2);
         },
+
+        UpdateTransform::class => function (UpdateTransform $update) {
+            $update->addGlobals(require __DIR__ . '/updates.php');
+        },
     ],
 
     'services' => [

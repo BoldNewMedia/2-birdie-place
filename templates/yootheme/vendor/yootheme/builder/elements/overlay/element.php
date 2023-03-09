@@ -11,22 +11,41 @@ return [
     ],
 
     'updates' => [
-        '2.0.0-beta.5.1' => function ($node) {
-            if (Arr::get($node->props, 'link_type') === 'content') {
-                $node->props['title_link'] = true;
-                $node->props['link_text'] = '';
-            } elseif (Arr::get($node->props, 'link_type') === 'element') {
-                $node->props['overlay_link'] = true;
-                $node->props['link_text'] = '';
+        '3.0.0-beta.5.1' => function ($node) {
+            if (Arr::get($node->props, 'image_box_decoration') === 'border-hover') {
+                $node->props['image_transition_border'] = true;
+                unset($node->props['image_box_decoration']);
             }
-            unset($node->props['link_type']);
+        },
+
+        '2.8.0-beta.0.13' => function ($node) {
+            foreach (['title_style', 'meta_style', 'content_style'] as $prop) {
+                if (in_array(Arr::get($node->props, $prop), ['meta', 'lead'])) {
+                    $node->props[$prop] = 'text-' . Arr::get($node->props, $prop);
+                }
+            }
+        },
+
+        '2.0.0-beta.5.1' => function ($node) {
+            Arr::updateKeys($node->props, [
+                'link_type' => function ($value) {
+                    if ($value === 'content') {
+                        return [
+                            'title_link' => true,
+                            'link_text' => '',
+                        ];
+                    } elseif ($value === 'element') {
+                        return [
+                            'overlay_link' => true,
+                            'link_text' => '',
+                        ];
+                    }
+                },
+            ]);
         },
 
         '1.20.0-beta.1.1' => function ($node) {
-            if (isset($node->props['maxwidth_align'])) {
-                $node->props['block_align'] = $node->props['maxwidth_align'];
-                unset($node->props['maxwidth_align']);
-            }
+            Arr::updateKeys($node->props, ['maxwidth_align' => 'block_align']);
         },
 
         '1.20.0-beta.0.1' => function ($node) {
@@ -34,12 +53,10 @@ return [
                 $node->props['title_style'] = 'heading-medium';
             }
 
-            /**
-             * @var Config $config
-             */
+            /** @var Config $config */
             $config = app(Config::class);
 
-            list($style) = explode(':', $config('~theme.style'));
+            [$style] = explode(':', $config('~theme.style'));
 
             if (
                 in_array($style, [

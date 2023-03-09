@@ -21,7 +21,7 @@ class MailChimpProvider extends AbstractProvider
             throw new \Exception('Invalid API key.');
         }
 
-        list(, $dataCenter) = explode('-', $apiKey);
+        [, $dataCenter] = explode('-', $apiKey);
 
         $this->apiEndpoint = "https://{$dataCenter}.api.mailchimp.com/3.0";
     }

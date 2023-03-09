@@ -42,6 +42,7 @@
             }
         },
         "show_image": {
+            "label": "Display",
             "type": "checkbox",
             "text": "Show the image"
         },
@@ -161,16 +162,23 @@
             "type": "select",
             "options": {
                 "None": "",
-                "Bold": "bold",
-                "Muted": "muted",
-                "Small": "heading-small",
-                "H1": "h1",
-                "H2": "h2",
-                "H3": "h3",
-                "H4": "h4",
-                "H5": "h5",
-                "H6": "h6"
+                "Text Bold": "text-bold",
+                "Text Muted": "text-muted",
+                "Heading Small": "heading-small",
+                "Heading H1": "h1",
+                "Heading H2": "h2",
+                "Heading H3": "h3",
+                "Heading H4": "h4",
+                "Heading H5": "h5",
+                "Heading H6": "h6"
             }
+        },
+        "image_loading": {
+            "label": "Loading",
+            "description": "By default, images are loaded lazy. Enable eager loading for images in the initial viewport.",
+            "type": "checkbox",
+            "text": "Load image eagerly",
+            "enable": "show_image"
         },
         "image_width": {
             "attrs": {
@@ -265,7 +273,8 @@
             "label": "Vertical Alignment",
             "description": "Vertically center the image.",
             "type": "checkbox",
-            "text": "Center"
+            "text": "Center",
+            "enable": "show_image"
         },
         "link_style": {
             "label": "Style",
@@ -312,7 +321,8 @@
             "editor": "code",
             "mode": "css",
             "attrs": {
-                "debounce": 500
+                "debounce": 500,
+                "hints": [".el-element", ".el-item", ".el-content", ".el-image", ".el-link"]
             }
         }
     },
@@ -355,6 +365,7 @@
                             "type": "group",
                             "divider": true,
                             "fields": [
+                                "image_loading",
                                 {
                                     "label": "Width/Height",
                                     "description": "Setting just one value preserves the original proportions. The image will be resized and cropped automatically, and where possible, high resolution images will be auto-generated.",

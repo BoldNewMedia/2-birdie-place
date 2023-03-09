@@ -8,13 +8,8 @@ return [
             /**
              * @var Config        $config
              * @var ImageProvider $image
-             * @var Metadata      $metadata
              */
-            list($config, $image, $metadata) = app(
-                Config::class,
-                ImageProvider::class,
-                Metadata::class
-            );
+            [$config, $image] = app(Config::class, ImageProvider::class, Metadata::class);
 
             $getIconOptions = function ($node) use ($image) {
                 if (empty($node->props['marker_icon'])) {
@@ -25,7 +20,7 @@ return [
                 $width = (int) $node->props['marker_icon_width'];
                 $height = (int) $node->props['marker_icon_height'];
 
-                if ($icon && ($imageObj = $image->create($icon, false))) {
+                if ($imageObj = $image->create($icon, false)) {
                     if ($width || $height) {
                         $imageObj = $imageObj->thumbnail($width, $height);
                     }
@@ -35,10 +30,12 @@ return [
                     $icon = $image->getUrl("{$icon}#thumbnail={$width},{$height}");
                 }
 
+                $hasWidthAndHeight = $width && $height;
+
                 return [
                     'icon' => $icon ? Url::to($icon) : false,
-                    'iconSize' => $width && $height ? [$width, $height] : null,
-                    'iconAnchor' => $width && $height ? [$width / 2, $height] : null,
+                    'iconSize' => $hasWidthAndHeight ? [$width, $height] : null,
+                    'iconAnchor' => $hasWidthAndHeight ? [$width / 2, $height] : null,
                 ];
             };
 
@@ -88,6 +85,7 @@ return [
                 'dragging',
                 'clustering',
                 'controls',
+                'poi',
                 'styler_invert_lightness',
                 'styler_hue',
                 'styler_saturation',
@@ -96,7 +94,7 @@ return [
                 'popup_max_width',
             ]);
             $node->options['center'] = $center ?: ['lat' => 53.5503, 'lng' => 10.0006];
-            $node->options['lazyload'] = $config('~theme.lazyload', false);
+            $node->options['lazyload'] = true;
             $node->options += $getIconOptions($node);
 
             if ($node->props['clustering']) {
@@ -130,60 +128,77 @@ return [
                 return isset($value);
             });
 
+            $node->props['metadata'] = [];
+
             // add scripts, styles
             $cdnBase = 'https://cdn.jsdelivr.net/npm';
             if ($key = $config('~theme.google_maps')) {
                 $node->options['library'] = 'google';
 
-                $metadata->set('script:google-maps', [
-                    'src' => "https://maps.googleapis.com/maps/api/js?key={$key}",
+                $node->props['metadata']['script:google-maps'] = [
+                    'src' => "https://maps.googleapis.com/maps/api/js?key={$key}&callback=Function.prototype",
                     'defer' => true,
-                ]);
+                ];
 
                 if ($node->props['clustering']) {
-                    $baseUrl = "{$cdnBase}/@googlemaps/markerclustererplus@1.0.3";
-                    $metadata->set('script:google-maps-clusterer', [
+                    $baseUrl = "{$cdnBase}/@googlemaps/markerclusterer@2.0.7";
+                    $node->props['metadata']['script:google-maps-clusterer'] = [
                         'src' => "{$baseUrl}/dist/index.umd.min.js",
                         'defer' => true,
-                    ]);
-
-                    if (empty($node->options['cluster_icons'])) {
-                        $node->options['cluster_icons'] = "{$baseUrl}/images/m";
-                    }
+                    ];
                 }
             } else {
                 $node->options['library'] = 'leaflet';
 
-                $baseUrl = "{$cdnBase}/leaflet@1.7.1/dist";
+                $baseUrl = "{$cdnBase}/leaflet@1.9.2/dist";
                 $node->options['baseUrl'] = $baseUrl;
-                $metadata->set('script:leaflet', [
+                $node->props['metadata']['script:leaflet'] = [
                     'src' => "{$baseUrl}/leaflet.js",
                     'defer' => true,
-                ]);
+                ];
+                $node->props['metadata']['style:leaflet'] = [
+                    'href' => Path::get('./assets/leaflet.css'),
+                    'defer' => true,
+                ];
 
                 if ($node->props['clustering']) {
-                    $baseUrl = "{$cdnBase}/leaflet.markercluster@1.4.1/dist";
+                    $baseUrl = "{$cdnBase}/leaflet.markercluster@1.5.3/dist";
                     $node->options['clusterBaseUrl'] = $baseUrl;
-                    $metadata->set('script:leaflet-clusterer', [
-                        'src' => "{$baseUrl}/leaflet.markercluster.js",
-                        'defer' => true,
-                    ]);
+                    $node->props['metadata'] += [
+                        'script:leaflet-clusterer' => [
+                            'src' => "{$baseUrl}/leaflet.markercluster.js",
+                            'defer' => true,
+                        ],
+                        'style:leaflet-clusterer' => [
+                            'href' => "{$baseUrl}/MarkerCluster.css",
+                            'defer' => true,
+                        ],
+                        'style:leaflet-clusterer-default' => [
+                            'href' => "{$baseUrl}/MarkerCluster.Default.css",
+                            'defer' => true,
+                        ],
+                    ];
                 }
             }
 
-            $metadata->set('script:builder-map', [
+            $node->props['metadata']['script:builder-map'] = [
                 'src' => Path::get('./app/map.min.js'),
                 'defer' => true,
-            ]);
+            ];
         },
     ],
 
     'updates' => [
-        '1.20.0-beta.1.1' => function ($node) {
-            if (isset($node->props['maxwidth_align'])) {
-                $node->props['block_align'] = $node->props['maxwidth_align'];
-                unset($node->props['maxwidth_align']);
+        '2.8.0-beta.0.13' => function ($node) {
+            foreach (['title_style', 'meta_style', 'content_style'] as $prop) {
+                if (in_array(Arr::get($node->props, $prop), ['meta', 'lead'])) {
+                    $node->props[$prop] = 'text-' . Arr::get($node->props, $prop);
+                }
             }
+        },
+
+        '1.20.0-beta.1.1' => function ($node) {
+            Arr::updateKeys($node->props, ['maxwidth_align' => 'block_align']);
         },
 
         '1.18.0' => function ($node) {

@@ -1,4 +1,5 @@
 {
+    "@import": "./element.php",
     "name": "layout",
     "title": "Layout",
     "container": true,

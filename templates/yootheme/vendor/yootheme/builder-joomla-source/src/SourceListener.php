@@ -29,6 +29,7 @@ class SourceListener
             Type\CustomCategoriesQueryType::config(),
             Type\CustomTagQueryType::config(),
             Type\CustomTagsQueryType::config(),
+            Type\CustomMenuItemsQueryType::config(),
             Type\CustomUserQueryType::config(),
             Type\CustomUsersQueryType::config(),
         ];
@@ -43,6 +44,7 @@ class SourceListener
             ['Contact', Type\ContactType::config()],
             ['Event', Type\EventType::config()],
             ['Images', Type\ImagesType::config()],
+            ['MenuItem', Type\MenuItemType::config()],
             ['Search', Type\SearchType::config()],
             ['SearchItem', Type\SearchItemType::config()],
             ['SmartSearch', Type\SmartSearchType::config()],
@@ -64,6 +66,13 @@ class SourceListener
 
     public static function initCustomizer(Config $config)
     {
+        $languages = array_map(function ($lang) {
+            return [
+                'value' => $lang->value == '*' ? '' : strtolower($lang->value),
+                'text' => $lang->text,
+            ];
+        }, HTMLHelper::_('contentlanguage.existing', true, true));
+
         $languageField = [
             'label' => trans('Limit by Language'),
             'type' => 'select',
@@ -192,60 +201,100 @@ class SourceListener
                 ],
             ],
 
-            'com_tags.tags' => [
-                'label' => trans('List All Tags'),
-                'fieldset' => [
-                    'default' => [
-                        'fields' => [
-                            'lang' => $languageField,
+            'com_tags.tags' =>
+                [
+                    'label' => trans('List All Tags'),
+                ] +
+                (count($languages) > 1
+                    ? [
+                        'fieldset' => [
+                            'default' => [
+                                'fields' => [
+                                    'lang' => $languageField,
+                                ],
+                            ],
                         ],
-                    ],
-                ],
-            ],
+                    ]
+                    : []),
 
-            'com_contact.contact' => [
-                'label' => trans('Single Contact'),
-                'fieldset' => [
-                    'default' => [
-                        'fields' => [
-                            'lang' => $languageField,
+            'com_contact.contact' =>
+                [
+                    'label' => trans('Single Contact'),
+                ] +
+                (count($languages) > 1
+                    ? [
+                        'fieldset' => [
+                            'default' => [
+                                'fields' => [
+                                    'catid' =>
+                                        [
+                                            'description' => trans(
+                                                'The template is only assigned to contacts from the selected categories. Contacts from child categories are not included. Use the <kbd>shift</kbd> or <kbd>ctrl/cmd</kbd> key to select multiple categories.'
+                                            ),
+                                            'options' => [
+                                                ['evaluate' => 'config.com_contact.categories'],
+                                            ],
+                                        ] + $category,
+                                    'tag' =>
+                                        [
+                                            'description' => trans(
+                                                'The template is only assigned to contacts with the selected tags. Use the <kbd>shift</kbd> or <kbd>ctrl/cmd</kbd> key to select multiple tags.'
+                                            ),
+                                        ] + $tag,
+                                    'lang' => $languageField,
+                                ],
+                            ],
                         ],
-                    ],
-                ],
-            ],
+                    ]
+                    : []),
 
-            'com_search.search' => [
-                'label' => trans('Search'),
-                'fieldset' => [
-                    'default' => [
-                        'fields' => [
-                            'lang' => $languageField,
+            'com_search.search' =>
+                [
+                    'label' => trans('Search'),
+                ] +
+                (count($languages) > 1
+                    ? [
+                        'fieldset' => [
+                            'default' => [
+                                'fields' => [
+                                    'lang' => $languageField,
+                                ],
+                            ],
                         ],
-                    ],
-                ],
-            ],
+                    ]
+                    : []),
 
-            'com_finder.search' => [
-                'label' => trans('Smart Search'),
-                'fieldset' => [
-                    'default' => [
-                        'fields' => [
-                            'lang' => $languageField,
+            'com_finder.search' =>
+                [
+                    'label' => trans('Smart Search'),
+                ] +
+                (count($languages) > 1
+                    ? [
+                        'fieldset' => [
+                            'default' => [
+                                'fields' => [
+                                    'lang' => $languageField,
+                                ],
+                            ],
                         ],
-                    ],
-                ],
-            ],
+                    ]
+                    : []),
 
-            'error-404' => [
-                'label' => trans('Error 404'),
-                'fieldset' => [
-                    'default' => [
-                        'fields' => [
-                            'lang' => $languageField,
+            'error-404' =>
+                [
+                    'label' => trans('Error 404'),
+                ] +
+                (count($languages) > 1
+                    ? [
+                        'fieldset' => [
+                            'default' => [
+                                'fields' => [
+                                    'lang' => $languageField,
+                                ],
+                            ],
                         ],
-                    ],
-                ],
-            ],
+                    ]
+                    : []),
         ];
 
         $config->add('customizer.templates', $templates);
@@ -255,6 +304,20 @@ class SourceListener
             array_map(function ($category) {
                 return ['value' => (string) $category->value, 'text' => $category->text];
             }, HTMLHelper::_('category.options', 'com_content'))
+        );
+
+        $config->add(
+            'customizer.com_contact.categories',
+            array_map(function ($category) {
+                return ['value' => (string) $category->value, 'text' => $category->text];
+            }, HTMLHelper::_('category.options', 'com_contact'))
+        );
+
+        $config->add(
+            'customizer.menus',
+            array_map(function ($menu) {
+                return ['value' => (string) $menu->value, 'text' => $menu->text];
+            }, HTMLHelper::_('menu.menus', 'com_content'))
         );
 
         $config->add(
@@ -278,14 +341,6 @@ class SourceListener
             }, HTMLHelper::_('user.groups'))
         );
 
-        $config->add(
-            'customizer.languages',
-            array_map(function ($lang) {
-                return [
-                    'value' => $lang->value == '*' ? '' : strtolower($lang->value),
-                    'text' => $lang->text,
-                ];
-            }, HTMLHelper::_('contentlanguage.existing', true, true))
-        );
+        $config->add('customizer.languages', $languages);
     }
 }

@@ -28,7 +28,7 @@ class TagItemsQueryType
                     'metadata' => [
                         'label' => trans('Items'),
                         'view' => ['com_tags.tag'],
-                        'group' => 'Page',
+                        'group' => trans('Page'),
                         'fields' => [
                             '_offset' => [
                                 'description' => trans(

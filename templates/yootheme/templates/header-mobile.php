@@ -1,20 +1,39 @@
 <?php
 
-use Joomla\CMS\Language\Text;
-
 // Config
-$config->addAlias('~logo', '~theme.logo');
-$config->addAlias('~mobile', '~theme.mobile');
+$mobile = '~theme.mobile';
+$header = '~theme.mobile.header';
+$navbar = '~theme.mobile.navbar';
+$dialog = '~theme.mobile.dialog';
 
-// Attrs
-$logo = $config('~logo.image_mobile') || $config('~logo.image') || $config('~logo.text') || $this->countModules('logo-mobile');
-$attrs_menu = [];
+// Options
+$layout = $config("$header.layout");
+$class = ['tm-header-mobile', $config("$mobile.breakpoint") ? "uk-hidden@{$config("$mobile.breakpoint")}" : ''];
+$attrs = ['uk-header' =>  $config("$mobile.header.transparent") ? true : false];
 $attrs_sticky = [];
-$attrs_navbar = ['uk-navbar' => 'container: .tm-header-mobile'];
-$attrs_navbar_container = ['class' => 'uk-navbar-container'];
+
+// Navbar Container
+$attrs_navbar_container = [];
+$attrs_navbar_container['class'][] = 'uk-navbar-container';
+
+// Navbar
+$attrs_navbar = [
+
+    'class' => [
+        'uk-navbar',
+    ],
+
+    'uk-navbar' => array_filter([
+        'container' => '.tm-header-mobile',
+    ]),
+
+];
 
 // Sticky
-if ($sticky = $config('~mobile.sticky')) {
+if ($sticky = $config("$navbar.sticky")) {
+
+    $attrs_navbar['uk-navbar']['container'] = '.tm-header-mobile > [uk-sticky]';
+
     $attrs_sticky = array_filter([
         'uk-sticky' => true,
         'show-on-up' => $sticky == 2,
@@ -22,172 +41,234 @@ if ($sticky = $config('~mobile.sticky')) {
         'cls-active' => 'uk-navbar-sticky',
         'sel-target' => '.uk-navbar-container',
     ]);
+
 }
 
-if (!$logo) {
-    $config->set('~mobile.logo', false);
-}
+$attrs_navbar['uk-navbar'] = json_encode($attrs_navbar['uk-navbar']);
 
-if (!$this->countModules('mobile')) {
-    $config->set('~mobile.toggle', false);
-}
+// Width Container
+$attrs_width_container = [];
+$attrs_width_container['class'][] = 'uk-container uk-container-expand';
 
-$config->set('~mobile.search', false); // TODO
+?>
 
-// Mobile Position
-if ($this->countModules('mobile')) {
+<?php if ($this->countModules('logo-mobile') || $this->countModules('navbar-mobile') || $this->countModules('header-mobile')) :?>
 
-    $attrs_menu['class'][] = $config('~mobile.animation') == 'offcanvas' ? 'uk-offcanvas-bar' : '';
-    $attrs_menu['class'][] = $config('~mobile.animation') == 'modal' ? 'uk-modal-dialog uk-modal-body' : '';
-    $attrs_menu['class'][] = $config('~mobile.animation') == 'dropdown' ? 'uk-background-default uk-padding' : '';
-    $attrs_menu['class'][] = $config('~mobile.menu_center') ? 'uk-text-center' : '';
-    $attrs_menu['class'][] = $config('~mobile.animation') != 'dropdown' && $config('~mobile.menu_center_vertical') ? 'uk-flex' : '';
+<div<?= $this->attrs(['class' => $class], $attrs) ?>>
 
-    $config->set('~mobile.offcanvas.overlay', true);
+<?php
 
+// Horizontal layouts
+if (str_starts_with($layout, 'horizontal')) :
+
+    $attrs_width_container['class'][] = $this->countModules('logo-mobile') && $config("$header.logo_padding_remove") && $layout != 'horizontal-center-logo' ? 'uk-padding-remove-left' : '';
+
+    ?>
+
+    <?php if ($sticky) : ?>
+    <div<?= $this->attrs($attrs_sticky) ?>>
+    <?php endif ?>
+
+        <div<?= $this->attrs($attrs_navbar_container) ?>>
+
+            <div<?= $this->attrs($attrs_width_container) ?>>
+                <nav<?= $this->attrs($attrs_navbar) ?>>
+
+                    <?php if (($layout != 'horizontal-center-logo' && $this->countModules('logo-mobile')) || (preg_match('/^horizontal-(left|center-logo)/', $layout) && $this->countModules('navbar-mobile'))) : ?>
+                    <div class="uk-navbar-left">
+
+                        <?php if ($layout != 'horizontal-center-logo') : ?>
+                            <jdoc:include type="modules" name="logo-mobile" />
+                        <?php endif ?>
+
+                        <?php if (preg_match('/^horizontal-(left|center-logo)/', $layout)) : ?>
+                            <jdoc:include type="modules" name="navbar-mobile" />
+                        <?php endif ?>
+
+                    </div>
+                    <?php endif ?>
+
+                    <?php if (($layout == 'horizontal-center-logo' && $this->countModules('logo-mobile')) || ($layout == 'horizontal-center' && $this->countModules('navbar-mobile'))) : ?>
+                    <div class="uk-navbar-center">
+
+                        <?php if ($layout == 'horizontal-center-logo') : ?>
+                            <jdoc:include type="modules" name="logo-mobile" />
+                        <?php endif ?>
+
+                        <?php if ($layout == 'horizontal-center') : ?>
+                            <jdoc:include type="modules" name="navbar-mobile" />
+                        <?php endif ?>
+
+                    </div>
+                    <?php endif ?>
+
+                    <?php if ($this->countModules('header-mobile') || ($layout == 'horizontal-right' && $this->countModules('navbar-mobile'))) : ?>
+                    <div class="uk-navbar-right">
+
+                        <?php if ($layout == 'horizontal-right') : ?>
+                            <jdoc:include type="modules" name="navbar-mobile" />
+                        <?php endif ?>
+
+                        <jdoc:include type="modules" name="header-mobile" />
+
+                    </div>
+                    <?php endif ?>
+
+                </nav>
+            </div>
+
+        </div>
+
+    <?php if ($sticky) : ?>
+    </div>
+    <?php endif ?>
+
+<?php endif ?>
+
+
+<?php
+
+// Dialog
+$attrs_dialog = [];
+$attrs_dialog_push = [];
+
+if (preg_match('/^(offcanvas|modal|dropbar)-center/', $config("$dialog.layout"))) {
+    $attrs_dialog['class'][] = 'uk-margin-auto-vertical';
 } else {
+    $attrs_dialog['class'][] = 'uk-margin-auto-bottom';
+}
+$attrs_dialog_push['class'][] = 'uk-grid-margin';
 
-    $config->set('~mobile.animation', false);
+$attrs_dialog['class'][] = $config("$dialog.text_center") ? 'uk-text-center' : '';
+$attrs_dialog_push['class'][] = $config("$dialog.text_center") ? 'uk-text-center' : '';
+
+// Modal
+$attrs_modal = [];
+$attrs_modal['class'][] = 'uk-modal-body uk-padding-large uk-margin-auto uk-flex uk-flex-column uk-box-sizing-content';
+$attrs_modal['class'][] = $config("$dialog.modal.width") ? 'uk-width-' .  $config("$dialog.modal.width") : 'uk-width-auto@s';
+$attrs_modal['uk-height-viewport'] = true;
+$attrs_modal['uk-toggle'] = json_encode(array_filter([
+    'cls' => 'uk-padding-large',
+    'mode' => 'media',
+    'media' => '@s',
+]));
+
+// Dropbar
+if (str_starts_with($config("$dialog.layout"), 'dropbar')) {
+
+    $attrs_dropbar = [];
+    $attrs_dropbar['class'][] = 'uk-dropbar';
+
+    if (!$config("$dialog.dropbar.animation") || $config("$dialog.dropbar.animation") == 'reveal-top') {
+        $attrs_dropbar['class'][] = 'uk-dropbar-top';
+    } elseif ($config("$dialog.dropbar.animation") == 'slide-left') {
+        $attrs_dropbar['class'][] = 'uk-dropbar-left';
+    }
+    elseif ($config("$dialog.dropbar.animation") == 'slide-right') {
+        $attrs_dropbar['class'][] = 'uk-dropbar-right';
+    }
+
+    $attrs_dropbar['uk-drop'] = json_encode(array_filter([
+        // Default
+        'clsDrop' => 'uk-dropbar',
+        'flip' => 'false', // Has to be a string
+        'container' => '.tm-header-mobile',
+        'target-y' => '.tm-header-mobile .uk-navbar-container',
+        // New
+        'mode' => 'click',
+        'target-x' => '.tm-header-mobile .uk-navbar-container',
+        'stretch' => true,
+        'pos' => $config("$dialog.dropbar.animation") == 'slide-right' ? 'bottom-right' : null,
+        'bgScroll' => 'false', // Has to be a string
+        'animation' => $config("$dialog.dropbar.animation") ?: null,
+        'animateOut' => true,
+        'duration' => 300,
+        'toggle' => 'false', // Has to be a string
+    ]));
 
 }
 
 ?>
 
-<?php if ($sticky) : ?>
-<div<?= $this->attrs($attrs_sticky) ?>>
-<?php endif ?>
+<?php if ($this->countModules('dialog-mobile') || $this->countModules('dialog-mobile-push')) : ?>
 
-    <div<?= $this->attrs($attrs_navbar_container) ?>>
-        <nav<?= $this->attrs($attrs_navbar) ?>>
+    <?php if (str_starts_with($config("$dialog.layout"), 'offcanvas')) : ?>
+    <div id="tm-dialog-mobile" uk-offcanvas="container: true; overlay: true"<?= $this->attrs($config("$dialog.offcanvas") ?: []) ?>>
+        <div class="uk-offcanvas-bar uk-flex uk-flex-column">
 
-            <?php if ($config('~mobile.logo') == 'left' || $config('~mobile.toggle') == 'left' || $config('~mobile.search') == 'left') : ?>
-            <div class="uk-navbar-left">
+            <?php if ($config("$dialog.close")) : ?>
+            <button class="uk-offcanvas-close uk-close-large" type="button" uk-close uk-toggle="cls: uk-close-large; mode: media; media: @s"></button>
+            <?php endif ?>
 
-                <?php if ($config('~mobile.logo') == 'left') : ?>
-                    <?= $view('~theme/templates/header-logo', ['class' => 'uk-navbar-item' . ($config('~mobile.logo_padding_remove') ? ' uk-padding-remove-left' : ''), 'mobile' => true]) ?>
-                    <?php if ($this->countModules('logo-mobile')) : ?>
-                        <jdoc:include type="modules" name="logo-mobile" />
-                    <?php endif ?>
-                <?php endif ?>
-
-                <?php if ($config('~mobile.toggle') == 'left') : ?>
-                <a class="uk-navbar-toggle" href="#tm-mobile" uk-toggle<?= ($config('~mobile.animation') == 'dropdown') ? '="animation: true"' : '' ?>>
-                    <div uk-navbar-toggle-icon></div>
-                    <?php if ($config('~mobile.toggle_text')) : ?>
-                        <span class="uk-margin-small-left"><?= Text::_('TPL_YOOTHEME_MENU') ?></span>
-                    <?php endif ?>
-                </a>
-                <?php endif ?>
-
-                <?php if ($config('~mobile.search') == 'left') : ?>
-                <a class="uk-navbar-item"><?= Text::_('TPL_YOOTHEME_SEARCH') ?></a>
-                <?php endif ?>
-
+            <?php if (($this->countModules('dialog-mobile'))) : ?>
+            <div<?= $this->attrs($attrs_dialog) ?>>
+                <jdoc:include type="modules" name="dialog-mobile" style="grid-stack" />
             </div>
             <?php endif ?>
 
-            <?php if ($config('~mobile.logo') == 'center') : ?>
-            <div class="uk-navbar-center">
-                <?= $view('~theme/templates/header-logo', ['class' => 'uk-navbar-item', 'mobile' => true]) ?>
-                <?php if ($this->countModules('logo-mobile')) : ?>
-                    <jdoc:include type="modules" name="logo-mobile" />
-                <?php endif ?>
+            <?php if ($this->countModules('dialog-mobile-push')) : ?>
+            <div<?= $this->attrs($attrs_dialog_push) ?>>
+                <jdoc:include type="modules" name="dialog-mobile-push" style="grid-stack" />
             </div>
             <?php endif ?>
 
-            <?php if ($config('~mobile.logo') == 'right' || $config('~mobile.toggle') == 'right' || $config('~mobile.search') == 'right') : ?>
-            <div class="uk-navbar-right">
-
-                <?php if ($config('~mobile.search') == 'right') : ?>
-                <a class="uk-navbar-item"><?= Text::_('TPL_YOOTHEME_SEARCH') ?></a>
-                <?php endif ?>
-
-                <?php if ($config('~mobile.toggle') == 'right') : ?>
-                <a class="uk-navbar-toggle" href="#tm-mobile" uk-toggle<?= $config('~mobile.animation') == 'dropdown' ? '="animation: true"' : '' ?>>
-                    <?php if ($config('~mobile.toggle_text')) : ?>
-                        <span class="uk-margin-small-right"><?= Text::_('TPL_YOOTHEME_MENU') ?></span>
-                    <?php endif ?>
-                    <div uk-navbar-toggle-icon></div>
-                </a>
-                <?php endif ?>
-
-                <?php if ($config('~mobile.logo') == 'right') : ?>
-                    <?= $view('~theme/templates/header-logo', ['class' => 'uk-navbar-item' . ($config('~mobile.logo_padding_remove') ? ' uk-padding-remove-right' : ''), 'mobile' => true]) ?>
-                    <?php if ($this->countModules('logo-mobile')) : ?>
-                        <jdoc:include type="modules" name="logo-mobile" />
-                    <?php endif ?>
-                <?php endif ?>
-
-            </div>
-            <?php endif ?>
-
-        </nav>
+        </div>
     </div>
-
-    <?php if ($config('~mobile.animation') == 'dropdown') : ?>
-
-        <?php if ($config('~mobile.dropdown') == 'slide') : ?>
-        <div class="uk-position-relative tm-header-mobile-slide">
-        <?php endif ?>
-
-        <div id="tm-mobile" class="<?= $config('~mobile.dropdown') == 'slide' ? 'uk-position-top' : '' ?>" hidden>
-            <div<?= $this->attrs($attrs_menu) ?>>
-
-                <jdoc:include type="modules" name="mobile" style="grid-stack" />
-
-            </div>
-        </div>
-
-        <?php if ($config('~mobile.dropdown') == 'slide') : ?>
-        </div>
-        <?php endif ?>
-
     <?php endif ?>
 
-<?php if ($sticky) : ?>
-</div>
-<?php endif ?>
+    <?php if (str_starts_with($config("$dialog.layout"), 'modal')) : ?>
+    <div id="tm-dialog-mobile" class="uk-modal-full" uk-modal>
+        <div class="uk-modal-dialog uk-flex">
 
-<?php if ($config('~mobile.animation') == 'offcanvas') : ?>
-<div id="tm-mobile" uk-offcanvas<?= $this->attrs($config('~mobile.offcanvas') ?: []) ?>>
-    <div<?= $this->attrs($attrs_menu) ?>>
-
-        <?php if ($config('~mobile.close_button')) : ?>
-        <button class="uk-offcanvas-close" type="button" uk-close></button>
-        <?php endif ?>
-
-        <?php if ($config('~mobile.menu_center_vertical')) : ?>
-        <div class="uk-margin-auto-vertical uk-width-1-1">
+            <?php if ($config("$dialog.close")) : ?>
+            <button class="uk-modal-close-full uk-close-large" type="button" uk-close uk-toggle="cls: uk-modal-close-full uk-close-large uk-modal-close-default; mode: media; media: @s"></button>
             <?php endif ?>
 
-            <jdoc:include type="modules" name="mobile" style="grid-stack" />
+            <div<?= $this->attrs($attrs_modal) ?>>
 
-            <?php if ($config('~mobile.menu_center_vertical')) : ?>
+                <?php if (($this->countModules('dialog-mobile'))) : ?>
+                <div<?= $this->attrs($attrs_dialog) ?>>
+                    <jdoc:include type="modules" name="dialog-mobile" style="grid-stack" />
+                </div>
+                <?php endif ?>
+
+                <?php if ($this->countModules('dialog-mobile-push')) : ?>
+                <div<?= $this->attrs($attrs_dialog_push) ?>>
+                    <jdoc:include type="modules" name="dialog-mobile-push" style="grid-stack" />
+                </div>
+                <?php endif ?>
+
+            </div>
+
         </div>
-        <?php endif ?>
-
     </div>
-</div>
-<?php endif ?>
+    <?php endif ?>
 
-<?php if ($config('~mobile.animation') == 'modal') : ?>
-<div id="tm-mobile" class="uk-modal-full" uk-modal>
-    <div<?= $this->attrs($attrs_menu, ['class' => 'uk-height-viewport']) ?>>
+    <?php if (str_starts_with($config("$dialog.layout"), 'dropbar')) : ?>
+    <div id="tm-dialog-mobile"<?= $this->attrs($attrs_dropbar) ?>>
 
-        <?php if ($config('~mobile.close_button')) : ?>
-        <button class="uk-modal-close-full" type="button" uk-close></button>
-        <?php endif ?>
+        <div class="tm-height-min-1-1 uk-flex uk-flex-column">
 
-        <?php if ($config('~mobile.menu_center_vertical')) : ?>
-        <div class="uk-margin-auto-vertical uk-width-1-1">
+            <?php if (($this->countModules('dialog-mobile'))) : ?>
+            <div<?= $this->attrs($attrs_dialog) ?>>
+                <jdoc:include type="modules" name="dialog-mobile" style="grid-stack" />
+            </div>
             <?php endif ?>
 
-            <jdoc:include type="modules" name="mobile" style="grid-stack" />
+            <?php if ($this->countModules('dialog-mobile-push')) : ?>
+            <div<?= $this->attrs($attrs_dialog_push) ?>>
+                <jdoc:include type="modules" name="dialog-mobile-push" style="grid-stack" />
+            </div>
+            <?php endif ?>
 
-            <?php if ($config('~mobile.menu_center_vertical')) : ?>
         </div>
-        <?php endif ?>
 
     </div>
-</div>
+    <?php endif ?>
+
 <?php endif ?>
+
+</div>
+
+<?php endif ?>
+

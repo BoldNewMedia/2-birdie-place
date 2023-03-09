@@ -14,13 +14,13 @@ return [
 
             // Don't render element if content fields are empty
             // First part checks for title, second part checks for content
-            return (Str::length($node->props['title']) ||
-                Str::length($node->props['label']) ||
+            return ($node->props['title'] != '' ||
+                $node->props['label'] != '' ||
                 $node->props['thumbnail'] ||
                 $node->props['image']) &&
-                ((Str::length($node->props['title']) && $params['parent']->props['show_title']) ||
-                    Str::length($node->props['meta']) ||
-                    Str::length($node->props['content']) ||
+                (($node->props['title'] != '' && $params['parent']->props['show_title']) ||
+                    $node->props['meta'] != '' ||
+                    $node->props['content'] != '' ||
                     $node->props['image']);
         },
     ],

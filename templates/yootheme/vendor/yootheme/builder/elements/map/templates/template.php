@@ -1,5 +1,15 @@
 <?php
 
+use YOOtheme\Metadata;
+use function YOOtheme\app;
+
+/** @var Metadata $metadata */
+$metadata = app(Metadata::class);
+
+foreach ($props['metadata'] as $name => $attributes) {
+    $metadata->set($name, $attributes);
+}
+
 $el = $this->el('div', [
 
     'class' => [

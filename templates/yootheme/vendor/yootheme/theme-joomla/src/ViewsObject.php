@@ -48,7 +48,7 @@ class ViewsObject extends \ArrayObject
         if ($class->hasProperty('views')) {
             $views = $class->getProperty('views');
             $views->setAccessible(true);
-            $views->setValue(new static());
+            $views->setValue(new self());
         }
     }
 }

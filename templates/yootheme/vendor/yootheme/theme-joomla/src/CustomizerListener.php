@@ -70,7 +70,7 @@ class CustomizerListener
 
     public static function prepareData(Config $config, $event)
     {
-        list($context, $data) = $event->getArguments();
+        [$context, $data] = $event->getArguments();
 
         if ($context !== 'com_templates.style') {
             return;

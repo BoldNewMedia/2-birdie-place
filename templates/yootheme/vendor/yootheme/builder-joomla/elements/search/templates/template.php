@@ -32,6 +32,7 @@ $search = $this->el('input', [
         'uk-form-{search_size} {@!search_style}',
     ],
     'required' => true,
+    'aria-label' => Text::_('TPL_YOOTHEME_SEARCH'),
 
 ]);
 
@@ -46,9 +47,7 @@ $icon = $props['search_icon'] ? $this->el($props['search_icon'] == 'right' ? 'bu
 
 ]) : null;
 
-/**
- * @var Config $config
- */
+/** @var Config $config */
 $config = app(Config::class);
 
 $input = Factory::getApplication()->input;

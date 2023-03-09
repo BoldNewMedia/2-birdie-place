@@ -33,6 +33,7 @@ if ($props['image']) {
 
         'src' => $props['image'],
         'alt' => $props['image_alt'],
+        'loading' => $element['image_loading'] ? false : null,
         'width' => $element['image_width'],
         'height' => $element['image_height'],
         'uk-svg' => $element['image_svg_inline'],
@@ -67,7 +68,7 @@ $content = $this->el($element['list_type'] == 'vertical' ? 'div' : 'span', [
     'class' => [
         'el-content',
         'uk-panel {@list_type: vertical}',
-        'uk-[text-{@content_style: bold|muted}]{content_style}',
+        'uk-{content_style}',
     ],
 
 ]);
@@ -99,7 +100,7 @@ if ($props['image'] && $element['list_type'] == 'horizontal') {
 $link = $props['link'] ? $this->el('a', [
     'href' => $props['link'],
     'target' => ['_blank {@link_target}'],
-    'uk-scroll' => str_starts_with((string) $props['link'], '#'),
+    'uk-scroll' => str_contains((string) $props['link'], '#'),
 ]) : null;
 
 if ($link) {
@@ -113,7 +114,9 @@ if ($link) {
     ]], $this->striptags($props['content']));
 
     if ($props['image']) {
-        $props['image'] = $link($props, $props['image']);
+        $props['image'] = $link($props, [
+            'aria-label' => $this->striptags($props['content'])
+        ], $props['image']);
     }
 }
 

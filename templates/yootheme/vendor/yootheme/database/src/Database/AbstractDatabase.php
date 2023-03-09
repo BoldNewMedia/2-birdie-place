@@ -6,9 +6,9 @@ use YOOtheme\Database as DatabaseInterface;
 
 abstract class AbstractDatabase implements DatabaseInterface
 {
-    const SINGLE_QUOTED_TEXT = '\'([^\'\\\\]*(?:\\\\.[^\'\\\\]*)*)\'';
+    public const SINGLE_QUOTED_TEXT = '\'([^\'\\\\]*(?:\\\\.[^\'\\\\]*)*)\'';
 
-    const DOUBLE_QUOTED_TEXT = '"([^"\\\\]*(?:\\\\.[^"\\\\]*)*)"';
+    public const DOUBLE_QUOTED_TEXT = '"([^"\\\\]*(?:\\\\.[^"\\\\]*)*)"';
 
     /**
      * The driver.
@@ -106,6 +106,8 @@ abstract class AbstractDatabase implements DatabaseInterface
         if ($row = $this->fetchAssoc($statement, $params)) {
             return $this->hydrate($class, $row, $args);
         }
+
+        return null;
     }
 
     /**

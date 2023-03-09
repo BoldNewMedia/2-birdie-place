@@ -15,7 +15,7 @@ class StylerListener
     {
         // check version in css file, if it needs to be updated
         $style = File::get("~theme/css/theme.{$config('theme.id')}.css");
-        $header = $style ? file_get_contents($style, false, null, 0, 30) : '';
+        $header = $style ? file_get_contents($style, false, null, 0, 34) : '';
         $version = preg_match('/\sv([\w\d\.\-]+)\s/', $header, $match) ? $match[1] : '1.0.0';
 
         $styles = array_map(function ($theme) {

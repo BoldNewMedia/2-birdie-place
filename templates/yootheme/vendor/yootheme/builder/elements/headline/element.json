@@ -34,19 +34,21 @@
             "type": "select",
             "options": {
                 "None": "",
-                "2X-Large": "heading-2xlarge",
-                "X-Large": "heading-xlarge",
-                "Large": "heading-large",
-                "Medium": "heading-medium",
-                "Small": "heading-small",
-                "H1": "h1",
-                "H2": "h2",
-                "H3": "h3",
-                "H4": "h4",
-                "H5": "h5",
-                "H6": "h6",
-                "Meta": "meta",
-                "Lead": "lead"
+                "Heading 2X-Large": "heading-2xlarge",
+                "Heading X-Large": "heading-xlarge",
+                "Heading Large": "heading-large",
+                "Heading Medium": "heading-medium",
+                "Heading Small": "heading-small",
+                "Heading H1": "h1",
+                "Heading H2": "h2",
+                "Heading H3": "h3",
+                "Heading H4": "h4",
+                "Heading H5": "h5",
+                "Heading H6": "h6",
+                "Text Meta": "text-meta",
+                "Text Lead": "text-lead",
+                "Text Small": "text-small",
+                "Text Large": "text-large"
             }
         },
         "title_decoration": {
@@ -140,7 +142,8 @@
             "editor": "code",
             "mode": "css",
             "attrs": {
-                "debounce": 500
+                "debounce": 500,
+                "hints": [".el-element", ".el-link"]
             }
         }
     },

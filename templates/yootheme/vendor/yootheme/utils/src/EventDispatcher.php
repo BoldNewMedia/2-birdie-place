@@ -38,11 +38,9 @@ class EventDispatcher
      */
     public function dispatch($event, ...$arguments)
     {
-        list($event, $type) = explode('|', $event, 2) + [1 => 'default'];
+        [$event, $type] = explode('|', $event, 2) + [1 => 'default'];
 
-        $handler = isset($this->handlers[$type])
-            ? $this->handlers[$type]
-            : $this->handlers['default'];
+        $handler = $this->handlers[$type] ?? $this->handlers['default'];
 
         return $handler($this->getListeners($event), $arguments);
     }
@@ -91,7 +89,7 @@ class EventDispatcher
             $this->listeners[$event] = [];
         }
 
-        foreach ($this->listeners[$event] as $priority => &$listeners) {
+        foreach ($this->listeners[$event] as &$listeners) {
             if (is_int($key = array_search($listener, $listeners, true))) {
                 array_splice($listeners, $key, 1);
                 return true;

@@ -24,7 +24,6 @@ return [
 
         Updater::class => function (Updater $updater) {
             $updater->add(Path::get('./updates.php'));
-            return $updater;
         },
     ],
 ];

@@ -41,12 +41,12 @@ class CustomUsersQueryType
 
                     'metadata' => [
                         'label' => trans('Custom Users'),
-                        'group' => 'Custom',
+                        'group' => trans('Custom'),
                         'fields' => [
                             'groups' => [
                                 'label' => trans('User Group'),
                                 'description' => trans(
-                                    'Users are only loaded from the selected user groups.'
+                                    'Users are only loaded from the selected user groups. Use the <kbd>shift</kbd> or <kbd>ctrl/cmd</kbd> key to select multiple user groups.'
                                 ),
                                 'type' => 'select',
                                 'attrs' => [

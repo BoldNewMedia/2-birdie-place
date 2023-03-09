@@ -11,7 +11,6 @@ use YOOtheme\Builder\Joomla\Fields\Type\FieldsType;
 use YOOtheme\Builder\Joomla\Source\ArticleHelper;
 use YOOtheme\Builder\Joomla\Source\TagHelper;
 use YOOtheme\Path;
-use YOOtheme\Str;
 use function YOOtheme\trans;
 use YOOtheme\View;
 
@@ -60,7 +59,7 @@ class ArticleType
                                 ),
                                 'type' => 'checkbox',
                                 'default' => true,
-                                'text' => 'Prefer excerpt over intro text',
+                                'text' => trans('Prefer excerpt over intro text'),
                             ],
                         ],
                         'filters' => ['limit'],
@@ -91,6 +90,13 @@ class ArticleType
                     'metadata' => [
                         'label' => trans('Modified'),
                         'filters' => ['date'],
+                    ],
+                ],
+
+                'featured' => [
+                    'type' => 'Boolean',
+                    'metadata' => [
+                        'label' => trans('Featured'),
                     ],
                 ],
 
@@ -186,7 +192,7 @@ class ArticleType
                                 'default' => '0',
                                 'show' => 'arguments.show_taxonomy === "tag"',
                                 'options' => [
-                                    ['value' => '0', 'text' => 'Root'],
+                                    ['value' => '0', 'text' => trans('Root')],
                                     ['evaluate' => 'config.tags'],
                                 ],
                             ],
@@ -244,7 +250,7 @@ class ArticleType
                                 'type' => 'select',
                                 'default' => '0',
                                 'options' => [
-                                    ['value' => '0', 'text' => 'Root'],
+                                    ['value' => '0', 'text' => trans('Root')],
                                     ['evaluate' => 'config.tags'],
                                 ],
                             ],
@@ -367,7 +373,7 @@ class ArticleType
                                 'type' => 'select',
                                 'default' => '0',
                                 'options' => [
-                                    ['value' => '0', 'text' => 'Root'],
+                                    ['value' => '0', 'text' => trans('Root')],
                                     ['evaluate' => 'config.tags'],
                                 ],
                             ],
@@ -555,7 +561,7 @@ class ArticleType
         if (
             $args['show_excerpt'] &&
             ($field = FieldsType::getField('excerpt', $article, 'com_content.article')) &&
-            Str::length($field->rawvalue)
+            $field->rawvalue != ''
         ) {
             return $field->rawvalue;
         }
@@ -582,7 +588,7 @@ class ArticleType
     {
         $user = Factory::getUser($article->created_by);
 
-        if ($article->created_by_alias && $user) {
+        if ($article->created_by_alias) {
             $user = clone $user;
             $user->name = $article->created_by_alias;
         }
@@ -656,6 +662,9 @@ class ArticleType
         if (!empty($args['tags'])) {
             $args['tag_operator'] = $args['tags'];
             $args['tags'] = array_column(static::tags($article, []), 'id');
+            if (empty($args['tags'])) {
+                return;
+            }
         }
 
         if (!empty($args['author'])) {

@@ -9,7 +9,7 @@ if ($iframe = $this->iframeVideo($props['video'])) {
         ],
 
         'src' => $iframe,
-        'frameborder' => '0',
+        'allow' => 'autoplay',
         'uk-responsive' => !$props['image_min_height'],
 
     ]);

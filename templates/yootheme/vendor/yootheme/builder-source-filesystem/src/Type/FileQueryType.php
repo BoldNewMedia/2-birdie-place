@@ -37,7 +37,7 @@ class FileQueryType
 
                     'metadata' => [
                         'label' => trans('File'),
-                        'group' => 'External',
+                        'group' => trans('External'),
                         'fields' => [
                             'pattern' => [
                                 'label' => trans('Path Pattern'),

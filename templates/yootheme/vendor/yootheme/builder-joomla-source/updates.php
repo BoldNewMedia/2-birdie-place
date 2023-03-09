@@ -5,7 +5,20 @@ namespace YOOtheme;
 use Joomla\Component\Fields\Administrator\Helper\FieldsHelper;
 
 return [
-    '2.6.0-beta.0.1' => function ($node, array $params) {
+    '3.0.0-beta.7.1' => function ($node) {
+        if (
+            !empty($node->source->query->name) &&
+            str_starts_with($node->source->query->name, 'customArticle') &&
+            isset($node->source->query->arguments->featured)
+        ) {
+            $node->source->query->arguments->featured = empty(
+                $node->source->query->arguments->featured
+            )
+                ? ''
+                : 'only';
+        }
+    },
+    '2.6.0-beta.0.1' => function ($node) {
         if (class_exists(FieldsHelper::class) && isset($node->source->props)) {
             static $fields;
 
@@ -85,7 +98,7 @@ return [
         }
     },
 
-    '2.4.0-beta.5' => function ($node, array $params) {
+    '2.4.0-beta.5' => function ($node) {
         if (isset($node->source->props)) {
             // refactor show_category argument into show_taxonomy argument
             foreach ((array) $node->source->props as $prop) {
@@ -94,16 +107,16 @@ return [
                     $prop->name === 'metaString' &&
                     isset($prop->arguments->show_category)
                 ) {
-                    $prop->arguments->show_taxonomy = $prop->arguments->show_category
-                        ? 'category'
-                        : '';
-                    unset($prop->arguments->show_category);
+                    /** @var object $arguments */
+                    $arguments = $prop->arguments;
+                    $arguments->show_taxonomy = $arguments->show_category ? 'category' : '';
+                    unset($arguments->show_category);
                 }
             }
         }
     },
 
-    '2.2.0-beta.0.1' => function ($node, array $params) {
+    '2.2.0-beta.0.1' => function ($node) {
         static $fields;
 
         if (class_exists(FieldsHelper::class) && is_null($fields)) {

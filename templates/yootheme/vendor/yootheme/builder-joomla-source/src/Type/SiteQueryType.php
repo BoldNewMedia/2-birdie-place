@@ -2,6 +2,7 @@
 
 namespace YOOtheme\Builder\Joomla\Source\Type;
 
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use function YOOtheme\trans;
 
@@ -29,13 +30,13 @@ class SiteQueryType
 
     public static function resolve()
     {
-        $config = Factory::getConfig();
-        $document = Factory::getDocument();
+        /** @var SiteApplication $app */
+        $app = Factory::getApplication();
         $user = Factory::getUser();
 
         return [
-            'title' => $config->get('sitename'),
-            'page_title' => $document->getTitle(),
+            'title' => Factory::getConfig()->get('sitename'),
+            'page_title' => $app->getParams()->get('page_heading', ''),
             'user' => $user,
             'is_guest' => $user->guest,
         ];

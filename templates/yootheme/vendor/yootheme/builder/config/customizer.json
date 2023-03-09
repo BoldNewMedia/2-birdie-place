@@ -18,128 +18,73 @@
             "width": 500,
             "fields": {
                 "parallax_x": {
-                    "type": "grid",
-                    "width": "1-2",
-                    "fields": {
-                        "parallax_x_start": {
-                            "label": "Horizontal Start",
-                            "type": "range",
-                            "attrs": {
-                                "min": -600,
-                                "max": 600,
-                                "step": 10
-                            }
-                        },
-                        "parallax_x_end": {
-                            "label": "Horizontal End",
-                            "type": "range",
-                            "attrs": {
-                                "min": -600,
-                                "max": 600,
-                                "step": 10
-                            }
-                        }
+                    "text": "Translate X",
+                    "type": "parallax-stops",
+                    "attrs": {
+                        "min": -600,
+                        "max": 600,
+                        "step": 10
                     }
                 },
                 "parallax_y": {
-                    "type": "grid",
-                    "width": "1-2",
-                    "fields": {
-                        "parallax_y_start": {
-                            "label": "Vertical Start",
-                            "type": "range",
-                            "attrs": {
-                                "min": -600,
-                                "max": 600,
-                                "step": 10
-                            }
-                        },
-                        "parallax_y_end": {
-                            "label": "Vertical End",
-                            "type": "range",
-                            "attrs": {
-                                "min": -600,
-                                "max": 600,
-                                "step": 10
-                            }
-                        }
+                    "text": "Translate Y",
+                    "type": "parallax-stops",
+                    "attrs": {
+                        "min": -600,
+                        "max": 600,
+                        "step": 10
                     }
                 },
                 "parallax_scale": {
-                    "type": "grid",
-                    "width": "1-2",
-                    "fields": {
-                        "parallax_scale_start": {
-                            "label": "Scale Start",
-                            "type": "range",
-                            "attrs": {
-                                "min": 0.5,
-                                "max": 2,
-                                "step": 0.1
-                            }
-                        },
-                        "parallax_scale_end": {
-                            "label": "Scale End",
-                            "type": "range",
-                            "attrs": {
-                                "min": 0.5,
-                                "max": 2,
-                                "step": 0.1
-                            }
-                        }
+                    "text": "Scale",
+                    "type": "parallax-stops",
+                    "attrs": {
+                        "min": 0.5,
+                        "max": 2,
+                        "step": 0.1
                     }
                 },
                 "parallax_rotate": {
-                    "type": "grid",
-                    "width": "1-2",
-                    "fields": {
-                        "parallax_rotate_start": {
-                            "label": "Rotate Start",
-                            "type": "range",
-                            "attrs": {
-                                "min": 0,
-                                "max": 360,
-                                "step": 10
-                            }
-                        },
-                        "parallax_rotate_end": {
-                            "label": "Rotate End",
-                            "type": "range",
-                            "attrs": {
-                                "min": 0,
-                                "max": 360,
-                                "step": 10
-                            }
-                        }
+                    "text": "Rotate",
+                    "type": "parallax-stops",
+                    "attrs": {
+                        "min": 0,
+                        "max": 360,
+                        "step": 10
                     }
                 },
                 "parallax_opacity": {
-                    "type": "grid",
-                    "width": "1-2",
-                    "fields": {
-                        "parallax_opacity_start": {
-                            "label": "Opacity Start",
-                            "type": "range",
-                            "attrs": {
-                                "min": 0,
-                                "max": 1,
-                                "step": 0.1
-                            }
-                        },
-                        "parallax_opacity_end": {
-                            "label": "Opacity End",
-                            "type": "range",
-                            "attrs": {
-                                "min": 0,
-                                "max": 1,
-                                "step": 0.1
-                            }
-                        }
+                    "text": "Opacity",
+                    "type": "parallax-stops",
+                    "attrs": {
+                        "min": 0,
+                        "max": 1,
+                        "step": 0.1
+                    }
+                },
+                "_parallax_description": {
+                    "description": "Animate properties to specific values. Add multiple stops to define start, intermediate and end values along the animation sequence for each property. Optionally, specify percentage to position the stops along the animation sequence. Translate and scale can have optional <code>%</code>, <code>vw</code> and <code>vh</code> units.",
+                    "type": "description"
+                },
+                "parallax_transform_origin": {
+                    "label": "Transform Origin",
+                    "description": "Define the origin of the element's transformation when scaling or rotating the element.",
+                    "type": "select",
+                    "options": {
+                        "Top Left": "top-left",
+                        "Top Center": "top-center",
+                        "Top Right": "top-right",
+                        "Center Left": "center-left",
+                        "Center Center": "",
+                        "Center Right": "center-right",
+                        "Bottom Left": "bottom-left",
+                        "Bottom Center": "bottom-center",
+                        "Bottom Right": "bottom-right"
                     }
                 },
                 "parallax_easing": {
                     "label": "Easing",
-                    "description": "Set the animation easing. Zero transitions at an even speed, a positive value starts off quickly while a negative value starts off slowly.",
+                    "description": "Set the animation easing. Zero transitions at an even speed, a negative value starts off quickly while a positive value starts off slowly.",
                     "type": "range",
                     "attrs": {
                         "min": -2,
@@ -147,20 +92,29 @@
                         "step": 0.1
                     }
                 },
-                "parallax_viewport": {
-                    "label": "Viewport",
-                    "description": "Set the animation end point relative to viewport height, e.g. <code>0.5</code> for 50% of the viewport",
-                    "type": "range",
-                    "attrs": {
-                        "min": 0.1,
-                        "max": 1,
-                        "step": 0.1
-                    }
-                },
                 "parallax_target": {
                     "label": "Target",
-                    "type": "checkbox",
-                    "text": "Animate the element as long as the section is visible"
+                    "description": "The animation starts and stops depending on the element position in the viewport. Alternatively, use the position of a parent container.",
+                    "type": "select",
+                    "options": {
+                        "Element": "",
+                        "Column": "![uk-grid].tm-grid-expand>*",
+                        "Row": "![uk-grid].tm-grid-expand",
+                        "Section": "!.uk-section"
+                    }
+                },
+                "parallax_start_end": {
+                    "description": "The animation starts when the element enters the viewport and ends when it leaves the viewport. Optionally, set a start and end offset, e.g. <code>100px</code>, <code>50vh</code> or <code>50vh + 50%</code>. Percent relates to the target's height.",
+                    "type": "grid",
+                    "width": "1-2",
+                    "fields": {
+                        "parallax_start": {
+                            "label": "Start"
+                        },
+                        "parallax_end": {
+                            "label": "End"
+                        }
+                    }
                 },
                 "parallax_zindex": {
                     "label": "Z Index",
@@ -179,6 +133,24 @@
                         "X-Large (Large Screens)": "xl"
                     }
                 }
+            },
+            "help": {
+                "Builder": [
+                    {
+                        "title": "Creating Parallax Effects",
+                        "src": "https://www.youtube-nocookie.com/watch?v=PKVnGZjd0dE&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "duration": "9:59",
+                        "documentation": "support/yootheme-pro/joomla/joomla/elements#parallax-settings",
+                        "support": "support/search?tags=125&q=parallax"
+                    },
+                    {
+                        "title": "Creating Sticky Parallax Effects",
+                        "src": "https://www.youtube-nocookie.com/watch?v=_fykqti6DYc&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "duration": "19:00",
+                        "documentation": "support/yootheme-pro/joomla/joomla/elements#sticky-parallax-settings",
+                        "support": "support/search?tags=125&q=sticky%20parallax"
+                    }
+                ]
             }
         }
     }

@@ -102,7 +102,9 @@
 // Link modifier
 // ========================================================================
 
-.hook-button-link() {}
+.hook-button-link() when not (@button-border-radius = 0), not (@button-small-border-radius = 0), not (@button-large-border-radius = 0) {
+    border-radius: 0;
+}
 
 
 // Miscellaneous

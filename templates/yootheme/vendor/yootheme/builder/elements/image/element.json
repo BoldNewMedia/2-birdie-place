@@ -124,6 +124,12 @@
             },
             "enable": "image_svg_inline"
         },
+        "image_loading": {
+            "label": "Loading",
+            "description": "By default, images are loaded lazy. Enable eager loading for images in the initial viewport.",
+            "type": "checkbox",
+            "text": "Load image eagerly"
+        },
         "link_target": {
             "label": "Link Target",
             "type": "select",
@@ -179,7 +185,8 @@
             "editor": "code",
             "mode": "css",
             "attrs": {
-                "debounce": 500
+                "debounce": 500,
+                "hints": [".el-element", ".el-image", ".el-link"]
             }
         }
     },
@@ -217,7 +224,8 @@
                                 "image_box_decoration_inverse",
                                 "image_svg_inline",
                                 "image_svg_animate",
-                                "image_svg_color"
+                                "image_svg_color",
+                                "image_loading"
                             ]
                         },
                         {

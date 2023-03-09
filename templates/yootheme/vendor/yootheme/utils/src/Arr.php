@@ -11,7 +11,7 @@ abstract class Arr
      * Checks if the given key exists.
      *
      * @param array|\ArrayAccess $array
-     * @param string             $key
+     * @param string|null        $key
      *
      * @return bool
      *
@@ -53,7 +53,7 @@ abstract class Arr
      * Gets a value by key.
      *
      * @param array|\ArrayAccess $array
-     * @param string             $key
+     * @param string|null        $key
      * @param mixed              $default
      *
      * @return mixed
@@ -100,7 +100,7 @@ abstract class Arr
      * Sets a value.
      *
      * @param array|\ArrayAccess $array
-     * @param string             $key
+     * @param string|null        $key
      * @param mixed              $value
      *
      * @return array|\ArrayAccess
@@ -200,7 +200,7 @@ abstract class Arr
     }
 
     /**
-     * Set a value using a update callback.
+     * Set a value using an update callback.
      *
      * @param array|\ArrayAccess $array
      * @param string             $key
@@ -303,7 +303,7 @@ abstract class Arr
     }
 
     /**
-     * Gets all of the given array without the specified keys.
+     * Gets an array composed of the properties of the given array that are not omitted.
      *
      * @param array                 $array
      * @param string|array|callable $predicate
@@ -426,7 +426,7 @@ abstract class Arr
      * Flatten a multi-dimensional array into a single level.
      *
      * @param array $array
-     * @param int   $depth
+     * @param int $depth
      *
      * @return array
      *
@@ -439,7 +439,7 @@ abstract class Arr
      * Arr::flatten($array, 1);
      * // => [1, 2, [3, [4]], 5]
      */
-    public static function flatten($array, $depth = INF)
+    public static function flatten($array, $depth = 0)
     {
         $result = [];
 
@@ -467,17 +467,17 @@ abstract class Arr
      * @example
      * $array = [1, 2, 3, 4, 5];
      *
-     * Arr::chunk($array, 2);
+     * Arr::columns($array, 2);
      * // => [[1, 2, 3], [4, 5]]
      *
-     * Arr::chunk($array, 4);
+     * Arr::columns($array, 4);
      * // => [[1, 2], [3], [4], [5]]
      */
     public static function columns($array, $columns)
     {
         $count = count($array);
         $columns = min($count, $columns);
-        $rows = ceil($count / $columns);
+        $rows = (int) ceil($count / $columns);
         $remainder = $count % $columns;
 
         if (!$remainder) {
@@ -488,8 +488,8 @@ abstract class Arr
         for ($i = 0; $i < $columns; $i++) {
             $result[] = array_slice(
                 $array,
-                $i * $rows - ($remainder ? max($i - $remainder, 0) : 0),
-                $rows - ($remainder && $i >= $remainder ? 1 : 0)
+                $i * $rows - max($i - $remainder, 0),
+                $rows - ($i >= $remainder ? 1 : 0)
             );
         }
 
@@ -575,6 +575,40 @@ abstract class Arr
         );
 
         return $result;
+    }
+
+    /**
+     * Renames keys in an array. It does not preserve key order.
+     *
+     * @param array $array
+     * @param array $keys
+     *
+     * @return array
+     *
+     * @example
+     * $array = ['a' => 1, 'b' => 2, 'c' => 3];
+     *
+     * Arr::rename($array, ['b' => 'd']);
+     * // => ['a' => 1, 'c' => 3, 'd' => 2]
+     */
+    public static function updateKeys(&$array, $keys)
+    {
+        foreach ($keys as $oldKey => $newKey) {
+            if (static::has($array, $oldKey)) {
+                $value = static::get($array, $oldKey);
+                static::del($array, $oldKey);
+
+                if (is_callable($newKey)) {
+                    foreach ($newKey($value) ?: [] as $key => $value) {
+                        static::set($array, $key, $value);
+                    }
+                } else {
+                    static::set($array, $newKey, $value);
+                }
+            }
+        }
+
+        return $array;
     }
 
     /**

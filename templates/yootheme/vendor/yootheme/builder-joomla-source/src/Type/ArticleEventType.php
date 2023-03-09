@@ -27,13 +27,15 @@ class ArticleEventType extends EventType
                 static::applyContentPlugins($article);
             }
 
-            /**
-             * @var HtmlDocument $document
-             */
+            /** @var HtmlDocument $document */
             $document = Factory::getDocument();
             $document->setBuffer(
                 str_replace($marker, $article->event->$key, $document->getBuffer('component')),
-                'component'
+                [
+                    'type' => 'component',
+                    'name' => null,
+                    'title' => null,
+                ]
             );
         });
 

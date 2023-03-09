@@ -22,11 +22,27 @@ class CustomizerListener
             return $footer ? $builder->load(json_encode($footer)) : null;
         });
 
+        $config->update('~theme.menu.items', function ($items) use ($builder) {
+            foreach ($items ?: [] as $id => $item) {
+                if (!empty($item['content'])) {
+                    $items[$id]['content'] = $builder->load(json_encode($item['content']));
+                }
+            }
+            return $items;
+        });
+
         // add config
         $config->addFile('customizer', Path::get('../../config/customizer.json'));
 
         // add locale
-        $translator->addResource(Path::get("../../languages/{$config('locale.code')}.json"));
+        $locale = strtr($config('locale.code'), [
+            'de_AT' => 'de_DE',
+            'de_CH' => 'de_DE',
+            'de_CH_informal' => 'de_DE',
+            'de_DE_formal' => 'de_DE',
+        ]);
+
+        $translator->addResource(Path::get("../../languages/{$locale}.json"));
 
         // add uikit
         $debug = $config('app.debug') ? '' : '.min';
@@ -55,8 +71,6 @@ class CustomizerListener
     public static function handleRequest(Config $config, $request, callable $next)
     {
         // Prevent image caching in customizer mode
-        $request->setAttribute('save', !$config->get('app.isCustomizer'));
-
-        return $next($request);
+        return $next($request->withAttribute('save', !$config->get('app.isCustomizer')));
     }
 }

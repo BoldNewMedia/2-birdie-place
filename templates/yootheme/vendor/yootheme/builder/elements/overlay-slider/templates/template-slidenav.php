@@ -1,5 +1,7 @@
 <?php
 
+use function YOOtheme\trans;
+
 $slidenav = $this->el('a', [
 
     'class' => [
@@ -24,6 +26,8 @@ $attrs_slidenav_next = [
         'cls: uk-position-center-right-out uk-position-center-right; mode: media; media: @{slidenav_outside_breakpoint} {@slidenav: outside}',
     ],
 
+    'aria-label' => trans('Next slide')
+
 ];
 
 $attrs_slidenav_previous = [
@@ -38,6 +42,8 @@ $attrs_slidenav_previous = [
     'uk-toggle' => [
         'cls: uk-position-center-left-out uk-position-center-left; mode: media; media: @{slidenav_outside_breakpoint} {@slidenav: outside}',
     ],
+
+    'aria-label' => trans('Previous slide')
 
 ];
 

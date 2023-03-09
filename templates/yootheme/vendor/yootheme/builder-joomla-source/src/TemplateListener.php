@@ -24,7 +24,7 @@ class TemplateListener
         Config $config,
         $event
     ) {
-        list($view, $tpl) = $event->getArguments();
+        [$view, $tpl] = $event->getArguments();
 
         $template = Event::emit('builder.template', $view, $tpl);
 
@@ -64,7 +64,7 @@ class TemplateListener
             // append frontend edit button?
             if ($output && isset($template['editUrl']) && !$config('app.isCustomizer')) {
                 $output .=
-                    "<a style=\"position: fixed!important\" class=\"uk-position-medium uk-position-bottom-right uk-button uk-button-primary\" href=\"{$template['editUrl']}\">" .
+                    "<a style=\"position: fixed!important\" class=\"uk-position-medium uk-position-bottom-right uk-position-z-index uk-button uk-button-primary\" href=\"{$template['editUrl']}\">" .
                     Text::_('JACTION_EDIT') .
                     '</a>';
             }
@@ -165,10 +165,15 @@ class TemplateListener
         }
 
         if ($context === 'com_contact.contact') {
+            $item = $view->get('item');
             return [
                 'type' => $context,
-                'query' => ['lang' => $document->language],
-                'params' => ['item' => $view->get('item')],
+                'query' => [
+                    'catid' => $item->catid,
+                    'tag' => array_column($item->tags->itemTags, 'id'),
+                    'lang' => $document->language,
+                ],
+                'params' => ['item' => $item],
             ];
         }
 
@@ -224,7 +229,7 @@ class TemplateListener
 
     public static function load404(Application $app, CMSApplication $cms, Config $config, $event)
     {
-        list($result) = $event->getArguments();
+        [$result] = $event->getArguments();
 
         if (!$config('theme.template')) {
             ThemeLoader::initTheme($app, $config);

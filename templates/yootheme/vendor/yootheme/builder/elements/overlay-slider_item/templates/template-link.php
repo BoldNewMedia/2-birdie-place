@@ -3,7 +3,7 @@
 $link = $props['link'] ? $this->el('a', [
     'href' => $props['link'],
     'target' => ['_blank {@link_target}'],
-    'uk-scroll' => str_starts_with((string) $props['link'], '#'),
+    'uk-scroll' => str_contains((string) $props['link'], '#'),
 ]) : null;
 
 if ($link && $element['overlay_link']) {
@@ -16,6 +16,8 @@ if ($link && $element['overlay_link']) {
             // Needs to be child of `uk-light` or `uk-dark`
             'uk-link-toggle',
         ],
+
+        'aria-label' => $props['link_aria_label'],
 
     ]);
 
@@ -50,18 +52,14 @@ if ($link && ($props['link_text'] || $element['link_text'])) {
         $link = $this->el('div');
     }
 
-    $link->attr([
-
-        'class' => [
-            'el-link',
-            'uk-{link_style: link-(muted|text)}',
-            'uk-button uk-button-{!link_style: |link-muted|link-text} [uk-button-{link_size}] [uk-width-1-1 {@link_fullwidth}]',
-            'uk-transition-{link_transition} {@overlay_hover}',
-            // Keep link style if overlay link
-            'uk-link {@link_style:} {@overlay_link}',
-            'uk-text-muted {@link_style: link-muted} {@overlay_link}',
-        ],
-
+    $link->attr('class', [
+        'el-link',
+        'uk-{link_style: link-(muted|text)}',
+        'uk-button uk-button-{!link_style: |link-muted|link-text} [uk-button-{link_size}] [uk-width-1-1 {@link_fullwidth}]',
+        'uk-transition-{link_transition} {@overlay_hover}',
+        // Keep link style if overlay link
+        'uk-link {@link_style:} {@overlay_link}',
+        'uk-text-muted {@link_style: link-muted} {@overlay_link}',
     ]);
 
 }

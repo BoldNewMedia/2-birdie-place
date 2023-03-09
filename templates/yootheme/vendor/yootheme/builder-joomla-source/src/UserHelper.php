@@ -10,6 +10,7 @@ use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Router\Route;
 use Joomla\Component\Contact\Site\Helper\RouteHelper;
+use Joomla\Component\Users\Administrator\Model\UsersModel;
 use function YOOtheme\app;
 use YOOtheme\Database;
 
@@ -20,16 +21,14 @@ class UserHelper
      *
      * @param int $id
      *
-     * @return object
+     * @return object|null
      */
     public static function getContact($id)
     {
         static $contacts = [];
 
         if (!isset($contacts[$id])) {
-            /**
-             * @var Database $db
-             */
+            /** @var Database $db */
             $db = app(Database::class);
 
             $query = 'SELECT id AS contactid, alias, catid
@@ -45,10 +44,10 @@ class UserHelper
 
             $query .= ' ORDER BY id DESC LIMIT 1';
 
-            $contacts[$id] = $db->fetchObject($query, $params);
+            $contacts[$id] = $db->fetchObject($query, $params) ?: false;
         }
 
-        return $contacts[$id];
+        return $contacts[$id] ?: null;
     }
 
     /**
@@ -56,19 +55,15 @@ class UserHelper
      *
      * @param int $id
      *
-     * @return string|void
+     * @return string|null
      */
     public static function getContactLink($id)
     {
-        $contact = self::getContact($id);
-
-        if (empty($contact->contactid)) {
-            return;
+        if (!($contact = self::getContact($id))) {
+            return null;
         }
 
-        return Route::_(
-            RouteHelper::getContactRoute("{$contact->contactid}:{$contact->alias}", $contact->catid)
-        );
+        return Route::_(RouteHelper::getContactRoute($contact->contactid, (int) $contact->catid));
     }
 
     /**
@@ -81,6 +76,8 @@ class UserHelper
     public static function query(array $args = [])
     {
         BaseDatabaseModel::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models/');
+
+        /** @var UsersModel $model */
         $model = BaseDatabaseModel::getInstance('users', 'UsersModel', ['ignore_request' => true]);
         $model->setState('params', ComponentHelper::getParams('com_users'));
         $model->setState('filter.active', true);
@@ -107,9 +104,7 @@ class UserHelper
 
     public static function getAuthorList()
     {
-        /**
-         * @var Database $db
-         */
+        /** @var Database $db */
         $db = app(Database::class);
 
         $usergroups = array_filter(

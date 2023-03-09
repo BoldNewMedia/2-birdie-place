@@ -4,6 +4,14 @@ namespace YOOtheme;
 
 return [
     'updates' => [
+        '2.8.0-beta.0.13' => function ($node) {
+            foreach (['title_style', 'meta_style', 'content_style'] as $prop) {
+                if (in_array(Arr::get($node->props, $prop), ['meta', 'lead'])) {
+                    $node->props[$prop] = 'text-' . Arr::get($node->props, $prop);
+                }
+            }
+        },
+
         '2.2.0-beta.2.1' => function ($node) {
             if (Arr::get($node->props, 'title_style') === 'strong') {
                 $node->props['title_style'] = 'text-bold';
@@ -40,42 +48,25 @@ return [
                 $node->props['gutter'] = 'small';
             }
 
-            if (isset($node->props['gutter'])) {
-                $node->props['title_grid_column_gap'] = $node->props['gutter'];
-                $node->props['title_grid_row_gap'] = $node->props['gutter'];
-                unset($node->props['gutter']);
-            }
-
-            if (isset($node->props['breakpoint'])) {
-                $node->props['title_grid_breakpoint'] = $node->props['breakpoint'];
-                unset($node->props['breakpoint']);
-            }
-
-            if (isset($node->props['width'])) {
-                $node->props['title_grid_width'] = $node->props['width'];
-                unset($node->props['width']);
-            }
-
-            if (isset($node->props['leader'])) {
-                $node->props['title_leader'] = $node->props['leader'];
-                unset($node->props['leader']);
-            }
+            Arr::updateKeys($node->props, [
+                'gutter' => function ($value) {
+                    return ['title_grid_column_gap' => $value, 'title_grid_row_gap' => $value];
+                },
+                'breakpoint' => 'title_grid_breakpoint',
+                'width' => 'title_grid_width',
+                'leader' => 'title_leader',
+            ]);
         },
 
         '1.20.0-beta.1.1' => function ($node) {
-            if (isset($node->props['maxwidth_align'])) {
-                $node->props['block_align'] = $node->props['maxwidth_align'];
-                unset($node->props['maxwidth_align']);
-            }
+            Arr::updateKeys($node->props, ['maxwidth_align' => 'block_align']);
         },
 
         '1.20.0-beta.0.1' => function ($node) {
-            /**
-             * @var Config $config
-             */
+            /** @var Config $config */
             $config = app(Config::class);
 
-            list($style) = explode(':', $config('~theme.style'));
+            [$style] = explode(':', $config('~theme.style'));
 
             if (
                 in_array($style, [

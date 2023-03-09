@@ -17,7 +17,7 @@ class ContactQueryType
                     'type' => 'Contact',
 
                     'metadata' => [
-                        'group' => 'Page',
+                        'group' => trans('Page'),
                         'label' => trans('Contact'),
                         'view' => ['com_contact.contact'],
                     ],

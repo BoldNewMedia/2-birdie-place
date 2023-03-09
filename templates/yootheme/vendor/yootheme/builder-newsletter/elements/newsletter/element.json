@@ -233,7 +233,8 @@
             "editor": "code",
             "mode": "css",
             "attrs": {
-                "debounce": 500
+                "debounce": 500,
+                "hints": [".el-element", ".el-input", ".el-button"]
             }
         }
     },

@@ -28,7 +28,7 @@ class ArticlesQueryType
                     'metadata' => [
                         'label' => trans('Articles'),
                         'view' => ['com_content.category', 'com_content.featured'],
-                        'group' => 'Page',
+                        'group' => trans('Page'),
                         'fields' => [
                             '_offset' => [
                                 'description' => trans(

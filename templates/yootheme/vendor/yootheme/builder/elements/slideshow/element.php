@@ -5,9 +5,7 @@ namespace YOOtheme;
 return [
     'transforms' => [
         'render' => function ($node) {
-            /**
-             * @var View $view
-             */
+            /** @var View $view */
             $view = app(View::class);
 
             // TODO Fix me
@@ -21,13 +19,49 @@ return [
     ],
 
     'updates' => [
+        '2.8.0-beta.0.13' => function ($node) {
+            foreach (['title_style', 'meta_style', 'content_style'] as $prop) {
+                if (in_array(Arr::get($node->props, $prop), ['meta', 'lead'])) {
+                    $node->props[$prop] = 'text-' . Arr::get($node->props, $prop);
+                }
+            }
+        },
+
+        '2.8.0-beta.0.3' => function ($node) {
+            foreach (['overlay', 'title', 'meta', 'content', 'link'] as $prefix) {
+                foreach (['x', 'y', 'scale', 'rotate', 'opacity'] as $prop) {
+                    $key = "{$prefix}_parallax_{$prop}";
+                    $start = implode(
+                        ',',
+                        array_map(function ($value) {
+                            return trim($value);
+                        }, explode(',', Arr::get($node->props, "{$key}_start", '')))
+                    );
+                    $end = implode(
+                        ',',
+                        array_map(function ($value) {
+                            return trim($value);
+                        }, explode(',', Arr::get($node->props, "{$key}_end", '')))
+                    );
+                    if ($start !== '' || $end !== '') {
+                        $default = in_array($prop, ['scale', 'opacity']) ? 1 : 0;
+                        $values = [
+                            $start !== '' ? $start : $default,
+                            $default,
+                            $end !== '' ? $end : $default,
+                        ];
+                        Arr::set($node->props, $key, implode(',', $values));
+                    }
+                    Arr::del($node->props, "{$key}_start");
+                    Arr::del($node->props, "{$key}_end");
+                }
+            }
+        },
         '2.3.0-beta.1.1' => function ($node) {
-            /**
-             * @var Config $config
-             */
+            /** @var Config $config */
             $config = app(Config::class);
 
-            list($style) = explode(':', $config('~theme.style'));
+            [$style] = explode(':', $config('~theme.style'));
 
             if (in_array($style, ['fjord'])) {
                 if (Arr::get($node->props, 'overlay_container') === 'default') {
@@ -43,12 +77,10 @@ return [
         },
 
         '2.0.0-beta.5.1' => function ($node) {
-            /**
-             * @var Config $config
-             */
+            /** @var Config $config */
             $config = app(Config::class);
 
-            list($style) = explode(':', $config('~theme.style'));
+            [$style] = explode(':', $config('~theme.style'));
 
             if (!in_array($style, ['jack-baker', 'morgan-consulting', 'vibe'])) {
                 if (Arr::get($node->props, 'overlay_container') === 'large') {
@@ -78,10 +110,7 @@ return [
         },
 
         '1.20.0-beta.1.1' => function ($node) {
-            if (isset($node->props['maxwidth_align'])) {
-                $node->props['block_align'] = $node->props['maxwidth_align'];
-                unset($node->props['maxwidth_align']);
-            }
+            Arr::updateKeys($node->props, ['maxwidth_align' => 'block_align']);
         },
 
         '1.20.0-beta.0.1' => function ($node) {
@@ -93,12 +122,10 @@ return [
                 $node->props['title_style'] = 'heading-medium';
             }
 
-            /**
-             * @var Config $config
-             */
+            /** @var Config $config */
             $config = app(Config::class);
 
-            list($style) = explode(':', $config('~theme.style'));
+            [$style] = explode(':', $config('~theme.style'));
 
             if (
                 in_array($style, [
@@ -211,10 +238,7 @@ return [
         },
 
         '1.18.10.1' => function ($node) {
-            if (isset($node->props['thumbnav_inline_svg'])) {
-                $node->props['thumbnav_svg_inline'] = $node->props['thumbnav_inline_svg'];
-                unset($node->props['thumbnav_inline_svg']);
-            }
+            Arr::updateKeys($node->props, ['thumbnav_inline_svg' => 'thumbnav_svg_inline']);
         },
 
         '1.18.0' => function ($node) {

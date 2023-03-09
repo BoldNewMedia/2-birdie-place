@@ -57,7 +57,7 @@ class FinderController
         }
 
         $allowed = ComponentHelper::getParams('com_media')->get('upload_extensions') . ',svg';
-        $newName = $request('newName');
+        $newName = $request->getParam('newName');
         $extension = File::getExtension($newName);
         $isValidFilename =
             !empty($newName) &&
@@ -69,7 +69,7 @@ class FinderController
         $request->abortIf(!$isValidFilename, 400, 'Invalid file name.');
 
         $root = $config('app.uploadDir');
-        $oldFile = Path::join($root, $request('oldFile'));
+        $oldFile = Path::join($root, $request->getParam('oldFile'));
         $newFile = Path::join(dirname($oldFile), $newName);
 
         $request->abortIf(

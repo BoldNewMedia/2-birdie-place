@@ -11,19 +11,22 @@ return [
             $load->setAccessible(true);
 
             foreach ($load->invoke(null) as $module) {
-                if ($node->props['module'] !== (string) $module->id) {
+                if ((string) $node->props['module'] !== (string) $module->id) {
                     continue;
                 }
 
                 $config = app(Config::class);
                 $index = "~theme.modules.{$module->id}";
-                $props = $config->get($index, []);
+                $props = $config->get($index, ['class' => []]);
 
                 $node->attrs['class'] = array_merge($node->attrs['class'], $props['class']);
                 $node->props = Arr::merge($props, $node->props);
 
                 // override module config with props
                 $config->set($index, $node->props);
+
+                // make sure module gets re-rendered in Joomla 4+
+                unset($module->contentRendered);
 
                 // render module content
                 $node->module = (object) [
@@ -41,6 +44,12 @@ return [
             if (empty($node->props['module']) || empty($node->module->content)) {
                 return false;
             }
+        },
+    ],
+
+    'updates' => [
+        '3.0.0-beta.1.5' => function ($node) {
+            Arr::updateKeys($node->props, ['menu_style' => 'menu_type']);
         },
     ],
 ];

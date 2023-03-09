@@ -11,6 +11,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\User\User;
+use Joomla\Component\Content\Administrator\Model\ArticleModel;
 use Joomla\Component\Content\Site\Helper\RouteHelper;
 use YOOtheme\Builder;
 use YOOtheme\Builder\Joomla\Fields\FieldsHelper;
@@ -20,10 +21,10 @@ use YOOtheme\Http\Response;
 
 class ContentListener
 {
-    const PATTERN = '/^<!-- (\{.*\}) -->/';
+    public const PATTERN = '/^<!-- (\{.*\}) -->/';
 
     /**
-     * @var User
+     * @var User|null
      */
     protected $user;
 
@@ -45,7 +46,7 @@ class ContentListener
         Builder $builder,
         $event
     ) {
-        list($context, $article, $params) = $event->getArguments();
+        [$context, $article, $params] = $event->getArguments();
 
         static $first = true;
 
@@ -112,7 +113,7 @@ class ContentListener
             return;
         }
 
-        list($view) = $event->getArguments();
+        [$view] = $event->getArguments();
 
         $layout = $view->getLayout();
         $context = $view->get('context');
@@ -132,7 +133,7 @@ class ContentListener
                     base64_encode(Uri::getInstance())
             );
             $content .=
-                "<a style=\"position: fixed!important\" class=\"uk-position-medium uk-position-bottom-right uk-button uk-button-primary\" href=\"{$url}\">" .
+                "<a style=\"position: fixed!important\" class=\"uk-position-medium uk-position-bottom-right uk-position-z-index uk-button uk-button-primary\" href=\"{$url}\">" .
                 Text::_('JACTION_EDIT') .
                 '</a>';
         }
@@ -143,7 +144,7 @@ class ContentListener
     public function savePage(Request $request, Response $response, Builder $builder)
     {
         $request
-            ->abortIf(!($page = $request('page')), 400)
+            ->abortIf(!($page = $request->getParam('page')), 400)
             ->abortIf(!($page = base64_decode($page)), 400)
             ->abortIf(!($page = json_decode($page)), 400);
 
@@ -152,6 +153,7 @@ class ContentListener
             'ContentModel'
         );
 
+        /** @var ArticleModel $model */
         $model = BaseDatabaseModel::getInstance('article', 'ContentModel', [
             'ignore_request' => true,
         ]);
@@ -184,7 +186,10 @@ class ContentListener
 
         $collision = self::getCollisionInfo($article);
 
-        if (!$request('overwrite') && $collision['contentHash'] !== $page->collision->contentHash) {
+        if (
+            !$request->getParam('overwrite') &&
+            $collision['contentHash'] !== $page->collision->contentHash
+        ) {
             return $response->withJson(['hasCollision' => true, 'collision' => $collision]);
         }
 
@@ -210,7 +215,7 @@ class ContentListener
     protected static function getCollisionInfo($article)
     {
         $user = Factory::getUser($article->modified_by);
-        $modifiedBy = $user ? $user->username : '';
+        $modifiedBy = $user->username ?: '';
 
         return [
             'contentHash' => md5($article->fulltext . $article->introtext),
@@ -232,6 +237,6 @@ class ContentListener
         $input = Factory::getApplication()->input;
         return $input->getCmd('option') === 'com_content' &&
             $input->getCmd('view') === 'article' &&
-            is_null($input->getCmd('task'));
+            $input->getCmd('task', '') === '';
     }
 }

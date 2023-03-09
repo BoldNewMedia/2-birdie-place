@@ -43,7 +43,7 @@ class ContainerPlugin
      */
     public function onLoadType(Type $type)
     {
-        $extensions = isset($type->config['extensions']) ? $type->config['extensions'] : [];
+        $extensions = $type->config['extensions'] ?? [];
 
         if ($extensions && ($directives = $this->getDirectives($extensions))) {
             if (!isset($type->config['directives'])) {
@@ -64,7 +64,7 @@ class ContainerPlugin
      */
     public function onLoadField(Type $type, array $field)
     {
-        $extensions = isset($field['extensions']) ? $field['extensions'] : [];
+        $extensions = $field['extensions'] ?? [];
 
         if ($extensions && ($directives = $this->getDirectives($extensions))) {
             if (!isset($field['directives'])) {

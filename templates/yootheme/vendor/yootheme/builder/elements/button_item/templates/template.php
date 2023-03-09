@@ -23,7 +23,7 @@ $button->attr($props['link_target'] == 'modal' ? [
 ] : [
     'href' => ['{link}'],
     'target' => ['_blank {@link_target}'],
-    'uk-scroll' => str_starts_with((string) $props['link'], '#'),
+    'uk-scroll' => str_contains((string) $props['link'], '#'),
 ]);
 
 // Icon

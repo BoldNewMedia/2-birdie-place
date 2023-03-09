@@ -2,73 +2,73 @@
 
 use YOOtheme\Arr;
 
-// Config
-$config->addAlias('~navbar', '~theme.navbar');
-
-foreach (array_values($items) as $i => $item) {
+foreach ($items as $item) {
 
     // Config
-    $config->addAlias('~menuitem', "~theme.menu.items.{$item->id}");
+    $navbar = '~theme.navbar';
+    $menuposition = '~menu';
+    $menuitem = "~theme.menu.items.{$item->id}";
 
     // Children
-
-    $children = isset($item->children);
+    $children = !empty($item->children) || !empty($item->builder);
     $indention = str_pad("\n", $level + 1, "\t");
 
     // List item
-
-    $attrs = ['class' => [isset($item->class) ? $item->class : '']];
+    $attrs = ['class' => [$item->class ?? '']];
 
     if ($item->active) {
         $attrs['class'][] = 'uk-active';
     }
 
     // Title
-
     $title = $item->title;
 
-    // Image
-
-    $image = $config('~menuitem.image');
-    $image_attrs['class'] = [
-        $config('~menuitem.image-classes', ''),
-    ];
-
-    if ($view->isImage($image)) {
-        $image = $view->image($image, $image_attrs + ['alt' => $item->title, 'uk-svg' => $view->isImage($image) == 'svg']);
-    } elseif ($image) {
-        $image = "<span {$this->attrs($image_attrs)} uk-icon=\"{$image}\"></span>";
+    // Parent Icon
+    if ($children && $config("$navbar.parent_icon")) {
+        $title .= ' <span uk-navbar-parent-icon></span>';
     }
 
-    // Show Icon only
-    if ($image && $config('~menuitem.image-only')) {
+    // Subtitle
+    if ($title && $subtitle = $config("$menuitem.subtitle")) {
+        $title = "{$title}<div class=\"" . ($level == 1 ? 'uk-navbar-subtitle' : 'uk-nav-subtitle') . "\">{$subtitle}</div>";
+    }
+
+    // Image
+    $image = $view('~theme/templates/menu/image', ['item' => $item]);
+
+    if ($image && $config("$menuitem.image_only")) {
         $title = '';
     }
 
     // Title Suffix, e.g. cart quantity
-
-    if ($suffix = $config('~menuitem.title-suffix')) {
-        $title .= " {$config('~menuitem.title-suffix')}";
+    if ($suffix = $config("$menuitem.title-suffix")) {
+        $title .= " {$suffix}";
     }
 
-    // Link
+    // Markup
+    if ($title && $subtitle && $image) {
+        $title = "<div class=\"uk-grid uk-grid-small" . ($level >= 1 && ($config("$menuposition.image_align") == 'center') ? ' uk-flex-middle' : '') . "\"><div class=\"uk-width-auto\">{$image}</div><div class=\"uk-width-expand\">{$title}</div></div>";
+    } elseif ($title && $subtitle) {
+        $title = "<div>{$title}</div>";
+    } else {
+        $title = "{$image} {$title}";
+    }
 
-    // Header
-    if ($item->type === 'header') {
+    // Heading
+    if ($item->type === 'heading') {
 
         if (!$children && $level == 1) {
             continue;
         }
-
-        $title = "{$image} {$title}";
 
         if ($level > 1 && $item->divider && !$children) {
             $title = '';
             $attrs['class'][] = 'uk-nav-divider';
         } elseif ($children) {
             $link = [];
+            $link['role'][] = 'button';
             if (isset($item->anchor_css)) {
-                $link['class'] = $item->anchor_css;
+                $link['class'][] = $item->anchor_css;
             }
             $title = "<a{$this->attrs($link)}>{$title}</a>";
         } else {
@@ -82,6 +82,11 @@ foreach (array_values($items) as $i => $item) {
 
         if (isset($item->url)) {
             $link['href'] = $item->url;
+
+            if (str_contains((string) $item->url, '#')) {
+                $link['uk-scroll'] = true;
+            }
+
         }
 
         if (isset($item->target)) {
@@ -97,65 +102,107 @@ foreach (array_values($items) as $i => $item) {
         }
 
         if (isset($item->anchor_css)) {
-            $link['class'] = $item->anchor_css;
+            $link['class'][] = $item->anchor_css;
         }
 
-        // Subtitle
-        if ($title && $subtitle = $level == 1 ? $config('~menuitem.subtitle') : '') {
-            $title = "<div>{$title}<div class=\"uk-navbar-subtitle\">{$subtitle}</div></div>";
+        if ($image) {
+            $link['class'][] = 'uk-preserve-width';
         }
 
-        $title = "<a{$this->attrs($link)}>{$image} {$title}</a>";
+        $title = "<a{$this->attrs($link)}>{$title}</a>";
+
     }
 
     if ($children) {
 
-        $children = ['class' => []];
         $attrs['class'][] = 'uk-parent';
+
+        $children = [
+            'class' => [],
+            'style' => []
+        ];
 
         if ($level == 1) {
 
             $children['class'][] = 'uk-navbar-dropdown';
+            if ($config("$menuitem.dropdown.size")) {
+                $children['class'][] = !$config("$navbar.dropbar") ? 'uk-navbar-dropdown-large' : '';
+                $children['class'][] = $config("$navbar.dropbar") ? 'uk-navbar-dropdown-dropbar-large' : '';
+            }
 
             // Use `hover` instead of `hover, click` so dropdown can't be closed on click if in hover mode
-            $mode = $item->type === 'header' ? ($config('~navbar.dropdown_click') ? 'click' : 'hover') : false;
+            $mode = $item->type === 'heading' ? ($config("$navbar.dropdown_click") ? 'click' : 'hover') : false;
 
-            if (($justify = $config('~menuitem.justify')) || $mode) {
+            $stretch = $config("$menuitem.dropdown.stretch");
 
-                $boundary = $justify || $config('~navbar.dropbar') && $config('~navbar.dropdown_boundary');
+            if ($mode || $config("$menuitem.dropdown.align") || $stretch || $config("$menuitem.dropdown.size")) {
+
+                $align = $config("$menuitem.dropdown.align") ?: $config("$navbar.dropdown_align");
 
                 $children['uk-drop'] = json_encode(array_filter([
+                    // Default
                     'clsDrop' => 'uk-navbar-dropdown',
-                    'flip' => 'x',
-                    'pos' => $justify ? 'bottom-justify' : "bottom-{$config('~navbar.dropdown_align')}",
-                    'boundary' => $boundary ? '.tm-header .uk-navbar-container' : false,
-                    'boundaryAlign' => $boundary,
+                    'flip' => 'false',
+                    'container' => $config("$navbar.sticky") ? '.tm-header > [uk-sticky]' : '.tm-header',
+                    'target-x' => $config("$navbar.dropdown_target") ? '.tm-header .uk-navbar' : null,
+                    'target-y' => $config("$navbar.dropbar") ? '.tm-header .uk-navbar-container' : null,
+                    // New
                     'mode' => $mode,
-                    'container' => $config('~navbar.sticky') ? '.tm-header > [uk-sticky]' : '.tm-header',
+                    'pos' => "bottom-{$align}",
+                    'stretch' => $stretch ? 'x' : null,
+                    'boundary' => $stretch ? ".tm-header .uk-{$stretch}" : null,
                 ]));
             }
 
-            $columns = Arr::columns($item->children, $config('~menuitem.columns', 1));
-            $columnsCount = count($columns);
-
-            $wrapper = [
-                'class' => [
-                    'uk-navbar-dropdown-grid',
-                    "uk-child-width-1-{$columnsCount}",
-                ],
-                'uk-grid' => true,
-            ];
-
-            if ($columnsCount > 1 && !$justify) {
-                $children['class'][] = "uk-navbar-dropdown-width-{$columnsCount}";
+            if (!$stretch) {
+                $children['style'][] = $config("$menuitem.dropdown.width") ? "width: {$config("$menuitem.dropdown.width")}px;" : '';
             }
 
-            $columnsStr = '';
-            foreach ($columns as $column) {
-                $columnsStr .= "<div><ul class=\"uk-nav uk-navbar-dropdown-nav\">\n{$this->self(['items' => $column, 'level' => $level + 1])}</ul></div>";
-            }
+            if (isset($item->builder)) {
 
-            $children = "{$indention}<div{$this->attrs($children)}><div{$this->attrs($wrapper)}>{$columnsStr}</div></div>";
+                if (!$stretch && !$config("$menuitem.dropdown.width")) {
+                    $children['style'][] = 'width: 400px;';
+                }
+
+                if ($config("$menuitem.dropdown.padding_remove_horizontal")) {
+                    if ($config("$navbar.dropbar")) {
+                        $children['style'][] = '--uk-position-viewport-offset: 0;';
+                    } else {
+                        $children['class'][] = 'uk-padding-remove-horizontal';
+                    }
+
+                }
+                if ($config("$menuitem.dropdown.padding_remove_vertical")) {
+                    $children['class'][] = 'uk-padding-remove-vertical';
+                }
+
+                $children = "{$indention}<div{$this->attrs($children)}>{$item->builder}</div>";
+
+            } else {
+
+                $columns = Arr::columns($item->children, $config("$menuitem.dropdown.columns", 1));
+                $columnsCount = count($columns);
+
+                $wrapper = [
+                    'class' => [
+                        'uk-navbar-dropdown-grid',
+                        "uk-child-width-1-{$columnsCount}",
+                    ],
+                    'uk-grid' => true,
+                ];
+
+                if ($columnsCount > 1 && !$stretch) {
+                    $children['class'][] = "uk-navbar-dropdown-width-{$columnsCount}";
+                }
+
+                $nav_style = $config("$menuitem.dropdown.nav_style") == 'secondary' ? 'uk-nav-secondary' : 'uk-navbar-dropdown-nav';
+                $columnsStr = '';
+                foreach ($columns as $column) {
+                    $columnsStr .= "<div><ul class=\"uk-nav {$nav_style}\">\n{$this->self(['items' => $column, 'level' => $level + 1])}</ul></div>";
+                }
+
+                $children = "{$indention}<div{$this->attrs($children)}><div{$this->attrs($wrapper)}>{$columnsStr}</div></div>";
+            }
 
         } else {
 

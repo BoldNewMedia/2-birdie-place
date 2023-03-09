@@ -6,25 +6,26 @@ return [
     'transforms' => [
         'render' => function ($node) {
             // Don't render element if content fields are empty
-            return (bool) Str::length($node->props['content']);
+            return $node->props['content'] != '';
         },
     ],
 
     'updates' => [
-        '1.20.0-beta.1.1' => function ($node) {
-            if (isset($node->props['maxwidth_align'])) {
-                $node->props['block_align'] = $node->props['maxwidth_align'];
-                unset($node->props['maxwidth_align']);
+        '2.8.0-beta.0.13' => function ($node) {
+            if (in_array(Arr::get($node->props, 'title_style'), ['meta', 'lead'])) {
+                $node->props['title_style'] = 'text-' . Arr::get($node->props, 'title_style');
             }
         },
 
+        '1.20.0-beta.1.1' => function ($node) {
+            Arr::updateKeys($node->props, ['maxwidth_align' => 'block_align']);
+        },
+
         '1.20.0-beta.0.1' => function ($node) {
-            /**
-             * @var Config $config
-             */
+            /** @var Config $config */
             $config = app(Config::class);
 
-            list($style) = explode(':', $config('~theme.style'));
+            [$style] = explode(':', $config('~theme.style'));
 
             if (Arr::get($node->props, 'title_style') === 'heading-hero') {
                 $node->props['title_style'] = 'heading-xlarge';

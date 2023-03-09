@@ -4,7 +4,6 @@ namespace YOOtheme\GraphQL\Directive;
 
 use YOOtheme\Container;
 use YOOtheme\GraphQL\Type\Definition\Directive;
-use YOOtheme\GraphQL\Type\Definition\FieldArgument;
 use YOOtheme\GraphQL\Type\Definition\Type;
 use YOOtheme\GraphQL\Utils\Middleware;
 
@@ -25,14 +24,14 @@ class CallDirective extends Directive
         parent::__construct([
             'name' => 'call',
             'args' => [
-                new FieldArgument([
+                [
                     'name' => 'func',
                     'type' => Type::string(),
-                ]),
-                new FieldArgument([
+                ],
+                [
                     'name' => 'args',
                     'type' => Type::string(),
-                ]),
+                ],
             ],
             'locations' => ['ENUM_VALUE', 'FIELD_DEFINITION'],
         ]);

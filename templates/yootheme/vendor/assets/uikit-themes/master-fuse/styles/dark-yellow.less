@@ -87,6 +87,16 @@
 @inverse-dotnav-item-background: fade(@inverse-global-color, 20%);
 
 //
+// Dropbar
+//
+
+@dropbar-background: @navbar-dropdown-background;
+@dropbar-top-box-shadow:  0 6px 4px -3px fade(@global-secondary-background, 30%);
+@dropbar-bottom-box-shadow: 0 -6px 4px -3px fade(@global-secondary-background, 30%);
+@dropbar-left-box-shadow: 6px 0 4px -3px fade(@global-secondary-background, 30%);
+@dropbar-right-box-shadow: -6px 0 4px -3px fade(@global-secondary-background, 30%);
+
+//
 // Form
 //
 
@@ -124,12 +134,12 @@
 
 @nav-primary-item-hover-color: @global-emphasis-color;
 @nav-primary-sublist-item-hover-color: @global-emphasis-color;
+@nav-secondary-subtitle-color: @global-color;
 
 //
 // Navbar
 //
 
-@navbar-dropdown-dropbar-margin-bottom: @navbar-dropdown-dropbar-margin-top;
 @navbar-dropdown-background: #222132;
 @navbar-dropdown-nav-item-hover-color: @global-emphasis-color;
 @navbar-dropdown-nav-sublist-item-hover-color: @global-emphasis-color;

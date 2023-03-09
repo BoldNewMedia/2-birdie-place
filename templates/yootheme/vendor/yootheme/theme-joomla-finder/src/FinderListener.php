@@ -7,7 +7,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\User\User;
 use Joomla\Input\Input;
 use YOOtheme\Config;
-use YOOtheme\Http\Request;
+use YOOtheme\Path;
 
 class FinderListener
 {
@@ -27,6 +27,7 @@ class FinderListener
         $config->add('customizer', [
             'media' => [
                 'accept' => implode(',', $accept),
+                'path' => Path::relative(JPATH_ROOT, $config('app.uploadDir')),
                 'legacy' => version_compare(JVERSION, '4.0', '<'),
                 'canCreate' =>
                     $user->authorise('core.manage', 'com_media') ||
@@ -38,7 +39,7 @@ class FinderListener
         ]);
     }
 
-    public static function beforeRespond(CMSApplication $cms, Input $input, Request $request)
+    public static function beforeRespond(CMSApplication $cms, Input $input)
     {
         if (version_compare(JVERSION, '4.0', '>')) {
             return;
@@ -46,15 +47,15 @@ class FinderListener
 
         if (
             $input->getCmd('option') !== 'com_media' ||
-            !$request->isMethod('post') ||
-            !str_contains($request->getHeaderLine('Accept'), 'application/json') ||
+            $input->getMethod() !== 'POST' ||
+            !str_contains($input->server->getString('HTTP_ACCEPT', ''), 'application/json') ||
             headers_sent()
         ) {
             return;
         }
 
         $cms->clearHeaders();
-        $cms->setHeader('Status', 200);
+        $cms->setHeader('Status', '200');
         $cms->mimeType = 'application/json';
         $cms->setBody(json_encode($cms->getMessageQueue(true)));
         $cms->set('gzip', false);

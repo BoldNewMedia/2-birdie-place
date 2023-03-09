@@ -1,15 +1,21 @@
 <?php
 
 use Joomla\CMS\Helper\ModuleHelper;
+use function YOOtheme\app;
+use YOOtheme\View;
 
 defined('_JEXEC') or die();
 
-$message = '';
-
 if (!$module->content) {
     $module->content = '{}';
-} else {
-    $message = '<div class="uk-text-danger">Builder only supported on "top" and "bottom"</div>';
+}
+
+$module->content = app(View::class)->builder($module->content, [
+    'prefix' => "module-{$module->id}",
+]);
+
+if (in_array($module->position, ['top', 'bottom'])) {
+    $module->content = "<div id=\"module-{$module->id}\" class=\"builder\">{$module->content}</div>";
 }
 
 require ModuleHelper::getLayoutPath('mod_yootheme_builder', $params->get('layout', 'default'));

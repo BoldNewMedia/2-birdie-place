@@ -1,16 +1,60 @@
-import { $, $$, addClass, attr, closest, css, hasClass, offset, removeClass } from 'uikit-util';
+import {
+    $,
+    $$,
+    addClass,
+    attr,
+    closest,
+    css,
+    hasClass,
+    observeMutation,
+    observeResize,
+    offset,
+    removeClass,
+    toPx,
+} from 'uikit-util';
+
+const Section = {
+    connected() {
+        this.section = getSection();
+        if (!this.section) {
+            this.registerObserver(
+                observeMutation(
+                    document.body,
+                    (records, observer) => {
+                        this.section = getSection();
+                        if (this.section) {
+                            observer.disconnect();
+                            this.$emit();
+                        }
+                    },
+                    { childList: true, subtree: true }
+                )
+            );
+        }
+    },
+};
 
 export const Header = {
+    mixins: [Section],
+
+    connected() {
+        this.registerObserver(observeResize(this.$el, () => this.$emit('resize')));
+    },
+
     update: [
         {
             read() {
-                return getSection() ? { height: this.$el.offsetHeight } : false;
+                if (!getModifier(this.section) || !this.$el.offsetHeight) {
+                    return false;
+                }
+
+                return { height: this.$el.offsetHeight };
             },
 
             write({ height }) {
-                const [section, modifier] = getSection();
-
                 if (!hasClass(this.$el, 'tm-header-overlay')) {
+                    const modifier = getModifier(this.section);
+
                     addClass(this.$el, 'tm-header-overlay');
                     addClass(
                         $$('.tm-headerbar-top, .tm-headerbar-bottom, .js-toolbar-transparent'),
@@ -33,7 +77,7 @@ export const Header = {
                     }
                 }
 
-                css($('.tm-header-placeholder', section), { height });
+                css($('.tm-header-placeholder', this.section), { height });
             },
 
             events: ['resize'],
@@ -42,9 +86,11 @@ export const Header = {
 };
 
 export const Sticky = {
+    mixins: [Section],
+
     update: {
         read() {
-            const [section, modifier] = getSection() || [];
+            const modifier = getModifier(this.section);
 
             if (!modifier || !closest(this.$el, '[uk-header]')) {
                 return;
@@ -52,28 +98,29 @@ export const Sticky = {
 
             this.animation = 'uk-animation-slide-top';
             this.clsInactive = `uk-navbar-transparent uk-${modifier}`;
-            this.top =
-                section.offsetHeight <= window.innerHeight
-                    ? offset(section).bottom
-                    : offset(section).top + 300;
+
+            if (!this.active) {
+                addClass(this.selTarget, this.clsInactive);
+            }
+
+            return {
+                start:
+                    this.section.offsetHeight <= toPx('100vh')
+                        ? offset(this.section).bottom
+                        : offset(this.section).top + 300,
+            };
         },
 
         events: ['resize'],
     },
 };
 
-export const Navbar = {
-    computed: {
-        dropbarMode({ dropbarMode }) {
-            return getSection() || closest(this.$el, '[uk-sticky]') ? 'slide' : dropbarMode;
-        },
-    },
-};
-
 function getSection() {
-    const section = $(
+    return $(
         '.tm-header ~ [class*="uk-section"], .tm-header ~ :not(.tm-page) > [class*="uk-section"]'
     );
-    const modifier = attr(section, 'tm-header-transparent');
-    return section && modifier && [section, modifier];
+}
+
+function getModifier(el) {
+    return attr(el, 'tm-header-transparent');
 }

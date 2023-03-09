@@ -26,8 +26,16 @@
             "width": 400,
             "fields": {
                 "favicon": {
-                    "label": "Favicon",
-                    "description": "Upload your browser URL icon. It's recommended to apply a size of 96x96 pixels to the favicon.png.",
+                    "label": "Favicon PNG",
+                    "description": "Select your <code>favicon.png</code>. It appears in the browser's address bar, tab and bookmarks. The recommended size is 96x96 pixels.",
+                    "type": "image",
+                    "mediapicker": {
+                        "unsplash": false
+                    }
+                },
+                "favicon_svg": {
+                    "label": "Favicon SVG",
+                    "description": "Select an optional <code>favicon.svg</code>. Modern browsers will use it instead of the PNG image. Use CSS to toggle the SVG color scheme for light/dark mode.",
                     "type": "image",
                     "mediapicker": {
                         "unsplash": false
@@ -35,7 +43,7 @@
                 },
                 "touchicon": {
                     "label": "Touch Icon",
-                    "description": "Upload your iOS icon. It's recommended to apply a size of 180x180 pixels to the apple-touch-icon.png.",
+                    "description": "Select your <code>apple-touch-icon.png</code>. It appears when the website is added to the home screen on iOS devices. The recommended size is 180x180 pixels.",
                     "type": "image",
                     "mediapicker": {
                         "unsplash": false
@@ -89,16 +97,14 @@
             "title": "Advanced",
             "width": 400,
             "fields": {
-                "lazyload": {
-                    "label": "Lazy Loading",
-                    "description": "Speed up page loading times and decrease traffic by only loading images as they enter the viewport.",
-                    "text": "Lazy load images",
-                    "type": "checkbox"
-                },
                 "webp": {
                     "label": "Next-Gen Images",
-                    "description": "Serve optimized images in WebP format with better compression and quality than JPEG and PNG.",
                     "text": "Serve WebP images",
+                    "type": "checkbox"
+                },
+                "avif": {
+                    "description": "Serve optimized image formats with better compression and quality than JPEG and PNG.",
+                    "text": "Serve AVIF images",
                     "type": "checkbox"
                 },
                 "jquery": {

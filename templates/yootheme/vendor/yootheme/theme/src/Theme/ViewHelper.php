@@ -10,15 +10,15 @@ use YOOtheme\View;
 class ViewHelper
 {
     // https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types
-    const REGEX_IMAGE = '#\.(avif|gif|a?png|jpe?g|svg|webp)($|\#.*)#i';
+    public const REGEX_IMAGE = '#\.(avif|gif|a?png|jpe?g|svg|webp)($|\#.*)#i';
 
-    const REGEX_VIDEO = '#\.(mp4|m4v|ogv|webm)$#i';
+    public const REGEX_VIDEO = '#\.(mp4|m4v|ogv|webm)$#i';
 
-    const REGEX_VIMEO = '#(?:player\.)?vimeo\.com(?:/video)?/(\d+)#i';
+    public const REGEX_VIMEO = '#(?:player\.)?vimeo\.com(?:/video)?/(\d+)#i';
 
-    const REGEX_YOUTUBE = '#(?:youtube(-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})#i';
+    public const REGEX_YOUTUBE = '#(?:youtube(-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})#i';
 
-    const REGEX_UNSPLASH = '#images.unsplash.com/(?<id>(?:[\w-]+/)?[\w\-.]+)#i';
+    public const REGEX_UNSPLASH = '#images.unsplash.com/(?<id>(?:[\w-]+/)?[\w\-.]+)#i';
 
     /**
      * @var View
@@ -96,21 +96,25 @@ class ViewHelper
             return 'receiver';
         }
 
-        if (preg_match('#(google|goo)\.(.+?)/maps(?>\/?.+)?#i', $link)) {
+        if (preg_match('#(google|goo)\.(.+?)/maps(?>/?.+)?#i', $link)) {
             return 'location';
         }
 
-        $icon = parse_url($link, PHP_URL_HOST);
-        $icon = preg_replace('/.*?(\w{3,}[^.]).*/i', '$1', $icon);
-        $icon = str_replace(['wa.me'], ['whatsapp'], $icon);
+        $link = parse_url($link, PHP_URL_HOST);
+        $link = str_replace(['wa.me'], ['whatsapp'], $link);
+        $link = explode('.', $link);
 
         $icons = $this->config->get('theme.social_icons');
+        $social = 'social';
 
-        if (!in_array($icon, $icons)) {
-            $icon = 'social';
+        foreach ($icons as $icon) {
+            if (in_array($icon, $link)) {
+                $social = $icon;
+                break;
+            }
         }
 
-        return $icon;
+        return $social;
     }
 
     /**
@@ -205,23 +209,31 @@ class ViewHelper
         $isAbsolute = $this->isAbsolute($path);
         $type = $this->isImage($path);
 
-        if (!$isAbsolute) {
-            $path = parse_url($path, PHP_URL_PATH);
+        if (!empty($url['thumbnail']) && $isAbsolute) {
+            if (is_array($url['thumbnail'])) {
+                $attrs['width'] = is_numeric($url['thumbnail'][0]) ? $url['thumbnail'][0] : null;
+                $attrs['height'] = is_numeric($url['thumbnail'][1]) ? $url['thumbnail'][1] : null;
+            }
+
+            if ($attrs['width'] && $attrs['height']) {
+                // use unsplash resizing?
+                if (preg_match(static::REGEX_UNSPLASH, $path, $matches)) {
+                    $path = "https://images.unsplash.com/{$matches['id']}?fit=crop&w={$attrs['width']}&h={$attrs['height']}";
+                } else {
+                    $this->addAttr(
+                        $attrs,
+                        'style',
+                        "aspect-ratio: {$attrs['width']} / {$attrs['height']}"
+                    );
+                    $this->addAttr($attrs, 'class', 'uk-object-cover');
+                }
+            }
         }
 
-        if (
-            isset($url['thumbnail']) &&
-            count($url['thumbnail']) > 1 &&
-            preg_match(static::REGEX_UNSPLASH, $path, $matches)
-        ) {
-            $path = "https://images.unsplash.com/{$matches['id']}?fit=crop&w={$url['thumbnail'][0]}&h={$url['thumbnail'][1]}";
-        }
-
-        $params =
-            $url &&
-            ($this->config->get('app.isCustomizer') ||
-                (!$isAbsolute && !in_array($type, ['gif', 'svg'])))
-                ? '#' .
+        $attrs['src'] =
+            !$isAbsolute && !in_array($type, ['gif', 'svg']) && !empty($url)
+                ? parse_url($path, PHP_URL_PATH) .
+                    '#' .
                     http_build_query(
                         array_map(function ($value) {
                             return is_array($value) ? implode(',', $value) : $value;
@@ -229,67 +241,80 @@ class ViewHelper
                         '',
                         '&'
                     )
-                : '';
-
-        $attrs['src'] = $path . $params;
+                : $path;
 
         if (empty($attrs['alt'])) {
             $attrs['alt'] = true;
         }
 
-        if (!empty($attrs['uk-img'])) {
-            if (!$this->config->get('~theme.lazyload')) {
-                unset($attrs['uk-img']);
-            } else {
-                if ($type === 'svg' && !empty($attrs['uk-svg'])) {
-                    $attrs['uk-img'] = Url::to($attrs['src']);
-                } else {
-                    $attrs['data-src'] = $attrs['src'];
-                }
-                unset($attrs['src']);
-            }
+        if ($type === 'svg' && (empty($attrs['width']) || empty($attrs['height']))) {
+            [$attrs['width'], $attrs['height']] = SvgHelper::getDimensions($path, $attrs);
         }
+
+        // Deprecated YOOtheme Pro < v2.8.0
+        if (!empty($attrs['uk-img'])) {
+            unset($attrs['uk-img']);
+        }
+
+        $attrs['loading'] = $attrs['loading'] ?? 'lazy' ?: 'eager';
 
         return "<img{$this->view->attrs($attrs)}>";
     }
 
+    /**
+     * @param string $url
+     * @param array  $params
+     *
+     * @return array
+     */
     public function bgImage($url, array $params = [])
     {
         $attrs = [];
-        $lazyload = $this->config->get('~theme.lazyload');
         $isResized = $params['width'] || $params['height'];
         $type = $this->isImage($url);
-        $isAbsolute = $this->isAbsolute($url);
-
-        if (!$isAbsolute) {
-            $url = parse_url($url, PHP_URL_PATH);
-        }
 
         if (preg_match(static::REGEX_UNSPLASH, $url, $matches)) {
             $url = "https://images.unsplash.com/{$matches['id']}?fit=crop&w={$params['width']}&h={$params['height']}";
-        } elseif ($type == 'svg' || $isAbsolute) {
+        } elseif ($type == 'svg' || $this->isAbsolute($url)) {
             if ($isResized && !$params['size']) {
                 $width = $params['width'] ? "{$params['width']}px" : 'auto';
                 $height = $params['height'] ? "{$params['height']}px" : 'auto';
                 $attrs['style'][] = "background-size: {$width} {$height};";
             }
         } elseif ($type != 'gif') {
-            $url .= '#srcset=1';
+            $url = parse_url($url, PHP_URL_PATH) . '#srcset=1';
             $url .= '&covers=' . ((int) ($params['size'] === 'cover'));
             $url .= '&thumbnail' . ($isResized ? "={$params['width']},{$params['height']}" : '');
         }
 
-        if ($lazyload) {
-            if ($image = $this->image->create($url, false)) {
-                $attrs = array_merge($attrs, $this->image->getSrcsetAttrs($image, 'data-'));
-            } else {
-                $attrs['data-src'][] = Url::to($url);
+        if ($image = $this->image->create($url, false)) {
+            $minWidth = 0;
+            if (empty($params['size'])) {
+                $img = $image->apply($image->getAttribute('params'));
+                $minWidth = $img->getWidth();
+                $attrs['style'][] = "background-size: {$img->getWidth()}px {$img->getHeight()}px;";
             }
 
-            $attrs['uk-img'] = true;
+            $sources = $this->image->getSources($image, $minWidth);
+            $srcsetAttrs = $this->image->getSrcsetAttrs($image, 'data-', $minWidth);
+
+            if ($sources) {
+                $srcsetAttrs = array_slice($srcsetAttrs, 0, 1);
+            }
+
+            $attrs = array_merge($attrs, $srcsetAttrs, [
+                'data-sources' => json_encode($sources),
+            ]);
         } else {
-            $attrs['style'][] = 'background-image: url(\'' . $this->image->getUrl($url) . '\');';
+            $attrs['data-src'][] = Url::to($url);
         }
+
+        // use eager loading?
+        if (isset($params['loading'])) {
+            $attrs['loading'] = $params['loading'];
+        }
+
+        $attrs['uk-img'] = true;
 
         $attrs['class'] = [
             $this->view->cls(
@@ -314,31 +339,9 @@ class ViewHelper
             case 'fixed':
                 break;
             case 'parallax':
-                $options = [];
-
-                foreach (['bgx', 'bgy'] as $prop) {
-                    $start = strval($params["parallax_{$prop}_start"]);
-                    $end = strval($params["parallax_{$prop}_end"]);
-
-                    if (strlen($start) || strlen($end)) {
-                        $options[] =
-                            "{$prop}: " .
-                            (strlen($start) ? $start : 0) .
-                            ',' .
-                            (strlen($end) ? $end : 0);
-                    }
+                if ($options = $this->parallaxOptions($params, '', ['bgx', 'bgy'])) {
+                    $attrs['uk-parallax'] = $options;
                 }
-
-                $options[] = is_numeric($params['parallax_easing'])
-                    ? "easing: {$params['parallax_easing']}"
-                    : '';
-                $options[] = $params['parallax_breakpoint']
-                    ? "media: @{$params['parallax_breakpoint']}"
-                    : '';
-                $options[] = !empty($params['parallax_target'])
-                    ? "target: {$params['parallax_target']}"
-                    : '';
-                $attrs['uk-parallax'] = implode(';', array_filter($options));
 
                 break;
         }
@@ -353,31 +356,35 @@ class ViewHelper
         $type = $this->isImage($attrs['src']);
         $isAbsolute = $this->isAbsolute($attrs['src']);
 
-        if (!$isAbsolute) {
-            $attrs['src'] = parse_url($attrs['src'], PHP_URL_PATH);
-        }
-
         if (empty($attrs['alt'])) {
             $attrs['alt'] = true;
         }
 
         if ($type !== 'svg') {
-            $query = [];
-
             if (!empty($attrs['thumbnail'])) {
-                $query['thumbnail'] = is_array($attrs['thumbnail'])
+                $thumbnail = is_array($attrs['thumbnail'])
                     ? $attrs['thumbnail']
                     : [$attrs['width'], $attrs['height']];
-                $query['srcset'] = true;
 
-                // use unsplash resizing?
-                if (
-                    preg_match(static::REGEX_UNSPLASH, $attrs['src'], $matches) &&
-                    count($query['thumbnail']) > 1
-                ) {
-                    $attrs[
-                        'src'
-                    ] = "https://images.unsplash.com/{$matches['id']}?fit=crop&w={$query['thumbnail'][0]}&h={$query['thumbnail'][1]}";
+                if ($isAbsolute) {
+                    $width = $thumbnail[0];
+                    $height = $thumbnail[1];
+
+                    if ($width && $height) {
+                        // use unsplash resizing?
+                        if (preg_match(static::REGEX_UNSPLASH, $attrs['src'], $matches)) {
+                            $attrs[
+                                'src'
+                            ] = "https://images.unsplash.com/{$matches['id']}?fit=crop&w={$width}&h={$height}";
+                        } else {
+                            $this->addAttr($attrs, 'style', "aspect-ratio: {$width} / {$height}");
+                            $this->addAttr($attrs, 'class', 'uk-object-cover');
+                        }
+                    }
+                } else {
+                    $query['thumbnail'] = $thumbnail;
+                    $query['srcset'] = true;
+                    $attrs['width'] = $attrs['height'] = null;
                 }
             }
 
@@ -385,45 +392,26 @@ class ViewHelper
                 $query['covers'] = true;
             }
 
-            if ($type === 'gif') {
-                $attrs['uk-gif'] = true;
-            } elseif ($this->config->get('app.isCustomizer') || (!$isAbsolute && $type)) {
-                $attrs['src'] .= $query
-                    ? '#' .
-                        http_build_query(
-                            array_map(function ($value) {
-                                return is_array($value) ? join(',', $value) : $value;
-                            }, $query),
-                            '',
-                            '&'
-                        )
-                    : '';
-            }
-
-            // remove width/height for local images with "srcset"
-            if (!filter_var($attrs['src'], FILTER_VALIDATE_URL)) {
-                unset($attrs['width'], $attrs['height']);
+            if ($type !== 'gif' && !$isAbsolute && $type && !empty($query)) {
+                $attrs['src'] =
+                    parse_url($attrs['src'], PHP_URL_PATH) .
+                    '#' .
+                    http_build_query(
+                        array_map(function ($value) {
+                            return is_array($value) ? join(',', $value) : $value;
+                        }, $query),
+                        '',
+                        '&'
+                    );
             }
 
             unset($attrs['uk-svg']);
+        } elseif (empty($attrs['width']) || empty($attrs['height'])) {
+            [$attrs['width'], $attrs['height']] = SvgHelper::getDimensions($attrs['src'], $attrs);
         }
 
         // use lazy loading?
-        if ($this->config->get('~theme.lazyload')) {
-            if ($type === 'svg' && !empty($attrs['uk-svg'])) {
-                $attrs['uk-img'] = 'dataSrc:' . Url::to($attrs['src']);
-            } else {
-                $attrs['data-src'] = $attrs['src'];
-            }
-
-            if (empty($attrs['uk-img'])) {
-                $attrs['uk-img'] = true;
-            }
-
-            unset($attrs['src']);
-        } else {
-            unset($attrs['uk-img']);
-        }
+        $attrs['loading'] = $attrs['loading'] ?? 'lazy' ?: 'eager';
 
         unset($attrs['thumbnail']);
 
@@ -442,31 +430,49 @@ class ViewHelper
         return $url && preg_match('/^(\/|#|[a-z0-9-.]+:)/', $url);
     }
 
-    public function parallaxOptions($params, $prefix = '')
-    {
-        return array_reduce(
-            ['x', 'y', 'scale', 'rotate', 'opacity'],
-            function ($options, $prop) use ($params, $prefix) {
-                $start = isset($params["{$prefix}parallax_{$prop}_start"])
-                    ? $params["{$prefix}parallax_{$prop}_start"]
-                    : '';
-                $end = isset($params["{$prefix}parallax_{$prop}_end"])
-                    ? $params["{$prefix}parallax_{$prop}_end"]
-                    : '';
-                $default = in_array($prop, ['scale', 'opacity']) ? 1 : 0;
+    public function parallaxOptions(
+        $params,
+        $prefix = '',
+        $props = ['x', 'y', 'scale', 'rotate', 'opacity']
+    ) {
+        $prefix = "{$prefix}parallax_";
 
-                if (strlen($start) || strlen($end)) {
-                    $start = strlen($start) ? $start : $default;
-                    $middle = $prefix ? "{$default}," : '';
-                    $end = strlen($end) ? $end : $default;
+        $options = [];
+        foreach ($props as $prop) {
+            if ($value = $this->parallaxValue($params["{$prefix}{$prop}"] ?? '')) {
+                $options[] = "{$prop}: {$value}";
+            }
+        }
 
-                    $options[] = "{$prop}: {$start},{$middle}{$end};";
-                }
+        if (!$options) {
+            return;
+        }
 
-                return $options;
-            },
-            []
+        $options[] = sprintf(
+            'easing: %s',
+            is_numeric($params["{$prefix}easing"] ?? '') ? $params["{$prefix}easing"] : 0
         );
+        $options[] = !empty($params["{$prefix}breakpoint"])
+            ? "media: @{$params["{$prefix}breakpoint"]}"
+            : '';
+        foreach (['target', 'start', 'end'] as $prop) {
+            if (!empty($params[$prefix . $prop])) {
+                $options[] = "{$prop}: {$params[$prefix . $prop]}";
+            }
+        }
+        return implode('; ', array_filter($options));
+    }
+
+    protected function parallaxValue($value)
+    {
+        $stops = [];
+        foreach (explode(',', $value) as $stop) {
+            [$val, $position] = explode(' ', $stop) + ['', ''];
+            if ($val != '') {
+                $stops[] = $val . ($position ? " {$position}" : '');
+            }
+        }
+        return $stops ? implode(',', $stops) : '';
     }
 
     public function striptags(
@@ -491,5 +497,15 @@ class ViewHelper
             default:
                 return "uk-margin-{$margin}-top";
         }
+    }
+
+    protected function addAttr(&$attrs, $name, $value)
+    {
+        if (empty($attrs[$name])) {
+            $attrs[$name] = [];
+        } elseif (is_string($attrs[$name])) {
+            $attrs[$name] = [$attrs[$name]];
+        }
+        $attrs[$name][] = $value;
     }
 }

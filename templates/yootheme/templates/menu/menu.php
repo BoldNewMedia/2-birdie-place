@@ -1,90 +1,60 @@
 <?php
 
 // Config
-$config->addAlias('~mobile', '~theme.mobile');
-$config->addAlias('~header', '~theme.header');
-$config->addAlias('~navbar', '~theme.navbar');
+use YOOtheme\Arr;
+use YOOtheme\Builder;
+use function YOOtheme\app;
+
+$mobile = '~theme.mobile';
+$header = '~theme.header';
+$dialog = '~theme.dialog';
 
 // Menu ID
 $attrs['id'] = $config('~menu.tag_id');
 
 $hasHeaderParent = function ($items) {
-    return array_filter($items, function ($item) {
-        return $item->type == 'header' && !empty($item->children) && isset($item->url) && ($item->url === '#' || $item->url === '');
+    return Arr::some($items, function ($item) {
+        return $item->type == 'heading' && !empty($item->children) && isset($item->url) && ($item->url === '#' || $item->url === '');
     });
 };
 
-// Menu type
-
-// Temporary force menu_style to default if set to 'nav' on 'head' positions
-if ($config('~menu.menu_style') == 'nav' && in_array($config('~menu.position'), ['header', 'navbar', 'navbar-split', 'toolbar-left', 'toolbar-right', 'logo', 'logo-mobile'])) {
-    $config->set('~menu.menu_style', '');
+// Set `nav` menu_type to default in header positions
+if ($config('~menu.type') == 'nav' && preg_match('/^(toolbar-(left|right)|logo(-mobile)?|navbar(-split|-push|-mobile)?|header(-split|-mobile)?)$/', $config('~menu.position'))) {
+    $config->set('~menu.type', '');
 }
 
-if ($config('~menu.menu_style') == 'iconnav') {
+if (in_array($config('~menu.type'), ['iconnav', 'subnav', 'nav'])) {
 
-    $type = 'iconnav';
-    $attrs['class'][] = 'uk-iconnav';
-
-} elseif ($config('~menu.menu_style') == 'subnav') {
-
-    $type = 'subnav';
-    $attrs['class'][] = 'uk-subnav';
-    $attrs['class']['uk-subnav-divider'] = $config('~menu.menu_divider');
-
-} elseif ($config('~menu.menu_style') == 'nav') {
-
-    $type = 'nav';
-    $attrs['class'][] = 'uk-nav uk-nav-default';
-    $attrs['class']['uk-nav-divider'] = $config('~menu.menu_divider');
+    $type = $config('~menu.type');
 
 // Default on Navbar
-} elseif (in_array($config('~menu.position'), ['navbar', 'navbar-split'])) {
+} elseif (in_array($config('~menu.position'), ['navbar', 'navbar-split', 'navbar-push', 'navbar-mobile'])) {
 
-    $layout = $config('~header.layout');
+    $type = 'navbar';
 
-    if (preg_match('/^(offcanvas|modal)/', $layout)) {
+    if (in_array($config('~menu.position'), ['navbar', 'navbar-split', 'navbar-push']) && in_array($config("$header.layout"), ['stacked-center-split-a', 'stacked-center-split-b'])) {
 
-        $type = 'nav';
-        $attrs['class'][] = 'uk-nav';
-        // Layout Header Settings
-        $attrs['class'][] = "uk-nav-{$config('~navbar.toggle_menu_style')}";
-        $attrs['class'][] = $config('~navbar.toggle_menu_divider') ? 'uk-nav-divider' : '';
-        $attrs['class'][] = $config('~navbar.toggle_menu_center') ? 'uk-nav-center' : '';
-
-    } else {
-
-        $type = 'navbar';
-        $attrs['class'][] = 'uk-navbar-nav';
-
-    }
-
-    if ($layout == 'stacked-center-split' && $config('~menu.split')) {
-
-        $length = ceil(count($items) / 2);
+        // Split Auto
+        $index = $config("$header.split_index") ?: ceil(count($items) / 2);
 
         if ($config('~menu.position') == 'navbar-split') {
-            $items = array_slice($items, 0, $length);
+            $items = array_slice($items, 0, $index);
         } else {
-            $items = array_slice($items, $length);
+            $items = array_slice($items, $index);
         }
     }
 
 // Default on Header
-} elseif (in_array($config('~menu.position'), ['header', 'header-split'])) {
+} elseif (in_array($config('~menu.position'), ['header', 'header-split', 'header-mobile'])) {
 
-    $layout = $config('~header.layout');
-
-    if (preg_match('/^(stacked)/', $layout)) {
+    if (in_array($config('~menu.position'), ['header', 'header-split']) && str_starts_with($config("$header.layout"), 'stacked')) {
 
         $type = 'subnav';
-        $attrs['class'][] = 'uk-subnav';
 
     // Render in navbar
     } else {
 
         $type = 'navbar';
-        $attrs['class'][] = 'uk-navbar-nav';
 
     }
 
@@ -92,34 +62,93 @@ if ($config('~menu.menu_style') == 'iconnav') {
 } elseif (in_array($config('~menu.position'), ['toolbar-left', 'toolbar-right', 'logo', 'logo-mobile'])) {
 
     $type = 'subnav';
-    $attrs['class'][] = 'uk-subnav';
 
-// Default on Mobile
-} elseif ($config('~menu.position') == 'mobile') {
+// Default on Dialog
+} elseif (in_array($config('~menu.position'), ['dialog', 'dialog-push', 'dialog-mobile', 'dialog-mobile-push'])) {
 
     $type = 'nav';
-    $attrs['class'][] = 'uk-nav';
-    // Layout Mobile Settings
-    $attrs['class'][] = "uk-nav-{$config('~mobile.menu_style')}";
-    $attrs['class'][] = $config('~mobile.menu_divider') ? 'uk-nav-divider' : '';
-    $attrs['class'][] = $config('~mobile.menu_center') ? 'uk-nav-center' : '';
 
 // Default on Sidebar, Top, Bottom, Builder 1-6
 } else {
 
     $type = 'nav';
-    $attrs['class'][] = 'uk-nav uk-nav-default';
 
 }
 
-// Accordion menu
+// Navbar
+if ($type == 'navbar') {
 
-if ($type == 'nav' && $hasHeaderParent($items)) {
+    $attrs['class'][] = 'uk-navbar-nav';
 
-    $config->set('~menu.accordion', true);
-    $attrs['class'][] = 'uk-nav-parent-icon uk-nav-accordion';
-    $attrs['uk-nav'] = 'targets: > .js-accordion';
+}
 
+// Subav
+if ($type == 'subnav') {
+
+    $attrs['class'][] = 'uk-subnav';
+    $attrs['class'][] =  $config('~menu.divider') ? 'uk-subnav-divider' : '';
+
+}
+
+// Iconnav
+if ($type == 'iconnav') {
+
+    $attrs['class'][] = 'uk-iconnav';
+
+}
+
+// Nav
+if ($type == 'nav') {
+
+    $attrs['class'][] = 'uk-nav';
+    $attrs['class'][] = "uk-nav-{$config('~menu.style')}";
+    $attrs['class'][] =  $config('~menu.divider') ? 'uk-nav-divider' : '';
+
+    // Accordion menu
+    if ($hasHeaderParent($items)) {
+        $config->set('~menu.accordion', true);
+        $attrs['class'][] = 'uk-nav-accordion';
+        $attrs['uk-nav'] = 'targets: > .js-accordion';
+    }
+
+}
+
+// Dialog Center
+if ((in_array($config('~menu.position'), ['dialog', 'dialog-push']) && $config("$dialog.text_center")) ||
+    (in_array($config('~menu.position'), ['dialog-mobile', 'dialog-mobile-push']) && $config("$mobile.dialog.text_center"))) {
+
+    if (in_array($type, ['subnav', 'iconnav'])) {
+        $attrs['class'][] = 'uk-flex-center';
+    } elseif ($type == 'nav') {
+        $attrs['class'][] = 'uk-nav-center';
+    }
+}
+
+// Builder
+if ($type !== 'nav') {
+
+    // Store menu config in case builder renders a menu module/widget
+    $menuConfig = $config('~menu');
+
+    $builder = app(Builder::class);
+    foreach ($items as $item) {
+        if ($content = $config("~theme.menu.items.{$item->id}.content")) {
+            if ($config($recursionKey = "builderRecursion{$item->id}")) {
+                continue;
+            }
+
+            $config->set($recursionKey, true);
+
+            $item->builder = $builder->render(
+                json_encode($content),
+                ['prefix' => "menu-item-{$item->id}"]
+            ) ?: null;
+
+            $config->del($recursionKey);
+        }
+    }
+
+    $menuConfig = $config->set('~menu', $menuConfig);
 }
 
 ?>

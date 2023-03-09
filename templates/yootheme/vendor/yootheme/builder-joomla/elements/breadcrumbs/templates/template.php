@@ -32,7 +32,7 @@ $render = function () use ($__dir, $attrs, $props) {
 
 if ($prefix === 'page') {
     app('dispatcher')->addListener('onLoadTemplate', function ($event) use ($render, $marker) {
-        list($view) = $event->getArguments();
+        [$view] = $event->getArguments();
 
         if ($output = $view->get('_output')) {
             $view->set('_output', str_replace($marker, $render(), $output));

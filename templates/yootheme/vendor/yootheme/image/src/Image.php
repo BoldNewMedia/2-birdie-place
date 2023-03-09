@@ -4,6 +4,12 @@ namespace YOOtheme;
 
 use YOOtheme\Image\GDResource;
 
+/**
+ * @method doCrop($width, $height, $x, $y)
+ * @method doResize($width, $height, $dstWidth, $dstHeight, $background = 'transparent')
+ * @method doRotate($angle, $background = 'transparent')
+ * @method doCopy($width, $height, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight, $background = 'transparent')
+ */
 class Image
 {
     /**
@@ -12,7 +18,7 @@ class Image
     public $file;
 
     /**
-     * @var string
+     * @var string|null
      */
     public $path;
 
@@ -49,7 +55,7 @@ class Image
     /**
      * @var string
      */
-    protected $resourceClass = 'YOOtheme\Image\Resource';
+    protected $resourceClass = Image\BaseResource::class;
 
     /**
      * @var array
@@ -75,14 +81,12 @@ class Image
         Event::emit('image.create', $this);
 
         if ($file = $this->getFile()) {
-            list($this->width, $this->height, $this->type, $this->info) = ImageProvider::getInfo(
-                $file
-            );
+            [$this->width, $this->height, $this->type, $this->info] = ImageProvider::getInfo($file);
         }
 
         if ($resource && extension_loaded('gd')) {
             $this->resource = GDResource::create($file, $this->type);
-            $this->resourceClass = 'YOOtheme\Image\GDResource';
+            $this->resourceClass = GDResource::class;
         }
     }
 
@@ -123,11 +127,15 @@ class Image
      */
     public function getHash()
     {
-        return $this->operations ? hash('crc32b', (string) $this) : false;
+        if (!$this->operations) {
+            return false;
+        }
+
+        return hash('crc32b', $this . (($file = $this->getFile()) ? filemtime($file) : ''));
     }
 
     /**
-     * Gets the file.
+     * Gets the file path.
      *
      * @return string|false
      */
@@ -141,7 +149,7 @@ class Image
     }
 
     /**
-     * Gets the filename.
+     * Gets the cache filename.
      *
      * @param string $path
      *
@@ -163,16 +171,16 @@ class Image
     }
 
     /**
-     * Retrieve a attribute value.
+     * Gets an attribute value.
      *
      * @param string $name
-     * @param string $default
+     * @param mixed $default
      *
      * @return mixed
      */
     public function getAttribute($name, $default = null)
     {
-        return isset($this->attributes[$name]) ? $this->attributes[$name] : $default;
+        return $this->attributes[$name] ?? $default;
     }
 
     /**
@@ -223,7 +231,6 @@ class Image
         $image = clone $this;
         $image->type = $type;
         $image->quality = $quality;
-        $image->operations[] = ['type', [$type, $quality]];
 
         return $image;
     }
@@ -231,8 +238,8 @@ class Image
     /**
      * Crops the image.
      *
-     * @param int        $width
-     * @param int        $height
+     * @param int|string $width
+     * @param int|string $height
      * @param int|string $x
      * @param int|string $y
      *
@@ -245,9 +252,9 @@ class Image
         $height = $this->parseValue($height, $this->height);
 
         if ($ratio > $width / $height) {
-            $image = $this->resize(round($height * $ratio), $height);
+            $image = $this->resize((int) round($height * $ratio), $height);
         } else {
-            $image = $this->resize($width, round($width / $ratio));
+            $image = $this->resize($width, (int) round($width / $ratio));
         }
 
         if ($x === 'left') {
@@ -274,9 +281,9 @@ class Image
     /**
      * Resizes the image.
      *
-     * @param int    $width
-     * @param int    $height
-     * @param string $background
+     * @param int|string $width
+     * @param int|string $height
+     * @param string     $background
      *
      * @return static
      */
@@ -342,7 +349,7 @@ class Image
 
         // update width/height for rotation
         if (in_array($angle, [90, 270], true)) {
-            list($image->height, $image->width) = [$this->width, $this->height];
+            [$image->height, $image->width] = [$this->width, $this->height];
         }
 
         return $image;
@@ -383,9 +390,9 @@ class Image
     /**
      * Thumbnail the image.
      *
-     * @param int  $width
-     * @param int  $height
-     * @param bool $flip
+     * @param int|string $width
+     * @param int|string $height
+     * @param bool       $flip
      *
      * @return static
      */
@@ -396,9 +403,9 @@ class Image
             $height = strpos($height, '%') ? $this->parseValue($height, $this->height) : $height;
 
             if ($this->isPortrait() && $width > $height) {
-                list($width, $height) = [$height, $width];
+                [$width, $height] = [$height, $width];
             } elseif ($this->isLandscape() && $height > $width) {
-                list($width, $height) = [$height, $width];
+                [$width, $height] = [$height, $width];
             }
         }
 
@@ -416,7 +423,7 @@ class Image
      */
     public function apply(array $operations)
     {
-        $image = $this;
+        $image = clone $this;
 
         foreach ($operations as $name => $args) {
             if (is_int($name)) {
@@ -426,6 +433,10 @@ class Image
 
             if (is_string($args)) {
                 $args = explode(',', trim($args));
+            }
+
+            if (method_exists($image, $name)) {
+                $image->operations[] = [$name, $args];
             }
 
             $image = call_user_func_array([$image, $name], $args);
@@ -490,8 +501,6 @@ class Image
                     array_merge([$this->resource], $args)
                 );
             }
-
-            $this->operations[] = [$name, $args];
         }
 
         return $this;
@@ -504,7 +513,13 @@ class Image
      */
     public function __toString()
     {
-        return json_encode([$this->file, $this->operations]);
+        $query = 'file=' . urlencode($this->file);
+
+        foreach ($this->operations as [$name, $args]) {
+            $query .= "&{$name}=" . join(',', $args);
+        }
+
+        return $query;
     }
 
     /**

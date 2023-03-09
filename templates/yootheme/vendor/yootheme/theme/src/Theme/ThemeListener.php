@@ -16,7 +16,7 @@ class ThemeListener
         $debug = $config('app.debug') ? '' : '.min';
         $version = filectime($href);
 
-        list($style) = explode(':', $config('~theme.style'));
+        [$style] = explode(':', $config('~theme.style'));
 
         $metadata->set(
             'style:theme',
@@ -56,7 +56,7 @@ class ThemeListener
     public static function loadMetadata(Config $config, $meta)
     {
         if (is_null($meta->version) && ($version = $config('theme.version'))) {
-            $meta->version = $version;
+            $meta = $meta->withAttribute('version', $version);
         }
 
         return $meta;

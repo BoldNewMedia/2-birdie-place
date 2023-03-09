@@ -3,14 +3,17 @@
 namespace YOOtheme;
 
 return [
+    'transforms' => [
+        'render' => function ($node, $params) {
+            $node->props['parent'] = $params['parent']->type;
+        },
+    ],
     'updates' => [
         '2.3.0-beta.1.1' => function ($node) {
-            /**
-             * @var Config $config
-             */
+            /** @var Config $config */
             $config = app(Config::class);
 
-            list($style) = explode(':', $config('~theme.style'));
+            [$style] = explode(':', $config('~theme.style'));
 
             if (in_array($style, ['fjord'])) {
                 if (Arr::get($node->props, 'width') === 'default') {
@@ -117,12 +120,10 @@ return [
         },
 
         '2.0.0-beta.5.1' => function ($node) {
-            /**
-             * @var Config $config
-             */
+            /** @var Config $config */
             $config = app(Config::class);
 
-            list($style) = explode(':', $config('~theme.style'));
+            [$style] = explode(':', $config('~theme.style'));
 
             if (!in_array($style, ['jack-baker', 'morgan-consulting', 'vibe'])) {
                 if (Arr::get($node->props, 'width') === 'large') {
@@ -152,11 +153,11 @@ return [
         },
 
         '1.22.0-beta.0.1' => function ($node) {
-            if (isset($node->props['gutter'])) {
-                $node->props['column_gap'] = $node->props['gutter'];
-                $node->props['row_gap'] = $node->props['gutter'];
-                unset($node->props['gutter']);
-            }
+            Arr::updateKeys($node->props, [
+                'gutter' => function ($value) {
+                    return ['column_gap' => $value, 'row_gap' => $value];
+                },
+            ]);
 
             if (empty($node->props['layout'])) {
                 return;

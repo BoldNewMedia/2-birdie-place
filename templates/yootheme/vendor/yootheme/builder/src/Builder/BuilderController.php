@@ -20,15 +20,19 @@ class BuilderController
 
     public function encodeLayout(Request $request, Response $response, Builder $builder)
     {
+        $layout = $request->getParam('layout');
         $builder = $builder->withParams(['context' => 'save']);
 
-        return $response->withJson($builder->load(json_encode($request('layout'))));
+        return $response->withJson($builder->load(json_encode($layout)));
     }
 
     public function addElement(Request $request, Response $response, Storage $storage)
     {
-        if ($request('id') && $request('element')) {
-            $storage->set("library.{$request('id')}", $request('element'));
+        $id = $request->getParam('id');
+        $element = $request->getParam('element');
+
+        if ($id && $element) {
+            $storage->set("library.{$id}", $element);
         }
 
         return $response->withJson(['message' => 'success']);
@@ -36,8 +40,10 @@ class BuilderController
 
     public function removeElement(Request $request, Response $response, Storage $storage)
     {
-        if ($request('id')) {
-            $storage->del("library.{$request('id')}");
+        $id = $request->getQueryParam('id');
+
+        if ($id) {
+            $storage->del("library.{$id}");
         }
 
         return $response->withJson(['message' => 'success']);

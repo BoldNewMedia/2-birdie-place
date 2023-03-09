@@ -99,6 +99,12 @@
 @dotnav-item-border: rgba(255, 255, 255, 0.4);
 
 //
+// Dropbar
+//
+
+@dropbar-color-mode: dark;
+
+//
 // Form Range
 //
 
@@ -128,6 +134,8 @@
 
 @inverse-global-color-mode: dark;
 @inverse-global-muted-background: fade(@global-inverse-color, 5%);
+@inverse-global-muted-color: fade(@global-inverse-color, 60%);
+@inverse-navbar-nav-item-color: @global-inverse-color;
 
 //
 // Nav
@@ -135,6 +143,13 @@
 
 @nav-default-sublist-item-hover-color: @global-link-color;
 @nav-primary-sublist-item-hover-color: @global-link-color;
+
+//
+// Navbar
+//
+
+@navbar-subtitle-color: @global-color;
+@navbar-dropdown-color-mode: dark;
 
 //
 // Offcanvas

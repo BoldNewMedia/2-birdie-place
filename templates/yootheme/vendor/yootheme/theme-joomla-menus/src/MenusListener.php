@@ -28,15 +28,15 @@ class MenusListener
 
     public static function loadModules(Config $config, $event)
     {
-        list($modules) = $event->getArguments();
+        [$modules] = $event->getArguments();
 
-        if ($config('app.isAdmin') || !$config('~theme')) {
+        if ($config('app.isAdmin') || !$config('theme.active')) {
             return;
         }
 
         // create menu modules when assigned in theme settings
         foreach ($config('~theme.menu.positions', []) as $position => $menu) {
-            if (!$menu) {
+            if (empty($menu['menu'])) {
                 continue;
             }
 
@@ -49,7 +49,18 @@ class MenusListener
                     'title' => '',
                     'showtitle' => 0,
                     'position' => $position,
-                    'params' => json_encode(['menutype' => $menu, 'showAllChildren' => true]),
+                    'params' => json_encode([
+                        'menutype' => $menu['menu'],
+                        'showAllChildren' => true,
+                        'yoo_config' => json_encode(
+                            array_combine(
+                                array_map(function ($key) {
+                                    return "menu_{$key}";
+                                }, array_keys($menu)),
+                                $menu
+                            )
+                        ),
+                    ]),
                 ]
             );
         }
@@ -59,18 +70,23 @@ class MenusListener
 
     public static function lateLoadModules(Config $config, $event)
     {
-        list($modules) = $event->getArguments();
+        [$modules] = $event->getArguments();
 
-        if ($config('app.isAdmin') || !$config('~theme')) {
+        if ($config('app.isAdmin') || !$config('theme.active')) {
             return;
         }
 
-        if ($config('~theme.header.layout') === 'stacked-center-split') {
+        if (
+            in_array($config('~theme.header.layout'), [
+                'stacked-center-split-a',
+                'stacked-center-split-b',
+            ])
+        ) {
             foreach ($modules as $module) {
                 if (
                     $module->module != 'mod_menu' ||
                     $module->position != 'navbar' ||
-                    !in_array($config("~theme.modules.{$module->id}.menu_style"), ['', 'nav'])
+                    !in_array($config("~theme.modules.{$module->id}.menu_type"), ['', 'nav'])
                 ) {
                     continue;
                 }
@@ -78,9 +94,6 @@ class MenusListener
                 $clone = clone $module;
                 $clone->id = "{$module->id}-split";
                 $clone->position = 'navbar-split';
-
-                $config->set("~theme.modules.{$clone->id}.split", true);
-                $config->set("~theme.modules.{$module->id}.split", true);
 
                 array_splice($modules, array_search($module, $modules) + 1, 0, [$clone]);
             }

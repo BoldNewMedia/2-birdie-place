@@ -15,7 +15,7 @@ $link = $this->el('a', [
 <?php if ($props['link']) : ?>
     <?= $link($element, [
         'href' => $props['link'],
-        'uk-scroll' => str_starts_with((string) $props['link'], '#'),
+        'uk-scroll' => str_contains((string) $props['link'], '#'),
         'target' => $props['link_target'] ? '_blank' : '',
     ], $props['content']) ?>
 <?php else : ?>

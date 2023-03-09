@@ -2,6 +2,7 @@
 
 namespace YOOtheme\Builder\Joomla\Fields\Type;
 
+use Joomla\CMS\Language\Text;
 use function YOOtheme\trans;
 
 class ChoiceFieldType
@@ -18,6 +19,9 @@ class ChoiceFieldType
                     'metadata' => [
                         'label' => trans('Name'),
                     ],
+                    'extensions' => [
+                        'call' => __CLASS__ . '::name',
+                    ],
                 ],
 
                 'value' => [
@@ -28,5 +32,14 @@ class ChoiceFieldType
                 ],
             ],
         ];
+    }
+
+    public static function name($choice)
+    {
+        $name = $choice->name ?? ($choice['name'] ?? null);
+
+        if ($name) {
+            return Text::_($name);
+        }
     }
 }

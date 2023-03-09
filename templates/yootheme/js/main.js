@@ -1,10 +1,26 @@
 import UIkit from 'uikit';
-import { Header, Navbar, Sticky } from './header';
-import { isRtl, ready, swap } from 'uikit-util';
+import { Header, Sticky } from './header';
+import { $$, isRtl, isVisible, ready, swap } from 'uikit-util';
 
 UIkit.component('Header', Header);
 UIkit.mixin(Sticky, 'sticky');
-UIkit.mixin(Navbar, 'navbar');
+
+UIkit.mixin(
+    {
+        events: {
+            beforescroll() {
+                if (!this.$props.offset) {
+                    for (const navbar of $$('[uk-sticky] [uk-navbar]')) {
+                        if (isVisible(navbar)) {
+                            this.offset = navbar.offsetHeight;
+                        }
+                    }
+                }
+            },
+        },
+    },
+    'scroll'
+);
 
 if (isRtl) {
     const mixin = {

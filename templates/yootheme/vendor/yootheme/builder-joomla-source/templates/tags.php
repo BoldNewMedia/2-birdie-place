@@ -16,7 +16,7 @@ echo implode($args['separator'], array_map(function ($tag) use ($args) {
 
     return "<a href=\"{$route}\">{$tag->title}</a>";
 
-}, $tags));
+}, $tags ?: []));
 
 if ($args['show_link'] && $args['link_style']) {
     echo '</span>';

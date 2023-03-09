@@ -8,9 +8,7 @@ if (Path::get(__FILE__) !== $file = Path::get('~theme/html/plg_content_pagenavig
     return include $file;
 }
 
-/**
- * @var View $view
- */
+/** @var View $view */
 $view = app(View::class);
 
 $props = ['isPage' => $row->category_alias === 'uncategorised'];

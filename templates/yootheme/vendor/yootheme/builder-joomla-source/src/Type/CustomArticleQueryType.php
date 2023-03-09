@@ -46,7 +46,7 @@ class CustomArticleQueryType
                             'type' => 'String',
                         ],
                         'featured' => [
-                            'type' => 'Boolean',
+                            'type' => 'String',
                         ],
                         'offset' => [
                             'type' => 'Int',
@@ -64,7 +64,7 @@ class CustomArticleQueryType
 
                     'metadata' => [
                         'label' => trans('Custom Article'),
-                        'group' => 'Custom',
+                        'group' => trans('Custom'),
                         'fields' => [
                             'id' => [
                                 'label' => trans('Select Manually'),
@@ -72,7 +72,7 @@ class CustomArticleQueryType
                                     'Pick an article manually or use filter options to specify which article should be loaded dynamically.'
                                 ),
                                 'type' => 'select-item',
-                                'labels' => ['type' => 'Article'],
+                                'labels' => ['type' => trans('Article')],
                             ],
                             'catid' => [
                                 'label' => trans('Filter by Categories'),
@@ -145,9 +145,16 @@ class CustomArticleQueryType
                                 'enable' => '!id',
                             ],
                             'featured' => [
-                                'label' => trans('Limit by Featured Articles'),
-                                'type' => 'checkbox',
-                                'text' => trans('Load featured articles only'),
+                                'label' => trans('Filter by Featured Articles'),
+                                'description' => trans(
+                                    'Filter articles by featured status. Load all articles, featured articles only, or articles which are not featured.'
+                                ),
+                                'type' => 'select',
+                                'options' => [
+                                    'None' => '',
+                                    'Featured only' => 'only',
+                                    'Not featured' => 'hide',
+                                ],
                                 'enable' => '!id',
                             ],
                             'offset' => [

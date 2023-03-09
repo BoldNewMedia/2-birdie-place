@@ -1,8 +1,6 @@
 <?php
 
-namespace YOOtheme;
-
-if (!Str::length($props['title'])) {
+if ($props['title'] == '') {
     return;
 }
 
@@ -11,7 +9,7 @@ $el = $this->el('div', [
 
     'class' => [
         'el-title',
-        'uk-[text-{@title_style: meta|lead}]{title_style}',
+        'uk-{title_style}',
         'uk-font-{title_font_family}',
         'uk-text-{title_color} {@!title_color: background}',
     ],

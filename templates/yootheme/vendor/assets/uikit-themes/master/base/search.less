@@ -30,6 +30,13 @@
     transition-property: color, background-color, border-color, box-shadow;
 }
 
+// Icon
+// ========================================================================
+
+.hook-search-icon() when not (@search-default-backdrop-filter = ~''),
+                         not (@search-navbar-backdrop-filter = ~''),
+                         not (@search-large-backdrop-filter = ~'') { z-index: 1; }
+
 
 // Default modifiers
 // ========================================================================

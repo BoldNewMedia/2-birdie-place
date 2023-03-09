@@ -11,7 +11,7 @@ use Joomla\Component\Tags\Site\Helper\RouteHelper as TagsRouteHelper;
 
 <?php if ($list) : ?>
 <ul class="tagssimilar">
-<?php foreach ($list as $i => $item) : ?>
+<?php foreach ($list as $item) : ?>
 	<?php if (empty($item->core_title)) continue ?>
 	<li>
 		<?php if (($item->type_alias == 'com_users.category') || ($item->type_alias == 'com_banners.category')) : ?>

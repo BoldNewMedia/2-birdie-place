@@ -4,7 +4,7 @@ namespace YOOtheme;
 
 return [
     'transforms' => [
-        'render' => function ($node, $params) {
+        'render' => function ($node) {
             return (bool) $node->props['location'];
         },
     ],

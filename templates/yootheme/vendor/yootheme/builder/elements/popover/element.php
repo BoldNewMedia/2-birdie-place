@@ -14,32 +14,42 @@ return [
     ],
 
     'updates' => [
-        '2.0.0-beta.5.1' => function ($node) {
-            if (Arr::get($node->props, 'link_type') === 'content') {
-                $node->props['title_link'] = true;
-                $node->props['image_link'] = true;
-                $node->props['link_text'] = '';
-            } elseif (Arr::get($node->props, 'link_type') === 'element') {
-                $node->props['card_link'] = true;
-                $node->props['link_text'] = '';
+        '2.8.0-beta.0.13' => function ($node) {
+            foreach (['title_style', 'meta_style', 'content_style'] as $prop) {
+                if (in_array(Arr::get($node->props, $prop), ['meta', 'lead'])) {
+                    $node->props[$prop] = 'text-' . Arr::get($node->props, $prop);
+                }
             }
-            unset($node->props['link_type']);
+        },
+
+        '2.0.0-beta.5.1' => function ($node) {
+            Arr::updateKeys($node->props, [
+                'link_type' => function ($value) {
+                    if ($value === 'content') {
+                        return [
+                            'title_link' => true,
+                            'image_link' => true,
+                            'link_text' => '',
+                        ];
+                    } elseif ($value === 'element') {
+                        return [
+                            'card_link' => true,
+                            'link_text' => '',
+                        ];
+                    }
+                },
+            ]);
         },
 
         '1.20.0-beta.1.1' => function ($node) {
-            if (isset($node->props['maxwidth_align'])) {
-                $node->props['block_align'] = $node->props['maxwidth_align'];
-                unset($node->props['maxwidth_align']);
-            }
+            Arr::updateKeys($node->props, ['maxwidth_align' => 'block_align']);
         },
 
         '1.20.0-beta.0.1' => function ($node) {
-            /**
-             * @var Config $config
-             */
+            /** @var Config $config */
             $config = app(Config::class);
 
-            list($style) = explode(':', $config('~theme.style'));
+            [$style] = explode(':', $config('~theme.style'));
 
             if (
                 in_array($style, [
@@ -104,10 +114,7 @@ return [
                 $node->props['link_style'] = 'default';
             }
 
-            if (isset($node->props['image_card'])) {
-                $node->props['image_card_padding'] = $node->props['image_card'];
-                unset($node->props['image_card']);
-            }
+            Arr::updateKeys($node->props, ['image_card' => 'image_card_padding']);
         },
 
         '1.18.10.3' => function ($node) {
@@ -120,15 +127,10 @@ return [
         },
 
         '1.18.10.1' => function ($node) {
-            if (isset($node->props['image_inline_svg'])) {
-                $node->props['image_svg_inline'] = $node->props['image_inline_svg'];
-                unset($node->props['image_inline_svg']);
-            }
-
-            if (isset($node->props['image_animate_svg'])) {
-                $node->props['image_svg_animate'] = $node->props['image_animate_svg'];
-                unset($node->props['image_animate_svg']);
-            }
+            Arr::updateKeys($node->props, [
+                'image_inline_svg' => 'image_svg_inline',
+                'image_animate_svg' => 'image_svg_animate',
+            ]);
         },
 
         '1.18.0' => function ($node) {

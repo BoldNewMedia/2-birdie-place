@@ -8,7 +8,7 @@ use YOOtheme\Url;
 
 class UrlListener
 {
-    const REGEX_URL = '/
+    public const REGEX_URL = '/
                         \s                                 # match a space
                         (?<attr>(?:data-)?(?:src|poster))= # match the attribute
                         (["\'])                            # start with a single or double quote
@@ -34,7 +34,7 @@ class UrlListener
                 return sprintf(
                     ' %s="%s"',
                     $matches['attr'],
-                    Url::to(html_entity_decode($matches['url']))
+                    htmlentities(Url::to(html_entity_decode($matches['url'])))
                 );
             },
             $content

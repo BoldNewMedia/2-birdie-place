@@ -39,7 +39,7 @@
             "fields": {
                 "logo.text": {
                     "label": "Logo Text",
-                    "description": "The logo text will be used, if no logo image has been picked."
+                    "description": "The logo text will be used, if no logo image has been picked. If an image has been picked, it will be used as an aria-label attribute on the link."
                 },
                 "logo.image": {
                     "label": "Logo Image",
@@ -50,20 +50,19 @@
                     "type": "checkbox",
                     "text": "Inline SVG logo"
                 },
-                "logo.image_dimension": {
+                "logo._image_dimension": {
                     "type": "grid",
-                    "description": "Setting just one value preserves the original proportions. The image will be resized and cropped automatically and where possible, high resolution images will be auto-generated.",
+                    "description": "Setting just one value preserves the original proportions. The image will be resized and cropped automatically, and where possible, high resolution images will be auto-generated.",
+                    "width": "1-2",
                     "fields": {
                         "logo.image_width": {
                             "label": "Width",
-                            "width": "1-2",
                             "attrs": {
                                 "placeholder": "auto"
                             }
                         },
                         "logo.image_height": {
                             "label": "Height",
-                            "width": "1-2",
                             "attrs": {
                                 "placeholder": "auto"
                             }
@@ -81,26 +80,55 @@
                     "description": "Select an alternative logo, which will be used on small devices.",
                     "type": "image"
                 },
-                "logo.image_mobile_dimension": {
+                "logo._image_mobile_dimension": {
                     "type": "grid",
-                    "description": "Setting just one value preserves the original proportions. The image will be resized and cropped automatically and where possible, high resolution images will be auto-generated.",
+                    "description": "Setting just one value preserves the original proportions. The image will be resized and cropped automatically, and where possible, high resolution images will be auto-generated.",
+                    "width": "1-2",
                     "fields": {
                         "logo.image_mobile_width": {
                             "label": "Width",
-                            "width": "1-2",
                             "attrs": {
                                 "placeholder": "auto"
                             }
                         },
                         "logo.image_mobile_height": {
                             "label": "Height",
-                            "width": "1-2",
                             "attrs": {
                                 "placeholder": "auto"
                             }
                         }
                     },
-                    "show": "logo.image_mobile"
+                    "show": "logo.image_mobile || logo.image_mobile_inverse"
+                },
+                "logo.image_mobile_inverse": {
+                    "label": "Mobile Inverse Logo (Optional)",
+                    "description": "Select an alternative logo with inversed color, e.g. white, for better visibility on dark backgrounds. It will be displayed automatically, if needed.",
+                    "type": "image"
+                },
+                "logo.image_dialog": {
+                    "label": "Dialog Logo (Optional)",
+                    "description": "Select a logo, which will be shown in offcanvas and modal dialogs of certain header layouts.",
+                    "type": "image"
+                },
+                "logo._image_dialog_dimension": {
+                    "type": "grid",
+                    "description": "Setting just one value preserves the original proportions. The image will be resized and cropped automatically, and where possible, high resolution images will be auto-generated.",
+                    "width": "1-2",
+                    "fields": {
+                        "logo.image_dialog_width": {
+                            "label": "Width",
+                            "attrs": {
+                                "placeholder": "auto"
+                            }
+                        },
+                        "logo.image_dialog_height": {
+                            "label": "Height",
+                            "attrs": {
+                                "placeholder": "auto"
+                            }
+                        }
+                    },
+                    "show": "logo.image_dialog"
                 },
                 "site.layout": {
                     "label": "Layout",
@@ -160,7 +188,7 @@
                         "Default": "default",
                         "Small": "small",
                         "Large": "large",
-                        "XLarge": "xlarge",
+                        "X-Large": "xlarge",
                         "Expand": "expand"
                     }
                 },
@@ -195,6 +223,12 @@
                         "placeholder": "Home"
                     },
                     "enable": "site.breadcrumbs && site.breadcrumbs_show_home"
+                },
+                "site.main_section.height": {
+                    "label": "Main Section Height",
+                    "description": "On short pages, the main section can be expanded to fill the viewport. This only applies to pages which are not build with the page builder.",
+                    "text": "Expand height",
+                    "type": "checkbox"
                 }
             }
         },
@@ -202,20 +236,19 @@
             "title": "Image",
             "width": 400,
             "fields": {
-                "site.image_dimension": {
+                "site._image_dimension": {
                     "type": "grid",
                     "description": "Set the width and height in pixels (e.g. 600). Setting just one value preserves the original proportions. The image will be resized and cropped automatically.",
+                    "width": "1-2",
                     "fields": {
                         "site.image_width": {
                             "label": "Width",
-                            "width": "1-2",
                             "attrs": {
                                 "placeholder": "auto"
                             }
                         },
                         "site.image_height": {
                             "label": "Height",
-                            "width": "1-2",
                             "attrs": {
                                 "placeholder": "auto"
                             }
@@ -258,57 +291,29 @@
                         "Fixed": "fixed"
                     }
                 },
-                "site._image_parallax_bgx": {
-                    "type": "grid",
-                    "fields": {
-                        "site.image_parallax_bgx_start": {
-                            "label": "Horizontal Start",
-                            "type": "range",
-                            "attrs": {
-                                "min": -600,
-                                "max": 600,
-                                "step": 10
-                            }
-                        },
-                        "site.image_parallax_bgx_end": {
-                            "label": "Horizontal End",
-                            "type": "range",
-                            "attrs": {
-                                "min": -600,
-                                "max": 600,
-                                "step": 10
-                            }
-                        }
+                "site.image_parallax_bgx": {
+                    "text": "Translate X",
+                    "type": "parallax-stops",
+                    "attrs": {
+                        "min": -600,
+                        "max": 600,
+                        "step": 10
                     },
                     "show": "site.image_effect == 'parallax'"
                 },
-                "site._image_parallax_bgy": {
-                    "type": "grid",
-                    "fields": {
-                        "site.image_parallax_bgy_start": {
-                            "label": "Vertical Start",
-                            "type": "range",
-                            "attrs": {
-                                "min": -600,
-                                "max": 600,
-                                "step": 10
-                            }
-                        },
-                        "site.image_parallax_bgy_end": {
-                            "label": "Vertical End",
-                            "type": "range",
-                            "attrs": {
-                                "min": -600,
-                                "max": 600,
-                                "step": 10
-                            }
-                        }
+                "site.image_parallax_bgy": {
+                    "text": "Translate Y",
+                    "type": "parallax-stops",
+                    "attrs": {
+                        "min": -600,
+                        "max": 600,
+                        "step": 10
                     },
                     "show": "site.image_effect == 'parallax'"
                 },
                 "site.image_parallax_easing": {
                     "label": "Parallax Easing",
-                    "description": "Set the animation easing. Zero transitions at an even speed, a positive value starts off quickly while a negative value starts off slowly.",
+                    "description": "Set the animation easing. Zero transitions at an even speed, a negative value starts off quickly while a positive value starts off slowly.",
                     "type": "range",
                     "attrs": {
                         "min": -2,
@@ -383,6 +388,7 @@
             "fields": {
                 "header.layout": {
                     "label": "Layout",
+                    "description": "Select the layout for the <code>logo</code>, <code>navbar</code> and <code>header</code> positions. Some layouts can split or push items of a position which are shown as ellipsis.",
                     "title": "Select header layout",
                     "type": "select-img",
                     "options": {
@@ -397,6 +403,10 @@
                         "horizontal-right": {
                             "label": "Horizontal Right",
                             "src": "$ASSETS/images/header/horizontal-right.svg"
+                        },
+                        "horizontal-justify": {
+                            "label": "Horizontal Justify",
+                            "src": "$ASSETS/images/header/horizontal-justify.svg"
                         },
                         "horizontal-center-logo": {
                             "label": "Horizontal Center Logo",
@@ -414,56 +424,61 @@
                             "label": "Stacked Center C",
                             "src": "$ASSETS/images/header/stacked-center-c.svg"
                         },
-                        "stacked-center-split": {
-                            "label": "Stacked Center Split",
-                            "src": "$ASSETS/images/header/stacked-center-split.svg"
+                        "stacked-center-split-a": {
+                            "label": "Stacked Center Split A",
+                            "src": "$ASSETS/images/header/stacked-center-split-a.svg"
                         },
-                        "stacked-left-a": {
-                            "label": "Stacked Left A",
-                            "src": "$ASSETS/images/header/stacked-left-a.svg"
+                        "stacked-center-split-b": {
+                            "label": "Stacked Center Split B",
+                            "src": "$ASSETS/images/header/stacked-center-split-b.svg"
                         },
-                        "stacked-left-b": {
-                            "label": "Stacked Left B",
-                            "src": "$ASSETS/images/header/stacked-left-b.svg"
+                        "stacked-left": {
+                            "label": "Stacked Left",
+                            "src": "$ASSETS/images/header/stacked-left.svg"
                         },
-                        "offcanvas-top-a": {
-                            "label": "Offcanvas Top A",
-                            "src": "$ASSETS/images/header/offcanvas-top-a.svg"
-                        },
-                        "offcanvas-top-b": {
-                            "label": "Offcanvas Top B",
-                            "src": "$ASSETS/images/header/offcanvas-top-b.svg"
-                        },
-                        "offcanvas-center-a": {
-                            "label": "Offcanvas Center A",
-                            "src": "$ASSETS/images/header/offcanvas-center-a.svg"
-                        },
-                        "offcanvas-center-b": {
-                            "label": "Offcanvas Center B",
-                            "src": "$ASSETS/images/header/offcanvas-center-b.svg"
-                        },
-                        "modal-top-a": {
-                            "label": "Modal Top A",
-                            "src": "$ASSETS/images/header/modal-top-a.svg"
-                        },
-                        "modal-top-b": {
-                            "label": "Modal Top B",
-                            "src": "$ASSETS/images/header/modal-top-b.svg"
-                        },
-                        "modal-center-a": {
-                            "label": "Modal Center A",
-                            "src": "$ASSETS/images/header/modal-center-a.svg"
-                        },
-                        "modal-center-b": {
-                            "label": "Modal Center B",
-                            "src": "$ASSETS/images/header/modal-center-b.svg"
+                        "stacked-justify": {
+                            "label": "Stacked Justify",
+                            "src": "$ASSETS/images/header/stacked-justify.svg"
                         }
                     }
                 },
-                "header.logo_center": {
-                    "type": "checkbox",
-                    "text": "Center logo",
-                    "show": "$match(header.layout, '^offcanvas') || $match(header.layout, '^modal')"
+                "header.split_index": {
+                    "label": "Split Items",
+                    "description": "The logo is placed automatically between the items. Optionally, set the number of items after which the items are split.",
+                    "type": "select",
+                    "options": {
+                        "Auto": "",
+                        "After 1 Item": 1,
+                        "After 2 Items": 2,
+                        "After 3 Items": 3,
+                        "After 4 Items": 4,
+                        "After 5 Items": 5,
+                        "After 6 Items": 6,
+                        "After 7 Items": 7,
+                        "After 8 Items": 8,
+                        "After 9 Items": 9,
+                        "After 10 Items": 10
+                    },
+                    "show": "$match(header.layout, '^stacked-center-(split-|c)')"
+                },
+                "header.push_index": {
+                    "label": "Push Items",
+                    "description": "Set the number of items after which the following items are pushed to the right.",
+                    "type": "select",
+                    "options": {
+                        "None": "",
+                        "After 1 Item": 1,
+                        "After 2 Items": 2,
+                        "After 3 Items": 3,
+                        "After 4 Items": 4,
+                        "After 5 Items": 5,
+                        "After 6 Items": 6,
+                        "After 7 Items": 7,
+                        "After 8 Items": 8,
+                        "After 9 Items": 9,
+                        "After 10 Items": 10
+                    },
+                    "show": "$match(header.layout, '^stacked-left')"
                 },
                 "header.width": {
                     "label": "Max Width",
@@ -472,7 +487,7 @@
                         "Default": "default",
                         "Small": "small",
                         "Large": "large",
-                        "XLarge": "xlarge",
+                        "X-Large": "xlarge",
                         "Expand": "expand"
                     }
                 },
@@ -480,13 +495,12 @@
                     "description": "Set the maximum header width.",
                     "type": "checkbox",
                     "text": "Remove left logo padding",
-                    "enable": "header.width == 'expand' && !$match(header.layout, '^stacked|^horizontal-center-logo') && !(header.logo_center && ($match(header.layout, '^offcanvas|^modal')))"
+                    "enable": "header.width == 'expand' && !$match(header.layout, '^stacked|^horizontal-center-logo')"
                 },
                 "navbar.sticky": {
                     "label": "Navbar",
                     "description": "Let the navbar stick at the top of the viewport while scrolling or only when scrolling up.",
                     "type": "select",
-                    "default": 0,
                     "options": {
                         "Static": 0,
                         "Sticky": 1,
@@ -502,13 +516,6 @@
                         "Primary": "primary"
                     }
                 },
-                "navbar.items": {
-                    "label": "Navbar Items",
-                    "description": "Enter a subtitle, set the dropdown width and the number of dropdown columns for each navbar item.",
-                    "type": "button-panel",
-                    "text": "Edit Items",
-                    "panel": "navbar-items"
-                },
                 "navbar.dropdown_align": {
                     "label": "Dropdown",
                     "type": "select",
@@ -516,58 +523,136 @@
                         "Left": "left",
                         "Right": "right",
                         "Center": "center"
-                    },
-                    "show": "$match(header.layout, '^horizontal') || $match(header.layout, '^stacked')"
+                    }
                 },
-                "navbar.dropdown_boundary": {
+                "navbar.dropdown_target": {
                     "type": "checkbox",
-                    "text": "Align to navbar instead of the menu item",
-                    "show": "$match(header.layout, '^horizontal') || $match(header.layout, '^stacked')"
-                },
-                "navbar.dropdown_click": {
-                    "description": "Select the dropdown's alignment to the menu item or the navbar. If the dropdown sticks out of the viewport, it will be flipped automatically.",
-                    "type": "checkbox",
-                    "text": "Enable click mode on text items",
-                    "show": "$match(header.layout, '^horizontal') || $match(header.layout, '^stacked')"
+                    "text": "Align to navbar"
                 },
                 "navbar.dropbar": {
-                    "label": "Dropbar",
-                    "description": "The dropbar converts the classic dropdown to a full-width section. The Push option behaves the same as Slide, if a transparent overlay header is enabled or the navbar is set to sticky.",
+                    "type": "checkbox",
+                    "text": "Enable dropbar"
+                },
+                "navbar.parent_icon": {
+                    "type": "checkbox",
+                    "text": "Show parent icon"
+                },
+                "navbar.dropdown_click": {
+                    "description": "Align dropdowns to their menu item or the navbar. Optionally, show them in a full-width section called dropbar, display an icon to indicate dropdowns and let text items open by click and not hover.",
+                    "type": "checkbox",
+                    "text": "Enable click mode on text items"
+                },
+                "dialog.layout": {
+                    "label": "Dialog Layout",
+                    "description": "Select the layout for the <code>dialog</code> position. Items which can be pushed are shown as ellipsis.",
+                    "title": "Select dialog layout",
+                    "type": "select-img",
+                    "options": {
+                        "dropbar-top": {
+                            "label": "Dropbar Top",
+                            "src": "$ASSETS/images/dialog/dropbar-top.svg"
+                        },
+                        "dropbar-center": {
+                            "label": "Dropbar Center",
+                            "src": "$ASSETS/images/dialog/dropbar-center.svg"
+                        },
+                        "offcanvas-top": {
+                            "label": "Offcanvas Top",
+                            "src": "$ASSETS/images/dialog/offcanvas-top.svg"
+                        },
+                        "offcanvas-center": {
+                            "label": "Offcanvas Center",
+                            "src": "$ASSETS/images/dialog/offcanvas-center.svg"
+                        },
+                        "modal-top": {
+                            "label": "Modal Top",
+                            "src": "$ASSETS/images/dialog/modal-top.svg"
+                        },
+                        "modal-center": {
+                            "label": "Modal Center",
+                            "src": "$ASSETS/images/dialog/modal-center.svg"
+                        }
+                    }
+                },
+                "dialog.text_center": {
+                    "type": "checkbox",
+                    "text": "Center horizontally"
+                },
+                "dialog.push_index": {
+                    "label": "Dialog Push Items",
+                    "description": "Set the number of items after which the following items are pushed to the bottom.",
                     "type": "select",
                     "options": {
                         "None": "",
-                        "Slide": "slide",
-                        "Push": "push"
-                    },
-                    "show": "$match(header.layout, '^horizontal') || $match(header.layout, '^stacked')"
+                        "After 1 Item": 1,
+                        "After 2 Items": 2,
+                        "After 3 Items": 3,
+                        "After 4 Items": 4,
+                        "After 5 Items": 5,
+                        "After 6 Items": 6,
+                        "After 7 Items": 7,
+                        "After 8 Items": 8,
+                        "After 9 Items": 9,
+                        "After 10 Items": 10
+                    }
                 },
-                "navbar.toggle_text": {
-                    "label": "Menu Toggle",
-                    "type": "checkbox",
-                    "text": "Show the menu text next to the icon",
-                    "show": "$match(header.layout, '^offcanvas') || $match(header.layout, '^modal')"
-                },
-                "navbar.toggle_menu_style": {
-                    "label": "Menu Style",
+                "dialog.toggle": {
+                    "label": "Dialog Toggle",
                     "type": "select",
                     "options": {
-                        "Default": "default",
-                        "Primary": "primary"
+                        "Navbar Start": "navbar:start",
+                        "Navbar End": "navbar:end",
+                        "Header Start": "header:start",
+                        "Header End": "header:end"
+                    }
+                },
+                "dialog.toggle_text": {
+                    "type": "checkbox",
+                    "text": "Show the menu text next to the icon"
+                },
+                "dialog.dropbar.animation": {
+                    "label": "Dropbar Animation",
+                    "description": "Select the animation on how the dropbar appears below the navbar.",
+                    "type": "select",
+                    "options": {
+                        "Fade": "",
+                        "Slide Top": "reveal-top",
+                        "Slide Left": "slide-left",
+                        "Slide Right": "slide-right"
                     },
-                    "show": "$match(header.layout, '^offcanvas') || $match(header.layout, '^modal')"
+                    "show": "$match(dialog.layout, '^dropbar')"
                 },
-                "navbar.toggle_menu_divider": {
-                    "type": "checkbox",
-                    "text": "Show dividers",
-                    "show": "$match(header.layout, '^offcanvas') || $match(header.layout, '^modal')"
+                "dialog.dropbar.width": {
+                    "label": "Dropbar Width",
+                    "description": "Set the dropbar width if it slides in from the left or right.",
+                    "type": "select",
+                    "options": {
+                        "None": "",
+                        "Medium": "medium",
+                        "Large": "large",
+                        "X-Large": "xlarge",
+                        "2X-Large": "2xlarge"
+                    },
+                    "show": "$match(dialog.layout, '^dropbar')  && $match(dialog.dropbar.animation, '^slide')"
                 },
-                "navbar.toggle_menu_center": {
-                    "description": "Select the style and text alignment for the menu in the offcanvas bar or modal window.",
-                    "type": "checkbox",
-                    "text": "Center horizontally",
-                    "show": "$match(header.layout, '^offcanvas') || $match(header.layout, '^modal')"
+                "dialog.dropbar.content_width": {
+                    "label": "Dropbar Content Width",
+                    "description": "Set the width of the dropbar content.",
+                    "type": "select",
+                    "options": {
+                        "None": "",
+                        "Medium": "width-medium",
+                        "Large": "width-large",
+                        "X-Large": "width-xlarge",
+                        "2X-Large": "width-2xlarge",
+                        "Container Default": "container",
+                        "Container Small": "container-small",
+                        "Container Large": "container-large",
+                        "Container X-Large": "container-xlarge"
+                    },
+                    "show": "$match(dialog.layout, '^dropbar')"
                 },
-                "navbar.offcanvas.mode": {
+                "dialog.offcanvas.mode": {
                     "label": "Offcanvas Mode",
                     "type": "select",
                     "options": {
@@ -575,12 +660,31 @@
                         "Reveal": "reveal",
                         "Push": "push"
                     },
-                    "show": "$match(header.layout, '^offcanvas')"
+                    "show": "$match(dialog.layout, '^offcanvas')"
                 },
-                "navbar.offcanvas.overlay": {
+                "dialog.offcanvas.flip": {
+                    "type": "checkbox",
+                    "text": "Display on the right",
+                    "show": "$match(dialog.layout, '^offcanvas')"
+                },
+                "dialog.offcanvas.overlay": {
                     "type": "checkbox",
                     "text": "Overlay the site",
-                    "show": "$match(header.layout, '^offcanvas')"
+                    "show": "$match(dialog.layout, '^offcanvas')"
+                },
+                "dialog.modal.width": {
+                    "label": "Modal Width",
+                    "description": "Set the content width.",
+                    "type": "select",
+                    "options": {
+                        "None": "",
+                        "Small": "small",
+                        "Medium": "medium",
+                        "Large": "large",
+                        "X-Large": "xlarge",
+                        "2X-Large": "2xlarge"
+                    },
+                    "show": "$match(dialog.layout, '^modal')"
                 },
                 "header.search": {
                     "label": "Search",
@@ -588,8 +692,13 @@
                     "type": "select",
                     "options": {
                         "Hide": "",
-                        "Header": "header",
-                        "Navbar": "navbar"
+                        "Navbar Start": "navbar:start",
+                        "Navbar End": "navbar:end",
+                        "Header Start": "header:start",
+                        "Header End": "header:end",
+                        "Dialog Start": "dialog:start",
+                        "Dialog End": "dialog:end",
+                        "Logo End": "logo:end"
                     }
                 },
                 "header.search_style": {
@@ -600,17 +709,24 @@
                         "Default": "",
                         "Modal": "modal"
                     },
-                    "show": "$match(header.layout, '^(horizontal|stacked)')"
+                    "enable": "!$match(header.search, '^dialog')"
                 },
                 "header.social": {
                     "label": "Social Icons",
                     "type": "select",
                     "options": {
                         "Hide": "",
-                        "Toolbar Left": "toolbar-left",
-                        "Toolbar Right": "toolbar-right",
-                        "Header": "header",
-                        "Navbar": "navbar"
+                        "Toolbar Left Start": "toolbar-left:start",
+                        "Toolbar Left End": "toolbar-left:end",
+                        "Toolbar Right Start": "toolbar-right:start",
+                        "Toolbar Right End": "toolbar-right:end",
+                        "Navbar Start": "navbar:start",
+                        "Navbar End": "navbar:end",
+                        "Header Start": "header:start",
+                        "Header End": "header:end",
+                        "Dialog Start": "dialog:start",
+                        "Dialog End": "dialog:end",
+                        "Logo End": "logo:end"
                     }
                 },
                 "header.social_links": {
@@ -650,80 +766,32 @@
                 }
             }
         },
-        "navbar-items": {
-            "title": "Navbar Items",
-            "width": 400,
-            "fields": {
-                "items": {
-                    "type": "menu-items",
-                    "position": ["navbar", "header", "toolbar-left", "toolbar-right"],
-                    "fields": {
-                        "image": {
-                            "label": "Image",
-                            "description": "Select your menu item image.",
-                            "type": "image"
-                        },
-                        "image-only": {
-                            "type": "checkbox",
-                            "text": "Hide title"
-                        },
-                        "subtitle": {
-                            "label": "Subtitle",
-                            "description": "Enter a subtitle that will be displayed beneath the nav item.",
-                            "type": "text"
-                        },
-                        "columns": {
-                            "label": "Columns",
-                            "description": "Split the dropdown into columns.",
-                            "type": "select",
-                            "level": 0,
-                            "default": 1,
-                            "options": {
-                                "1": 1,
-                                "2": 2,
-                                "3": 3,
-                                "4": 4,
-                                "5": 5
-                            },
-                            "show": "$match(header.layout, '^horizontal') || $match(header.layout, '^stacked')"
-                        },
-                        "justify": {
-                            "label": "Width",
-                            "description": "The justified dropdown expands to the navbar boundary.",
-                            "type": "checkbox",
-                            "text": "Justify dropdown",
-                            "show": "$match(header.layout, '^horizontal') || $match(header.layout, '^stacked')"
-                        }
-                    }
-                }
-            }
-        },
         "social-links": {
             "title": "Social Links",
             "width": 400,
             "fields": {
-                "social_links.0": {
+                "header.social_links.0": {
                     "label": "Links",
                     "attrs": {
                         "placeholder": "https://"
                     }
                 },
-                "social_links.1": {
+                "header.social_links.1": {
                     "attrs": {
                         "placeholder": "https://"
                     }
                 },
-                "social_links.2": {
+                "header.social_links.2": {
                     "attrs": {
                         "placeholder": "https://"
                     }
                 },
-                "social_links.3": {
+                "header.social_links.3": {
                     "attrs": {
                         "placeholder": "https://"
                     }
                 },
-                "social_links.4": {
+                "header.social_links.4": {
                     "description": "Enter up to 5 links to your social profiles. A corresponding <a href=\"https://getuikit.com/docs/icon\" target=\"_blank\">UIkit brand icon</a> will be displayed automatically, if available. Links to email addresses and phone numbers, like mailto:info@example.com or tel:+491570156, are also supported.",
                     "attrs": {
                         "placeholder": "https://"
@@ -736,16 +804,52 @@
             "width": 400,
             "fields": {
                 "mobile.breakpoint": {
-                    "label": "Breakpoint",
-                    "description": "Select the device size that will replace the default header with the mobile header.",
+                    "label": "Visibility",
+                    "description": "Select the device size where the default header will be replaced by the mobile header.",
                     "type": "select",
                     "options": {
+                        "None": "",
                         "Small": "s",
                         "Medium": "m",
                         "Large": "l"
                     }
                 },
-                "mobile.sticky": {
+                "mobile.header.layout": {
+                    "label": "Layout",
+                    "description": "Select the layout for the <code>logo-mobile</code>, <code>navbar-mobile</code> and <code>header-mobile</code> positions.",
+                    "title": "Select mobile header layout",
+                    "type": "select-img",
+                    "options": {
+                        "horizontal-left": {
+                            "label": "Horizontal Left",
+                            "src": "$ASSETS/images/mobile-header/horizontal-left.svg"
+                        },
+                        "horizontal-center": {
+                            "label": "Horizontal Center",
+                            "src": "$ASSETS/images/mobile-header/horizontal-center.svg"
+                        },
+                        "horizontal-right": {
+                            "label": "Horizontal Right",
+                            "src": "$ASSETS/images/mobile-header/horizontal-right.svg"
+                        },
+                        "horizontal-center-logo": {
+                            "label": "Horizontal Center Logo",
+                            "src": "$ASSETS/images/mobile-header/horizontal-center-logo.svg"
+                        }
+                    },
+                    "show": "mobile.breakpoint"
+                },
+                "mobile.header.transparent": {
+                    "type": "checkbox",
+                    "text": "Enable transparent header",
+                    "show": "mobile.breakpoint"
+                },
+                "mobile.header.logo_padding_remove": {
+                    "type": "checkbox",
+                    "text": "Remove left logo padding",
+                    "show": "mobile.breakpoint && mobile.header.layout != 'horizontal-center-logo'"
+                },
+                "mobile.navbar.sticky": {
                     "label": "Navbar",
                     "description": "Let the navbar stick at the top of the viewport while scrolling or only when scrolling up.",
                     "type": "select",
@@ -753,80 +857,88 @@
                         "Static": 0,
                         "Sticky": 1,
                         "Sticky on scroll up": 2
-                    }
+                    },
+                    "show": "mobile.breakpoint"
                 },
-                "mobile.logo": {
-                    "label": "Logo",
-                    "type": "select",
+                "mobile.dialog.layout": {
+                    "label": "Dialog Layout",
+                    "description": "Select the layout for the <code>dialog-mobile</code> position. Pushed items of the position are shown as ellipsis.",
+                    "title": "Select mobile dialog layout",
+                    "type": "select-img",
                     "options": {
-                        "Hide": "",
-                        "Left": "left",
-                        "Center": "center",
-                        "Right": "right"
-                    }
+                        "dropbar-top": {
+                            "label": "Dropbar Top",
+                            "src": "$ASSETS/images/mobile-dialog/dropbar-top.svg"
+                        },
+                        "dropbar-center": {
+                            "label": "Dropbar Center",
+                            "src": "$ASSETS/images/mobile-dialog/dropbar-center.svg"
+                        },
+                        "offcanvas-top": {
+                            "label": "Offcanvas Top",
+                            "src": "$ASSETS/images/mobile-dialog/offcanvas-top.svg"
+                        },
+                        "offcanvas-center": {
+                            "label": "Offcanvas Center",
+                            "src": "$ASSETS/images/mobile-dialog/offcanvas-center.svg"
+                        },
+                        "modal-top": {
+                            "label": "Modal Top",
+                            "src": "$ASSETS/images/mobile-dialog/modal-top.svg"
+                        },
+                        "modal-center": {
+                            "label": "Modal Center",
+                            "src": "$ASSETS/images/mobile-dialog/modal-center.svg"
+                        }
+                    },
+                    "show": "mobile.breakpoint"
                 },
-                "mobile.logo_padding_remove": {
+                "mobile.dialog.text_center": {
                     "type": "checkbox",
-                    "text": "Remove logo padding",
-                    "show": "mobile.logo == 'left' || mobile.logo == 'right'"
+                    "text": "Center horizontally",
+                    "show": "mobile.breakpoint"
                 },
-                "mobile.logo_description": {
-                    "description": "Select the alignment of the logo.",
-                    "type": "description"
-                },
-                "mobile.toggle": {
-                    "label": "Menu Toggle",
-                    "type": "select",
-                    "options": {
-                        "Hide": "",
-                        "Left": "left",
-                        "Right": "right"
-                    }
-                },
-                "mobile.toggle_text": {
-                    "description": "Select the alignment of the menu toggle icon. The toggle will only show up, if content is published in the mobile position.",
-                    "type": "checkbox",
-                    "text": "Show the menu text next to the icon",
-                    "show": "mobile.toggle"
-                },
-                "mobile.menu_style": {
-                    "label": "Menu Style",
-                    "type": "select",
-                    "options": {
-                        "Default": "default",
-                        "Primary": "primary"
-                    }
-                },
-                "mobile.menu_divider": {
-                    "type": "checkbox",
-                    "text": "Show dividers"
-                },
-                "mobile.menu_center": {
-                    "description": "Select the navigation style and text alignment.",
-                    "type": "checkbox",
-                    "text": "Center horizontally"
-                },
-                "mobile.animation": {
-                    "label": "Menu Animation",
-                    "description": "Select the menu type displayed in the mobile position.",
-                    "type": "select",
-                    "options": {
-                        "Offcanvas": "offcanvas",
-                        "Modal": "modal",
-                        "Dropdown": "dropdown"
-                    }
-                },
-                "mobile.close_button": {
+                "mobile.dialog.close": {
                     "type": "checkbox",
                     "text": "Show close button",
-                    "show": "mobile.animation == 'offcanvas' || mobile.animation == 'modal'"
+                    "show": "mobile.breakpoint && $match(mobile.dialog.layout, '^offcanvas|^modal')"
                 },
-                "mobile.menu_center_vertical": {
+                "mobile.dialog.push_index": {
+                    "label": "Dialog Push Items",
+                    "description": "Set the number of items after which the following items are pushed to the bottom.",
+                    "type": "select",
+                    "options": {
+                        "None": "",
+                        "After 1 Item": 1,
+                        "After 2 Items": 2,
+                        "After 3 Items": 3,
+                        "After 4 Items": 4,
+                        "After 5 Items": 5,
+                        "After 6 Items": 6,
+                        "After 7 Items": 7,
+                        "After 8 Items": 8,
+                        "After 9 Items": 9,
+                        "After 10 Items": 10
+                    },
+                    "show": "mobile.breakpoint"
+                },
+                "mobile.dialog.toggle": {
+                    "label": "Dialog Toggle",
+                    "type": "select",
+                    "options": {
+                        "Navbar Start": "navbar-mobile:start",
+                        "Navbar End": "navbar-mobile:end",
+                        "Header Start": "header-mobile:start",
+                        "Header End": "header-mobile:end"
+                    },
+                    "show": "mobile.breakpoint"
+                },
+                "mobile.dialog.toggle_text": {
                     "type": "checkbox",
-                    "text": "Center vertically",
-                    "show": "mobile.animation == 'offcanvas' || mobile.animation == 'modal'"
+                    "text": "Show the menu text next to the icon",
+                    "show": "mobile.breakpoint"
                 },
-                "mobile.offcanvas.mode": {
+                "mobile.dialog.offcanvas.mode": {
                     "label": "Offcanvas Mode",
                     "type": "select",
                     "options": {
@@ -834,22 +946,324 @@
                         "Reveal": "reveal",
                         "Push": "push"
                     },
-                    "show": "mobile.animation == 'offcanvas'"
+                    "show": "mobile.breakpoint && $match(mobile.dialog.layout, '^offcanvas')"
                 },
-                "mobile.offcanvas.flip": {
+                "mobile.dialog.offcanvas.flip": {
                     "type": "checkbox",
                     "text": "Display on the right",
-                    "show": "mobile.animation == 'offcanvas'"
+                    "show": "mobile.breakpoint && $match(mobile.dialog.layout, '^offcanvas')"
                 },
-                "mobile.dropdown": {
-                    "label": "Dropdown Animation",
+                "mobile.dialog.modal.width": {
+                    "label": "Modal Width",
+                    "description": "Set the content width.",
                     "type": "select",
-                    "default": "slide",
                     "options": {
-                        "Slide": "slide",
-                        "Push": "push"
+                        "None": "",
+                        "Small": "small",
+                        "Medium": "medium",
+                        "Large": "large",
+                        "X-Large": "xlarge",
+                        "2X-Large": "2xlarge"
                     },
-                    "show": "mobile.animation == 'dropdown'"
+                    "show": "mobile.breakpoint && $match(mobile.dialog.layout, '^modal')"
+                },
+                "mobile.dialog.dropbar.animation": {
+                    "label": "Dropbar Animation",
+                    "description": "Select the animation on how the dropbar appears below the navbar.",
+                    "type": "select",
+                    "options": {
+                        "Fade": "",
+                        "Slide Top": "reveal-top",
+                        "Slide Left": "slide-left",
+                        "Slide Right": "slide-right"
+                    },
+                    "show": "mobile.breakpoint && $match(mobile.dialog.layout, '^dropbar')"
+                },
+                "mobile.header.search": {
+                    "label": "Search",
+                    "description": "Select the position that will display the search.",
+                    "type": "select",
+                    "options": {
+                        "Hide": "",
+                        "Navbar Start": "navbar-mobile:start",
+                        "Navbar End": "navbar-mobile:end",
+                        "Header Start": "header-mobile:start",
+                        "Header End": "header-mobile:end",
+                        "Dialog Start": "dialog-mobile:start",
+                        "Dialog End": "dialog-mobile:end",
+                        "Logo End": "logo-mobile:end"
+                    },
+                    "show": "mobile.breakpoint"
+                },
+                "mobile.header.search_style": {
+                    "label": "Search Style",
+                    "description": "Select the search style.",
+                    "type": "select",
+                    "options": {
+                        "Default": "",
+                        "Modal": "modal"
+                    },
+                    "show": "mobile.breakpoint",
+                    "enable": "!$match(mobile.header.search, '^dialog')"
+                },
+                "mobile.header.social": {
+                    "label": "Social Icons",
+                    "type": "select",
+                    "options": {
+                        "Hide": "",
+                        "Navbar Start": "navbar-mobile:start",
+                        "Navbar End": "navbar-mobile:end",
+                        "Header Start": "header-mobile:start",
+                        "Header End": "header-mobile:end",
+                        "Dialog Start": "dialog-mobile:start",
+                        "Dialog End": "dialog-mobile:end",
+                        "Logo End": "logo-mobile:end"
+                    },
+                    "show": "mobile.breakpoint"
+                },
+                "mobile.header.social_links": {
+                    "type": "button-panel",
+                    "text": "Edit Links",
+                    "panel": "mobile.social-links",
+                    "show": "mobile.breakpoint"
+                },
+                "mobile.header.social_target": {
+                    "type": "checkbox",
+                    "text": "Open in a new window",
+                    "show": "mobile.breakpoint"
+                },
+                "mobile.header.social_style": {
+                    "type": "checkbox",
+                    "text": "Display icons as buttons",
+                    "description": "Select the position that will display the social icons. Be sure to add your social profile links or no icons can be displayed.",
+                    "show": "mobile.breakpoint"
+                },
+                "mobile.header.social_width": {
+                    "label": "Social Icons Size",
+                    "description": "Set the icon width.",
+                    "attrs": {
+                        "placeholder": "20"
+                    },
+                    "show": "mobile.breakpoint && mobile.header.social"
+                },
+                "mobile.header.social_gap": {
+                    "label": "Social Icons Gap",
+                    "description": "Set the size of the gap between the social icons.",
+                    "type": "select",
+                    "options": {
+                        "Small": "small",
+                        "Medium": "medium",
+                        "Default": "",
+                        "Large": "large",
+                        "None": "collapse"
+                    },
+                    "show": "mobile.breakpoint && mobile.header.social"
+                }
+            }
+        },
+        "mobile.social-links": {
+            "title": "Social Links",
+            "width": 400,
+            "fields": {
+                "mobile.header.social_links.0": {
+                    "label": "Links",
+                    "attrs": {
+                        "placeholder": "https://"
+                    }
+                },
+                "mobile.header.social_links.1": {
+                    "attrs": {
+                        "placeholder": "https://"
+                    }
+                },
+                "mobile.header.social_links.2": {
+                    "attrs": {
+                        "placeholder": "https://"
+                    }
+                },
+                "mobile.header.social_links.3": {
+                    "attrs": {
+                        "placeholder": "https://"
+                    }
+                },
+                "mobile.header.social_links.4": {
+                    "description": "Enter up to 5 links to your social profiles. A corresponding <a href=\"https://getuikit.com/docs/icon\" target=\"_blank\">UIkit brand icon</a> will be displayed automatically, if available. Links to email addresses and phone numbers, like mailto:info@example.com or tel:+491570156, are also supported.",
+                    "attrs": {
+                        "placeholder": "https://"
+                    }
+                }
+            }
+        },
+        "menu-item": {
+            "title": "Menu Item",
+            "width": 400,
+            "fields": {
+                "image": {
+                    "label": "Image",
+                    "type": "image",
+                    "enable": "!icon"
+                },
+                "icon": {
+                    "label": "Icon",
+                    "description": "Instead of using a custom image, you can click on the pencil to pick an icon from the icon library.",
+                    "type": "icon",
+                    "enable": "!image"
+                },
+                "image_only": {
+                    "label": "Image and Title",
+                    "description": "Only show the image or icon.",
+                    "type": "checkbox",
+                    "text": "Hide title",
+                    "enable": "image || icon"
+                },
+                "subtitle": {
+                    "label": "Subtitle",
+                    "description": "Enter a subtitle that will be displayed beneath the nav item.",
+                    "type": "text",
+                    "enable": "!((image || icon) && image_only)"
+                },
+                "dropdown.columns": {
+                    "label": "Dropdown Columns",
+                    "description": "Split the dropdown into columns.",
+                    "type": "select",
+                    "default": 1,
+                    "options": {
+                        "1 Column": 1,
+                        "2 Columns": 2,
+                        "3 Columns": 3,
+                        "4 Columns": 4,
+                        "5 Columns": 5
+                    },
+                    "show": "this.panel.item.level == 0 && !content"
+                },
+                "dropdown.stretch": {
+                    "label": "Dropdown Stretch",
+                    "description": "Stretch the dropdown to the width of the navbar or the navbar container.",
+                    "type": "select",
+                    "options": {
+                        "None": "",
+                        "Navbar": "navbar",
+                        "Navbar Container": "navbar-container"
+                    },
+                    "show": "this.panel.item.level == 0"
+                },
+                "dropdown.width": {
+                    "label": "Dropdown Width",
+                    "description": "Set the dropdown width in pixels (e.g. 600).",
+                    "show": "this.panel.item.level == 0",
+                    "enable": "!dropdown.justify"
+                },
+                "dropdown.size": {
+                    "label": "Dropdown Padding",
+                    "type": "checkbox",
+                    "text": "Large padding",
+                    "show": "this.panel.item.level == 0"
+                },
+                "dropdown.padding_remove_horizontal": {
+                    "type": "checkbox",
+                    "text": "Remove horizontal padding",
+                    "show": "this.panel.item.level == 0 && content"
+                },
+                "dropdown.padding_remove_vertical": {
+                    "type": "checkbox",
+                    "text": "Remove vertical padding",
+                    "show": "this.panel.item.level == 0 && content"
+                },
+                "dropdown.align": {
+                    "label": "Dropdown Alignment",
+                    "type": "select",
+                    "options": {
+                        "Default": "",
+                        "Left": "left",
+                        "Right": "right",
+                        "Center": "center"
+                    },
+                    "show": "this.panel.item.level == 0",
+                    "enable": "!dropdown.justify"
+                },
+                "dropdown.nav_style": {
+                    "label": "Dropdown Nav Style",
+                    "description": "Select the nav style.",
+                    "type": "select",
+                    "options": {
+                        "Default": "",
+                        "Secondary": "secondary"
+                    },
+                    "show": "this.panel.item.level == 0 && !content"
+                }
+            }
+        },
+        "menu-position": {
+            "title": "Position",
+            "width": 400,
+            "fields": {
+                "type": {
+                    "label": "Type",
+                    "type": "select",
+                    "options": {
+                        "Default": "",
+                        "Nav": "nav",
+                        "Subnav": "subnav",
+                        "Iconnav": "iconnav"
+                    }
+                },
+                "divider": {
+                    "description": "Select an alternative menu type and show optional dividers between nav or subnav items.",
+                    "type": "checkbox",
+                    "text": "Show dividers"
+                },
+                "style": {
+                    "label": "Style",
+                    "description": "Select the nav style.",
+                    "type": "select",
+                    "options": {
+                        "Default": "default",
+                        "Primary": "primary",
+                        "Secondary": "secondary"
+                    },
+                    "show": "$match(this.panel.position, '^dialog')"
+                },
+                "_image_dimensions": {
+                    "type": "grid",
+                    "description": "Setting just one value preserves the original proportions. The image will be resized and cropped automatically, and where possible, high resolution images will be auto-generated.",
+                    "width": "1-2",
+                    "fields": {
+                        "image_width": {
+                            "label": "Image Width",
+                            "attrs": {
+                                "placeholder": "auto"
+                            }
+                        },
+                        "image_height": {
+                            "label": "Image Height",
+                            "attrs": {
+                                "placeholder": "auto"
+                            }
+                        }
+                    }
+                },
+                "image_svg_inline": {
+                    "label": "Inline SVG",
+                    "description": "Inject SVG images into the markup so they adopt the text color automatically.",
+                    "type": "checkbox",
+                    "text": "Make SVG stylable with CSS"
+                },
+                "icon_width": {
+                    "label": "Icon Width",
+                    "description": "Set the icon width."
+                },
+                "image_margin": {
+                    "label": "Image and Title",
+                    "type": "checkbox",
+                    "text": "Add margin between"
+                },
+                "image_align": {
+                    "label": "Image Align",
+                    "type": "select",
+                    "options": {
+                        "Top": "top",
+                        "Center": "center"
+                    }
                 }
             }
         },
@@ -888,14 +1302,14 @@
                     "type": "button-panel",
                     "text": "Edit Settings",
                     "panel": "top-media",
-                    "show": "(top.image || top.video)"
+                    "show": "top.image || top.video"
                 },
                 "top.preserve_color": {
                     "label": "Text Color",
                     "description": "Disable automatic text recoloring, for example when you use cards inside sections.",
                     "type": "checkbox",
                     "text": "Preserve color",
-                    "show": "top.style == 'primary' || top.style == 'secondary'"
+                    "show": "$match(top.style, 'primary|secondary')"
                 },
                 "top.text_color": {
                     "label": "Text Color",
@@ -906,7 +1320,7 @@
                         "Light": "light",
                         "Dark": "dark"
                     },
-                    "show": "top.style != 'primary' && top.style != 'secondary' && (top.image || top.video)"
+                    "show": "!$match(top.style, 'primary|secondary') && (top.image || top.video)"
                 },
                 "top.width": {
                     "label": "Max Width",
@@ -916,7 +1330,7 @@
                         "Default": "default",
                         "Small": "small",
                         "Large": "large",
-                        "XLarge": "xlarge",
+                        "X-Large": "xlarge",
                         "Expand": "expand",
                         "None": ""
                     }
@@ -1011,7 +1425,7 @@
                         "Middle": "middle",
                         "Bottom": "bottom"
                     },
-                    "show": "top.height == 'full' || height == 'percent' || height == 'section'"
+                    "show": "$match(top.height, 'full|percent|section')"
                 },
                 "top.match": {
                     "label": "Panels",
@@ -1036,20 +1450,19 @@
             "title": "Image/Video",
             "width": 400,
             "fields": {
-                "top.image_dimension": {
+                "top._image_dimension": {
                     "type": "grid",
                     "description": "Set the width and height in pixels (e.g. 600). Setting just one value preserves the original proportions. The image will be resized and cropped automatically.",
+                    "width": "1-2",
                     "fields": {
                         "top.image_width": {
                             "label": "Width",
-                            "width": "1-2",
                             "attrs": {
                                 "placeholder": "auto"
                             }
                         },
                         "top.image_height": {
                             "label": "Height",
-                            "width": "1-2",
                             "attrs": {
                                 "placeholder": "auto"
                             }
@@ -1104,19 +1517,16 @@
                     },
                     "show": "top.image && !top.video"
                 },
-                "top.video_dimension": {
+                "top._video_dimension": {
                     "type": "grid",
                     "description": "Set the video dimensions.",
+                    "width": "1-2",
                     "fields": {
                         "video_width": {
-                            "label": "Width",
-                            "default": "",
-                            "width": "1-2"
+                            "label": "Width"
                         },
                         "video_height": {
-                            "label": "Height",
-                            "default": "",
-                            "width": "1-2"
+                            "label": "Height"
                         }
                     },
                     "show": "top.video && !top.image"
@@ -1240,14 +1650,14 @@
                     "type": "button-panel",
                     "text": "Edit Settings",
                     "panel": "bottom-media",
-                    "show": "(bottom.image || bottom.video)"
+                    "show": "bottom.image || bottom.video"
                 },
                 "bottom.preserve_color": {
                     "label": "Text Color",
                     "description": "Disable automatic text recoloring, for example when you use cards inside sections.",
                     "type": "checkbox",
                     "text": "Preserve color",
-                    "show": "bottom.style == 'primary' || bottom.style == 'secondary'"
+                    "show": "$match(bottom.style, 'primary|secondary')"
                 },
                 "bottom.text_color": {
                     "label": "Text Color",
@@ -1258,7 +1668,7 @@
                         "Light": "light",
                         "Dark": "dark"
                     },
-                    "show": "bottom.style != 'primary' && bottom.style != 'secondary' && (bottom.image || bottom.video)"
+                    "show": "!$match(bottom.style, 'primary|secondary') && (bottom.image || bottom.video)"
                 },
                 "bottom.width": {
                     "label": "Max Width",
@@ -1268,7 +1678,7 @@
                         "Default": "default",
                         "Small": "small",
                         "Large": "large",
-                        "XLarge": "xlarge",
+                        "X-Large": "xlarge",
                         "Expand": "expand",
                         "None": ""
                     }
@@ -1348,7 +1758,7 @@
                         "Middle": "middle",
                         "Bottom": "bottom"
                     },
-                    "show": "bottom.height == 'full' || height == 'percent' || height == 'section'"
+                    "show": "$match(bottom.height, 'full|percent|section')"
                 },
                 "bottom.match": {
                     "label": "Panels",
@@ -1373,20 +1783,19 @@
             "title": "Image/Video",
             "width": 400,
             "fields": {
-                "bottom.image_dimension": {
+                "bottom._image_dimension": {
                     "type": "grid",
                     "description": "Set the width and height in pixels (e.g. 600). Setting just one value preserves the original proportions. The image will be resized and cropped automatically.",
+                    "width": "1-2",
                     "fields": {
                         "bottom.image_width": {
                             "label": "Width",
-                            "width": "1-2",
                             "attrs": {
                                 "placeholder": "auto"
                             }
                         },
                         "bottom.image_height": {
                             "label": "Height",
-                            "width": "1-2",
                             "attrs": {
                                 "placeholder": "auto"
                             }
@@ -1441,19 +1850,16 @@
                     },
                     "show": "bottom.image && !bottom.video"
                 },
-                "bottom.video_dimension": {
+                "bottom._video_dimension": {
                     "type": "grid",
                     "description": "Set the video dimensions.",
+                    "width": "1-2",
                     "fields": {
                         "video_width": {
-                            "label": "Width",
-                            "default": "",
-                            "width": "1-2"
+                            "label": "Width"
                         },
                         "video_height": {
-                            "label": "Height",
-                            "default": "",
-                            "width": "1-2"
+                            "label": "Height"
                         }
                     },
                     "show": "bottom.video && !bottom.image"

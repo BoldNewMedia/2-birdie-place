@@ -43,14 +43,16 @@
  * Fix Search Icon for Awesomplete
  */
 
- .uk-search-default .uk-search-icon:not(.uk-search-icon-flip) ~ .awesomplete > .uk-search-input { padding-left: (@search-default-icon-width); }
- .uk-search-default .uk-search-icon-flip ~ .awesomplete > .uk-search-input { padding-right: (@search-default-icon-width); }
+.uk-search-default .awesomplete { display: block; }
 
- .uk-search-navbar .uk-search-icon:not(.uk-search-icon-flip) ~ .awesomplete > .uk-search-input { padding-left: (@search-navbar-icon-width); }
- .uk-search-navbar .uk-search-icon-flip ~ .awesomplete > .uk-search-input { padding-right: (@search-navbar-icon-width); }
+.uk-search-default .uk-search-icon:not(.uk-search-icon-flip) ~ .awesomplete > .uk-search-input { padding-left: (@search-default-icon-width + @search-default-icon-padding); }
+.uk-search-default .uk-search-icon-flip ~ .awesomplete > .uk-search-input { padding-right: (@search-default-icon-width + @search-default-icon-padding); }
 
- .uk-search-large .uk-search-icon:not(.uk-search-icon-flip) ~ .awesomplete > .uk-search-input { padding-left: (@search-large-icon-width); }
- .uk-search-large .uk-search-icon-flip ~ .awesomplete > .uk-search-input { padding-right: (@search-large-icon-width); }
+.uk-search-navbar .uk-search-icon:not(.uk-search-icon-flip) ~ .awesomplete > .uk-search-input { padding-left: (@search-navbar-icon-width + @search-navbar-icon-padding); }
+.uk-search-navbar .uk-search-icon-flip ~ .awesomplete > .uk-search-input { padding-right: (@search-navbar-icon-width + @search-navbar-icon-padding); }
+
+.uk-search-large .uk-search-icon:not(.uk-search-icon-flip) ~ .awesomplete > .uk-search-input { padding-left: (@search-large-icon-width + @search-large-icon-padding); }
+.uk-search-large .uk-search-icon-flip ~ .awesomplete > .uk-search-input { padding-right: (@search-large-icon-width + @search-large-icon-padding); }
 
 //
 // Hook
@@ -94,7 +96,7 @@
     // Tooltip (Front-end Editing)
     //
 
-    [role='tooltip']:not(.show) {
+    [role='tooltip']:not(.uk-tooltip):not(.show) {
         right: ~'calc(15px + @{tooltip-margin})';
         min-width: max-content;
         // UIkit
@@ -118,18 +120,18 @@
         }
     }
 
-    :focus + [role='tooltip'],
-    :hover + [role='tooltip'] { display: block; }
+    :focus + [role='tooltip']:not(.uk-tooltip),
+    :hover + [role='tooltip']:not(.uk-tooltip) { display: block; }
 
-    [role='tooltip'] + * { margin-top: 0 !important; }
+    [role='tooltip']:not(.uk-tooltip) + * { margin-top: 0 !important; }
 
     [aria-describedby^="editarticle-"],
     [aria-describedby^="editcontact-"] { position: relative; }
 
-    [aria-describedby^="editarticle-"]:focus > [role='tooltip'],
-    [aria-describedby^="editarticle-"]:hover > [role='tooltip'],
-    [aria-describedby^="editcontact-"]:focus > [role='tooltip'],
-    [aria-describedby^="editcontact-"]:hover > [role='tooltip'] { display: block; }
+    [aria-describedby^="editarticle-"]:focus > [role='tooltip']:not(.uk-tooltip),
+    [aria-describedby^="editarticle-"]:hover > [role='tooltip']:not(.uk-tooltip),
+    [aria-describedby^="editcontact-"]:focus > [role='tooltip']:not(.uk-tooltip),
+    [aria-describedby^="editcontact-"]:hover > [role='tooltip']:not(.uk-tooltip) { display: block; }
 
     //
     // Front-end Editing (Tabs)
@@ -377,6 +379,8 @@
     // Front-end Editing (Modal)
     //
 
+    .modal-open .tm-page { z-index: auto; }
+
     .modal iframe { width: 100%; }
 
     .jviewport-height {
@@ -415,5 +419,14 @@
 
     .editor-xtd-buttons { margin-bottom: -0.25em; }
     .editor-xtd-buttons > .btn { margin-bottom: 0.25em; }
+
+    //
+    // Utility
+    //
+
+    .hidden {
+        display: none;
+        visibility: hidden;
+    }
 
 }

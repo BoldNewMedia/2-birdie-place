@@ -47,9 +47,9 @@ $imagetpl = function ($attr) use ($image, $params) {
     $height = $params['image_height'];
 
     $attrs = [
-        'uk-img' => true,
+        'loading' => 'lazy',
         'alt' => $image->attrs['alt'],
-        'class' => $image->attrs['class']
+        'class' => $image->attrs['class'],
     ];
 
     if ($this->isImage($image->attrs['src']) == 'svg') {
@@ -74,7 +74,7 @@ $imagetpl = function ($attr) use ($image, $params) {
 
 ?>
 
-<article id="article-<?= $article->id ?>" class="uk-article"<?= $this->attrs(['data-permalink' => $permalink]) ?> typeof="Article">
+<article id="article-<?= $article->id ?>" class="uk-article"<?= $this->attrs(['data-permalink' => $permalink]) ?> typeof="Article" vocab="https://schema.org/">
 
     <meta property="name" content="<?= $this->e(strip_tags($title)) ?>">
     <meta property="author" typeof="Person" content="<?= $this->e($article->author) ?>">

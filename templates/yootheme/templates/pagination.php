@@ -2,13 +2,16 @@
 
 use Joomla\CMS\Language\Text;
 
+// Config
+$blog = '~theme.blog';
+
 ?>
 
 <?php if ($pagination->pagesTotal > 1) : ?>
 
-    <?php if ($config('~theme.blog.navigation') == 'pagination') : ?>
+    <?php if ($config("$blog.navigation") == 'pagination') : ?>
         <?= $pagination->getPagesLinks() ?>
-    <?php elseif ($config('~theme.blog.navigation') == 'previous/next') : ?>
+    <?php elseif ($config("$blog.navigation") == 'previous/next') : ?>
         <ul class="uk-pagination uk-margin-large">
 
             <?php if ($prevlink = $pagination->getData()->previous->link) : ?>

@@ -9,7 +9,7 @@ interface Metadata
     /**
      * Gets all metadata tags.
      *
-     * @param array $names
+     * @param string $names
      *
      * @return MetadataObject[]
      */

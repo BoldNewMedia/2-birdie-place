@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.1" type="plugin" group="installer" method="upgrade">
     <name>Installer - YOOtheme</name>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <description>PLG_INSTALLER_YOOTHEME_DESCRIPTION</description>
     <creationDate>Oktober 2021</creationDate>
     <copyright>Copyright (C) YOOtheme GmbH</copyright>

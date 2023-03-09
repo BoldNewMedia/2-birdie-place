@@ -13,7 +13,7 @@ use YOOtheme\GraphQL\Utils\Introspection;
 class Source extends SchemaBuilder
 {
     /**
-     * @var Schema
+     * @var Schema|null
      */
     protected $schema;
 
@@ -91,7 +91,7 @@ class Source extends SchemaBuilder
             'resolve' => function ($type) {
                 return Event::emit(
                     'source.type.metadata|filter',
-                    isset($type->config['metadata']) ? $type->config['metadata'] : null,
+                    $type->config['metadata'] ?? null,
                     $type
                 );
             },

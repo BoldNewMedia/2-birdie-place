@@ -1,18 +1,19 @@
 <?php
+
+declare(strict_types=1);
+
 namespace YOOtheme\GraphQL\Validator\Rules;
 
 use YOOtheme\GraphQL\Error\Error;
+use YOOtheme\GraphQL\Language\AST\NameNode;
 use YOOtheme\GraphQL\Language\AST\NodeKind;
 use YOOtheme\GraphQL\Language\AST\VariableDefinitionNode;
 use YOOtheme\GraphQL\Validator\ValidationContext;
+use function sprintf;
 
-class UniqueVariableNames extends AbstractValidationRule
+class UniqueVariableNames extends ValidationRule
 {
-    static function duplicateVariableMessage($variableName)
-    {
-        return "There can be only one variable named \"$variableName\".";
-    }
-
+    /** @var NameNode[] */
     public $knownVariableNames;
 
     public function getVisitor(ValidationContext $context)
@@ -20,20 +21,25 @@ class UniqueVariableNames extends AbstractValidationRule
         $this->knownVariableNames = [];
 
         return [
-            NodeKind::OPERATION_DEFINITION => function() {
+            NodeKind::OPERATION_DEFINITION => function () : void {
                 $this->knownVariableNames = [];
             },
-            NodeKind::VARIABLE_DEFINITION => function(VariableDefinitionNode $node) use ($context) {
+            NodeKind::VARIABLE_DEFINITION  => function (VariableDefinitionNode $node) use ($context) : void {
                 $variableName = $node->variable->name->value;
-                if (!empty($this->knownVariableNames[$variableName])) {
+                if (! isset($this->knownVariableNames[$variableName])) {
+                    $this->knownVariableNames[$variableName] = $node->variable->name;
+                } else {
                     $context->reportError(new Error(
                         self::duplicateVariableMessage($variableName),
-                        [ $this->knownVariableNames[$variableName], $node->variable->name ]
+                        [$this->knownVariableNames[$variableName], $node->variable->name]
                     ));
-                } else {
-                    $this->knownVariableNames[$variableName] = $node->variable->name;
                 }
-            }
+            },
         ];
+    }
+
+    public static function duplicateVariableMessage($variableName)
+    {
+        return sprintf('There can be only one variable named "%s".', $variableName);
     }
 }

@@ -5,7 +5,7 @@ namespace YOOtheme;
 abstract class Event
 {
     /**
-     * @var EventDispatcher
+     * @var EventDispatcher|null
      */
     protected static $dispatcher;
 

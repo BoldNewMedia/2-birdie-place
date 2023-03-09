@@ -4,15 +4,15 @@ namespace YOOtheme;
 
 return [
     'updates' => [
+        '2.8.0-beta.0.3' => function ($node) {
+            Arr::del($node->props, 'gap');
+        },
         '2.4.14.1' => function ($node) {
-            if (!empty($node->props['gap'])) {
-                $node->props['grid_gap'] = $node->props['gap'];
-                unset($node->props['gap']);
-            }
+            Arr::updateKeys($node->props, ['gap' => 'grid_gap']);
         },
 
         '2.2.0-beta.0.1' => function ($node) {
-            $props = (array) (isset($node->source->props) ? $node->source->props : []);
+            $props = (array) ($node->source->props ?? []);
 
             for ($i = 1; $i <= 5; $i++) {
                 if (!empty($props["link_{$i}"])) {
@@ -57,17 +57,11 @@ return [
         },
 
         '1.22.0-beta.0.1' => function ($node) {
-            if (isset($node->props['gutter'])) {
-                $node->props['gap'] = $node->props['gutter'];
-                unset($node->props['gutter']);
-            }
+            Arr::updateKeys($node->props, ['gutter' => 'gap']);
         },
 
         '1.20.0-beta.4' => function ($node) {
-            if (isset($node->props['maxwidth_align'])) {
-                $node->props['block_align'] = $node->props['maxwidth_align'];
-                unset($node->props['maxwidth_align']);
-            }
+            Arr::updateKeys($node->props, ['maxwidth_align' => 'block_align']);
         },
     ],
 ];

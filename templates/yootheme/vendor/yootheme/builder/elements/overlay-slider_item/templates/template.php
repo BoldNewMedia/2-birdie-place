@@ -64,28 +64,25 @@ $helper_condition_toggle = ($props['text_color_hover'] || $element['text_color_h
 
 if ($helper_condition_color || $helper_condition_toggle) {
 
+    $color = $props['text_color'] ?: $element['text_color'];
+    $inverse = $color === 'light' ? 'dark' : 'light';
+
     $helper = $this->el('div', [
 
         'class' => [
             // Needed to match helper `dìv` height because image covers if height is set to viewport or if width is set to auto
             'uk-grid-item-match' => ($element['slider_width'] && $element['slider_height']) || !$element['slider_width'],
             // Needs to be parent of `uk-light` or `uk-dark`
-            'uk-{0}' => $helper_condition_color
-                ? ($props['text_color'] ?: $element['text_color'])
-                : false,
+            'uk-{0}' => $helper_condition_color ? $color : false,
         ],
 
     ]);
 
     // Needs to be on anchor to have just one focusable toggle when using keyboard navigation
-    $el->attr([
-
+    if ($helper_condition_toggle) {
         // Inverse text color on hover
-        'uk-toggle' => $helper_condition_toggle
-            ? 'cls: uk-light uk-dark; mode: hover; target: !*'
-            : false,
-
-    ]);
+        $el->attr('uk-toggle', "cls: uk-{$inverse} uk-{$color}; mode: hover; target: !*");
+    }
 
 }
 

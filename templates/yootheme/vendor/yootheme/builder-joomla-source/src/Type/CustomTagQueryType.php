@@ -25,7 +25,7 @@ class CustomTagQueryType
 
                     'metadata' => [
                         'label' => trans('Custom Tag'),
-                        'group' => 'Custom',
+                        'group' => trans('Custom'),
                         'fields' => [
                             'id' => [
                                 'label' => trans('Tag'),

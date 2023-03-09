@@ -17,7 +17,7 @@ class ArticleHelper
      * @param int[] $ids
      * @param array $args
      *
-     * @return CMSObject[]
+     * @return object[]
      */
     public static function get($ids, array $args = [])
     {
@@ -29,7 +29,7 @@ class ArticleHelper
      *
      * @param array $args
      *
-     * @return array
+     * @return object[]
      */
     public static function query(array $args = [])
     {
@@ -57,10 +57,6 @@ class ArticleHelper
             } else {
                 $args['order'] = "a.{$args['order']}";
             }
-        }
-
-        if (!empty($args['featured'])) {
-            $args['featured'] = 'only';
         }
 
         $props = [

@@ -53,14 +53,14 @@
             "type": "select",
             "options": {
                 "None": "",
-                "Bold": "text-bold",
+                "Text Bold": "text-bold",
                 "Heading Small": "heading-small",
-                "H1": "h1",
-                "H2": "h2",
-                "H3": "h3",
-                "H4": "h4",
-                "H5": "h5",
-                "H6": "h6"
+                "Heading H1": "h1",
+                "Heading H2": "h2",
+                "Heading H3": "h3",
+                "Heading H4": "h4",
+                "Heading H5": "h5",
+                "Heading H6": "h6"
             },
             "enable": "title"
         },
@@ -144,7 +144,8 @@
             "editor": "code",
             "mode": "css",
             "attrs": {
-                "debounce": 500
+                "debounce": 500,
+                "hints": [".el-element", ".el-title", ".el-content", ".el-link"]
             }
         }
     },

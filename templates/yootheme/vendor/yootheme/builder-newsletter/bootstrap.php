@@ -38,5 +38,12 @@ return [
         CampaignMonitorProvider::class => function (Config $config, HttpClientInterface $client) {
             return new CampaignMonitorProvider($config('~theme.cmonitor_api'), $client);
         },
+
+        NewsletterController::class => function (Config $config) {
+            return new NewsletterController(
+                $config('theme.newsletterProvider'),
+                $config('app.secret')
+            );
+        },
     ],
 ];

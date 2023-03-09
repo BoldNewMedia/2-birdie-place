@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <extension version="3.1" type="plugin" group="system" method="upgrade">
     <name>System - YOOtheme Framework</name>
-    <version>2.7.22</version>
+    <version>3.0.25</version>
     <description>System Plugin for YOOtheme Pro.</description>
-    <creationDate>May 2022</creationDate>
+    <creationDate>February 2023</creationDate>
     <copyright>Copyright (C) YOOtheme GmbH</copyright>
     <license>GNU General Public License</license>
     <author>YOOtheme</author>
@@ -15,6 +15,10 @@
         <filename>classmap.php</filename>
     </files>
     <updateservers>
-        <server type="extension" priority="1" name="YOOtheme">https://yootheme.com/api/update/yootheme_j33.xml</server>
+        <server
+            type="extension"
+            priority="1"
+            name="YOOtheme"
+        >https://yootheme.com/api/update/yootheme_j33.xml</server>
     </updateservers>
 </extension>

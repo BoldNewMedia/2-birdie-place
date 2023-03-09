@@ -20,42 +20,49 @@
                     },
                     {
                         "title": "Using the Page Builder",
-                        "src": "https://www.youtube-nocookie.com/watch?v=xL1AaEP-22Q&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "src": "https://www.youtube-nocookie.com/watch?v=mR7mbEjyoGc&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
                         "duration": "1:07",
                         "documentation": "support/yootheme-pro/joomla/page-builder#page-builder",
                         "support": "support/search?tags=125&q=builder"
                     },
                     {
                         "title": "Understanding the Layout Structure",
-                        "src": "https://www.youtube-nocookie.com/watch?v=AkYC9RjRc4Y&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                        "duration": "0:40",
+                        "src": "https://www.youtube-nocookie.com/watch?v=ahP4rEXBnIM&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "duration": "0:57",
                         "documentation": "support/yootheme-pro/joomla/page-builder#layout-structure",
                         "support": "support/search?tags=125&q=layout%20structure"
                     },
                     {
                         "title": "Managing Sections, Rows and Elements",
-                        "src": "https://www.youtube-nocookie.com/watch?v=99HdwutVRcg&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "src": "https://www.youtube-nocookie.com/watch?v=KdQH8Gy9KcE&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
                         "duration": "0:52",
                         "documentation": "support/yootheme-pro/joomla/page-builder#action-icons",
-                        "support": "support/search?tags=125&q=builder"
+                        "support": "support/search?tags=125&q=builder%20action"
+                    },
+                    {
+                        "title": "Using the Element Finder",
+                        "src": "https://www.youtube-nocookie.com/watch?v=E609IHJb9rg&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "duration": "0:38",
+                        "documentation": "support/yootheme-pro/joomla/page-builder#element-finder",
+                        "support": "support/search?tags=125&q=builder%20element%20finder"
                     },
                     {
                         "title": "Ordering Sections, Rows and Elements",
-                        "src": "https://www.youtube-nocookie.com/watch?v=DMj4yjg_hlE&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "src": "https://www.youtube-nocookie.com/watch?v=oWBCd3QBPrU&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
                         "duration": "0:23",
                         "documentation": "support/yootheme-pro/joomla/page-builder#ordering",
                         "support": "support/search?tags=125&q=builder%20ordering"
                     },
                     {
                         "title": "Understanding Status Icons",
-                        "src": "https://www.youtube-nocookie.com/watch?v=31elQ1-dJts&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                        "duration": "1:58",
+                        "src": "https://www.youtube-nocookie.com/watch?v=GCdsmCe-cmw&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "duration": "2:22",
                         "documentation": "support/yootheme-pro/joomla/page-builder#status-icons",
                         "support": "support/search?tags=125&q=builder%20status%20icon"
                     },
                     {
                         "title": "Working with Multiple Authors",
-                        "src": "https://www.youtube-nocookie.com/watch?v=CQmr-AJfTLY&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "src": "https://www.youtube-nocookie.com/watch?v=vv3IWfviGzc&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
                         "duration": "0:38",
                         "documentation": "support/yootheme-pro/joomla/page-builder#multi-author-workflow",
                         "support": "support/search?tags=125&q=overwriting%20layout"
@@ -66,6 +73,13 @@
                         "duration": "1:44",
                         "documentation": "support/yootheme-pro/joomla/collapsing-layouts",
                         "support": "support/search?tags=125&q=collapsing"
+                    },
+                    {
+                        "title": "Learning Layout Techniques",
+                        "src": "https://www.youtube-nocookie.com/watch?v=z4kw04hhJdo&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "duration": "1:09",
+                        "documentation": "support/yootheme-pro/joomla/element-library#layout-techniques",
+                        "support": "support/search?tags=125&q=layout%20techniques"
                     }
                 ],
                 "Images and Links": [
@@ -144,13 +158,6 @@
                         "support": "support/search?tags=125&q=my%20presets"
                     },
                     {
-                        "title": "Learning Layout Techniques",
-                        "src": "https://www.youtube-nocookie.com/watch?v=z4kw04hhJdo&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                        "duration": "1:09",
-                        "documentation": "support/yootheme-pro/joomla/element-library#layout-techniques",
-                        "support": "support/search?tags=125&q=layout%20techniques"
-                    },
-                    {
                         "title": "The Alert Element",
                         "src": "https://www.youtube-nocookie.com/watch?v=yGaSNRv6FIg&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
                         "duration": "1:18",
@@ -194,8 +201,8 @@
                     },
                     {
                         "title": "The Image Element",
-                        "src": "https://www.youtube-nocookie.com/watch?v=8x-QZTa23dA&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                        "duration": "2:34",
+                        "src": "https://www.youtube-nocookie.com/watch?v=_mcjMQPN2tQ&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "duration": "2:37",
                         "documentation": "support/yootheme-pro/joomla/basic-elements#image-element",
                         "support": "support/search?tags=125&q=image%20element"
                     },
@@ -226,6 +233,13 @@
                         "duration": "0:52",
                         "documentation": "support/yootheme-pro/joomla/basic-elements#quotation-element",
                         "support": "support/search?tags=125&q=quotation%20element"
+                    },
+                    {
+                        "title": "The Sublayout Element",
+                        "src": "https://www.youtube-nocookie.com/watch?v=keRQISbO6Mo&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "duration": "1:21",
+                        "documentation": "support/yootheme-pro/joomla/basic-elements#sublayout-element",
+                        "support": "support/search?tags=125&q=sublayout%20element"
                     },
                     {
                         "title": "The Text Element",
@@ -285,8 +299,8 @@
                     },
                     {
                         "title": "The List Element",
-                        "src": "https://www.youtube-nocookie.com/watch?v=2_G5jyfMYZw&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                        "duration": "2:17",
+                        "src": "https://www.youtube-nocookie.com/watch?v=2EdPTQyAj4U&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "duration": "2:26",
                         "documentation": "support/yootheme-pro/joomla/multiple-items-elements#list-element",
                         "support": "support/search?tags=125&q=list%20element"
                     },
@@ -390,8 +404,8 @@
                     },
                     {
                         "title": "The Pagination Element",
-                        "src": "https://www.youtube-nocookie.com/watch?v=9nX4tTDsFhs&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                        "duration": "1:31",
+                        "src": "https://www.youtube-nocookie.com/watch?v=pehfrOcnVLA&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "duration": "1:37",
                         "documentation": "support/yootheme-pro/joomla/system-elements#pagination-element",
                         "support": "support/search?tags=125&q=pagination%20element"
                     }
@@ -420,8 +434,8 @@
                     },
                     {
                         "title": "Section Height",
-                        "src": "https://www.youtube-nocookie.com/watch?v=iQ-7GmZyvhI&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                        "duration": "1:45",
+                        "src": "https://www.youtube-nocookie.com/watch?v=ebsJftwWOH4&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "duration": "2:19",
                         "documentation": "support/yootheme-pro/joomla/sections#height",
                         "support": "support/search?tags=125&q=section%20height"
                     },
@@ -431,6 +445,13 @@
                         "duration": "0:50",
                         "documentation": "support/yootheme-pro/joomla/sections#padding",
                         "support": "support/search?tags=125&q=section%20padding"
+                    },
+                    {
+                        "title": "Sticky Effect",
+                        "src": "https://www.youtube-nocookie.com/watch?v=p3Vy1yiFL9w&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "duration": "0:48",
+                        "documentation": "support/yootheme-pro/joomla/sections#sticky",
+                        "support": "support/search?tags=125&q=section%20sticky"
                     },
                     {
                         "title": "Transparent Header",
@@ -457,24 +478,38 @@
                 "Dynamic Content": [
                     {
                         "title": "Using Content Sources",
-                        "src": "https://www.youtube-nocookie.com/watch?v=XqReH76CVbs&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                        "duration": "1:34",
+                        "src": "https://www.youtube-nocookie.com/watch?v=J-o8ggJmiYA&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "duration": "1:50",
                         "documentation": "support/yootheme-pro/joomla/dynamic-content#content-sources",
                         "support": "support/search?tags=125&q=source"
                     },
                     {
                         "title": "Using Page Sources",
-                        "src": "https://www.youtube-nocookie.com/watch?v=H3i31KyGmCI&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                        "duration": "0:57",
+                        "src": "https://www.youtube-nocookie.com/watch?v=OPc6CPFhHh8&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "duration": "2:14",
                         "documentation": "support/yootheme-pro/joomla/dynamic-content#page-sources",
                         "support": "support/search?tags=125&q=page%20source"
                     },
                     {
                         "title": "Using Custom Sources",
-                        "src": "https://www.youtube-nocookie.com/watch?v=_mQtz0d1_bw&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                        "duration": "3:22",
+                        "src": "https://www.youtube-nocookie.com/watch?v=XT8T4etFA6E&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "duration": "5:45",
                         "documentation": "support/yootheme-pro/joomla/dynamic-content#custom-sources",
                         "support": "support/search?tags=125&q=custom%20source"
+                    },
+                    {
+                        "title": "Using External Sources",
+                        "src": "https://www.youtube-nocookie.com/watch?v=bCgewm7_PUU&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "duration": "1:16",
+                        "documentation": "support/yootheme-pro/joomla/dynamic-content#external-sources",
+                        "support": "support/search?tags=125&q=external%20source"
+                    },
+                    {
+                        "title": "Using Site Sources",
+                        "src": "https://www.youtube-nocookie.com/watch?v=_43JH-gvs0s&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "duration": "2:01",
+                        "documentation": "support/yootheme-pro/joomla/dynamic-content#site-sources",
+                        "support": "support/search?tags=125&q=site%20source"
                     },
                     {
                         "title": "Using Multiple Items Sources",
@@ -492,8 +527,8 @@
                     },
                     {
                         "title": "Using Related Sources",
-                        "src": "https://www.youtube-nocookie.com/watch?v=QTJ2jQ-a51A&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
-                        "duration": "2:32",
+                        "src": "https://www.youtube-nocookie.com/watch?v=M5n_s5CmN2I&amp;list=PLrqT0WH0HPdPfykSwhMt6Jl2_RgJ6ixU-",
+                        "duration": "4:02",
                         "documentation": "support/yootheme-pro/joomla/dynamic-content#related-sources",
                         "support": "support/search?tags=125&q=related%20source"
                     },

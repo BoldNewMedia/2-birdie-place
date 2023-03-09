@@ -1,134 +1,151 @@
 <?php
 
-namespace YOOtheme\Http\Message;
+namespace YOOtheme\Http;
 
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\StreamInterface;
-use Psr\Http\Message\UriInterface;
+use Psr\Http\Message\UploadedFileInterface;
+use YOOtheme\Http\Message\ServerRequest;
 
-class Request extends Message implements RequestInterface
+class Request extends ServerRequest
 {
-    /**
-     * @var UriInterface
-     */
-    protected $uri;
+    use MessageTrait;
 
     /**
-     * @var string
-     */
-    protected $method;
-
-    /**
-     * @var string
-     */
-    protected $requestTarget;
-
-    /**
-     * Constructor.
+     * Gets a parameter (shortcut).
      *
-     * @param string|UriInterface $uri
-     * @param string              $method
-     * @param array               $headers
-     * @param StreamInterface     $body
+     * @param string $key
+     * @param mixed  $default
+     *
+     * @return mixed
      */
-    public function __construct(
-        $uri,
-        $method = 'GET',
-        array $headers = [],
-        StreamInterface $body = null
-    ) {
-        if (is_string($uri)) {
-            $uri = new Uri($uri);
-        } elseif (!$uri instanceof UriInterface) {
-            throw new \InvalidArgumentException(
-                'URI must be a string or Psr\Http\Message\UriInterface'
-            );
-        }
-
-        if (!isset($headers['Host'])) {
-            $headers['Host'] = $uri->getHost();
-        }
-
-        $this->uri = $uri;
-        $this->body = $body;
-        $this->method = strtoupper($method);
-        $this->setHeaders($headers);
+    public function __invoke($key, $default = null)
+    {
+        return $this->getParam($key, $default);
     }
 
     /**
-     * @inheritdoc
+     * Retrieve a parameter value from body or query string (in that order).
+     *
+     * @param string $key
+     * @param mixed  $default
+     *
+     * @return mixed
      */
-    public function getUri()
+    public function getParam($key, $default = null)
     {
-        return $this->uri;
-    }
+        $body = $this->getParsedBody();
 
-    /**
-     * @inheritdoc
-     */
-    public function withUri(UriInterface $uri, $preserveHost = false)
-    {
-        $clone = clone $this;
-        $clone->uri = $uri;
-
-        if (!$preserveHost && ($host = $uri->getHost())) {
-            return $clone->withHeader('Host', $host);
+        if (is_array($body) && isset($body[$key])) {
+            return $body[$key];
         }
 
-        return $clone;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getMethod()
-    {
-        return $this->method;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function withMethod($method)
-    {
-        $clone = clone $this;
-        $clone->method = strtoupper($method);
-
-        return $clone;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getRequestTarget()
-    {
-        if (isset($this->requestTarget)) {
-            return $this->requestTarget;
+        if (is_object($body) && property_exists($body, $key)) {
+            return $body->$key;
         }
 
-        $target = $this->uri->getPath() ?: '/';
-
-        if ($query = $this->uri->getQuery()) {
-            $target .= '?' . $query;
-        }
-
-        return $this->requestTarget = $target;
+        return $this->getQueryParam($key, $default);
     }
 
     /**
-     * @inheritdoc
+     * Retrieve a value from query string parameters.
+     *
+     * @param string $key
+     * @param mixed  $default
+     *
+     * @return mixed
      */
-    public function withRequestTarget($requestTarget)
+    public function getQueryParam($key, $default = null)
     {
-        if (preg_match('#\s#', $requestTarget)) {
-            throw new \InvalidArgumentException(
-                'Invalid request target provided; must be a string and cannot contain whitespace'
-            );
+        $query = $this->getQueryParams();
+
+        return $query[$key] ?? $default;
+    }
+
+    /**
+     * Retrieve a value from cookies.
+     *
+     * @param string $key
+     * @param mixed  $default
+     *
+     * @return mixed
+     */
+    public function getCookieParam($key, $default = null)
+    {
+        $cookies = $this->getCookieParams();
+
+        return $cookies[$key] ?? $default;
+    }
+
+    /**
+     * Retrieve a value from server parameters.
+     *
+     * @param string $key
+     * @param mixed  $default
+     *
+     * @return mixed
+     */
+    public function getServerParam($key, $default = null)
+    {
+        $server = $this->getServerParams();
+
+        return $server[$key] ?? $default;
+    }
+
+    /**
+     * Retrieve a single file upload.
+     *
+     * @param string $key
+     *
+     * @return UploadedFileInterface|null
+     */
+    public function getUploadedFile($key)
+    {
+        $files = $this->getUploadedFiles();
+
+        return $files[$key] ?? null;
+    }
+
+    /**
+     * Does this request use a given method?
+     *
+     * @param string $method
+     *
+     * @return bool
+     */
+    public function isMethod($method)
+    {
+        return $this->getMethod() === strtoupper($method);
+    }
+
+    /**
+     * Throws an exception.
+     *
+     * @param int    $code
+     * @param string $message
+     *
+     * @throws Exception
+     */
+    public function abort($code, $message = '')
+    {
+        throw new Exception($code, $message);
+    }
+
+    /**
+     * Throws an exception if given condition is true.
+     *
+     * @param bool   $bool
+     * @param int    $code
+     * @param string $message
+     *
+     * @throws Exception
+     *
+     * @return $this
+     */
+    public function abortIf($bool, $code, $message = '')
+    {
+        if ($bool) {
+            throw new Exception($code, $message);
         }
 
-        $clone = clone $this;
-        $clone->requestTarget = $requestTarget;
-
-        return $clone;
+        return $this;
     }
 }

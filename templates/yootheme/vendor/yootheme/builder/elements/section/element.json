@@ -79,10 +79,10 @@
             "type": "select",
             "options": {
                 "Default": "default",
-                "XSmall": "xsmall",
+                "X-Small": "xsmall",
                 "Small": "small",
                 "Large": "large",
-                "XLarge": "xlarge",
+                "X-Large": "xlarge",
                 "Expand": "expand",
                 "None": ""
             }
@@ -113,7 +113,10 @@
                 "Viewport": "full",
                 "Viewport (Minus 20%)": "percent",
                 "Viewport (Minus the following section)": "section",
-                "Expand": "expand"
+                "Expand": "expand",
+                "2 Viewports": "viewport-2",
+                "3 Viewports": "viewport-3",
+                "4 Viewports": "viewport-4"
             }
         },
         "vertical_align": {
@@ -149,6 +152,16 @@
             "type": "checkbox",
             "text": "Remove bottom padding",
             "enable": "padding != 'none'"
+        },
+        "sticky": {
+            "label": "Sticky Effect",
+            "description": "Sticky section will be covered by the following section while scrolling. Reveal section by previous section.",
+            "type": "select",
+            "options": {
+                "None": "",
+                "Cover": "cover",
+                "Reveal": "reveal"
+            }
         },
         "header_transparent": {
             "label": "Transparent Header",
@@ -257,7 +270,8 @@
             "editor": "code",
             "mode": "css",
             "attrs": {
-                "debounce": 500
+                "debounce": 500,
+                "hints": [".el-section"]
             }
         }
     },
@@ -284,6 +298,7 @@
                         "padding",
                         "padding_remove_top",
                         "padding_remove_bottom",
+                        "sticky",
                         "header_transparent",
                         "header_transparent_noplaceholder",
                         "animation",
@@ -316,11 +331,17 @@
                         "placeholder": "auto"
                     }
                 },
+                "image_loading": {
+                    "label": "Loading",
+                    "description": "By default, images are loaded lazy. Enable eager loading for images in the initial viewport.",
+                    "type": "checkbox",
+                    "text": "Load image eagerly",
+                    "show": "image && !video"
+                },
                 "image_size": {
                     "label": "Image Size",
                     "description": "Determine whether the image will fit the section dimensions by clipping it or by filling the empty areas with the background color.",
                     "type": "select",
-
                     "options": {
                         "Auto": "",
                         "Cover": "cover",
@@ -351,7 +372,6 @@
                     "label": "Image Effect",
                     "description": "Add a parallax effect or fix the background with regard to the viewport while scrolling.",
                     "type": "select",
-
                     "options": {
                         "None": "",
                         "Parallax": "parallax",
@@ -359,45 +379,29 @@
                     },
                     "show": "image && !video"
                 },
-                "image_parallax_bgx_start": {
-                    "label": "Horizontal Start",
-                    "type": "range",
+                "image_parallax_bgx": {
+                    "text": "Translate X",
+                    "type": "parallax-stops",
                     "attrs": {
                         "min": -600,
                         "max": 600,
                         "step": 10
-                    }
+                    },
+                    "show": "image_effect == 'parallax' && image && !video"
                 },
-                "image_parallax_bgx_end": {
-                    "label": "Horizontal End",
-                    "type": "range",
+                "image_parallax_bgy": {
+                    "text": "Translate Y",
+                    "type": "parallax-stops",
                     "attrs": {
                         "min": -600,
                         "max": 600,
                         "step": 10
-                    }
-                },
-                "image_parallax_bgy_start": {
-                    "label": "Vertical Start",
-                    "type": "range",
-                    "attrs": {
-                        "min": -600,
-                        "max": 600,
-                        "step": 10
-                    }
-                },
-                "image_parallax_bgy_end": {
-                    "label": "Vertical End",
-                    "type": "range",
-                    "attrs": {
-                        "min": -600,
-                        "max": 600,
-                        "step": 10
-                    }
+                    },
+                    "show": "image_effect == 'parallax' && image && !video"
                 },
                 "image_parallax_easing": {
                     "label": "Parallax Easing",
-                    "description": "Set the animation easing. Zero transitions at an even speed, a positive value starts off quickly while a negative value starts off slowly.",
+                    "description": "Set the animation easing. Zero transitions at an even speed, a negative value starts off quickly while a positive value starts off slowly.",
                     "type": "range",
                     "attrs": {
                         "min": -2,
@@ -420,12 +424,10 @@
                     "show": "image_effect == 'parallax' && image && !video"
                 },
                 "video_width": {
-                    "label": "Width",
-                    "default": ""
+                    "label": "Width"
                 },
                 "video_height": {
-                    "label": "Height",
-                    "default": ""
+                    "label": "Height"
                 },
                 "media_visibility": {
                     "label": "Visibility",
@@ -485,23 +487,12 @@
                             "show": "image && !video",
                             "fields": ["image_width", "image_height"]
                         },
+                        "image_loading",
                         "image_size",
                         "image_position",
                         "image_effect",
-                        {
-                            "name": "_image_parallax_bgx",
-                            "type": "grid",
-                            "width": "1-2",
-                            "show": "image_effect == 'parallax' && image && !video",
-                            "fields": ["image_parallax_bgx_start", "image_parallax_bgx_end"]
-                        },
-                        {
-                            "name": "_image_parallax_bgy",
-                            "type": "grid",
-                            "width": "1-2",
-                            "show": "image_effect == 'parallax' && image && !video",
-                            "fields": ["image_parallax_bgy_start", "image_parallax_bgy_end"]
-                        },
+                        "image_parallax_bgx",
+                        "image_parallax_bgy",
                         "image_parallax_easing",
                         "image_parallax_breakpoint",
                         {

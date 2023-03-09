@@ -4,8 +4,10 @@ namespace YOOtheme\Theme\Joomla;
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\PluginHelper;
+use YOOtheme\Arr;
 use YOOtheme\Config;
 use YOOtheme\Database;
+use YOOtheme\Path;
 
 class SystemCheck extends \YOOtheme\Theme\SystemCheck
 {
@@ -38,11 +40,6 @@ class SystemCheck extends \YOOtheme\Theme\SystemCheck
     {
         $res = [];
 
-        // Page cache @TODO is needed?
-        if (PluginHelper::isEnabled('system', 'cache')) {
-            $res[] = 'j_page_cache';
-        }
-
         // Installer Plugin missing?
         if (!PluginHelper::isEnabled('installer', 'yootheme')) {
             $res[] = 'j_yootheme_installer';
@@ -50,7 +47,7 @@ class SystemCheck extends \YOOtheme\Theme\SystemCheck
 
         // Check for SEBLOD Plugin and setting
         $components = ComponentHelper::getComponents();
-        $cck = isset($components['com_cck']) ? $components['com_cck'] : false;
+        $cck = $components['com_cck'] ?? false;
         if ($cck && $cck->enabled == 1) {
             if ($cck->getParams()->get('hide_edit_icon')) {
                 $res[] = 'j_seblod_icon';
@@ -67,6 +64,19 @@ class SystemCheck extends \YOOtheme\Theme\SystemCheck
                 $res[] = 'j_rsfw_mail';
             }
         } catch (\Exception $e) {
+        }
+
+        // Check if paths in FileSystem plugin matches global config in Joomla 4
+        if (
+            version_compare(JVERSION, '4.0', '>') &&
+            ($filesystem = PluginHelper::getPlugin('filesystem', 'local')) &&
+            ($params = json_decode($filesystem->params, true)) &&
+            !empty($params['directories']) &&
+            !Arr::find($params['directories'], [
+                'directory' => Path::relative(JPATH_ROOT, $this->config->get('app.uploadDir')),
+            ])
+        ) {
+            $res[] = 'j_upload_dir';
         }
 
         return array_merge($res, parent::getRequirements());

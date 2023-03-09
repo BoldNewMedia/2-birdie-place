@@ -33,6 +33,9 @@ if ($error == 404) {
 $favicon = isset($params['favicon'])
     ? "{$this->baseurl}/{$params['favicon']}"
     : "{$this->baseurl}/templates/yootheme/vendor/yootheme/theme-joomla/assets/images/favicon.png";
+$favicon_svg = isset($params['favicon_svg'])
+    ? "{$this->baseurl}/{$params['favicon_svg']}"
+    : false;
 $touchicon = isset($params['touchicon'])
     ? "{$this->baseurl}/{$params['touchicon']}"
     : "{$this->baseurl}/templates/yootheme/vendor/yootheme/theme-joomla/assets/images/apple-touch-icon.png";
@@ -53,12 +56,14 @@ $customJs = isset($params['child_theme']) && file_exists("{$directory}_{$params[
 ?>
 
 <!DOCTYPE html>
-<html lang="<?= $doc->language ?>" dir="<?= $doc->direction ?>" vocab="https://schema.org/">
+<html lang="<?= $doc->language ?>" dir="<?= $doc->direction ?>">
     <head>
         <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="shortcut icon" href="<?= $favicon ?>">
+        <link rel="icon" href="<?= $favicon ?>" sizes="any">
+        <?php if ($favicon_svg) : ?>
+        <link rel="icon" href="<?= $favicon_svg ?>" type="image/svg+xml">
+        <?php endif ?>
         <link rel="apple-touch-icon" href="<?= $touchicon ?>">
         <title><?= $error ?> - <?= $message ?></title>
         <link rel="stylesheet" href="<?= $style ?>" type="text/css"<?= !empty($result['customizer']) ? ' id="theme-style"' : '' ?> />

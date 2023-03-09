@@ -73,7 +73,7 @@ class SystemCheck
             $res[] = 'common_memory_limit';
         }
 
-        $max_execution_time = $this->parseSize(ini_get('max_execution_time'));
+        $max_execution_time = ini_get('max_execution_time');
         if ($max_execution_time > 0 && $max_execution_time < 60) {
             $res[] = 'common_max_execution_time';
         }
@@ -81,10 +81,14 @@ class SystemCheck
         return $res;
     }
 
+    /**
+     * @param  string $size
+     * @return float
+     */
     protected function parseSize($size)
     {
         $unit = preg_replace('/[^bkmgtpezy]/i', '', $size);
-        $size = preg_replace('/[^0-9.\-]/', '', $size);
+        $size = (float) preg_replace('/[^0-9.\-]/', '', $size);
         if ($unit) {
             return round($size * pow(1024, stripos('bkmgtpezy', $unit[0])));
         }

@@ -241,7 +241,18 @@
         },
         "id": "${builder.id}",
         "class": "${builder.cls}",
-        "attributes": "${builder.attrs}"
+        "attributes": "${builder.attrs}",
+        "css": {
+            "label": "CSS",
+            "description": "Enter your own custom CSS. The following selectors will be prefixed automatically for this element: <code>.el-row</code>",
+            "type": "editor",
+            "editor": "code",
+            "mode": "css",
+            "attrs": {
+                "debounce": 500,
+                "hints": [".el-row"]
+            }
+        }
     },
     "fieldset": {
         "default": {
@@ -268,7 +279,7 @@
                 },
                 {
                     "title": "Advanced",
-                    "fields": ["status", "id", "class", "attributes"]
+                    "fields": ["status", "id", "class", "attributes", "css"]
                 }
             ]
         }

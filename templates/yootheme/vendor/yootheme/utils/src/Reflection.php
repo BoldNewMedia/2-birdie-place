@@ -7,7 +7,7 @@ namespace YOOtheme;
  */
 abstract class Reflection
 {
-    const REGEX_ANNOTATION = '/@(?<name>[\w\\\\]+)(?:\s*(?:\(\s*)?(?<value>.*?)(?:\s*\))?)??\s*(?:\n|\*\/)/';
+    public const REGEX_ANNOTATION = '/@(?<name>[\w\\\\]+)(?:\s*(?:\(\s*)?(?<value>.*?)(?:\s*\))?)??\s*(?:\n|\*\/)/';
 
     /**
      * @var array
@@ -179,7 +179,7 @@ abstract class Reflection
     /**
      * Gets all annotations for given reflector.
      *
-     * @param \ReflectionClass|\ReflectionProperty|\ReflectionMethod $reflector
+     * @param \Reflector $reflector
      * @param string     $name
      *
      * @return array
@@ -232,7 +232,7 @@ abstract class Reflection
             foreach ($matches as $match) {
                 $annotations[] = (object) [
                     'name' => $match['name'],
-                    'value' => isset($match['value']) ? $match['value'] : null,
+                    'value' => $match['value'] ?? null,
                 ];
             }
         }

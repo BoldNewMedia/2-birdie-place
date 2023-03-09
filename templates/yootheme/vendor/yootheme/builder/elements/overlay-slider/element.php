@@ -4,6 +4,14 @@ namespace YOOtheme;
 
 return [
     'updates' => [
+        '2.8.0-beta.0.13' => function ($node) {
+            foreach (['title_style', 'meta_style', 'content_style'] as $prop) {
+                if (in_array(Arr::get($node->props, $prop), ['meta', 'lead'])) {
+                    $node->props[$prop] = 'text-' . Arr::get($node->props, $prop);
+                }
+            }
+        },
+
         '2.7.0-beta.0.4' => function ($node) {
             if (empty($node->props['slider_width']) || empty($node->props['slider_height'])) {
                 unset($node->props['slider_min_height']);
@@ -11,14 +19,21 @@ return [
         },
 
         '2.2.2.1' => function ($node) {
-            if (Arr::get($node->props, 'link_type') === 'content') {
-                $node->props['title_link'] = true;
-                $node->props['link_text'] = '';
-            } elseif (Arr::get($node->props, 'link_type') === 'element') {
-                $node->props['overlay_link'] = true;
-                $node->props['link_text'] = '';
-            }
-            unset($node->props['link_type']);
+            Arr::updateKeys($node->props, [
+                'link_type' => function ($value) {
+                    if ($value === 'content') {
+                        return [
+                            'title_link' => true,
+                            'link_text' => '',
+                        ];
+                    } elseif ($value === 'element') {
+                        return [
+                            'overlay_link' => true,
+                            'link_text' => '',
+                        ];
+                    }
+                },
+            ]);
         },
 
         '2.1.0-beta.0.1' => function ($node) {
@@ -28,17 +43,11 @@ return [
         },
 
         '1.22.0-beta.0.1' => function ($node) {
-            if (isset($node->props['slider_gutter'])) {
-                $node->props['slider_gap'] = $node->props['slider_gutter'];
-                unset($node->props['slider_gutter']);
-            }
+            Arr::updateKeys($node->props, ['slider_gutter' => 'slider_gap']);
         },
 
         '1.20.0-beta.1.1' => function ($node) {
-            if (isset($node->props['maxwidth_align'])) {
-                $node->props['block_align'] = $node->props['maxwidth_align'];
-                unset($node->props['maxwidth_align']);
-            }
+            Arr::updateKeys($node->props, ['maxwidth_align' => 'block_align']);
         },
 
         '1.20.0-beta.0.1' => function ($node) {
@@ -50,12 +59,10 @@ return [
                 $node->props['title_style'] = 'heading-medium';
             }
 
-            /**
-             * @var Config $config
-             */
+            /** @var Config $config */
             $config = app(Config::class);
 
-            list($style) = explode(':', $config('~theme.style'));
+            [$style] = explode(':', $config('~theme.style'));
 
             if (
                 in_array($style, [

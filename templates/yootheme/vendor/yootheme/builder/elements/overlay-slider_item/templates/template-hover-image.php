@@ -12,7 +12,6 @@ $hover_image = $this->el('image', [
     'alt' => true,
     'width' => $element['image_width'],
     'height' => $element['image_height'],
-    'uk-img' => 'target: !.uk-slider-items',
     'thumbnail' => true,
     'uk-cover' => true,
 

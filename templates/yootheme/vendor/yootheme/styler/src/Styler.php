@@ -67,13 +67,18 @@ class Styler
 
     public function resolveImports($file, $vars = [])
     {
+        $importFile = $file;
+        $extension = Path::extname($file);
+
         if (!file_exists($file)) {
-            return [];
+            if ($extension || !file_exists($file = "{$file}.less")) {
+                return [];
+            }
         }
 
         $contents = @file_get_contents($file) ?: '';
 
-        if (Path::extname($file) === '.less') {
+        if (!$extension || $extension === '.less') {
             $contents = preg_replace('/^\s*\/\/.*?$/m', '', $contents);
             $contents = preg_replace('/\/\*.*?\*\//s', '', $contents);
             $contents = preg_replace('/(^@[a-z0-9-]+:)\s+/m', '$1 ', $contents);
@@ -81,7 +86,7 @@ class Styler
             $contents = preg_replace('/^\n|\n$/', '', $contents);
         }
 
-        $imports = [Path::normalize(Url::to($file)) => $contents];
+        $imports = [Path::normalize(Url::to($importFile)) => $contents];
 
         if (preg_match_all('/^@import.*?"([^"]+)";/m', $contents, $matches)) {
             $replacePairs = [];

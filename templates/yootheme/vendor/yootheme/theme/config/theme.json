@@ -2,7 +2,48 @@
     "defaults": {
         "menu": {
             "items": {},
-            "positions": {}
+            "positions": {
+                "navbar": {
+                    "style": "default",
+                    "image_margin": true,
+                    "image_align": "center"
+                },
+                "header": {
+                    "style": "default",
+                    "image_margin": true,
+                    "image_align": "center"
+                },
+                "toolbar-left": {
+                    "style": "default",
+                    "image_margin": true,
+                    "image_align": "center"
+                },
+                "toolbar-right": {
+                    "style": "default",
+                    "image_margin": true,
+                    "image_align": "center"
+                },
+                "dialog": {
+                    "style": "default",
+                    "image_margin": true,
+                    "image_align": "center"
+                },
+                "navbar-mobile": {
+                    "style": "default",
+                    "image_margin": true,
+                    "image_align": "center"
+                },
+                "header-mobile": {
+                    "style": "default",
+                    "image_margin": true,
+                    "image_align": "center"
+                },
+                "dialog-mobile": {
+                    "style": "default",
+                    "image_margin": true,
+                    "image_align": "center"
+                }
+            }
         },
 
         "site": {
@@ -16,7 +57,10 @@
             "toolbar_width": "default",
             "breadcrumbs_show_home": true,
             "breadcrumbs_show_current": true,
-            "breadcrumbs_home_text": ""
+            "breadcrumbs_home_text": "",
+            "main_section": {
+                "height": true
+            }
         },
 
         "header": {
@@ -27,26 +71,41 @@
 
         "navbar": {
             "sticky": 0,
-            "dropdown_align": "left",
-            "toggle_menu_style": "default",
+            "dropdown_align": "left"
+        },
+
+        "dialog": {
+            "layout": "offcanvas-top",
+            "toggle": "header:end",
+            "menu_style": "default",
             "offcanvas": {
-                "mode": "slide"
+                "mode": "slide",
+                "flip": true
             }
         },
 
         "mobile": {
             "breakpoint": "m",
-            "sticky": 0,
-            "logo": "center",
-            "toggle": "left",
-            "search": "right",
-            "menu_style": "default",
-            "animation": "offcanvas",
-            "close_button": true,
-            "offcanvas": {
-                "mode": "slide"
+            "header": {
+                "layout": "horizontal-right",
+                "transparent": true
             },
-            "dropdown": "slide"
+            "navbar": {
+                "sticky": 0
+            },
+            "dialog": {
+                "layout": "offcanvas-top",
+                "toggle": "header-mobile:end",
+                "close": true,
+                "menu_style": "default",
+                "offcanvas": {
+                    "mode": "slide",
+                    "flip": true
+                },
+                "dropbar": {
+                    "animation": "reveal-top"
+                }
+            }
         },
 
         "top": {
@@ -61,7 +120,6 @@
             "min_width": "200",
             "breakpoint": "m",
             "first": 0,
-            "gutter": "",
             "divider": 0
         },
 
@@ -74,7 +132,9 @@
 
         "footer": {
             "content": ""
-        }
+        },
+
+        "webp": true
     },
     "social_icons": [
         "500px",

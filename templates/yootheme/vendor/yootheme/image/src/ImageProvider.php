@@ -4,7 +4,7 @@ namespace YOOtheme;
 
 class ImageProvider
 {
-    const IMAGE = '/<(?:div|img)\s+[^>]*?(\w+-)?src=((["\'])[^\'"]+?\.(?:gif|png|jpe?g|webp)#[^\'"]+?\3)[^>]*>/i';
+    public const IMAGE = '/<(?:div|img)\s+[^>]*?((\w+-)?src=((["\'])[^\'"]+?\.(?:gif|png|jpe?g|webp|avif)#[^\'"]+?\4))[^>]*>/i';
 
     /**
      * @var string
@@ -40,9 +40,9 @@ class ImageProvider
     public function __construct($cache, array $config = [])
     {
         $this->cache = Path::resolve($cache);
-        $this->route = isset($config['route']) ? $config['route'] : '@image';
-        $this->secret = isset($config['secret']) ? $config['secret'] : filemtime(__FILE__);
-        $this->params = isset($config['params']) ? $config['params'] : [];
+        $this->route = $config['route'] ?? '@image';
+        $this->secret = $config['secret'] ?? filemtime(__FILE__);
+        $this->params = $config['params'] ?? [];
     }
 
     /**
@@ -60,7 +60,7 @@ class ImageProvider
     }
 
     /**
-     * Creates an image tag from src attribute's relative URL.
+     * Creates an Image object from src attribute's relative URL.
      *
      * @param string $src
      * @param bool   $resource
@@ -69,7 +69,7 @@ class ImageProvider
      */
     public function create($src, $resource = true)
     {
-        list($file, $params) = $this->parse($src);
+        [$file, $params] = $this->parse($src);
 
         if (Path::isAbsolute($file) || str_ends_with(strtolower($file), '.svg')) {
             return;
@@ -78,7 +78,7 @@ class ImageProvider
         $image = new Image($file, $resource);
         $image->setAttribute('src', $src);
 
-        if ($image->getFile()) {
+        if ($image->getType()) {
             $image = $image->setAttribute('params', $params);
 
             foreach ($this->loaders as $loader) {
@@ -138,46 +138,52 @@ class ImageProvider
      */
     public function replaceCallback($matches)
     {
-        list($tag, $prefix, $source) = $matches;
+        [$element, $src, $prefix, $source] = $matches;
 
-        $src = html_entity_decode(trim($source, "\"'"));
+        $url = html_entity_decode(trim($source, "\"'"));
 
-        if ($image = $this->create($src, false)) {
+        if ($image = $this->create($url, false)) {
+            // load sources
+            $sources = $this->getSources($image);
+
+            // apply params
             $attrs = $this->getSrcsetAttrs($image, $prefix);
-            $srcAttr = "{$prefix}src";
+            $image = $image->apply($image->getAttribute('params'));
 
-            $params = $image->getAttribute('params');
-            $image = $image->apply($params);
-
-            // set prefix for width/height
-            if (!$prefix && isset($attrs["{$prefix}srcset"])) {
-                $prefix = 'data-';
+            // skip srcset and sizes attributes if additional sources are found
+            if ($sources) {
+                $attrs = array_slice($attrs, 0, 1);
             }
 
-            // set image width
-            if (!stripos($tag, 'width=')) {
-                $attrs["{$prefix}width"] = $image->width;
+            // add sources to attrs for none image tags
+            if ($isImage = str_starts_with($element, '<img')) {
+                $sources = static::getSourceElements($sources, $prefix);
+
+                // set width
+                if (!str_contains($element, 'width=')) {
+                    $attrs['width'] = $image->width;
+                }
+
+                // set height
+                if (!str_contains($element, 'height=')) {
+                    $attrs['height'] = $image->height;
+                }
+            } else {
+                $attrs["{$prefix}sources"] = json_encode($sources);
             }
 
-            // set image height
-            if (!stripos($tag, 'height=')) {
-                $attrs["{$prefix}height"] = $image->height;
+            // add image
+            $image = str_replace($src, static::getAttrs($attrs), $element);
+
+            // use picture?
+            if ($sources && $isImage) {
+                return join("\n", array_merge(['<picture>'], $sources, [$image, '</picture>']));
             }
 
-            // format image attrs
-            $attributes = [];
-            foreach ($attrs as $key => $value) {
-                $attributes[] = sprintf(
-                    $key != $srcAttr ? '%1$s="%2$s"' : '"%2$s"',
-                    $key,
-                    htmlspecialchars($value)
-                );
-            }
-
-            return str_replace($source, join(' ', $attributes), $tag);
+            return $image;
         }
 
-        return $tag;
+        return $element;
     }
 
     /**
@@ -189,7 +195,7 @@ class ImageProvider
      */
     public function getHash($data)
     {
-        return hash_hmac('md5', $data, $this->secret);
+        return hash('fnv132', hash_hmac('sha1', $data, $this->secret));
     }
 
     /**
@@ -201,6 +207,8 @@ class ImageProvider
      */
     public function getUrl($image)
     {
+        $cached = null;
+
         if (is_string($image)) {
             if (!($image = $this->create($src = $image, false))) {
                 return Url::to($src);
@@ -209,22 +217,45 @@ class ImageProvider
             $image = $image->apply($image->getAttribute('params'));
         }
 
-        $cached = $image->getHash() ? $image->getFilename($this->cache) : null;
+        if ($hash = $image->getHash()) {
+            $cached = $image->getFilename(Path::join($this->cache, substr($hash, 0, 2)));
+        }
 
-        // url to source or cached image
-        if (
-            is_null($cached) ||
-            (file_exists($cached) &&
-                (($ctime = filectime($cached)) > filectime($image->getFile()) ||
-                    $ctime > filemtime($image->getFile())))
-        ) {
-            return Url::to($cached ?: $image->getFile());
+        // url to source
+        if (is_null($cached)) {
+            return Url::to($image->getFile());
+        }
+
+        // url to cached image
+        if (is_file($cached)) {
+            return Url::to($cached);
         }
 
         return Url::route($this->route, [
-            'src' => ($src = base64_encode($image)),
+            'src' => ($src = strval($image)),
             'hash' => $this->getHash($src),
         ]);
+    }
+
+    /**
+     * Gets the image sources (webp, ...).
+     *
+     * @param Image  $image
+     * @param int    $minWidth
+     *
+     * @return string[][]
+     */
+    public function getSources(Image $image, $minWidth = 0)
+    {
+        $sources = [];
+
+        foreach ($image->getAttribute('types', []) as $mime => $type) {
+            $image = $image->apply(['type' => $type]);
+            $attrs = array_slice($this->getSrcsetAttrs($image, '', $minWidth), 1);
+            $sources[] = ['type' => $mime] + $attrs;
+        }
+
+        return $sources;
     }
 
     /**
@@ -234,7 +265,7 @@ class ImageProvider
      *
      * @return array
      */
-    public function getSrcset($image)
+    public function getSrcset(Image $image)
     {
         $params = $image->getAttribute('params');
 
@@ -246,8 +277,12 @@ class ImageProvider
         $maxWidth = min(max($image->width, $imageDst->width), $imageDst->width * 2);
         $maxHeight = min(max($image->height, $imageDst->height), $imageDst->height * 2);
 
+        if (!$maxWidth || !$maxHeight) {
+            return [];
+        }
+
         foreach (explode(',', $params['srcset']) as $value) {
-            $resized = $image->apply($params)->resize($value);
+            $resized = $imageDst->resize($value);
 
             // if oversized, use original image sizes
             if (1 < ($scale = max($resized->width / $maxWidth, $resized->height / $maxHeight))) {
@@ -257,12 +292,11 @@ class ImageProvider
             }
 
             // set image parameters
-            foreach (['crop', 'resize', 'thumbnail'] as $key) {
-                if (isset($params[$key]) && ($param = explode(',', $params[$key]))) {
-                    $resized = $image->apply(array_merge($params, [$key => $sizes + $param]));
-                }
-            }
+            $parameters = array_map(function ($val) use ($sizes) {
+                return join(',', $sizes + explode(',', $val));
+            }, static::filterParams($params));
 
+            $resized = $image->apply($parameters);
             $images[$resized->width] = $resized;
         }
 
@@ -273,7 +307,7 @@ class ImageProvider
         return $images;
     }
 
-    public function getSrcsetAttrs(Image $image, $prefix = '')
+    public function getSrcsetAttrs(Image $image, $prefix = '', $minWidth = 0)
     {
         $images = $this->getSrcset($image);
         $params = $image->getAttribute('params');
@@ -281,6 +315,9 @@ class ImageProvider
         $attrs = ["{$prefix}src" => $this->getUrl($image)];
 
         foreach ($images as $img) {
+            if ($minWidth && $img->width < $minWidth) {
+                continue;
+            }
             $srcset[] = "{$this->getUrl($img)} {$img->width}w";
         }
 
@@ -306,7 +343,7 @@ class ImageProvider
      *
      * @param string $file
      *
-     * @return array
+     * @return array|void
      */
     public static function getInfo($file)
     {
@@ -319,5 +356,53 @@ class ImageProvider
         if ($data = @getimagesize($file, $info)) {
             return $cache[$file] = [$data[0], $data[1], substr($data['mime'], 6), $info];
         }
+    }
+
+    /**
+     * Gets the image attributes.
+     *
+     * @param array $attributes
+     *
+     * @return string
+     */
+    public static function getAttrs(array $attributes)
+    {
+        $attrs = [];
+
+        foreach ($attributes as $key => $value) {
+            $attrs[] = sprintf('%1$s="%2$s"', $key, htmlspecialchars($value));
+        }
+
+        return join(' ', $attrs);
+    }
+
+    /**
+     * @param array $sources
+     * @param string $prefix
+     *
+     * @return array
+     */
+    protected static function getSourceElements($sources, $prefix)
+    {
+        $elements = [];
+
+        foreach ($sources as $source) {
+            if ($prefix) {
+                $source["{$prefix}srcset"] = $source['srcset'];
+                unset($source['srcset']);
+            }
+
+            $elements[] = '<source ' . static::getAttrs($source) . '>';
+        }
+
+        return $elements;
+    }
+
+    /**
+     * Filter image parameters.
+     */
+    protected static function filterParams($params)
+    {
+        return array_intersect_key($params, array_flip(['crop', 'resize', 'thumbnail']));
     }
 }

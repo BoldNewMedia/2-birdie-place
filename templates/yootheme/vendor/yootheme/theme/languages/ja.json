@@ -27,7 +27,6 @@
     "Align the image to the left or right.": "イメージを左右に整列させます。",
     "Align the image to the top, left, right or place it between the title and the content.": "画像を上、左、右に整列させるか、タイトルとコンテンツの間に配置します。",
     "Align the section content vertically, if the section height is larger than the content itself.": "セクションの高さがコンテンツ自体よりも大きい場合は、セクションのコンテンツを垂直に揃えます",
-    "Align to navbar instead of the menu item": "メニュー項目の代わりにナビゲーションバーに合わせる",
     "Alignment": "アラインメント",
     "Alignment Breakpoint": "アラインメント",
     "Alignment Fallback": "アライメントのフォールバック",

@@ -50,4 +50,6 @@
 .hook-inverse-breadcrumb-item-disabled() {}
 .hook-inverse-breadcrumb-item-active() {}
 
-.hook-inverse-breadcrumb-divider() {}
+.hook-inverse-breadcrumb-divider() when not (@internal-breadcrumb-divider-background-image = ~'') {
+    .svg-fill(@internal-breadcrumb-divider-background-image, "#000", @inverse-breadcrumb-divider-color, content);
+}

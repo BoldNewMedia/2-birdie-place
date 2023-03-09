@@ -50,7 +50,7 @@
 }
 
 .hook-form-multi-line() when not (@form-border-width = 0) {
-    border: @form-border-width solid @form-border;
+    border@{form-border-mode}: @form-border-width solid @form-border;
 }
 
 // `!important` needed to override single line selector for `uk-select`
@@ -131,6 +131,12 @@
 .hook-form-horizontal-label() {}
 
 
+// Icon
+// ========================================================================
+
+.hook-form-icon() {}
+
+
 // Miscellaneous
 // ========================================================================
 
@@ -166,3 +172,5 @@
 .hook-inverse-form-radio-checked-focus() {}
 
 .hook-inverse-form-label() {}
+
+.hook-inverse-form-icon() {}

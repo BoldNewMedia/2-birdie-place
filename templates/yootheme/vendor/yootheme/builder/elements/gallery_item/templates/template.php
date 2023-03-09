@@ -15,6 +15,7 @@ $el = $this->el($isLink = $props['link'] && $element['overlay_link'] ? 'a' : 'di
         'uk-box-shadow-{image_box_shadow}',
         'uk-box-shadow-hover-{image_hover_box_shadow}',
 
+        'uk-border-{image_border} {@!image_transition_border} {@!image_box_decoration}',
         'uk-box-shadow-bottom {@image_box_decoration: shadow}',
         'tm-mask-default {@image_box_decoration: mask}',
         'tm-box-decoration-{image_box_decoration: default|primary|secondary}',
@@ -22,29 +23,31 @@ $el = $this->el($isLink = $props['link'] && $element['overlay_link'] ? 'a' : 'di
         'uk-inline {@!image_box_decoration: |shadow}',
         'uk-inline-clip {@!image_box_decoration}',
 
-        'uk-transition-toggle' => $isTransition = $element['overlay_hover'] || $element['image_transition'] || $props['hover_image'],
+        'uk-transition-toggle' => $isTransition = $element['overlay_hover'] || $element['image_transition'] || $element['image_transition_border'] || $props['hover_image'],
 
     ],
 
     'style' => [
-        'min-height: {image_min_height}px; {@!image_box_decoration}',
+        'min-height: {image_min_height}px; {@!image_box_decoration} {@!image_transition_border}',
         'background-color: ' . $props['media_background'] . ';' => $props['media_background'],
     ],
 
     'tabindex' => $isTransition && !$isLink ? 0 : null,
 ]);
 
-$box_decoration_clip = $this->el('div', [
+// Box Decoration / Transition Border
+$image_container = $element['image_box_decoration'] || $element['image_transition_border'] ? $this->el('div', [
 
     'class' => [
-        'uk-inline-clip',
+        'uk-inline-clip {@image_box_decoration}',
+        'tm-transition-border {@image_transition_border}',
     ],
 
     'style' => [
-        'min-height: {image_min_height}px; {@image_box_decoration}',
+        'min-height: {image_min_height}px;',
     ],
 
-]);
+]) : null;
 
 $overlay = $this->el('div', [
 
@@ -88,46 +91,42 @@ if (!$element['overlay_cover']) {
 $link = include "{$__dir}/template-link.php";
 
 // Helper
-$helper = '';
+$text_color_container = '';
 
-$helper_condition_color = !$element['overlay_style'] || $element['overlay_mode'] == 'cover';
-$helper_condition_toggle = ($props['text_color_hover'] || $element['text_color_hover']) && ((!$element['overlay_style'] && $props['hover_image']) || ($element['overlay_cover'] && $element['overlay_hover'] && $element['overlay_transition_background']));
+$text_color_condition = !$element['overlay_style'] || $element['overlay_mode'] == 'cover';
+$text_color_toggle = ($props['text_color_hover'] || $element['text_color_hover']) && ((!$element['overlay_style'] && $props['hover_image']) || ($element['overlay_cover'] && $element['overlay_hover'] && $element['overlay_transition_background']));
 
-if ($helper_condition_color || $helper_condition_toggle) {
+if ($text_color_condition || $text_color_toggle) {
 
-    $helper = $this->el('div', [
+    $color = $props['text_color'] ?: $element['text_color'];
+    $inverse = $color === 'light' ? 'dark' : 'light';
+
+    $text_color_container = $this->el('div', [
 
         'class' => [
             // Needs to be parent of `uk-light` or `uk-dark`
-            'uk-{0}' => $helper_condition_color
-                ? ($props['text_color'] ?: $element['text_color'])
-                : false,
+            'uk-{0}' => $text_color_condition ? $color : false,
         ],
 
     ]);
 
     // Needs to be on anchor to have just one focusable toggle when using keyboard navigation
-    $el->attr([
-
+    if ($text_color_toggle) {
         // Inverse text color on hover
-        'uk-toggle' => $helper_condition_toggle
-            ? 'cls: uk-light uk-dark; mode: hover; target: !*'
-            : false,
-
-    ]);
-
+        $el->attr('uk-toggle', "cls: uk-{$inverse} uk-{$color}; mode: hover; target: !*");
+    }
 }
 
 ?>
 
-<?php if ($helper) : ?>
-<?= $helper($props) ?>
+<?php if ($text_color_container) : ?>
+<?= $text_color_container($props) ?>
 <?php endif ?>
 
 <?= $el($element, $attrs) ?>
 
-    <?php if ($element['image_box_decoration']) : ?>
-    <?= $box_decoration_clip($element) ?>
+    <?php if ($image_container) : ?>
+    <?= $image_container($element) ?>
     <?php endif ?>
 
         <?= $this->render("{$__dir}/template-media", compact('props')) ?>
@@ -144,12 +143,12 @@ if ($helper_condition_color || $helper_condition_toggle) {
         <?= $position($element, $content($element, $this->render("{$__dir}/template-content", compact('props', 'link')))) ?>
         <?php endif ?>
 
-    <?php if ($element['image_box_decoration']) : ?>
-    <?= $box_decoration_clip->end() ?>
+    <?php if ($image_container) : ?>
+    <?= $image_container->end() ?>
     <?php endif ?>
 
 <?= $el->end() ?>
 
-<?php if ($helper) : ?>
-<?= $helper->end() ?>
+<?php if ($text_color_container) : ?>
+<?= $text_color_container->end() ?>
 <?php endif ?>

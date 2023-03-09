@@ -113,7 +113,7 @@ abstract class Url
 
     public static function relative($url, $baseUrl = null)
     {
-        $baseUrl = isset($baseUrl) ? $baseUrl : static::base();
+        $baseUrl = $baseUrl ?? static::base();
         return Path::relative($baseUrl ?: '/', $url);
     }
 

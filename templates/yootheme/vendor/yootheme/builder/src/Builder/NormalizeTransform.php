@@ -14,14 +14,14 @@ class NormalizeTransform
     {
         $type = $params['type'];
 
-        $node->id = isset($node->id) ? $node->id : null;
-        $node->attrs = isset($node->attrs) ? $node->attrs : [];
-        $node->children = isset($node->children) ? $node->children : [];
+        $node->id = $node->id ?? null;
+        $node->attrs = $node->attrs ?? [];
+        $node->children = $node->children ?? [];
 
         // Default to "null", if field not exists
-        $fields = $type->fields ?: [];
+        $fields = $type->fields ?? [];
 
-        foreach ($type->panels ?: [] as $panel) {
+        foreach ($type->panels ?? [] as $panel) {
             if (isset($panel['fields'])) {
                 $fields += $panel['fields'];
             }

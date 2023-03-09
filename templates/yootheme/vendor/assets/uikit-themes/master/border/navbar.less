@@ -11,7 +11,7 @@
 // New
 //
 
-@navbar-mode:                                            ~''; // none, border, border-always, rail, frame
+@navbar-mode:                                            ~''; // border, border-always, rail, frame
 @navbar-mode-border-vertical:                            ~''; // partial, all
 
 @navbar-border-width:                                    0;
@@ -87,9 +87,13 @@
     border: @navbar-dropdown-border-width solid @navbar-dropdown-border;
 }
 
+.hook-navbar-dropdown-large() {}
+
 .hook-navbar-dropdown-dropbar() when not (@navbar-dropdown-border-width = 0) {
-    border-color: transparent;
+    border: none;
 }
+
+.hook-navbar-dropdown-dropbar-large() {}
 
 
 // Dropdown nav
@@ -101,6 +105,8 @@
 
 .hook-navbar-dropdown-nav-item-hover() {}
 
+.hook-navbar-dropdown-nav-subtitle() {}
+
 .hook-navbar-dropdown-nav-header() {}
 
 .hook-navbar-dropdown-nav-divider() {}
@@ -111,87 +117,46 @@
 
 .hook-navbar-dropbar() {}
 
-.hook-navbar-dropbar-slide() {}
-
 
 // Miscellaneous
 // ========================================================================
 
 //
-// Border mode
+// Mode Border Vertical
 //
 
-.hook-navbar-container() when (@navbar-mode = border) and not (@navbar-border-width = 0) {
-    border-bottom: @navbar-border-width solid @navbar-border;
-}
-
-.hook-navbar-misc() when (@navbar-mode = border-always) and not (@navbar-border-width = 0) {
-
-    .uk-navbar-container { border-bottom: @navbar-border-width solid @navbar-border; }
-
-}
-
-.hook-navbar-misc() when ((@navbar-mode = border) and not (@navbar-border-width = 0) and (@internal-navbar-border-mode = overlay)),
-                         ((@navbar-mode = border-always) and not (@navbar-border-width = 0) and (@internal-navbar-border-mode = overlay)) {
-
-    .uk-navbar-left,
-    .uk-navbar-right,
-    .uk-navbar-center { margin-bottom: -@navbar-border-width; }
-
-}
-
-.hook-navbar-misc() when ((@navbar-mode = border) and (@navbar-mode-border-vertical = partial)),
-                         ((@navbar-mode = border-always) and (@navbar-mode-border-vertical = partial)) {
+.hook-navbar-misc() when (@navbar-mode-border-vertical = partial) and not (@navbar-border-width = 0),
+                         (@navbar-mode-border-vertical = partial) and not (@navbar-border-width = 0) {
 
     .uk-navbar-left {
-        padding-right: @navbar-nav-item-padding-horizontal;
+        padding-right: @container-padding-horizontal;
         border-right: @navbar-border-width solid @navbar-border;
     }
 
     .uk-navbar-right {
-        padding-left: @navbar-nav-item-padding-horizontal;
+        padding-left: @container-padding-horizontal;
         border-left: @navbar-border-width solid @navbar-border;
     }
 
-}
+    /* Phone landscape and bigger */
+    @media (min-width: @breakpoint-small) {
 
-//
-// Rail mode
-//
+        .uk-navbar-left { padding-right: @container-padding-horizontal-s; }
+        .uk-navbar-right { padding-left: @container-padding-horizontal-s; }
 
-.hook-navbar() when (@navbar-mode = rail) and not (@navbar-border-width = 0) {
-
-    .tm-header & { border-bottom: @navbar-border-width solid @navbar-border; }
-
-    .tm-header .tm-headerbar-top + * & { border-top: @navbar-border-width solid @navbar-border; }
-    .tm-header .tm-headerbar-top + * .uk-navbar-sticky > * > & { border-top-color: transparent !important; }
-
-    .tm-header-mobile & { border-bottom: @navbar-border-width solid @navbar-border; }
-
-}
-
-//
-// Frame mode
-//
-
-.hook-navbar() when (@navbar-mode = frame) and not (@navbar-border-width = 0) {
-
-    .tm-header & { border: @navbar-border-width solid @navbar-border; }
-
-}
-
-.hook-navbar-misc() when (@navbar-mode = frame) and not (@navbar-border-width = 0) {
-
-    .tm-header .uk-navbar-container > .uk-container .uk-navbar-left {
-        padding-left: @navbar-nav-item-padding-horizontal;
-        padding-right: @navbar-nav-item-padding-horizontal;
     }
 
-    .tm-header .uk-navbar-container > .uk-container .uk-navbar-right { padding-right: @navbar-nav-item-padding-horizontal; }
+    /* Tablet landscape and bigger */
+    @media (min-width: @breakpoint-medium) {
+
+        .uk-navbar-left { padding-right: @container-padding-horizontal-m; }
+        .uk-navbar-right { padding-left: @container-padding-horizontal-m; }
+
+    }
 
 }
 
-.hook-navbar-misc() when not (@navbar-mode = frame) and (@navbar-mode-border-vertical = all) {
+.hook-navbar-misc() when (@navbar-mode-border-vertical = all) and not (@navbar-border-width = 0) {
 
     .uk-navbar-left .uk-navbar-nav,
     .uk-navbar-left .uk-navbar-item,
@@ -210,22 +175,73 @@
 
 }
 
-.hook-navbar-misc() when (@navbar-mode = frame) and (@navbar-mode-border-vertical = all) {
+.hook-navbar-misc() when (@navbar-mode-border-vertical = all) and not (@navbar-border-width = 0) and not (@navbar-mode = frame) {
 
-    .tm-header .uk-navbar-left .uk-navbar-nav,
-    .tm-header .uk-navbar-left .uk-navbar-item,
-    .tm-header .uk-navbar-left .uk-navbar-toggle,
-    .tm-header .uk-navbar-center > :last-child,
-    .tm-header .uk-navbar-right .uk-navbar-nav > li:nth-last-child(n+2) > a { border-right: @navbar-border-width solid @navbar-border; }
+    .uk-navbar-right { border-right: @navbar-border-width solid @navbar-border; }
+    .uk-navbar-left { border-left: @navbar-border-width solid @navbar-border; }
 
-    .tm-header .uk-navbar-right .uk-navbar-nav,
-    .tm-header .uk-navbar-right .uk-navbar-item,
-    .tm-header .uk-navbar-right .uk-navbar-toggle,
-    .tm-header .uk-navbar-center .uk-navbar-nav,
-    .tm-header .uk-navbar-center .uk-navbar-item,
-    .tm-header .uk-navbar-center .uk-navbar-toggle,
-    .tm-header .uk-navbar-left .uk-navbar-nav > li:nth-child(n+2) > a,
-    .tm-header .uk-navbar-center .uk-navbar-nav > li:nth-child(n+2) > a { border-left: @navbar-border-width solid @navbar-border; }
+}
+
+.hook-navbar-misc() when (@navbar-mode-border-vertical = all) and not (@navbar-border-width = 0) and (@navbar-mode = frame) {
+
+    .uk-navbar-justify > :last-child > :not(.uk-navbar-nav):last-child,
+    .uk-navbar-justify > :last-child > .uk-navbar-nav > :last-child > a { border-right: none; }
+
+}
+
+//
+// Mode Border + Border Always
+//
+
+.hook-navbar-container() when (@navbar-mode = border) and not (@navbar-border-width = 0) {
+    border-bottom: @navbar-border-width solid @navbar-border;
+}
+
+.hook-navbar-misc() when (@navbar-mode = border-always) and not (@navbar-border-width = 0) {
+
+    .uk-navbar-container { border-bottom: @navbar-border-width solid @navbar-border; }
+
+}
+
+.hook-navbar-container() when (@navbar-mode = border) and not (@navbar-border-width = 0) and not (@navbar-mode-border-vertical = ~'') {
+
+    .tm-header .tm-headerbar-top + * &:not(.uk-navbar-sticky) { border-top: @navbar-border-width solid @navbar-border; }
+}
+
+.hook-navbar-misc() when (@navbar-mode = border-always) and not (@navbar-border-width = 0) and not (@navbar-mode-border-vertical = ~'') {
+
+    .tm-header .tm-headerbar-top + * .uk-navbar-container:not(.uk-navbar-sticky) { border-top: @navbar-border-width solid @navbar-border; }
+}
+
+.hook-navbar-misc() when ((@navbar-mode = border) and not (@navbar-border-width = 0) and (@internal-navbar-border-mode = overlay)),
+                         ((@navbar-mode = border-always) and not (@navbar-border-width = 0) and (@internal-navbar-border-mode = overlay)) {
+
+    .uk-navbar-left,
+    .uk-navbar-right,
+    .uk-navbar-center { margin-bottom: -@navbar-border-width; }
+
+}
+
+//
+// Mode Rail
+//
+
+.hook-navbar() when (@navbar-mode = rail) and not (@navbar-border-width = 0) {
+
+    border-bottom: @navbar-border-width solid @navbar-border;
+
+    .tm-header .tm-headerbar-top + * & { border-top: @navbar-border-width solid @navbar-border; }
+    .tm-header .tm-headerbar-top + * .uk-navbar-sticky > * > & { border-top-color: transparent !important; }
+
+}
+
+//
+// Mode Frame
+//
+
+.hook-navbar() when (@navbar-mode = frame) and not (@navbar-border-width = 0) {
+
+    border: @navbar-border-width solid @navbar-border;
 
 }
 
@@ -245,44 +261,15 @@
 .hook-inverse-navbar-toggle() {}
 .hook-inverse-navbar-toggle-hover() {}
 
-.hook-inverse() when (@navbar-mode = border) and not (@navbar-border-width = 0) {
-
-    .uk-navbar-container:not(.uk-navbar-transparent),
-    &.uk-navbar-container:not(.uk-navbar-transparent) { border-bottom-color: @inverse-navbar-border; }
-
-}
-
-.hook-inverse() when (@navbar-mode = border-always) and not (@navbar-border-width = 0) {
-
-    .uk-navbar-container,
-    &.uk-navbar-container { border-bottom-color: @inverse-navbar-border; }
-
-}
-
-.hook-inverse() when ((@navbar-mode = border) and (@navbar-mode-border-vertical = partial)),
-                     ((@navbar-mode = border-always) and (@navbar-mode-border-vertical = partial)) {
+.hook-inverse() when (@navbar-mode-border-vertical = partial) and not (@navbar-border-width = 0),
+                     (@navbar-mode-border-vertical = partial) and not (@navbar-border-width = 0) {
 
     .uk-navbar-left { border-right-color: @inverse-navbar-border; }
     .uk-navbar-right { border-left-color: @inverse-navbar-border; }
 
 }
 
-.hook-inverse() when (@navbar-mode = rail) and not (@navbar-border-width = 0) {
-
-    .uk-navbar {
-        border-top-color: @inverse-navbar-border;
-        border-bottom-color: @inverse-navbar-border;
-    }
-
-}
-
-.hook-inverse() when (@navbar-mode = frame) and not (@navbar-border-width = 0) {
-
-    .uk-navbar { border-color: @inverse-navbar-border; }
-
-}
-
-.hook-inverse() when not (@navbar-mode = frame) and (@navbar-mode-border-vertical = all) {
+.hook-inverse() when (@navbar-mode-border-vertical = all) and not (@navbar-border-width = 0) {
 
     .uk-navbar-left .uk-navbar-nav,
     .uk-navbar-left .uk-navbar-item,
@@ -301,21 +288,36 @@
 
 }
 
-.hook-inverse() when (@navbar-mode = frame) and (@navbar-mode-border-vertical = all) {
+.hook-inverse() when (@navbar-mode-border-vertical = all) and not (@navbar-border-width = 0) and not (@navbar-mode = frame) {
 
-    .tm-header & .uk-navbar-left .uk-navbar-nav,
-    .tm-header & .uk-navbar-left .uk-navbar-item,
-    .tm-header & .uk-navbar-left .uk-navbar-toggle,
-    .tm-header & .uk-navbar-center > :last-child,
-    .tm-header & .uk-navbar-right .uk-navbar-nav > li:nth-last-child(n+2) > a { border-right-color: @inverse-navbar-border; }
+    .uk-navbar-right { border-right-color: @inverse-navbar-border; }
+    .uk-navbar-left { border-left-color: @inverse-navbar-border; }
 
-    .tm-header & .uk-navbar-right .uk-navbar-nav,
-    .tm-header & .uk-navbar-right .uk-navbar-item,
-    .tm-header & .uk-navbar-right .uk-navbar-toggle,
-    .tm-header & .uk-navbar-center .uk-navbar-nav,
-    .tm-header & .uk-navbar-center .uk-navbar-item,
-    .tm-header & .uk-navbar-center .uk-navbar-toggle,
-    .tm-header & .uk-navbar-left .uk-navbar-nav > li:nth-child(n+2) > a,
-    .tm-header & .uk-navbar-center .uk-navbar-nav > li:nth-child(n+2) > a { border-left-color: @inverse-navbar-border; }
+}
+
+.hook-inverse() when (@navbar-mode = border) and not (@navbar-border-width = 0) {
+
+    .uk-navbar-container:not(.uk-navbar-transparent),
+    &.uk-navbar-container:not(.uk-navbar-transparent) { border-bottom-color: @inverse-navbar-border; }
+
+}
+
+.hook-inverse() when (@navbar-mode = border-always) and not (@navbar-border-width = 0) {
+
+    .uk-navbar-container,
+    &.uk-navbar-container { border-bottom-color: @inverse-navbar-border; }
+
+}
+
+.hook-inverse() when (@navbar-mode = rail) and not (@navbar-border-width = 0) {
+
+    .uk-navbar { border-bottom-color: @inverse-navbar-border; }
+    .tm-header &.tm-headerbar-top + * .uk-navbar { border-top-color: @inverse-navbar-border; }
+
+}
+
+.hook-inverse() when (@navbar-mode = frame) and not (@navbar-border-width = 0) {
+
+    .uk-navbar { border-color: @inverse-navbar-border; }
 
 }

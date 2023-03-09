@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <extension version="3.7" type="plugin" group="fields" method="upgrade">
     <name>Fields - YOOtheme Location</name>
-    <version>2.7.22</version>
+    <version>3.0.25</version>
     <description>Fields Location Plugin for YOOtheme Pro.</description>
-    <creationDate>May 2022</creationDate>
+    <creationDate>February 2023</creationDate>
     <copyright>Copyright (C) YOOtheme GmbH</copyright>
     <license>GNU General Public License</license>
     <author>YOOtheme</author>
@@ -20,13 +20,23 @@
         <language tag="en-GB">en-GB/en-GB.plg_fields_location.ini</language>
     </languages>
     <config>
-        <fields name="params" >
-            <fieldset name="basic" addfieldpath="/plugins/fields/location/fields">
-                <field name="location" type="location" label="Location" />
+        <fields name="params">
+            <fieldset name="basic">
+                <field
+                    name="google_maps_api_key"
+                    type="text"
+                    size="40"
+                    label="Google Maps"
+                    description="Enter your &lt;a href=&quot;https://developers.google.com/maps/web/&quot; target=&quot;_blank&quot;&gt;Google Maps&lt;/a&gt; API key to use Google Maps instead of OpenStreetMap. It also enables additional options to style the colors of your maps."
+                />
             </fieldset>
         </fields>
     </config>
     <updateservers>
-        <server type="extension" priority="1" name="YOOtheme">https://yootheme.com/api/update/yootheme_j33.xml</server>
+        <server
+            type="extension"
+            priority="1"
+            name="YOOtheme"
+        >https://yootheme.com/api/update/yootheme_j33.xml</server>
     </updateservers>
 </extension>

@@ -10,7 +10,8 @@ if (!($props['image'] || $props['video'])) {
     $props['media_overlay'] = false;
     $props['media_overlay_gradient'] = false;
 }
-if (!$props['height'] || $props['height'] == 'expand') { $props['vertical_align'] = false; }
+
+if (!in_array($props['height'], ['full', 'percent', 'section'])) { $props['vertical_align'] = false; }
 if ($props['image']) { $props['video'] = false; }
 
 $el = $this->el('div', $attrs);
@@ -20,9 +21,10 @@ $el->attr([
     'class' => [
         'uk-section-{style}',
         'uk-section-overlap {@overlap}',
+        'uk-position-z-index-negative {@sticky}',
         'uk-preserve-color {@style: primary|secondary}' => $props['preserve_color'] || ($props['text_color'] && ($props['image'] || $props['video'])),
         'uk-{text_color}' => $props['image'] || $props['video'],
-        'uk-position-relative {@image}' => $props['media_overlay'] || $props['media_overlay_gradient'],
+        'uk-position-relative {@image} {@!sticky}' => $props['media_overlay'] || $props['media_overlay_gradient'], // uk-sticky already sets a position context
         'uk-cover-container {@video}',
     ],
 
@@ -30,6 +32,13 @@ $el->attr([
 
     'tm-header-transparent' => ['{header_transparent}'],
 ]);
+
+if ($props['sticky']) {
+    $el->attr('uk-sticky', [
+        'overflow-flip: true; end: 100%; {@sticky: cover}',
+        'position: bottom; overflow-flip: true; start: -100%; end: 0; {@sticky: reveal}',
+    ]);
+}
 
 if ($props['animation']) {
     $el->attr('uk-scrollspy', [
@@ -43,11 +52,22 @@ if ($props['animation']) {
 $attrs_section = [
     'class' => [
         'uk-section',
-        'uk-section-{!padding: |none}',
+        'uk-section-{!padding: |none}' ,
         'uk-padding-remove-vertical {@padding: none}',
         'uk-padding-remove-top {@!padding: none} {@padding_remove_top}',
         'uk-padding-remove-bottom {@!padding: none} {@padding_remove_bottom}',
         'uk-flex [uk-flex-{vertical_align} {@!title}] {@vertical_align}',
+
+        // Height Viewport
+        'uk-height-{height: viewport-2|viewport-3|viewport-4}',
+    ],
+
+    // Height Viewport
+    'uk-height-viewport' => [
+        'offset-top: true; {@height: full|percent|section}',
+        'offset-bottom: 20; {@height: percent}',
+        'offset-bottom: {0}; {@height: section}' => $props['image'] ? '! +' : 'true',
+        'expand: true; {@height: expand}',
     ],
 ];
 
@@ -55,36 +75,21 @@ $attrs_section = [
 $image = $props['image'] ? $this->el('div', $this->bgImage($props['image'], [
     'width' => $props['image_width'],
     'height' => $props['image_height'],
+    'loading' => $props['image_loading'] ? 'eager' : null,
     'size' => $props['image_size'],
     'position' => $props['image_position'],
     'visibility' => $props['media_visibility'],
     'blend_mode' => $props['media_blend_mode'],
     'background' => $props['media_background'],
     'effect' => $props['image_effect'],
-    'parallax_bgx_start' => $props['image_parallax_bgx_start'],
-    'parallax_bgy_start' => $props['image_parallax_bgy_start'],
-    'parallax_bgx_end' => $props['image_parallax_bgx_end'],
-    'parallax_bgy_end' => $props['image_parallax_bgy_end'],
+    'parallax_bgx' => $props['image_parallax_bgx'],
+    'parallax_bgy' => $props['image_parallax_bgy'],
     'parallax_easing' => $props['image_parallax_easing'],
     'parallax_breakpoint' => $props['image_parallax_breakpoint'],
 ])) : null;
 
 // Video
 $props['video'] = $this->render("{$__dir}/template-video");
-
-// Height Viewport
-$attrs_section['uk-height-viewport'] = $props['height'] == 'expand'
-    ? 'expand: true;'
-    : ($props['height']
-        ? [
-            'offset-top: true;',
-            'offset-bottom: {0};' => $props['height'] == 'percent'
-                ? '20'
-                : ($props['height'] == 'section'
-                    ? ($props['image'] ? '! +' : 'true')
-                    : false),
-        ]
-        : false);
 
 $overlay = ($props['media_overlay'] || $props['media_overlay_gradient']) && ($props['image'] || $props['video'])
     ? $this->el('div', [

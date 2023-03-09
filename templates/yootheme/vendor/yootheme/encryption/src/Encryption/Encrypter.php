@@ -44,7 +44,7 @@ class Encrypter implements EncrypterInterface
             throw new \RuntimeException('Encryption not supported. Install OpenSSL or Mcrypt.');
         }
 
-        list($this->cipherKey, $this->hashKey) = static::generateKeys(
+        [$this->cipherKey, $this->hashKey] = static::generateKeys(
             $this->hashAlgo,
             $password,
             $salt
@@ -79,7 +79,7 @@ class Encrypter implements EncrypterInterface
             return false;
         }
 
-        list($iv, $data, $hash) = array_map('base64_decode', $encoded);
+        [$iv, $data, $hash] = array_map('base64_decode', $encoded);
 
         if (hash_hmac($this->hashAlgo, $iv . $data, $this->hashKey) !== $hash) {
             return false;
@@ -110,6 +110,7 @@ class Encrypter implements EncrypterInterface
         $length = 0,
         $raw_output = false
     ) {
+        // With PHP 7.4+ Hash extension is always available
         if (is_callable('hash_pbkdf2')) {
             if (!$raw_output) {
                 $length = $length * 2;

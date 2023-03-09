@@ -60,8 +60,8 @@ return [
             $builder->addTransform('precontent', new NormalizeTransform());
             $builder->addTransform('prerender', new NormalizeTransform());
             $builder->addTransform('prerender', function ($node, $params) use ($config) {
-                $index = isset($params['index']) ? $params['index'] : null;
-                $prefix = isset($params['prefix']) ? $params['prefix'] : null;
+                $index = $params['index'] ?? null;
+                $prefix = $params['prefix'] ?? null;
                 $type = $params['type'];
                 $parent = $params['parent'];
 
@@ -97,7 +97,7 @@ return [
         },
 
         UpdateTransform::class => function (Config $config) {
-            $update = new UpdateTransform($config('theme.version'));
+            $update = new UpdateTransform($config('theme.version', ''));
             $update->addGlobals(require __DIR__ . '/updates.php');
 
             return $update;

@@ -6,7 +6,7 @@ use Joomla\CMS\Uri\Uri;
 
 ?>
 
-<article id="article-<?= $article->id ?>" class="uk-article"<?= $this->attrs(['data-permalink' => $permalink]) ?> typeof="Article">
+<article id="article-<?= $article->id ?>" class="uk-article"<?= $this->attrs(['data-permalink' => $permalink]) ?> typeof="Article" vocab="https://schema.org/">
 
     <meta property="name" content="<?= $this->e($title) ?>">
     <meta property="author" typeof="Person" content="<?= $this->e($article->author) ?>">

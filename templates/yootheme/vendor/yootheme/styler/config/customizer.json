@@ -48,10 +48,11 @@
                         "box decoration": "@theme-box-decoration-*",
                         "box decoration default": "@theme-box-decoration-default-*",
                         "box decoration primary": "@theme-box-decoration-primary-*",
-                        "box decoration secondary": "@theme-box-decoration-secondary-*"
+                        "box decoration secondary": "@theme-box-decoration-secondary-*",
+                        "transition border": "@theme-transition-border-*"
                     },
-                    "hover": ".tm-page, .tm-toolbar, .tm-sidebar, .tm-headerbar-top, .tm-headerbar-bottom, .tm-headerbar-stacked, .tm-section-title, .tm-box-decoration-default, .tm-box-decoration-primary, .tm-box-decoration-secondary",
-                    "inspect": ".tm-page-container, .tm-page, tm-page > *, .tm-toolbar, .tm-toolbar > *, .tm-sidebar, .tm-sidebar > *, .tm-headerbar-top, .tm-headerbar-top > *, .tm-headerbar-bottom, .tm-headerbar-bottom > *, .tm-headerbar-stacked, .tm-headerbar-stacked > *, .tm-section-title, .tm-section-title > *, .tm-box-decoration-default, .tm-box-decoration-default > *, .tm-box-decoration-primary, .tm-box-decoration-primary > *, .tm-box-decoration-secondary, .tm-box-decoration-secondary > *"
+                    "hover": ".tm-page, .tm-toolbar, .tm-sidebar, .tm-headerbar-top, .tm-headerbar-bottom, .tm-headerbar-stacked, .tm-section-title, .tm-box-decoration-default, .tm-box-decoration-primary, .tm-box-decoration-secondary, .tm-transition-border",
+                    "inspect": ".tm-page-container, .tm-page, tm-page > *, .tm-toolbar, .tm-toolbar > *, .tm-sidebar, .tm-sidebar > *, .tm-headerbar-top, .tm-headerbar-top > *, .tm-headerbar-bottom, .tm-headerbar-bottom > *, .tm-headerbar-stacked, .tm-headerbar-stacked > *, .tm-section-title, .tm-section-title > *, .tm-box-decoration-default, .tm-box-decoration-default > *, .tm-box-decoration-primary, .tm-box-decoration-primary > *, .tm-box-decoration-secondary, .tm-box-decoration-secondary > *, .tm-transition-border, .tm-transition-border > *"
                 },
                 "inverse": {
                     "name": "Inverse",
@@ -104,6 +105,7 @@
                         "nav": "@inverse-nav-*",
                         "nav default": "@inverse-nav-default-*",
                         "nav primary": "@inverse-nav-primary-*",
+                        "nav secondary": "@inverse-nav-secondary-*",
                         "navbar": "@inverse-navbar-*",
                         "navbar nav item": "@inverse-navbar-nav-item-*",
                         "navbar nav item line": "@inverse-navbar-nav-item-line-*",
@@ -352,14 +354,27 @@
                 "dropdown": {
                     "name": "Dropdown",
                     "groups": {
+                        "large": "@dropdown-large-*",
                         "nav": "@dropdown-nav-*",
                         "nav item": "@dropdown-nav-item-*",
+                        "nav subtitle": "@dropdown-nav-subtitle-*",
                         "nav header": "@dropdown-nav-header-*",
                         "nav divider": "@dropdown-nav-divider-*",
                         "nav sublist": "@dropdown-nav-sublist-*"
                     },
                     "hover": ".uk-dropdown",
                     "inspect": ".uk-dropdown, .uk-dropdown > *, .uk-dropdown-nav, .uk-dropdown-nav > *, .uk-dropdown-nav > * > *, .uk-dropdown-grid, .uk-dropdown-grid > *"
+                },
+                "dropbar": {
+                    "name": "Dropbar",
+                    "groups": {
+                        "top": "@dropbar-top-*",
+                        "bottom": "@dropbar-bottom-*",
+                        "left": "@dropbar-left-*",
+                        "right": "@dropbar-right-*"
+                    },
+                    "hover": ".uk-dropbar",
+                    "inspect": ".uk-dropbar, .uk-dropbar > *"
                 },
                 "form": {
                     "name": "Form",
@@ -528,14 +543,22 @@
                         "divider": "@nav-divider-*",
                         "default": "@nav-default-*",
                         "default item": "@nav-default-item-*",
+                        "default subtitle": "@nav-default-subtitle-*",
                         "default header": "@nav-default-header-*",
                         "default divider": "@nav-default-divider-*",
                         "default sublist": "@nav-default-sublist-*",
                         "primary": "@nav-primary-*",
                         "primary item": "@nav-primary-item-*",
+                        "primary subtitle": "@nav-primary-subtitle-*",
                         "primary header": "@nav-primary-header-*",
                         "primary divider": "@nav-primary-divider-*",
                         "primary sublist": "@nav-primary-sublist-*",
+                        "secondary": "@nav-secondary-*",
+                        "secondary item": "@nav-secondary-item-*",
+                        "secondary subtitle": "@nav-secondary-subtitle-*",
+                        "secondary header": "@nav-secondary-header-*",
+                        "secondary divider": "@nav-secondary-divider-*",
+                        "secondary sublist": "@nav-secondary-sublist-*",
                         "dividers": "@nav-dividers-*"
                     },
                     "hover": ".uk-nav",
@@ -553,15 +576,24 @@
                             "@navbar-nav-item-line-slide-mode",
                             "@navbar-nav-item-line-*"
                         ],
+                        "parent icon": "@navbar-parent-icon-*",
                         "item": "@navbar-item-*",
                         "toggle": "@navbar-toggle-*",
                         "subtitle": "@navbar-subtitle-*",
                         "primary": "@navbar-primary-*",
+                        "primary nav": "@navbar-primary-nav-*",
+                        "primary nav item": "@navbar-primary-nav-item-*",
+                        "primary item": "@navbar-primary-item-*",
+                        "primary toggle": "@navbar-primary-toggle-*",
                         "sticky": "@navbar-sticky-*",
                         "dropdown": "@navbar-dropdown-*",
+                        "dropdown large": "@navbar-dropdown-large-*",
+                        "dropdown dropbar": "@navbar-dropdown-dropbar-*",
+                        "dropdown dropbar large": "@navbar-dropdown-dropbar-large-*",
                         "dropdown grid": "@navbar-dropdown-grid-*",
                         "dropdown nav": "@navbar-dropdown-nav-*",
                         "dropdown nav item": "@navbar-dropdown-nav-item-*",
+                        "dropdown nav subtitle": "@navbar-dropdown-nav-subtitle-*",
                         "dropdown nav header": "@navbar-dropdown-nav-header-*",
                         "dropdown nav divider": "@navbar-dropdown-nav-divider-*",
                         "dropdown nav sublist": "@navbar-dropdown-nav-sublist-*",
@@ -987,7 +1019,7 @@
                     "type": "select-custom",
                     "vars": "*button-text-mode",
                     "options": {
-                        "None": "none",
+                        "None": "",
                         "Line": "line",
                         "Arrow": "arrow",
                         "Em Dash": "em-dash",
@@ -1001,7 +1033,7 @@
                     "type": "select-custom",
                     "vars": "*navbar-mode",
                     "options": {
-                        "None": "none",
+                        "None": "",
                         "Border": "border",
                         "Border (Including transparent navbar)": "border-always",
                         "Rail": "rail",
@@ -1015,7 +1047,7 @@
                     "type": "select-custom",
                     "vars": "*navbar-mode-border-vertical",
                     "options": {
-                        "None": "none",
+                        "None": "",
                         "Partial (Navs only)": "partial",
                         "All (Navs and Items)": "all"
                     },

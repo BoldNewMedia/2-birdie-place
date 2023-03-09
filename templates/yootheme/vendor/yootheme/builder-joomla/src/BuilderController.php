@@ -31,8 +31,8 @@ class BuilderController
         CMSApplication $app,
         Config $config
     ) {
-        $src = $request('src');
-        $md5 = $request('md5');
+        $src = $request->getParam('src');
+        $md5 = $request->getParam('md5');
 
         $http = HttpFactory::getHttp();
         $params = ComponentHelper::getParams('com_media');
@@ -44,8 +44,17 @@ class BuilderController
             $file .= ".{$uri->getQueryParam('fm', 'jpg')}";
         }
 
+        if (version_compare(JVERSION, '4.0', '>')) {
+            $path = Path::join($config('app.uploadDir'), $config('~theme.media_folder'));
+        } else {
+            $path = Path::join(
+                JPATH_ROOT,
+                $params->get('image_path'),
+                $config('~theme.media_folder')
+            );
+        }
+
         $file = File::makeSafe($file);
-        $path = Path::join(JPATH_ROOT, $params->get('image_path'), $config('~theme.media_folder'));
         $dest = Path::join($path, $file);
 
         try {
@@ -64,11 +73,7 @@ class BuilderController
                 $file = preg_replace_callback(
                     '/-?(\d*)(\.[^.]+)?$/',
                     function ($match) {
-                        return sprintf(
-                            '-%02d%s',
-                            intval($match[1]) + 1,
-                            isset($match[2]) ? $match[2] : ''
-                        );
+                        return sprintf('-%02d%s', intval($match[1]) + 1, $match[2] ?? '');
                     },
                     $file,
                     1

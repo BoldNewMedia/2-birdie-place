@@ -2,37 +2,35 @@
 
 namespace YOOtheme\Builder\Newsletter;
 
-use YOOtheme\Application;
-use YOOtheme\Config;
-use YOOtheme\Encrypter;
 use YOOtheme\Http\Request;
 use YOOtheme\Http\Response;
+use function YOOtheme\app;
 use function YOOtheme\trans;
 
 class NewsletterController
 {
     /**
-     * @var Application
+     * @var array
      */
-    protected $app;
+    protected $providers;
 
     /**
-     * @var Config
+     * @var string
      */
-    protected $config;
+    protected $secret;
 
-    public function __construct(Application $app, Config $config)
+    public function __construct(array $providers, string $secret)
     {
-        $this->app = $app;
-        $this->config = $config;
+        $this->providers = $providers;
+        $this->secret = $secret;
     }
 
     public function lists(Request $request, Response $response)
     {
-        $settings = $request('settings');
+        $settings = $request->getParam('settings');
 
         try {
-            if (!($provider = $this->getProvider($settings))) {
+            if (!($provider = $this->getProvider($settings['name'] ?? ''))) {
                 return $response->withJson('Invalid provider', 400);
             }
 
@@ -42,20 +40,27 @@ class NewsletterController
         }
     }
 
-    public function subscribe(Request $request, Response $response, Encrypter $encrypter)
+    public function subscribe(Request $request, Response $response)
     {
-        $settings = $encrypter->decrypt($request('settings'));
+        $hash = $request->getQueryParam('hash');
+        $settings = $request->getParam('settings');
+
+        $request->abortIf($hash !== $this->getHash($settings), 400, 'Invalid settings hash');
 
         try {
-            if (!($provider = $this->getProvider($settings))) {
-                return $response->withJson('Invalid provider', 400);
-            }
+            $settings = $this->decodeData($settings);
+
+            $request->abortIf(
+                !($provider = $this->getProvider($settings['name'] ?? '')),
+                400,
+                'Invalid provider'
+            );
 
             $provider->subscribe(
-                $request('email'),
+                $request->getParam('email'),
                 [
-                    'first_name' => $request('first_name', ''),
-                    'last_name' => $request('last_name', ''),
+                    'first_name' => $request->getParam('first_name', ''),
+                    'last_name' => $request->getParam('last_name', ''),
                 ],
                 $settings
             );
@@ -63,9 +68,7 @@ class NewsletterController
             return $response->withJson($e->getMessage(), 400);
         }
 
-        $return = [
-            'successful' => true,
-        ];
+        $return = ['successful' => true];
 
         if ($settings['after_submit'] === 'redirect') {
             $return['redirect'] = $settings['redirect'];
@@ -76,15 +79,23 @@ class NewsletterController
         return $response->withJson($return);
     }
 
-    /**
-     * @param array $settings
-     *
-     * @return AbstractProvider|false
-     */
-    protected function getProvider($settings)
+    public function encodeData(array $data): string
     {
-        $name = isset($settings['name']) ? $settings['name'] : '';
-        $service = $this->config->get("theme.newsletterProvider.{$name}", '');
-        return $name && $service ? $this->app->get($service) : false;
+        return base64_encode(json_encode($data));
+    }
+
+    public function decodeData(string $data): array
+    {
+        return json_decode(base64_decode($data), true);
+    }
+
+    public function getHash(string $data): string
+    {
+        return hash('fnv132', hash_hmac('sha1', $data, $this->secret));
+    }
+
+    protected function getProvider(string $name): ?AbstractProvider
+    {
+        return isset($this->providers[$name]) ? app($this->providers[$name]) : null;
     }
 }

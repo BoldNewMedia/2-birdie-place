@@ -3,10 +3,6 @@
 namespace YOOtheme\Theme;
 
 return [
-    'theme' => [
-        'defaults' => ['lazyload' => true],
-    ],
-
     'routes' => [
         ['get', '/systemcheck', [SystemCheckController::class, 'index']],
         ['get', '/cache', [CacheController::class, 'index']],

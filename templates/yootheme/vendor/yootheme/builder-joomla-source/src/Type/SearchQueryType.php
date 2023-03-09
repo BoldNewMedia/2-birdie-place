@@ -18,7 +18,7 @@ class SearchQueryType
                     'metadata' => [
                         'label' => trans('Search'),
                         'view' => ['com_search.search'],
-                        'group' => 'Page',
+                        'group' => trans('Page'),
                     ],
                     'extensions' => [
                         'call' => __CLASS__ . '::resolve',

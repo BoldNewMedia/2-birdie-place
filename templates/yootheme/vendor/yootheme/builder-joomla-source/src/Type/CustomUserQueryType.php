@@ -25,13 +25,13 @@ class CustomUserQueryType
 
                     'metadata' => [
                         'label' => trans('Custom User'),
-                        'group' => 'Custom',
+                        'group' => trans('Custom'),
                         'fields' => [
                             'id' => [
                                 'label' => trans('User'),
                                 'type' => 'select-item',
                                 'module' => 'com_users',
-                                'labels' => ['type' => 'User'],
+                                'labels' => ['type' => trans('User')],
                             ],
                         ],
                     ],

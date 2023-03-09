@@ -15,7 +15,7 @@ class TagHelper
      *
      * @param int[] $ids
      *
-     * @return CMSObject[]
+     * @return object[]
      */
     public static function get($ids)
     {
@@ -27,14 +27,14 @@ class TagHelper
         foreach ((array) $ids as $id) {
             $table->load($id);
 
-            if ($table->published != 1) {
+            if ($table->get('published') != 1) {
                 continue;
             }
-            if (!in_array($table->access, Factory::getUser()->getAuthorisedViewLevels())) {
+            if (!in_array($table->get('access'), Factory::getUser()->getAuthorisedViewLevels())) {
                 continue;
             }
 
-            $tags[] = (object) $table->getProperties(1);
+            $tags[] = (object) $table->getProperties(true);
         }
 
         return $tags;

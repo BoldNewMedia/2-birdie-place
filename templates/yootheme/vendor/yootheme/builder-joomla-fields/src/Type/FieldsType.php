@@ -324,14 +324,16 @@ class FieldsType
 
     public function resolveArticles($field)
     {
-        $ordering = $field->fieldparams->get('articles_ordering', 'ordering');
+        $ordering = $field->fieldparams->get('articles_ordering', 'title');
         $direction = $field->fieldparams->get('articles_ordering_direction', 'ASC');
+        $ordering2 = $field->fieldparams->get('articles_ordering_2', 'created');
+        $direction2 = $field->fieldparams->get('articles_ordering_direction_2', 'DESC');
 
         return $this->resolveGenericField(
             $field,
             ArticleHelper::get($field->rawvalue, [
-                'order' => $ordering,
-                'order_direction' => $direction,
+                'order' => "{$ordering} {$direction}, a.{$ordering2}",
+                'order_direction' => $direction2,
             ])
         );
     }
@@ -503,7 +505,7 @@ class FieldsType
     {
         $fields = static::getFields($item, $context);
 
-        return isset($fields[$name]) ? $fields[$name] : null;
+        return $fields[$name] ?? null;
     }
 
     protected static function getFields($item, $context)
@@ -513,10 +515,7 @@ class FieldsType
 
             $item->_fields = [];
 
-            foreach (
-                isset($item->jcfields) ? $item->jcfields : FieldsHelper::getFields($context, $item)
-                as $field
-            ) {
+            foreach ($item->jcfields ?? FieldsHelper::getFields($context, $item) as $field) {
                 if (!isset($item->jcfields)) {
                     Factory::getApplication()->triggerEvent('onCustomFieldsBeforePrepareField', [
                         $context,

@@ -19,7 +19,6 @@ $el = $this->el('div', [
 
             'class' => [
                 'uk-accordion-content',
-                'uk-margin-remove-first-child' => !$child->props['image'] || !in_array($props['image_align'], ['left', 'right']),
             ],
 
         ]);

@@ -77,7 +77,7 @@ class Platform
                 // set cms headers (fix issue when headers_sent() is still false)
                 if (!headers_sent()) {
                     $cms->allowCache(true);
-                    $cms->setHeader('Expires', $response->getHeaderLine('Expires'));
+                    $cms->setHeader('Cache-Control', $response->getHeaderLine('Cache-Control'));
                     $cms->setHeader('Content-Type', $response->getContentType());
                 }
             });
@@ -120,11 +120,29 @@ class Platform
     {
         foreach ($metadata->all('style:*') as $style) {
             if ($style->href) {
-                $document->addStyleSheet(
-                    htmlentities(Url::to($style->href)),
-                    ['version' => $style->version],
-                    Arr::omit($style->getAttributes(), ['version', 'href', 'rel'])
-                );
+                $attrs = Arr::omit($style->getAttributes(), ['version', 'href', 'rel', 'defer']);
+
+                if ($style->defer && $document instanceof HtmlDocument) {
+                    $href = Url::to($style->href, ['ver' => $style->version]);
+                    if (version_compare(JVERSION, '4.0', '<')) {
+                        $href = htmlentities($href);
+                    }
+                    $document->addHeadLink(
+                        $href,
+                        'preload',
+                        'rel',
+                        [
+                            'as' => 'style',
+                            'onload' => "this.onload=null;this.rel='stylesheet'",
+                        ] + $attrs
+                    );
+                } else {
+                    $href = Url::to($style->href);
+                    if (version_compare(JVERSION, '4.0', '<')) {
+                        $href = htmlentities($href);
+                    }
+                    $document->addStyleSheet($href, ['version' => $style->version], $attrs);
+                }
             } elseif ($value = $style->getValue()) {
                 $document->addStyleDeclaration($value);
             }
@@ -132,16 +150,20 @@ class Platform
 
         foreach ($metadata->all('script:*') as $script) {
             if ($script->src) {
+                $src = Url::to($script->src);
+                if (version_compare(JVERSION, '4.0', '<')) {
+                    $src = htmlentities($src);
+                }
                 $document->addScript(
-                    htmlentities(Url::to($script->src)),
+                    $src,
                     ['version' => $script->version],
                     Arr::omit($script->getAttributes(), ['version', 'src'])
                 );
-            } elseif ($value = $script->getValue()) {
+            } elseif ($script->getValue()) {
                 if ($document instanceof HtmlDocument) {
-                    $document->addCustomTag((string) $script);
+                    $document->addCustomTag((string) $script->withAttribute('version', ''));
                 } else {
-                    $document->addScriptDeclaration((string) $script);
+                    $document->addScriptDeclaration((string) $script->withAttribute('version', ''));
                 }
             }
         }

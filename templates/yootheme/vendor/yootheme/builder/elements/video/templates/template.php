@@ -2,9 +2,7 @@
 
 namespace YOOtheme;
 
-/**
- * @var ImageProvider $imageProvider
- */
+/** @var ImageProvider $imageProvider */
 $imageProvider = app(ImageProvider::class);
 
 $el = $this->el('div');
@@ -15,7 +13,7 @@ if ($iframe = $this->iframeVideo($props['video'], [], false)) {
     $video = $this->el('iframe', [
 
         'src' => $iframe,
-        'frameborder' => 0,
+        'allow' => 'autoplay',
         'allowfullscreen' => true,
         'uk-responsive' => true,
 

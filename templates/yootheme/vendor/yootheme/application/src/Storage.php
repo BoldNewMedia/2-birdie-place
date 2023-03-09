@@ -10,6 +10,11 @@ abstract class Storage implements \JsonSerializable
     protected $values = [];
 
     /**
+     * @var bool
+     */
+    protected $modified = false;
+
+    /**
      * Gets a value (shortcut).
      *
      * @param string $key
@@ -59,6 +64,8 @@ abstract class Storage implements \JsonSerializable
     {
         Arr::set($this->values, $key, $value);
 
+        $this->modified = true;
+
         return $this;
     }
 
@@ -73,21 +80,19 @@ abstract class Storage implements \JsonSerializable
     {
         Arr::del($this->values, $key);
 
+        $this->modified = true;
+
         return $this;
     }
 
     /**
-     * Adds values from JSON.
+     * Checks if values are modified.
      *
-     * @param string $json
-     *
-     * @return $this
+     * @return bool
      */
-    public function addJson($json)
+    public function isModified()
     {
-        $this->values = Arr::merge($this->values, json_decode($json, true) ?: []);
-
-        return $this;
+        return $this->modified;
     }
 
     /**
@@ -99,5 +104,19 @@ abstract class Storage implements \JsonSerializable
     public function jsonSerialize()
     {
         return $this->values;
+    }
+
+    /**
+     * Adds values from JSON.
+     *
+     * @param string $json
+     *
+     * @return $this
+     */
+    protected function addJson($json)
+    {
+        $this->values = Arr::merge($this->values, json_decode($json, true) ?: []);
+
+        return $this;
     }
 }

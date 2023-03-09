@@ -1,13 +1,15 @@
 <?php
 
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 
 return [
     'transforms' => [
         'render' => function ($node) {
+            /** @var HtmlDocument $document */
             $document = Factory::getDocument();
             $renderer = $document->loadRenderer('modules');
-            $position = isset($node->props['content']) ? $node->props['content'] : '';
+            $position = $node->props['content'] ?? '';
 
             // render module position
             if ($position && $document->countModules($position)) {

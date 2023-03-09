@@ -14,8 +14,8 @@ class yoothemeInstallerScript
     public function __construct($parent)
     {
         $this->db = Factory::getDbo();
-        $this->tmp = Factory::getApplication()->getCfg('tmp_path');
         $this->name = $parent->getName();
+        $this->tmp = Factory::getApplication()->get('tmp_path');
         $this->dest = $parent->getParent()->getPath('extension_root');
     }
 
@@ -69,21 +69,6 @@ class yoothemeInstallerScript
                 // Add theme.support for uikit3
                 if ($params && empty($params['uikit3'])) {
                     $params['uikit3'] = true;
-                    $this->updateTemplateStyle($id, json_encode($params));
-                }
-
-                // Check child theme's "theme.js" for jQuery
-                if ($params
-                    && isset($params['config'])
-                    && ($config = json_decode($params['config'], true))
-                    && empty($config['jquery'])
-                    && !empty($config['child_theme'])
-                    && File::exists($path = JPATH_ROOT."/templates/{$this->name}_{$config['child_theme']}/js/theme.js")
-                    && ($contents = file_get_contents($path))
-                    && strpos($contents, 'jQuery') !== false
-                ) {
-                    $config['jquery'] = true;
-                    $params['config'] = json_encode($config);
                     $this->updateTemplateStyle($id, json_encode($params));
                 }
             }

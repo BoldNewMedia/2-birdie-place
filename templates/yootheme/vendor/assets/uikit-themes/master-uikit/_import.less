@@ -1,4 +1,4 @@
-@global-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+@global-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 @global-font-size: 16px;
 @global-line-height: 1.5;      // 24px
 @global-2xlarge-font-size: 2.625rem; // 42px
@@ -62,6 +62,7 @@
 @list-striped-border: @global-border;
 @inverse-list-striped-border: @inverse-global-border;
 @description-list-term-font-size: @global-small-font-size;
+@description-list-term-font-weight: normal;
 @description-list-term-text-transform: uppercase;
 @table-striped-border-width: @global-border-width;
 @table-striped-border: @global-border;
@@ -138,17 +139,31 @@
 @inverse-search-default-focus-border: @inverse-global-border;
 @dropdown-padding: 25px;
 @dropdown-background: @global-background;
+@dropdown-nav-subtitle-font-size: 12px;
 @dropdown-nav-font-size: @global-small-font-size;
 @dropdown-box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+@dropbar-padding-top: 25px;
+@dropbar-background: @global-background;
+@dropbar-top-box-shadow: 0 12px 7px -6px rgba(0, 0, 0, 0.05);
+@dropbar-bottom-box-shadow: 0 -12px 7px -6px rgba(0, 0, 0, 0.05);
+@dropbar-left-box-shadow: 12px 0 7px -6px rgba(0, 0, 0, 0.05);
+@dropbar-right-box-shadow: -12px 0 7px -6px rgba(0, 0, 0, 0.05);
 @nav-default-font-size: @global-small-font-size;
+@nav-default-subtitle-font-size: 12px;
+@nav-secondary-item-padding-horizontal: 10px;
+@nav-secondary-item-padding-vertical: 10px;
+@nav-secondary-item-hover-background: @global-muted-background;
+@nav-secondary-item-active-background: @global-muted-background;
+@inverse-nav-secondary-item-hover-background: @inverse-global-muted-background;
+@inverse-nav-secondary-item-active-background: @inverse-global-muted-background;
 @navbar-nav-item-font-size: @global-small-font-size;
 @navbar-dropdown-margin: 15px;
 @navbar-dropdown-padding: 25px;
 @navbar-dropdown-background: @global-background;
+@navbar-dropdown-nav-subtitle-font-size: 12px;
 @navbar-nav-item-text-transform: uppercase;
 @navbar-dropdown-nav-font-size: @global-small-font-size;
 @navbar-dropdown-box-shadow: 0 5px 12px rgba(0,0,0,0.15);
-@navbar-dropbar-box-shadow: 0 5px 7px rgba(0, 0, 0, 0.05);
 @subnav-item-font-size: @global-small-font-size;
 @subnav-item-text-transform: uppercase;
 @tab-item-font-size: @global-small-font-size;

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <extension type="module" version="3.1" method="upgrade" client="site">
     <name>MOD_YOOTHEME_BUILDER</name>
-    <version>2.7.22</version>
+    <version>3.0.25</version>
     <description>MOD_YOOTHEME_BUILDER_XML_DESCRIPTION</description>
-    <creationDate>May 2022</creationDate>
+    <creationDate>February 2023</creationDate>
     <copyright>Copyright (C) YOOtheme GmbH</copyright>
     <license>GNU General Public License</license>
     <author>YOOtheme</author>
@@ -19,16 +19,26 @@
         <language tag="en-GB">en-GB/en-GB.mod_yootheme_builder.sys.ini</language>
     </languages>
     <config>
-        <fields name="params" >
+        <fields name="params">
             <fieldset name="basic" addfieldpath="/modules/mod_yootheme_builder/elements">
                 <field name="button" type="button" label="Button" />
             </fieldset>
             <fieldset name="advanced">
-                <field name="layout" type="modulelayout" label="JFIELD_ALT_LAYOUT_LABEL" description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+                <field
+                    name="layout"
+                    type="modulelayout"
+                    label="JFIELD_ALT_LAYOUT_LABEL"
+                    description="JFIELD_ALT_MODULE_LAYOUT_DESC"
+                    class="form-select"
+                />
             </fieldset>
         </fields>
     </config>
     <updateservers>
-        <server type="extension" priority="1" name="YOOtheme">https://yootheme.com/api/update/yootheme_j33.xml</server>
+        <server
+            type="extension"
+            priority="1"
+            name="YOOtheme"
+        >https://yootheme.com/api/update/yootheme_j33.xml</server>
     </updateservers>
 </extension>

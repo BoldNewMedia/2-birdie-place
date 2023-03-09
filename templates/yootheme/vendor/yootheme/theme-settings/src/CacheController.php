@@ -28,12 +28,11 @@ class CacheController
 
     protected static function getFiles()
     {
-        return new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator(
-                Path::get('~theme/cache'),
-                \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS
-            ),
-            \RecursiveIteratorIterator::CHILD_FIRST
+        $iterator = new \RecursiveDirectoryIterator(
+            Path::get('~theme/cache'),
+            \FilesystemIterator::SKIP_DOTS
         );
+
+        return new \RecursiveIteratorIterator($iterator, \RecursiveIteratorIterator::CHILD_FIRST);
     }
 }

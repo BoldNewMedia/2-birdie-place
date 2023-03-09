@@ -4,7 +4,7 @@
 $marker = $this->el('a', [
 
     'class' => [
-        'el-marker uk-position-absolute uk-transform-center',
+        'el-marker uk-position-absolute uk-transform-center uk-preserve-width',
     ],
 
     'style' => [
@@ -35,7 +35,8 @@ $drop = $this->el('div', [
     'uk-drop' => [
         'pos: {0};' => $props['drop_position'] ?: $element['drop_position'],
         'mode: click;' => $element['drop_mode'] == 'click',
-        'toggle: - * > * {@marker_color}',
+        'toggle: - * > *; {@marker_color}',
+        'auto-update: false;',
     ],
 
 ]);

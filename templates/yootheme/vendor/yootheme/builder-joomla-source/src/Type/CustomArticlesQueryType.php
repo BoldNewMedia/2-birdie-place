@@ -45,7 +45,7 @@ class CustomArticlesQueryType
                             'type' => 'String',
                         ],
                         'featured' => [
-                            'type' => 'Boolean',
+                            'type' => 'String',
                         ],
                         'offset' => [
                             'type' => 'Int',
@@ -66,7 +66,7 @@ class CustomArticlesQueryType
 
                     'metadata' => [
                         'label' => trans('Custom Articles'),
-                        'group' => 'Custom',
+                        'group' => trans('Custom'),
                         'fields' => [
                             'catid' => [
                                 'label' => trans('Filter by Categories'),
@@ -133,9 +133,16 @@ class CustomArticlesQueryType
                                 ],
                             ],
                             'featured' => [
-                                'label' => trans('Limit by Featured Articles'),
-                                'type' => 'checkbox',
-                                'text' => trans('Load featured articles only'),
+                                'label' => trans('Filter by Featured Articles'),
+                                'description' => trans(
+                                    'Filter articles by featured status. Load all articles, featured articles only, or articles which are not featured.'
+                                ),
+                                'type' => 'select',
+                                'options' => [
+                                    'None' => '',
+                                    'Featured only' => 'only',
+                                    'Not featured' => 'hide',
+                                ],
                             ],
                             '_offset' => [
                                 'description' => trans(

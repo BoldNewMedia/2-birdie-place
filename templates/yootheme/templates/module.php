@@ -1,159 +1,124 @@
 <?php
 
 // Config
-$config->addAlias('~header', '~theme.header');
-$config->addAlias('~module', "~theme.modules.{$module->id}");
+$mobile = '~theme.mobile';
+$header = '~theme.header';
+$modules = "~theme.modules.{$module->id}";
 
 $class = [];
 $badge = [];
 $title = [];
 
-$layout = $config('~header.layout');
+$layout = $config("$header.layout");
 
-// Debug
-if ($position == 'debug') {
+// Set type in Joomla dummy module for template preview
+if (empty($module->type)) {
+    $module->type = '';
+}
+
+// Raw positions
+if ($position == 'debug' ||
+    ($position == 'navbar-split' && $module->type == 'menu') ||
+    (in_array($position, ['logo', 'logo-mobile']) && $module->type == 'logo') ||
+    $module->type == 'dialog-toggle'
+) {
     echo $module->content;
     return;
 }
 
-// Navbar Split
-if ($position == 'navbar-split' && $module->type == 'menu') {
-    echo $module->content;
-    return;
-}
+// Navbar positions
+if (in_array($position, ['navbar', 'navbar-push', 'navbar-mobile', 'header-mobile']) ||
+    (in_array($position, ['header', 'header-split']) && str_starts_with($layout, 'horizontal')) ||
+    ($position == 'logo' && preg_match('/^(horizontal|stacked-center-split-[ab])/', $layout)) ||
+    $position == 'logo-mobile'
+) {
 
-if ($position == 'navbar') {
-
-    $alignment = false;
-
-    if ($index == 1 && preg_match('/(offcanvas|modal)-top-b/', $layout)) {
-        $alignment = 'uk-margin-auto-top';
-    } elseif ($index == 0 && preg_match('/(offcanvas|modal)-center-b/', $layout)) {
-        $alignment = 'uk-margin-auto-vertical';
-    } elseif ($index == 1 && $layout == 'stacked-left-b') {
-        $alignment = 'uk-margin-auto-left';
-    }
-
-    if ($module->type == 'menu' && preg_match('/^(horizontal|stacked)/', $layout) && in_array($config('~module.menu_style'), ['', 'nav'])) {
-
-        if ($alignment) {
-            echo "<div class=\"{$alignment}\">{$module->content}</div>";
-        } else {
-            echo $module->content;
-        }
-
-        return;
-
-    }
-
-    if (preg_match('/^(offcanvas|modal)-/', $layout)) {
-
-        if ($alignment) {
-            $class[] = $alignment;
-        } elseif (!(preg_match('/(offcanvas|modal)-center-b/', $layout) && $index === 1)) {
-            $class[] = 'uk-margin-top';
-        }
-
-    } else {
-
-        if ($alignment) {
-            $class[] = $alignment;
-        }
-
-        if (in_array($module->type, ['search', 'finder']) && $config('~header.search_style') == 'modal' && preg_match('/^(horizontal|stacked)/', $layout)) {
-            // Rendered differently
-        } else {
-            $class[] = 'uk-navbar-item';
-        }
-
-    }
-
-// Render header in navbar
-} elseif ($position == 'header' && preg_match('/^(offcanvas|modal|horizontal)/', $layout)) {
-
-    if ($module->type == 'menu' && in_array($config('~module.menu_style'), ['', 'nav'])) {
+    // Menu
+    if ($module->type == 'menu' && in_array($config("$modules.menu_type"), ['', 'nav'])) {
         echo $module->content;
         return;
     }
 
-    if (in_array($module->type, ['search', 'finder']) && $config('~header.search_style') == 'modal') {
-        // Rendered differently
+    // Search
+    if (in_array($module->type, ['search', 'finder']) &&
+        ((!str_ends_with($position, '-mobile') && $config("$header.search_style") == 'modal') ||
+            (str_ends_with($position, '-mobile') && $config("$mobile.header.search_style") == 'modal'))
+    ) {
+        echo $module->content;
+        return;
+    // Else
     } else {
         $class[] = 'uk-navbar-item';
     }
 
-// Render logo in navbar
-} elseif (($position == 'logo' && preg_match('/^(offcanvas|modal|horizontal|stacked-center-split)/', $layout)) || $position == 'logo-mobile') {
-
-    $class[] = 'uk-navbar-item';
-
-} elseif (in_array($position, ['header', 'header-split', 'mobile', 'toolbar-right', 'toolbar-left', 'logo'])) {
+// No style positions
+} elseif (preg_match('/^(toolbar-(left|right)|logo|header(-split)?|dialog(-push|-mobile(-push)?)?)$/', $position)) {
 
     $class[] = 'uk-panel';
 
-// Sidebar, Top, Bottom, Builder 1-6
+// Style positions (Top, Bottom, Sidebar, Builder 1-6)
 } else {
 
-    $class[] = $config('~module.style') ? "uk-card uk-card-body uk-{$config('~module.style')}" : 'uk-panel';
+    $class[] = $config("$modules.style") ? "uk-card uk-card-body uk-{$config("$modules.style")}" : 'uk-panel';
 
 }
 
 // Class
-if ($cls = (array) $config('~module.class')) {
-    $class = array_merge($class, $cls);
+if ($cls = $config("$modules.class")) {
+    $class = array_merge($class, (array) $cls);
 }
 
 // Visibility
-if ($visibility = $config('~module.visibility')) {
+if ($visibility = $config("$modules.visibility")) {
     $class[] = "uk-visible@{$visibility}";
 }
 
-// Grid + sidebar positions
-if (!preg_match('/^(toolbar-(left|right)|navbar|header(-split)?|logo(-mobile)?|debug)$/', $position)) {
+// Grid + sidebar positions (and any custom position)
+if (!preg_match('/^(toolbar-(left|right)|logo(-mobile)?|navbar(-split|-push|-mobile)?|header(-split|-mobile)?|debug)$/', $position)) {
 
     // Title?
-    if ($config('~module.showtitle') && !empty($module->title)) {
+    if ($config("$modules.showtitle") && !empty($module->title)) {
 
         $title['class'] = [];
-        $title_element = $config('~module.title_tag', 'h3');
+        $title_element = $config("$modules.title_tag", 'h3');
 
         // Style?
-        $title['class'][] = $config('~module.title_style') ? "uk-{$config('~module.title_style')}" : '';
-        $title['class'][] = $config('~module.style') && !$config('~module.title_style') ? 'uk-card-title' : '';
+        $title['class'][] = $config("$modules.title_style") ? "uk-{$config("$modules.title_style")}" : '';
+        $title['class'][] = $config("$modules.style") && !$config("$modules.title_style") ? 'uk-card-title' : '';
 
         // Decoration?
-        $title['class'][] = $config('~module.title_decoration') ? "uk-heading-{$config('~module.title_decoration')}" : '';
+        $title['class'][] = $config("$modules.title_decoration") ? "uk-heading-{$config("$modules.title_decoration")}" : '';
 
         // Header Class?
-        $title['class'][] = $config('~module.title_class', '');
+        $title['class'][] = $config("$modules.title_class", '');
 
     }
 
     // Text alignment
-    if ($config('~module.text_align') && $config('~module.text_align') != 'justify' && $config('~module.text_align_breakpoint')) {
-        $class[] = "uk-text-{$config('~module.text_align')}@{$config('~module.text_align_breakpoint')}";
-        if ($config('~module.text_align_fallback')) {
-            $class[] = "uk-text-{$config('~module.text_align_fallback')}";
+    if ($config("$modules.text_align") && $config("$modules.text_align") != 'justify' && $config("$modules.text_align_breakpoint")) {
+        $class[] = "uk-text-{$config("$modules.text_align")}@{$config("$modules.text_align_breakpoint")}";
+        if ($config("$modules.text_align_fallback")) {
+            $class[] = "uk-text-{$config("$modules.text_align_fallback")}";
         }
-    } elseif ($config('~module.text_align')) {
-        $class[] = "uk-text-{$config('~module.text_align')}";
+    } elseif ($config("$modules.text_align")) {
+        $class[] = "uk-text-{$config("$modules.text_align")}";
     }
 
 }
 
 // List options
 $list_class = [];
-if ($config('~module.is_list')) {
+if ($config("$modules.is_list")) {
     $list_class[] = 'tm-child-list';
 
     // List Style?
-    if ($config('~module.list_style')) {
-        $list_class[] = "tm-child-list-{$config('~module.list_style')}";
+    if ($config("$modules.list_style")) {
+        $list_class[] = "tm-child-list-{$config("$modules.list_style")}";
     }
 
     // Link Style?
-    if ($config('~module.link_style')) {
-        $list_class[] = "uk-link-{$config('~module.link_style')}";
+    if ($config("$modules.link_style")) {
+        $list_class[] = "uk-link-{$config("$modules.link_style")}";
     }
 }
 
@@ -161,20 +126,16 @@ if ($config('~module.is_list')) {
 if (preg_match('/^(top|bottom|builder-\d+)$/', $position)) {
 
     // Max Width?
-    if ($config('~module.maxwidth')) {
-        $class[] = "uk-width-{$config('~module.maxwidth')}";
+    if ($config("$modules.maxwidth")) {
+        $class[] = "uk-width-{$config("$modules.maxwidth")}";
 
         // Center?
-        if ($config('~module.maxwidth_align')) {
+        if ($config("$modules.maxwidth_align")) {
             $class[] = 'uk-margin-auto';
         }
 
     }
 
-}
-
-if (empty($module->title) && empty($module->content)) {
-    return;
 }
 
 ?>
@@ -185,7 +146,7 @@ if (empty($module->title) && empty($module->content)) {
 
         <<?= $title_element ?><?= $this->attrs($title) ?>>
 
-        <?php if ($config('~module.title_decoration') == 'line') : ?>
+        <?php if ($config("$modules.title_decoration") == 'line') : ?>
         <span><?= $module->title ?></span>
         <?php else: ?>
         <?= $module->title ?>

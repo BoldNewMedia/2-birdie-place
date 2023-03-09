@@ -2,9 +2,7 @@
 
 namespace YOOtheme;
 
-/**
- * @var ImageProvider $imageProvider
- */
+/** @var ImageProvider $imageProvider */
 $imageProvider = app(ImageProvider::class);
 
 if ($props['image']) {
@@ -18,14 +16,10 @@ if ($props['image']) {
 // Min-height Placeholder
 if ($props['image_min_height']) {
 
-    $placeholder = $image->copy([
-        'class' => ['uk-invisible'],
-    ]);
+    $placeholder = $image->copy('class', ['uk-invisible']);
 
     if (!$props['image'] && $props['video']) {
-        $placeholder->attr([
-            'autoplay' => false,
-        ]);
+        $placeholder->attr('autoplay', false);
     }
 
 }

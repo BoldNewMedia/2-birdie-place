@@ -47,8 +47,10 @@ $nav_attrs = $props['filter_position'] === 'top'
     <?php endif ?>
 
     <?php foreach ($tags as $tag => $name) : ?>
-    <?php $selector = htmlspecialchars("[data-tag~='" . str_replace("'", "\'", $tag) . "']", ENT_QUOTES, null, false) ?>
-    <li <?= $tag === key($tags) && !$props['filter_all'] ? 'class="uk-active" ' : '' ?>uk-filter-control="<?= $selector ?>">
+    <li <?= $this->attrs([
+        'class' => ['uk-active' => $tag === array_key_first($tags) && !$props['filter_all']],
+        'uk-filter-control' => json_encode(['filter' => '[data-tag~="' . str_replace('"', '\"', $tag) . '"]']),
+    ]) ?>>
         <a href="#"><?= $name ?></a>
     </li>
     <?php endforeach ?>

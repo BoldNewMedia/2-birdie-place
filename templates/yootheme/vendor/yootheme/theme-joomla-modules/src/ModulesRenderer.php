@@ -14,7 +14,7 @@ class ModulesRenderer extends DocumentRenderer
 {
     public function render($position, $params = [], $content = null)
     {
-        list($config, $view, $user) = app(Config::class, View::class, User::class);
+        [$config, $view, $user] = app(Config::class, View::class, User::class);
 
         $modules = ModuleHelper::getModules($position);
         $renderer = $this->_doc->loadRenderer('module');

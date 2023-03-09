@@ -1,5 +1,7 @@
 <?php
 
+use function YOOtheme\trans;
+
 $nav = $this->el('ul', [
 
     'class' => [
@@ -9,7 +11,16 @@ $nav = $this->el('ul', [
     ],
 
     'uk-margin' => true,
-]);
+], array_map(function($child, $i) {
+    return $this->el(
+        'li',
+        ['uk-slider-item' => $i],
+        $this->el('a', [
+            'href' => true,
+            'aria-label' => trans('Go to slide %slide%', ['%slide%' => 1 + $i]),
+        ], '')
+    );
+}, $children, array_keys($children)));
 
 $nav_container = $this->el('div', [
 
@@ -21,4 +32,4 @@ $nav_container = $this->el('div', [
 
 ]);
 
-echo $props['nav_color'] ? $nav_container($props, $nav($props, '')) : $nav($props, $nav_container->attrs, '');
+echo $props['nav_color'] ? $nav_container($props, $nav($props)) : $nav($props, $nav_container->attrs);

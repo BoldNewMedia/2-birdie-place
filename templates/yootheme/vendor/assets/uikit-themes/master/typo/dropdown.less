@@ -18,6 +18,14 @@
 @dropdown-nav-letter-spacing:                   @global-secondary-letter-spacing;
 @dropdown-nav-font-style:                       @global-secondary-font-style;
 
+@dropdown-nav-subtitle-color:                   @dropdown-nav-item-color;
+@dropdown-nav-subtitle-font-family:             inherit;
+@dropdown-nav-subtitle-font-weight:             inherit;
+@dropdown-nav-subtitle-text-transform:          inherit;
+@dropdown-nav-subtitle-letter-spacing:          inherit;
+@dropdown-nav-subtitle-line-height:             inherit;
+@dropdown-nav-subtitle-font-style:              inherit;
+
 
 // Component
 // ========================================================================
@@ -54,6 +62,32 @@
 
 .hook-dropdown-nav-item-hover() {}
 
+.hook-dropdown-nav-subtitle() {}
+
+.hook-dropdown-nav-subtitle() when not (@dropdown-nav-subtitle-font-family = inherit) {
+    font-family: @dropdown-nav-subtitle-font-family;
+}
+
+.hook-dropdown-nav-subtitle() when not (@dropdown-nav-subtitle-font-weight = inherit) {
+    font-weight: @dropdown-nav-subtitle-font-weight;
+}
+
+.hook-dropdown-nav-subtitle() when not (@dropdown-nav-subtitle-text-transform = inherit) {
+    text-transform: @dropdown-nav-subtitle-text-transform;
+}
+
+.hook-dropdown-nav-subtitle() when not (@dropdown-nav-subtitle-letter-spacing = inherit) {
+    letter-spacing: @dropdown-nav-subtitle-letter-spacing;
+}
+
+.hook-dropdown-nav-subtitle() when not (@dropdown-nav-subtitle-line-height = inherit) {
+    line-height: @dropdown-nav-subtitle-line-height;
+}
+
+.hook-dropdown-nav-subtitle() when not (@dropdown-nav-subtitle-font-style = inherit) {
+    font-style: @dropdown-nav-subtitle-font-style;
+}
+
 .hook-dropdown-nav-header() {}
 
 .hook-dropdown-nav-divider() {}
@@ -63,3 +97,9 @@
 // ========================================================================
 
 .hook-dropdown-misc() {}
+
+.hook-dropdown-misc() when not (@dropdown-nav-subtitle-color = @dropdown-nav-item-color) {
+
+    .uk-dropdown-nav > li:not(.uk-active) > a:not(:hover) .uk-nav-subtitle { color: @dropdown-nav-subtitle-color; }
+
+}

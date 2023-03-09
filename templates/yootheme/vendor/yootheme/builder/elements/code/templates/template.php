@@ -3,7 +3,7 @@
 $el = $this->el('pre', [
 
     'class' => [
-        'uk-margin-remove {position: absolute}',
+        'uk-margin-remove {@position: absolute}',
     ],
 
 ]);

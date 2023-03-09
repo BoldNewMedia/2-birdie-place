@@ -14,7 +14,7 @@ class BadFunctionCallException extends \BadFunctionCallException implements
      * @param mixed                  $code
      * @param null|mixed             $previous
      *
-     * @return static
+     * @return self
      */
     public static function create($callback, $code = 0, $previous = null)
     {
@@ -23,7 +23,7 @@ class BadFunctionCallException extends \BadFunctionCallException implements
         if (is_object($callback)) {
             $function = get_class($callback);
         } elseif (is_array($callback)) {
-            list($class, $method) = $callback;
+            [$class, $method] = $callback;
 
             if (is_string($class)) {
                 $function = "{$class}::{$method}";
@@ -32,6 +32,6 @@ class BadFunctionCallException extends \BadFunctionCallException implements
             }
         }
 
-        return new static("Function {$function} is not a callable", $code, $previous);
+        return new self("Function {$function} is not a callable", $code, $previous);
     }
 }
